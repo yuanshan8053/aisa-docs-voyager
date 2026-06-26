@@ -15,6 +15,7 @@
 # 从公共 jsDelivr 加载，spec 用相对 URL ./x.json 拉取）。GitHub Pages 是 http(s)
 # 静态托管，相对 fetch 正常工作（这解决了本地 file:// 直开时的浏览器 CORS 限制）。
 
+# 重跑触发：Pages 已启用为 GitHub Actions 源（2026-06-26）。
 name: Deploy API Site (Scalar)
 
 on:
