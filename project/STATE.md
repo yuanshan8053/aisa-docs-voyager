@@ -25,6 +25,7 @@
 
 - [x] **批注待研发确认清单交付**：`ws-v2/extract_annotations.py` 从 31 份 `content.json` 提取全部 **109 条批注**（驱动源为 `content.json` 的 `annotation` 字段，确保不漏 agentmail 重名 operationId 等未内联到 enhanced 的边界条目），并在源 spec（pinned `16863d3`）上按 opKey+dotpath 解析回 native 上下文（109/109 全解析到类型与原描述）。输出 `reports/annotations-for-dev-2026-06-26.{md,csv}`，列含 spec/接口/位置/字段/类型/原描述 en/改后描述 en/批注，可直接交研发逐条确认。一键复现 `python3 ws-v2/extract_annotations.py`。
 - [x] **API 文档专业写作实践集交付**：`ws-v2/dump_pairs.py` 导出全部 17,550 对「原生英文 → 加强英文」对照（`/tmp/pairs.jsonl`），`ws-v2/find_examples.py` 按模式分桶捞候选；从中提炼 **9 个写作模式**（从无到有 / 标签扩写 / 补默认行为 / 补用途下游 / 枚举写业务含义 / 接口定位 / 跨字段关系 / 自适应深度 / 不确定留批注），每模式 ≥2 真实改前改后案例 + rationale，汇总成 `reports/api-writing-patterns-2026-06-26.md`。案例均为真实实例零改动。
+- [x] **项目收尾交付（资产盘点 + README + 成果落地页 + 部署）**：①**资产盘点**——全量文件分五类（产物/规划/过程/参考/归档）落 `project/ASSETS.zh-CN.md`，清理全部 `__pycache__`/`*.pyc`（本就 gitignored），记录「根 `.py` 与被 import 的工具脚本因被决策日志/报告以原路径钉死复现命令而不可移动」的约束（第七节）。②**README 重写**——`README.md` 改为完整历程（一无所知→摸清生产链路→现状分流→两条线治理→呈现交付）+ 高价值产物消费指南（质检洞察、双语 API 站、109 条批注清单、9 模式写作实践）+ 复现命令。③**成果落地页**——`site/index.html`（纯静态内联 CSS、无构建、文档负责人能力证明倾向：历程四步 + 四块产物卡 + 五阶段表 + 四条质量纪律 + 四个规模指标），相对链接 `./en/ ./zh/` 接双语 API 站。④**部署**——复用同一 GitHub Pages workflow（`.github/workflows/deploy-api-site.yml`，触发路径加 `site/**`），落地页置站点根 `/`、双语站为同级 `/en /zh`；commit `e2c831f` 推送后线上 `/`、`/en/`、`/zh/`、`/en/openai-chat.json`、`/zh/openai-chat.json` 均 HTTP 200，落地页新内容已生效。站点根 https://yuanshan8053.github.io/aisa-docs-voyager/ 。
 
 ## 进行中
 
