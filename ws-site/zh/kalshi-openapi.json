@@ -1,0 +1,835 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AIsa API proxy",
+    "description": "APIs for prediction markets.",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/kalshi/markets": {
+      "get": {
+        "summary": "查询 Kalshi 市场 get_kalshi-markets",
+        "description": "列出 Kalshi 预测市场及其价格、成交量与状态，可按 market ticker、event ticker、关键词、状态或最小成交量筛选。结果采用游标分页。",
+        "operationId": "get_kalshi-markets",
+        "parameters": [
+          {
+            "name": "market_ticker",
+            "in": "query",
+            "required": false,
+            "description": "按一个或多个 Kalshi 市场的 market ticker 限定返回结果。",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "KXMAYORNYCPARTY-25-D"
+              ]
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "event_ticker",
+            "in": "query",
+            "required": false,
+            "description": "按一个或多个 event ticker 限定返回属于这些事件的市场。",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "KXMAYORNYCPARTY-25"
+              ]
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "针对市场标题与描述的关键词检索，取值需经 URL 编码。",
+            "schema": {
+              "type": "string",
+              "example": "bitcoin"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "按交易状态筛选：`open` 表示仍可交易，`closed` 表示已停止交易。",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "open",
+                "closed"
+              ],
+              "example": "open"
+            }
+          },
+          {
+            "name": "min_volume",
+            "in": "query",
+            "required": false,
+            "description": "仅保留总成交量不低于该金额的市场，单位为美元。",
+            "schema": {
+              "type": "number",
+              "example": 10000000
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "每页返回的市场数量。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10,
+              "example": 20
+            }
+          },
+          {
+            "name": "pagination_key",
+            "in": "query",
+            "required": false,
+            "description": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。",
+            "schema": {
+              "type": "string",
+              "example": "eyJvcGVuX3RpbWUiOiIyMDI1LTAxLTE5VDEyOjAwOjAwLjAwMFoiLCJtYXJrZXRfdGlja2VyIjoiS1hNQVlPUk5ZQ1BBUlRZLTI1LUQiLCJ0b3RhbCI6MTUwfQ=="
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kalshi markets response with pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "markets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "event_ticker": {
+                            "type": "string",
+                            "description": "该市场所属事件的 ticker。",
+                            "example": "KXMAYORNYCPARTY-25"
+                          },
+                          "market_ticker": {
+                            "type": "string",
+                            "description": "唯一标识该市场的 ticker，可用于查询价格、成交记录或订单簿。",
+                            "example": "KXMAYORNYCPARTY-25-D"
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "市场所裁决问题的可读标题。",
+                            "example": "Will a representative of the Democratic party win the NYC Mayor race in 2025?"
+                          },
+                          "start_time": {
+                            "type": "integer",
+                            "description": "市场开放交易的时间。",
+                            "example": 1731150000
+                          },
+                          "end_time": {
+                            "type": "integer",
+                            "description": "市场预计结束的计划时间。",
+                            "example": 1793775600
+                          },
+                          "close_time": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "市场实际裁决并关闭的时间；若提前结束可能早于 end_time，仍开放时为 null。",
+                            "example": 1793775600
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "当前交易状态：`open` 仍可交易，`closed` 已停止交易。",
+                            "enum": [
+                              "open",
+                              "closed"
+                            ],
+                            "example": "open"
+                          },
+                          "last_price": {
+                            "type": "number",
+                            "description": "最近一笔成交的价格。",
+                            "example": 89
+                          },
+                          "volume": {
+                            "type": "number",
+                            "description": "自市场开放以来的累计成交量。",
+                            "example": 18261146
+                          },
+                          "volume_24h": {
+                            "type": "number",
+                            "description": "过去 24 小时的成交量。",
+                            "example": 931138
+                          },
+                          "result": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "市场裁决后的最终结果；未裁决时为 null。\n[⚠️批注:已裁决时 result 的具体取值集合源码未说明，待研发确认。]",
+                            "example": null
+                          }
+                        }
+                      },
+                      "description": "匹配的 Kalshi 市场列表。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 20,
+                          "description": "本次响应实际采用的每页数量。"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "description": "在所有分页中匹配筛选条件的市场总数。",
+                          "example": 150
+                        },
+                        "has_more": {
+                          "type": "boolean",
+                          "description": "是否还有更多分页结果。",
+                          "example": true
+                        },
+                        "pagination_key": {
+                          "type": "string",
+                          "description": "下次请求作为 pagination_key 传入的游标，仅在还有更多结果时出现。",
+                          "example": "eyJvcGVuX3RpbWUiOiIyMDI1LTAxLTE5VDEyOjAwOjAwLjAwMFoiLCJtYXJrZXRfdGlja2VyIjoiS1hNQVlPUk5ZQ1BBUlRZLTI1LUQiLCJ0b3RhbCI6MTUwfQ=="
+                        }
+                      },
+                      "description": "结果集的分页元信息。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid limit parameter",
+                      "description": "请求失败时的简短机器可读错误码。"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "limit must be a number between 1 and 100",
+                      "description": "对请求被拒原因的可读说明。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kalshi/trades": {
+      "get": {
+        "summary": "查询 Kalshi 成交记录 get_kalshi-trades",
+        "description": "列出 Kalshi 市场的历史成交记录，可按 market ticker 与时间区间筛选，返回每笔成交的价格、合约数量与吃单方向。结果采用游标分页。",
+        "operationId": "get_kalshi-trades",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": false,
+            "description": "按 market ticker 将成交记录限定到单个 Kalshi 市场。",
+            "schema": {
+              "type": "string",
+              "example": "KXNFLGAME-25NOV09PITLAC-PIT"
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "description": "成交时间窗的下界，仅返回该时刻及之后的成交。",
+            "schema": {
+              "type": "integer",
+              "example": 1762716000
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "description": "成交时间窗的上界，仅返回该时刻及之前的成交。",
+            "schema": {
+              "type": "integer",
+              "example": 1762720600
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "每页返回的成交记录数量上限。",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "example": 10
+            }
+          },
+          {
+            "name": "pagination_key",
+            "in": "query",
+            "required": false,
+            "description": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。",
+            "schema": {
+              "type": "string",
+              "example": "eyJjcmVhdGVkX3RpbWUiOiIyMDI1LTAxLTE5VDEyOjAwOjAwLjAwMFoiLCJ0cmFkZV9pZCI6IjEyMzQ1Njc4OTAiLCJ0b3RhbCI6NTAwMDB9"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kalshi trades response with pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trades": {
+                      "type": "array",
+                      "description": "匹配筛选条件的成交记录列表。",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "trade_id": {
+                            "type": "string",
+                            "description": "唯一引用该笔成交的标识。",
+                            "example": "587f9eb0-1ae1-7b53-9536-fcf3fc503630"
+                          },
+                          "market_ticker": {
+                            "type": "string",
+                            "description": "该笔成交所属市场的 ticker。",
+                            "example": "KXNFLGAME-25NOV09PITLAC-PIT"
+                          },
+                          "count": {
+                            "type": "integer",
+                            "description": "该笔成交中交换的合约数量。",
+                            "example": 93
+                          },
+                          "yes_price": {
+                            "type": "integer",
+                            "description": "yes 一侧的成交价格，以分计。",
+                            "example": 1
+                          },
+                          "no_price": {
+                            "type": "integer",
+                            "description": "no 一侧的成交价格，以分计。",
+                            "example": 99
+                          },
+                          "yes_price_dollars": {
+                            "type": "number",
+                            "description": "yes 一侧的成交价格，以美元计。",
+                            "example": 0.01
+                          },
+                          "no_price_dollars": {
+                            "type": "number",
+                            "description": "no 一侧的成交价格，以美元计。",
+                            "example": 0.99
+                          },
+                          "taker_side": {
+                            "type": "string",
+                            "description": "主动吃单成交的一方：`yes` 或 `no`。",
+                            "enum": [
+                              "yes",
+                              "no"
+                            ],
+                            "example": "yes"
+                          },
+                          "created_time": {
+                            "type": "integer",
+                            "description": "该笔成交发生的时间。",
+                            "example": 1762718746
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 50,
+                          "description": "本次响应实际采用的每页数量。"
+                        },
+                        "total": {
+                          "type": "integer",
+                          "description": "在所有分页中匹配筛选条件的成交总数。",
+                          "example": 43154
+                        },
+                        "has_more": {
+                          "type": "boolean",
+                          "description": "是否还有更多分页结果。",
+                          "example": true
+                        },
+                        "pagination_key": {
+                          "type": "string",
+                          "description": "下次请求作为 pagination_key 传入的游标，仅在还有更多结果时出现。",
+                          "example": "eyJjcmVhdGVkX3RpbWUiOiIyMDI1LTAxLTE5VDEyOjAwOjAwLjAwMFoiLCJ0cmFkZV9pZCI6IjEyMzQ1Njc4OTAiLCJ0b3RhbCI6NTAwMDB9"
+                        }
+                      },
+                      "description": "结果集的分页元信息。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid parameters",
+                      "description": "请求失败时的简短机器可读错误码。"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid time range or parameters",
+                      "description": "对请求被拒原因的可读说明。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kalshi/market-price/{market_ticker}": {
+      "parameters": [
+        {
+          "name": "market_ticker",
+          "in": "path",
+          "required": true,
+          "description": "The market ticker for the Kalshi market",
+          "schema": {
+            "type": "string",
+            "example": "KXNFLGAME-25AUG16ARIDEN-ARI"
+          }
+        }
+      ],
+      "get": {
+        "summary": "查询 Kalshi 市场价格 get_kalshi-market-price",
+        "description": "查询由 market ticker 指定的单个 Kalshi 市场价格，包含 yes 与 no 两侧。默认返回最新可得价格；传入 at_time 时返回该时间点的历史价格。",
+        "operationId": "get_kalshi-market-price",
+        "parameters": [
+          {
+            "name": "at_time",
+            "in": "query",
+            "required": false,
+            "description": "查询截至该时刻的历史价格；省略则返回最新可得价格。",
+            "schema": {
+              "type": "integer",
+              "example": 1762164600
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Market price response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "yes": {
+                      "type": "object",
+                      "description": "市场 yes 一侧的价格信息。",
+                      "properties": {
+                        "price": {
+                          "type": "number",
+                          "description": "yes 一侧价格，以美元计，取值介于 0 与 1 之间，类似概率。",
+                          "example": 0.75
+                        },
+                        "at_time": {
+                          "type": "integer",
+                          "description": "所返回 yes 一侧价格对应的时间点。",
+                          "example": 1762164600
+                        }
+                      },
+                      "required": [
+                        "price",
+                        "at_time"
+                      ]
+                    },
+                    "no": {
+                      "type": "object",
+                      "description": "市场 no 一侧的价格信息。",
+                      "properties": {
+                        "price": {
+                          "type": "number",
+                          "description": "no 一侧价格，以美元计，取值介于 0 与 1 之间，类似概率。",
+                          "example": 0.25
+                        },
+                        "at_time": {
+                          "type": "integer",
+                          "description": "所返回 no 一侧价格对应的时间点。",
+                          "example": 1762164600
+                        }
+                      },
+                      "required": [
+                        "price",
+                        "at_time"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "yes",
+                    "no"
+                  ]
+                },
+                "examples": {
+                  "with_at_time": {
+                    "summary": "Historical price lookup",
+                    "description": "Response when `at_time` parameter is provided",
+                    "value": {
+                      "yes": {
+                        "price": 0.75,
+                        "at_time": 1762164600
+                      },
+                      "no": {
+                        "price": 0.25,
+                        "at_time": 1762164600
+                      }
+                    }
+                  },
+                  "real_time": {
+                    "summary": "Real-time price lookup",
+                    "description": "Response when `at_time` parameter is omitted (most recent price)",
+                    "value": {
+                      "yes": {
+                        "price": 0.82,
+                        "at_time": 1757008834
+                      },
+                      "no": {
+                        "price": 0.18,
+                        "at_time": 1757008834
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid at_time parameter",
+                      "description": "请求失败时的简短机器可读错误码。"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "at_time must be a valid Unix timestamp in seconds",
+                      "description": "对请求被拒原因的可读说明。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Market not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found",
+                      "description": "表示未找到该市场的简短机器可读错误码。"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No price data found for market_ticker KXNFLGAME-25AUG16ARIDEN-ARI",
+                      "description": "对所请求市场不存在价格数据的可读说明。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kalshi/orderbooks": {
+      "get": {
+        "summary": "查询 Kalshi 订单簿历史 get_kalshi-orderbooks",
+        "description": "查询单个 Kalshi 市场在某时间区间内的历史订单簿快照，返回 yes/no 两侧的报价档位（同时给出以分和以美元计的价格）。未指定时间区间时仅返回最新一条快照。结果采用游标分页。",
+        "operationId": "get_kalshi-orderbooks",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": true,
+            "description": "要查询订单簿历史的 Kalshi 市场 ticker。",
+            "schema": {
+              "type": "string",
+              "example": "KXNFLGAME-25AUG16ARIDEN-ARI"
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "description": "快照时间窗的下界；与 end_time 一并省略则只返回最新一条快照。",
+            "schema": {
+              "type": "integer",
+              "example": 1760470000000
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "description": "快照时间窗的上界；与 start_time 一并省略则只返回最新一条快照。",
+            "schema": {
+              "type": "integer",
+              "example": 1760480000000
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "每页返回的快照数量上限；仅取最新快照时该参数被忽略。",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "maximum": 200,
+              "example": 100
+            }
+          },
+          {
+            "name": "paginationKey",
+            "in": "query",
+            "required": false,
+            "description": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。",
+            "schema": {
+              "type": "string",
+              "example": "eyJ0aW1lc3RhbXAiOjE3NjA0NzAwMDAwMDAsInRpY2tlciI6IktYTkZMR0FNRS0yNUFVRzE2QVJJREVOLUFSSSIsInRvdGFsIjoxMDB9"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kalshi orderbook history response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "snapshots": {
+                      "type": "array",
+                      "description": "在所请求时间窗内排列的订单簿快照。",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "orderbook": {
+                            "type": "object",
+                            "properties": {
+                              "yes": {
+                                "type": "array",
+                                "description": "yes 一侧的挂单，每项为 [价格, 合约数量] 对，价格以分计。",
+                                "items": {
+                                  "type": "array",
+                                  "description": "[price_in_cents, contract_count]",
+                                  "items": {
+                                    "type": "number"
+                                  },
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "example": [
+                                    75,
+                                    100
+                                  ]
+                                }
+                              },
+                              "no": {
+                                "type": "array",
+                                "description": "no 一侧的挂单，每项为 [价格, 合约数量] 对，价格以分计。",
+                                "items": {
+                                  "type": "array",
+                                  "description": "[price_in_cents, contract_count]",
+                                  "items": {
+                                    "type": "number"
+                                  },
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "example": [
+                                    25,
+                                    100
+                                  ]
+                                }
+                              },
+                              "yes_dollars": {
+                                "type": "array",
+                                "description": "yes 一侧的挂单，每项为 [价格, 合约数量] 对，价格以美元计。",
+                                "items": {
+                                  "type": "array",
+                                  "description": "[price_as_dollar_string, contract_count]",
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "items": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "example": [
+                                    "0.75",
+                                    100
+                                  ]
+                                }
+                              },
+                              "no_dollars": {
+                                "type": "array",
+                                "description": "no 一侧的挂单，每项为 [价格, 合约数量] 对，价格以美元计。",
+                                "items": {
+                                  "type": "array",
+                                  "description": "[price_as_dollar_string, contract_count]",
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "items": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "example": [
+                                    "0.25",
+                                    100
+                                  ]
+                                }
+                              }
+                            },
+                            "description": "该快照时刻订单簿的报价档位，按方向与价格单位拆分。"
+                          },
+                          "timestamp": {
+                            "type": "integer",
+                            "description": "该订单簿快照的采集时间。",
+                            "example": 1760471849407
+                          },
+                          "ticker": {
+                            "type": "string",
+                            "description": "该快照所属市场的 ticker。",
+                            "example": "KXNFLGAME-25AUG16ARIDEN-ARI"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 100,
+                          "description": "本次响应实际采用的每页数量。"
+                        },
+                        "count": {
+                          "type": "integer",
+                          "description": "本页返回的快照数量。",
+                          "example": 4
+                        },
+                        "paginationKey": {
+                          "type": "string",
+                          "description": "下次请求作为 paginationKey 传入的游标，仅在还有更多结果时出现。",
+                          "example": "eyJ0aW1lc3RhbXAiOjE3NjA0NzAwMDAwMDAsInRpY2tlciI6IktYTkZMR0FNRS0yNUFVRzE2QVJJREVOLUFSSSIsInRvdGFsIjoxMDB9"
+                        },
+                        "has_more": {
+                          "type": "boolean",
+                          "description": "是否还有更多分页快照。",
+                          "example": false
+                        }
+                      },
+                      "description": "结果集的分页元信息。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid parameters",
+                      "description": "请求失败时的简短机器可读错误码。"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "ticker, start_time, and end_time are required",
+                      "description": "对请求被拒原因的可读说明。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key",
+        "description": "Your AIsa API key as a Bearer token."
+      }
+    }
+  }
+}

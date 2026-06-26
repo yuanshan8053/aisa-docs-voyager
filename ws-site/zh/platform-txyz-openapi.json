@@ -1,0 +1,741 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "TXYZ Platform API",
+    "version": "1.0.0",
+    "description": "API documentation for platform.txyz.ai services including academic search functionality",
+    "contact": {
+      "email": "support@txyz.ai"
+    },
+    "license": {
+      "name": "Proprietary"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "paths": {
+    "/scholar/search/mixed": {
+      "post": {
+        "summary": "智能混合搜索 searchSmart",
+        "description": "用一次查询同时检索网页与学术论文，返回融合排序后的结果列表，并附带可交给 explainSearch 生成解读的检索标识。",
+        "operationId": "searchSmart",
+        "tags": [
+          "Search",
+          "Smart"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "description": "要检索的查询词。",
+            "schema": {
+              "type": "string",
+              "example": "machine learning"
+            }
+          },
+          {
+            "name": "max_num_results",
+            "in": "query",
+            "description": "限制返回结果的数量上限。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            }
+          },
+          {
+            "name": "as_ylo",
+            "in": "query",
+            "description": "纳入结果的最早出版年份，早于该年份的结果会被排除。",
+            "schema": {
+              "type": "integer",
+              "nullable": true,
+              "minimum": 1900,
+              "maximum": 2030
+            }
+          },
+          {
+            "name": "as_yhi",
+            "in": "query",
+            "description": "纳入结果的最晚出版年份，晚于该年份的结果会被排除。",
+            "schema": {
+              "type": "integer",
+              "nullable": true,
+              "minimum": 1900,
+              "maximum": 2030
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmartSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/scholar/search/web": {
+      "post": {
+        "summary": "网页搜索 searchWeb",
+        "description": "执行网页搜索并返回结构化结果（标题、链接、摘要），响应中的检索标识可复用于 explainSearch。",
+        "operationId": "searchWeb",
+        "tags": [
+          "Search",
+          "Web"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "description": "要检索的查询词。",
+            "schema": {
+              "type": "string",
+              "example": "machine learning"
+            }
+          },
+          {
+            "name": "max_num_results",
+            "in": "query",
+            "description": "限制返回结果的数量上限。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            }
+          },
+          {
+            "name": "as_ylo",
+            "in": "query",
+            "description": "纳入结果的最早出版年份，早于该年份的结果会被排除。",
+            "schema": {
+              "type": "integer",
+              "nullable": true,
+              "minimum": 1900,
+              "maximum": 2030
+            }
+          },
+          {
+            "name": "as_yhi",
+            "in": "query",
+            "description": "纳入结果的最晚出版年份，晚于该年份的结果会被排除。",
+            "schema": {
+              "type": "integer",
+              "nullable": true,
+              "minimum": 1900,
+              "maximum": 2030
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/scholar/search/scholar": {
+      "post": {
+        "summary": "学术论文搜索 searchScholar",
+        "description": "检索学术论文（通过 Google Scholar 等来源），返回作者、被引次数、期刊等论文元数据，响应中的检索标识可复用于 explainSearch。",
+        "operationId": "searchScholar",
+        "tags": [
+          "Search",
+          "Academic"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "description": "要检索的查询词。",
+            "schema": {
+              "type": "string",
+              "example": "machine learning"
+            }
+          },
+          {
+            "name": "max_num_results",
+            "in": "query",
+            "description": "限制返回结果的数量上限。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10
+            }
+          },
+          {
+            "name": "as_ylo",
+            "in": "query",
+            "description": "纳入结果的最早出版年份，早于该年份的结果会被排除。",
+            "schema": {
+              "type": "integer",
+              "nullable": true,
+              "minimum": 1900,
+              "maximum": 2030
+            }
+          },
+          {
+            "name": "as_yhi",
+            "in": "query",
+            "description": "纳入结果的最晚出版年份，晚于该年份的结果会被排除。",
+            "schema": {
+              "type": "integer",
+              "nullable": true,
+              "minimum": 1900,
+              "maximum": 2030
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScholarSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/scholar/search/explain": {
+      "post": {
+        "summary": "解读搜索结果 explainSearch",
+        "description": "针对此前某次搜索（通过 search_id 指定）的结果生成 AI 解读，可控制输出语言、格式与详尽程度。",
+        "operationId": "explainSearch",
+        "tags": [
+          "Search",
+          "Explanation"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExplainSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful explanation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExplainSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request - invalid parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized - invalid or missing API key",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Search ID not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Rate limit exceeded",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ScholarSearchResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "results"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "本次搜索请求的标识，可传给 explainSearch 以解读这批结果。"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScholarResult"
+            },
+            "description": "学术论文结果列表。"
+          }
+        }
+      },
+      "ScholarResult": {
+        "type": "object",
+        "required": [
+          "title",
+          "link",
+          "snippet",
+          "authors",
+          "number_of_citations"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "论文标题。"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "description": "访问论文全文的链接。"
+          },
+          "snippet": {
+            "type": "string",
+            "description": "论文的摘要或简述。"
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "论文作者。"
+          },
+          "number_of_citations": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "论文被引用的次数。"
+          },
+          "year": {
+            "type": "integer",
+            "description": "论文的出版年份。",
+            "minimum": 1900,
+            "maximum": 2030
+          },
+          "journal": {
+            "type": "string",
+            "description": "论文所在的期刊或会议。"
+          }
+        }
+      },
+      "WebSearchResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "results"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "本次搜索请求的标识，可传给 explainSearch 以解读这批结果。"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebResult"
+            },
+            "description": "网页搜索结果列表。"
+          }
+        }
+      },
+      "WebResult": {
+        "type": "object",
+        "required": [
+          "title",
+          "link",
+          "snippet"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "网页标题。"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "description": "可打开该网页的链接。"
+          },
+          "snippet": {
+            "type": "string",
+            "description": "网页内容的简要预览。"
+          },
+          "display_url": {
+            "type": "string",
+            "description": "便于展示的可读版链接。"
+          },
+          "published_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "网页的发布时间。"
+          }
+        }
+      },
+      "SmartSearchResponse": {
+        "type": "object",
+        "required": [
+          "id",
+          "results"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "本次搜索请求的标识，可传给 explainSearch 以解读这批结果。"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SmartResult"
+            },
+            "description": "融合网页与学术内容的结果列表。"
+          },
+          "search_type": {
+            "type": "string",
+            "enum": [
+              "web",
+              "academic",
+              "hybrid"
+            ],
+            "description": "返回结果实际取自的来源组合。"
+          }
+        }
+      },
+      "SmartResult": {
+        "type": "object",
+        "required": [
+          "title",
+          "link",
+          "snippet"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "结果标题。"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "description": "可打开该结果内容的链接。"
+          },
+          "snippet": {
+            "type": "string",
+            "description": "结果的简要摘要或概述。"
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "条目作者，学术类结果才会有值。"
+          },
+          "number_of_citations": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "条目被引用的次数，学术类结果才会有值。"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "web",
+              "academic"
+            ],
+            "description": "该条目来自网页还是学术来源。"
+          },
+          "relevance_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "结果与查询的相关程度，取值 0 到 1，越高越相关。"
+          }
+        }
+      },
+      "ExplainSearchRequest": {
+        "type": "object",
+        "required": [
+          "search_id"
+        ],
+        "properties": {
+          "search_id": {
+            "type": "string",
+            "description": "要解读的此前那次搜索的标识，取自某次搜索响应的 id 字段。"
+          },
+          "response_mode": {
+            "type": "string",
+            "enum": [
+              "COMPLETE",
+              "SUMMARY",
+              "BULLET_POINTS"
+            ],
+            "default": "COMPLETE",
+            "description": "解读的输出格式：完整长文、精简摘要或要点列表。"
+          },
+          "language": {
+            "type": "string",
+            "default": "en",
+            "description": "解读所用的语言，以语言代码给出（如 `en`、`zh`、`ar`）。",
+            "example": "ar"
+          },
+          "detail_level": {
+            "type": "string",
+            "enum": [
+              "BRIEF",
+              "MODERATE",
+              "DETAILED"
+            ],
+            "default": "MODERATE",
+            "description": "解读展开的详尽程度。"
+          }
+        }
+      },
+      "ExplainSearchResponse": {
+        "type": "object",
+        "required": [
+          "search_id",
+          "explanation"
+        ],
+        "properties": {
+          "search_id": {
+            "type": "string",
+            "description": "本次解读所针对的搜索标识。"
+          },
+          "explanation": {
+            "type": "string",
+            "description": "针对搜索结果生成的解读正文。"
+          },
+          "language": {
+            "type": "string",
+            "description": "解读实际使用的语言。"
+          },
+          "response_mode": {
+            "type": "string",
+            "description": "解读实际采用的输出格式。"
+          },
+          "summary": {
+            "type": "string",
+            "description": "解读的简要摘要。"
+          },
+          "key_insights": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "从搜索结果中提炼出的关键要点。"
+          },
+          "confidence_score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "模型对该解读的置信度，取值 0 到 1，越高越自信。"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "解读的生成时间。"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error message describing what went wrong"
+          },
+          "code": {
+            "type": "integer",
+            "description": "HTTP status code"
+          },
+          "details": {
+            "type": "string",
+            "description": "Additional error details"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}

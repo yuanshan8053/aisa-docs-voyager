@@ -1,0 +1,143 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "YouTube Search API",
+    "description": "SearchApi.io YouTube Search endpoint",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1",
+      "description": "YouTube Search API Server"
+    }
+  ],
+  "paths": {
+    "/youtube/search": {
+      "get": {
+        "summary": "YouTube Search",
+        "description": "Search YouTube through the SearchApi aggregation engine and return a structured list of matching videos. This is a read-only query: narrow results with a country and interface language, or paginate and apply advanced sorting via YouTube's own filter token. Typical uses are content discovery, competitive monitoring, and sourcing material.\n\n**Error status codes:** `400`, `401`",
+        "tags": [
+          "YouTube Search"
+        ],
+        "parameters": [
+          {
+            "name": "engine",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "youtube"
+              ]
+            },
+            "description": "Selects which search backend to route the request to. For this endpoint it is always `youtube`, pinning the call to YouTube's search channel."
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The search phrase, exactly as a user would type it into YouTube's search box. It is the primary signal that determines which videos come back and in what relevance order."
+          },
+          {
+            "name": "sp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "YouTube's opaque filter token. Pass it to page forward or to carry advanced filters such as upload date, duration, or sort order. The value is not constructed by hand — copy it from a previous response or from YouTube's frontend and pass it through unchanged."
+          },
+          {
+            "name": "gl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Country of the search context, given as a two-letter code such as `us` or `jp`. It localizes which results surface and how they rank. Omit it to fall back to the engine's default region."
+          },
+          {
+            "name": "hl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Interface language for the search, given as a language code. It controls the language of localized text in the results, not which videos match. Omit it to fall back to the engine's default language."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful YouTube search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "YouTube search result payload",
+                  "properties": {
+                    "search_metadata": {
+                      "type": "object",
+                      "description": "Metadata about this search request, recording status and other query-level context useful for troubleshooting and auditing."
+                    },
+                    "search_results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "video_id": {
+                            "type": "string",
+                            "description": "YouTube's unique identifier for the video. Use it to build a watch URL or as the input to downstream video APIs."
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "The video's display title."
+                          },
+                          "link": {
+                            "type": "string",
+                            "description": "Direct, clickable watch URL for the video."
+                          },
+                          "channel_name": {
+                            "type": "string",
+                            "description": "Name of the channel that published the video."
+                          }
+                        }
+                      },
+                      "description": "The matched videos, ordered by the engine's relevance ranking. Each element is one video record."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Unauthorized / Invalid API key"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

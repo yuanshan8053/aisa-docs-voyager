@@ -1,0 +1,392 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TwitterAPI Unified API",
+    "version": "1.0.0",
+    "description": "Unified OpenAPI 3.0 specification for TwitterAPI endpoints."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Trend": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "趋势的显示名称。"
+          },
+          "target": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "打开该趋势结果所用的搜索查询字符串。"
+              }
+            },
+            "description": "该趋势对应的搜索目标。"
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int64",
+            "description": "趋势在榜单中的名次，数字越小排名越靠前。"
+          },
+          "meta_description": {
+            "type": "string",
+            "description": "趋势的补充描述文本，如相关讨论量或背景信息。"
+          }
+        }
+      },
+      "TrendsResponse": {
+        "type": "object",
+        "properties": {
+          "trends": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Trend"
+            },
+            "description": "所请求地点的热门趋势列表。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求是成功还是出错。"
+          },
+          "msg": {
+            "type": "string",
+            "description": "附带消息，通常是请求未成功时的错误详情。"
+          }
+        }
+      },
+      "SpaceDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Space 的标识。"
+          },
+          "title": {
+            "type": "string",
+            "description": "Space 的标题。"
+          },
+          "state": {
+            "type": "string",
+            "description": "Space 当前的生命周期状态，如已排期、直播中或已结束。"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Space 的创建时间。"
+          },
+          "scheduled_start": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Space 计划开始的时间。"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Space 记录最近一次更新的时间。"
+          },
+          "media_key": {
+            "type": "string",
+            "description": "指向该 Space 音频流的媒体键。"
+          },
+          "is_subscribed": {
+            "type": "boolean",
+            "description": "发起请求的用户是否已订阅该 Space。"
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "conversation_controls": {
+                "type": "integer",
+                "description": "表示谁可参与对话的编码值。\n[⚠️批注:源码未声明该整数各取值的含义，待研发确认。]"
+              },
+              "disallow_join": {
+                "type": "boolean",
+                "description": "是否禁止新参与者加入该 Space。"
+              },
+              "is_employee_only": {
+                "type": "boolean",
+                "description": "该 Space 是否仅限员工。"
+              },
+              "is_locked": {
+                "type": "boolean",
+                "description": "该 Space 是否已锁定。"
+              },
+              "is_muted": {
+                "type": "boolean",
+                "description": "该 Space 对发起请求的用户是否已静音。"
+              },
+              "is_space_available_for_clipping": {
+                "type": "boolean",
+                "description": "是否允许从该 Space 制作剪辑。"
+              },
+              "is_space_available_for_replay": {
+                "type": "boolean",
+                "description": "该 Space 是否提供回放。"
+              },
+              "no_incognito": {
+                "type": "boolean",
+                "description": "是否禁止匿名（隐身）收听。"
+              },
+              "narrow_cast_space_type": {
+                "type": "integer",
+                "description": "表示该 Space 定向广播类型的编码值。\n[⚠️批注:源码未声明该整数各取值的含义，待研发确认。]"
+              },
+              "max_guest_sessions": {
+                "type": "integer",
+                "description": "允许的并发嘉宾发言会话数上限。"
+              },
+              "max_admin_capacity": {
+                "type": "integer",
+                "description": "该 Space 可拥有的管理员数量上限。"
+              }
+            },
+            "description": "Space 的配置项。"
+          },
+          "stats": {
+            "type": "object",
+            "properties": {
+              "total_replay_watched": {
+                "type": "integer",
+                "description": "回放观看的总次数。"
+              },
+              "total_live_listeners": {
+                "type": "integer",
+                "description": "实时收听的总人数。"
+              },
+              "total_participants": {
+                "type": "integer",
+                "description": "该 Space 的参与者总人数。"
+              }
+            },
+            "description": "Space 的听众统计。"
+          },
+          "creator": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "创建者的标识。"
+              },
+              "name": {
+                "type": "string",
+                "description": "创建者的显示名称。"
+              },
+              "userName": {
+                "type": "string",
+                "description": "创建者的用户名（@username）。"
+              },
+              "location": {
+                "type": "string",
+                "description": "创建者资料中填写的所在地。"
+              },
+              "url": {
+                "type": "string",
+                "description": "创建者资料中填写的网站链接。"
+              },
+              "description": {
+                "type": "string",
+                "description": "创建者资料中的简介文本。"
+              },
+              "protected": {
+                "type": "boolean",
+                "description": "创建者账号是否受保护（私密）。"
+              },
+              "isVerified": {
+                "type": "boolean",
+                "description": "创建者账号是否已认证。"
+              },
+              "isBlueVerified": {
+                "type": "boolean",
+                "description": "创建者是否拥有 Twitter Blue 认证。"
+              },
+              "verifiedType": {
+                "type": "string",
+                "description": "创建者账号所持认证的类型。"
+              },
+              "followers": {
+                "type": "integer",
+                "description": "关注该创建者的账号数。"
+              },
+              "following": {
+                "type": "integer",
+                "description": "该创建者关注的账号数。"
+              },
+              "favouritesCount": {
+                "type": "integer",
+                "description": "该创建者点赞过的推文数。"
+              },
+              "statusesCount": {
+                "type": "integer",
+                "description": "该创建者发布的推文数。"
+              },
+              "mediaCount": {
+                "type": "integer",
+                "description": "该创建者发布的媒体条目数。"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "创建者账号的注册时间。"
+              },
+              "coverPicture": {
+                "type": "string",
+                "description": "创建者资料封面图的链接。"
+              },
+              "profilePicture": {
+                "type": "string",
+                "description": "创建者头像的链接。"
+              },
+              "canDm": {
+                "type": "boolean",
+                "description": "发起请求的用户是否可以向该创建者发送私信。"
+              },
+              "affiliatesHighlightedLabel": {
+                "type": "object",
+                "description": "创建者资料上展示的关联机构高亮标签。"
+              },
+              "isAutomated": {
+                "type": "boolean",
+                "description": "创建者账号是否被标记为自动化（机器人）账号。"
+              },
+              "automatedBy": {
+                "type": "string",
+                "description": "管理该自动化账号的账号标识。"
+              }
+            },
+            "description": "创建该 Space 的用户资料。"
+          }
+        }
+      },
+      "SpaceDetailResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SpaceDetail",
+            "description": "Space 的详情数据。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求是成功还是出错。"
+          },
+          "msg": {
+            "type": "string",
+            "description": "附带消息，通常是请求未成功时的错误详情。"
+          }
+        }
+      },
+      "MyInfoResponse": {
+        "type": "object",
+        "properties": {
+          "recharge_credits": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/trends": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_trends"
+        ],
+        "summary": "获取趋势榜 GET /twitter/trends",
+        "description": "返回指定地点（以 WOEID 标识）的热门趋势列表。",
+        "parameters": [
+          {
+            "name": "woeid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "标识目标地点的 WOEID（Where On Earth ID），用于取该地的趋势。"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 30,
+              "minimum": 30
+            },
+            "description": "返回趋势的数量。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrendsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/spaces/detail": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_space_detail"
+        ],
+        "summary": "获取 Space 详情 GET /twitter/spaces/detail",
+        "description": "返回单个 Twitter Space 的完整详情，包括设置、听众统计与创建者资料。",
+        "parameters": [
+          {
+            "name": "space_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询的 Twitter Space 标识。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oapi/my/info": {}
+  }
+}

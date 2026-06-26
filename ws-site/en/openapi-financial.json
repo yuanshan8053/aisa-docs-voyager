@@ -1,0 +1,4278 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Financial Datasets API",
+    "description": "Stock market API with real-time and historical financial data for 30,000+ tickers over 30+ years. Financial statements, equity prices, insider trades, SEC filings, and more.",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "name": "API Support",
+      "url": "https://financialdatasets.ai/support",
+      "email": "support@financialdatasets.ai"
+    },
+    "termsOfService": "https://financialdatasets.ai/terms"
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1/financial",
+      "description": "Production server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Financial Statements",
+      "description": "Access to income statements, balance sheets, and cash flow statements"
+    },
+    {
+      "name": "Market Data",
+      "description": "Real-time and historical price data"
+    },
+    {
+      "name": "Company Information",
+      "description": "Company facts like ticker, name, and description"
+    },
+    {
+      "name": "Earnings",
+      "description": "Earnings press releases and related data"
+    },
+    {
+      "name": "Crypto",
+      "description": "Cryptocurrency price data and market information"
+    },
+    {
+      "name": "News",
+      "description": "Real-time and historical news articles"
+    },
+    {
+      "name": "SEC Filings",
+      "description": "SEC filings and regulatory documents"
+    },
+    {
+      "name": "Insider Trades",
+      "description": "Insider trading activity and transactions"
+    },
+    {
+      "name": "Institutional Ownership",
+      "description": "Equity holdings of investment managers"
+    },
+    {
+      "name": "Financial Metrics",
+      "description": "Financial ratios, metrics, and key performance indicators"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/financials/search/line-items": {
+      "post": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "searchLineItems",
+        "summary": "Search specific financial metrics",
+        "description": "Search for specific financial line items across income statements, balance sheets, and cash flow statements for one or more tickers.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchLineItemsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialsSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/insider-trades": {
+      "get": {
+        "tags": [
+          "Insider Trades"
+        ],
+        "operationId": "getInsiderTrades",
+        "summary": "Get insider trades",
+        "description": "Retrieve insider buy and sell transactions reported by a company's insiders for the given ticker.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Filter results to a specific insider by name; obtain valid names from the insider-trades names endpoint.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "transaction_type",
+            "in": "query",
+            "description": "Filter results to a specific transaction type; obtain valid types from the insider-trades transaction-types endpoint.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filing_date",
+            "in": "query",
+            "description": "Return only trades filed on this exact date.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filing_date_gte",
+            "in": "query",
+            "description": "Return only trades filed on or after this date.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filing_date_lte",
+            "in": "query",
+            "description": "Return only trades filed on or before this date.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filing_date_gt",
+            "in": "query",
+            "description": "Return only trades filed strictly after this date.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filing_date_lt",
+            "in": "query",
+            "description": "Return only trades filed strictly before this date.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Insider trades response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InsiderTradesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/institutional-ownership": {
+      "get": {
+        "tags": [
+          "Institutional Ownership"
+        ],
+        "operationId": "getInstitutionalOwnership",
+        "summary": "Get the equity holdings of an investment manager",
+        "description": "Retrieve institutional equity holdings, queried either by investment manager or by ticker (supply exactly one of the two).",
+        "parameters": [
+          {
+            "name": "investor",
+            "in": "query",
+            "description": "Name of the investment manager whose holdings to retrieve.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Ticker symbol whose institutional holders to retrieve.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Institutional ownership response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstitutionalOwnershipResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/company/facts": {
+      "get": {
+        "tags": [
+          "Company Information"
+        ],
+        "operationId": "getCompanyFacts",
+        "summary": "Get company facts",
+        "description": "Retrieve descriptive company facts and identifiers for the given ticker.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company facts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyFactsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/filings": {
+      "get": {
+        "tags": [
+          "SEC Filings"
+        ],
+        "operationId": "getFilings",
+        "summary": "Get SEC filings",
+        "description": "Retrieve the list of SEC filings submitted by a company.",
+        "parameters": [
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filing_type",
+            "in": "query",
+            "description": "Filter by one or more SEC filing types; repeat the parameter to pass multiple values.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "10-K",
+                  "10-Q",
+                  "8-K",
+                  "20-F",
+                  "6-K"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SEC filings response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilingsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/filings/items": {
+      "get": {
+        "tags": [
+          "SEC Filings"
+        ],
+        "operationId": "getFilingItems",
+        "summary": "Get SEC filing items",
+        "description": "Retrieve the raw text of individual Items within a specific SEC filing.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filing_type",
+            "in": "query",
+            "description": "SEC form type of the filing to read items from.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "10-K",
+                "10-Q",
+                "8-K"
+              ]
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Filing year to select.",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "quarter",
+            "in": "query",
+            "description": "Filing quarter, used for 10-Q filings.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "item",
+            "in": "query",
+            "description": "Specific filing Item to retrieve.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Item-1",
+                "Item-1A",
+                "Item-1B",
+                "Item-2",
+                "Item-3",
+                "Item-4",
+                "Item-5",
+                "Item-6",
+                "Item-7",
+                "Item-7A",
+                "Item-8",
+                "Item-9",
+                "Item-9A",
+                "Item-9B",
+                "Item-10",
+                "Item-11",
+                "Item-12",
+                "Item-13",
+                "Item-14",
+                "Item-15",
+                "Item-16",
+                "Item-1.01",
+                "Item-1.02",
+                "Item-1.03",
+                "Item-1.04",
+                "Item-2.01",
+                "Item-2.02",
+                "Item-2.03",
+                "Item-2.04",
+                "Item-2.05",
+                "Item-2.06",
+                "Item-3.01",
+                "Item-3.02",
+                "Item-3.03",
+                "Item-4.01",
+                "Item-4.02",
+                "Item-5.01",
+                "Item-5.02",
+                "Item-5.03",
+                "Item-5.04",
+                "Item-5.05",
+                "Item-5.06",
+                "Item-5.07",
+                "Item-5.08",
+                "Item-6.01",
+                "Item-6.02",
+                "Item-6.03",
+                "Item-6.04",
+                "Item-6.05",
+                "Item-7.01",
+                "Item-8.01",
+                "Item-9.01"
+              ]
+            }
+          },
+          {
+            "name": "accession_number",
+            "in": "query",
+            "description": "Accession number identifying the filing, used for 8-K filings.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include_exhibits",
+            "in": "query",
+            "description": "Whether to include the raw text of linked exhibits; applies only to 8-K filings, and when enabled each exhibit object carries its full text.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SEC filing items response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilingItemsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials/segmented-revenues": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getSegmentedRevenues",
+        "summary": "Get segmented revenue data (deprecated)",
+        "description": "Deprecated. Retrieve revenue broken down by reporting segment; use the income-statement segments endpoint instead.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol of the company; required when `cik` is not provided.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Date or time period the reported revenue relates to, in ISO 8601 format.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Segmented revenue response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentedRevenuesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/financials/income-statements": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getIncomeStatements",
+        "summary": "Get income statements",
+        "description": "Retrieve income statements for the given ticker.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol of the company; required when `cik` is not provided.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Reporting cadence of the financial data to return.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Income statements response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncomeStatementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials/balance-sheets": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getBalanceSheets",
+        "summary": "Get balance sheets",
+        "description": "Retrieve balance sheets for the given ticker.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol of the company; required when `cik` is not provided.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Reporting cadence of the financial data to return.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Balance sheets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceSheetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials/cash-flow-statements": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getCashFlowStatements",
+        "summary": "Get cash flow statements",
+        "description": "Retrieve cash flow statements for the given ticker.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol of the company; required when `cik` is not provided.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Reporting cadence of the financial data to return.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cash flow statements response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CashFlowStatementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/earnings/press-releases": {
+      "get": {
+        "tags": [
+          "Earnings"
+        ],
+        "operationId": "getEarningsPressReleases",
+        "summary": "Get earnings press releases",
+        "description": "Retrieve earnings-related press releases for the given ticker.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Earnings press releases response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PressReleasesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/prices/snapshot": {
+      "get": {
+        "tags": [
+          "Market Data"
+        ],
+        "operationId": "getPriceSnapshot",
+        "summary": "Price Snapshot (Real-Time)",
+        "description": "Retrieve a real-time price snapshot for a stock, including current price, day change, and day change percent.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Price snapshot response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceSnapshotResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getAllFinancialStatements",
+        "summary": "Get all financial statements",
+        "description": "Retrieve income statements, balance sheets, and cash flow statements for the given ticker in a single response.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol of the company; required when `cik` is not provided.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Reporting cadence of the financial data to return.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Financial statements response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/news": {
+      "get": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "getNews",
+        "summary": "Get news articles",
+        "description": "Retrieve recent news articles for a specific company, or broad-market news when the ticker is omitted.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Ticker symbol for company-specific news; omit to receive broad-market news.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5,
+              "maximum": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "News articles response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/prices": {
+      "get": {
+        "tags": [
+          "Market Data"
+        ],
+        "operationId": "getPrices",
+        "summary": "Get historical stock price data",
+        "description": "Retrieve end-of-day historical price data for a stock over a date range.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "description": "Aggregation interval of each returned price bar.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "day",
+                "week",
+                "month",
+                "year"
+              ]
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Earliest date to include in the returned price series.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "Latest date to include in the returned price series.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Price data response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PricesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financial-metrics": {
+      "get": {
+        "tags": [
+          "Financial Metrics"
+        ],
+        "operationId": "getFinancialMetrics",
+        "summary": "Get financial metrics",
+        "description": "Retrieve financial metrics for a ticker across valuation, profitability, efficiency, liquidity, leverage, growth, and per-share categories.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol of the company; required when `cik` is not provided.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key of the company; an alternative to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Reporting cadence of the financial data to return.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Upper bound on the number of records returned in one response.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The historical financial metrics and ratios for a ticker",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialMetricsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financial-metrics/snapshot": {
+      "get": {
+        "tags": [
+          "Financial Metrics"
+        ],
+        "operationId": "getFinancialMetricsSnapshot",
+        "summary": "Financial Metrics Snapshot (Real-Time)",
+        "description": "Retrieve a real-time snapshot of a stock's financial metrics across valuation, profitability, efficiency, liquidity, leverage, growth, and per-share categories.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "SEC Central Index Key of the company; an alternative to the ticker.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Financial metrics snapshot response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialMetricSnapshotResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials/search/screener": {
+      "post": {
+        "summary": "Search financial statements",
+        "description": "Screen for stocks by applying filters across financial metrics drawn from income statements, balance sheets, and cash flow statements.",
+        "operationId": "stockScreener",
+        "tags": [
+          "Financials",
+          "Search"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchFiltersRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialsSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/earnings": {
+      "get": {
+        "tags": [
+          "Earnings"
+        ],
+        "operationId": "getEarnings",
+        "summary": "Get earnings snapshot",
+        "description": "Retrieve the most recent earnings snapshot for a ticker; optional estimate, surprise, and change fields are returned only when available.",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol identifying the company to query.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Earnings response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EarningsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "SearchFiltersRequest": {
+        "type": "object",
+        "required": [
+          "filters"
+        ],
+        "properties": {
+          "period": {
+            "type": "string",
+            "enum": [
+              "annual",
+              "quarterly",
+              "ttm"
+            ],
+            "default": "ttm",
+            "description": "Reporting cadence of the financial data to return."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 100,
+            "description": "Upper bound on the number of records returned in one response."
+          },
+          "order_by": {
+            "type": "string",
+            "enum": [
+              "ticker",
+              "-ticker",
+              "report_period",
+              "-report_period"
+            ],
+            "default": "ticker",
+            "description": "Field used to sort the results; prefix with a minus sign to sort in descending order."
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "USD",
+              "EUR",
+              "GBP",
+              "JPY",
+              "CHF",
+              "AUD",
+              "CAD",
+              "SEK"
+            ],
+            "description": "Currency in which the screened financial figures are expressed."
+          },
+          "historical": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether to evaluate filters against historical financial data rather than the latest only."
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "field",
+                "operator",
+                "value"
+              ],
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "Financial metric or identifier the condition is evaluated on; use comparison operators for metric fields and the 'in' operator for ticker or cik."
+                },
+                "operator": {
+                  "type": "string",
+                  "enum": [
+                    "gt",
+                    "lt",
+                    "gte",
+                    "lte",
+                    "eq",
+                    "in"
+                  ],
+                  "description": "Comparison operator applied between the field and the value; the 'in' operator works only with the ticker or cik field for multi-value matching."
+                },
+                "value": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "description": "The value to compare against for single-value operators (gt, lt, gte, lte, eq)"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of ticker or cik values to compare against when using the 'in' operator"
+                    }
+                  ],
+                  "description": "Value to compare against: a single number for comparison operators, or a list of ticker/cik strings for the 'in' operator."
+                }
+              }
+            },
+            "minItems": 1,
+            "description": "List of filter conditions combined to screen the stock universe."
+          }
+        }
+      },
+      "SearchLineItemsRequest": {
+        "type": "object",
+        "required": [
+          "line_items",
+          "tickers"
+        ],
+        "properties": {
+          "line_items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The financial metric to search for."
+            },
+            "minItems": 1,
+            "description": "List of financial line-item names to retrieve across the supported statements."
+          },
+          "tickers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The tickers to search for."
+            },
+            "minItems": 1,
+            "description": "List of ticker symbols whose financials are searched."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "annual",
+              "quarterly",
+              "ttm"
+            ],
+            "default": "ttm",
+            "description": "Reporting cadence of the financial data to return."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "Upper bound on the number of records returned in one response."
+          }
+        }
+      },
+      "FinancialsSearchResponse": {
+        "type": "object",
+        "properties": {
+          "search_results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ticker": {
+                  "type": "string",
+                  "description": "Stock ticker symbol identifying the company to query."
+                },
+                "report_period": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date the underlying report covers, marking which fiscal point the figures belong to."
+                },
+                "period": {
+                  "type": "string",
+                  "enum": [
+                    "annual",
+                    "quarterly",
+                    "ttm"
+                  ],
+                  "description": "Reporting cadence to which this record's figures correspond."
+                },
+                "currency": {
+                  "type": "string",
+                  "description": "Currency in which the returned financial figures are reported."
+                }
+              },
+              "additionalProperties": {
+                "type": "string",
+                "description": "Additional financial metrics based on the search criteria."
+              }
+            },
+            "description": "List of stocks matching all supplied filters."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "A short error message."
+          },
+          "message": {
+            "type": "string",
+            "description": "A more detailed error message."
+          }
+        }
+      },
+      "InsiderTradesResponse": {
+        "type": "object",
+        "properties": {
+          "insider_trades": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InsiderTrade"
+            },
+            "description": "List of insider transaction records matching the query."
+          }
+        }
+      },
+      "InstitutionalOwnershipResponse": {
+        "type": "object",
+        "properties": {
+          "institutional-ownership": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstitutionalOwnership"
+            },
+            "description": "List of institutional holding records matching the query."
+          }
+        }
+      },
+      "FinancialsResponse": {
+        "type": "object",
+        "properties": {
+          "financials": {
+            "type": "object",
+            "properties": {
+              "income_statements": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/IncomeStatement"
+                },
+                "description": "List of income statement records for the ticker."
+              },
+              "balance_sheets": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BalanceSheet"
+                },
+                "description": "List of balance sheet records for the ticker."
+              },
+              "cash_flow_statements": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CashFlowStatement"
+                },
+                "description": "List of cash flow statement records for the ticker."
+              }
+            },
+            "description": "Container bundling the income statements, balance sheets, and cash flow statements."
+          }
+        }
+      },
+      "SegmentedRevenuesResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_revenues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentedRevenues"
+            },
+            "description": "List of segmented-revenue records for the company."
+          }
+        }
+      },
+      "IncomeStatementResponse": {
+        "type": "object",
+        "properties": {
+          "income_statements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncomeStatement"
+            },
+            "description": "List of income statement records for the ticker."
+          }
+        }
+      },
+      "BalanceSheetResponse": {
+        "type": "object",
+        "properties": {
+          "balance_sheets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceSheet"
+            },
+            "description": "List of balance sheet records for the ticker."
+          }
+        }
+      },
+      "CashFlowStatementResponse": {
+        "type": "object",
+        "properties": {
+          "cash_flow_statements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CashFlowStatement"
+            },
+            "description": "List of cash flow statement records for the ticker."
+          }
+        }
+      },
+      "CompanyFactsResponse": {
+        "type": "object",
+        "properties": {
+          "company_facts": {
+            "$ref": "#/components/schemas/CompanyFacts",
+            "description": "Descriptive facts and identifiers for the company."
+          }
+        }
+      },
+      "FilingsResponse": {
+        "type": "object",
+        "properties": {
+          "filings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filing"
+            },
+            "description": "List of SEC filings matching the query."
+          }
+        }
+      },
+      "FilingItemsResponse": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "cik": {
+            "type": "string",
+            "description": "SEC Central Index Key of the filing company."
+          },
+          "filing_type": {
+            "type": "string",
+            "description": "SEC form type of the filing."
+          },
+          "accession_number": {
+            "type": "string",
+            "description": "SEC accession number identifying the filing."
+          },
+          "year": {
+            "type": "integer",
+            "description": "Year of the filing."
+          },
+          "quarter": {
+            "type": "integer",
+            "description": "Quarter of the filing."
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilingItem"
+            },
+            "description": "List of Item sections extracted from the filing."
+          }
+        }
+      },
+      "PressReleasesResponse": {
+        "type": "object",
+        "properties": {
+          "press_releases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PressRelease"
+            },
+            "description": "List of earnings press releases for the ticker."
+          }
+        }
+      },
+      "PriceSnapshotResponse": {
+        "type": "object",
+        "properties": {
+          "snapshot": {
+            "$ref": "#/components/schemas/PriceSnapshot",
+            "description": "Real-time price snapshot for the stock."
+          }
+        }
+      },
+      "CryptoPriceSnapshotResponse": {
+        "type": "object",
+        "properties": {
+          "snapshot": {
+            "$ref": "#/components/schemas/CryptoPriceSnapshot"
+          }
+        }
+      },
+      "NewsResponse": {
+        "type": "object",
+        "properties": {
+          "news": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/News"
+            },
+            "description": "List of news articles matching the query."
+          }
+        }
+      },
+      "PricesResponse": {
+        "type": "object",
+        "properties": {
+          "prices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Price"
+            },
+            "description": "List of historical price bars for the ticker."
+          },
+          "next_page_url": {
+            "type": "string",
+            "description": "URL to fetch the next page of price results, when more data is available."
+          }
+        }
+      },
+      "CryptoPricesResponse": {
+        "type": "object",
+        "properties": {
+          "prices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Price"
+            }
+          }
+        }
+      },
+      "InsiderTrade": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Name of the company that issued the traded security."
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the insider who carried out the transaction."
+          },
+          "title": {
+            "type": "string",
+            "description": "Role or title the insider holds at the company."
+          },
+          "is_board_director": {
+            "type": "boolean",
+            "description": "Whether the insider serves on the company's board of directors."
+          },
+          "transaction_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date on which the transaction took place."
+          },
+          "transaction_shares": {
+            "type": "number",
+            "description": "Number of shares bought or sold in the transaction."
+          },
+          "transaction_price_per_share": {
+            "type": "number",
+            "description": "Price per share at which the transaction was executed."
+          },
+          "transaction_value": {
+            "type": "number",
+            "description": "Total monetary value of the transaction."
+          },
+          "shares_owned_before_transaction": {
+            "type": "number",
+            "description": "Shares the insider held before the transaction."
+          },
+          "shares_owned_after_transaction": {
+            "type": "number",
+            "description": "Shares the insider held after the transaction."
+          },
+          "security_title": {
+            "type": "string",
+            "description": "Title of the security involved in the transaction."
+          },
+          "filing_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the transaction was filed with the regulator."
+          }
+        }
+      },
+      "InstitutionalOwnership": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Ticker symbol of the held security; populated when querying by investor."
+          },
+          "investor": {
+            "type": "string",
+            "description": "Name of the holding investment manager; populated when querying by ticker."
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "Reporting period to which this holding record corresponds."
+          },
+          "price": {
+            "type": "number",
+            "description": "Estimated purchase price of the equity position."
+          },
+          "shares": {
+            "type": "number",
+            "description": "Number of shares held in the position."
+          },
+          "market_value": {
+            "type": "number",
+            "description": "Market value of the equity position."
+          }
+        }
+      },
+      "SegmentedRevenues": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the underlying report covers, marking which fiscal point the figures belong to."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ],
+            "description": "Reporting cadence to which this record's figures correspond."
+          },
+          "items": {
+            "type": "array",
+            "description": "Revenue segments parsed from SEC 10-K and 10-Q filings in XBRL form.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the revenue segment."
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "Reported revenue amount for the segment, in the company's reporting currency (default USD)."
+                },
+                "end_period": {
+                  "type": "string",
+                  "format": "date",
+                  "nullable": true,
+                  "description": "End of the segment's reporting interval; provided only for quarterly data."
+                },
+                "start_period": {
+                  "type": "string",
+                  "format": "date",
+                  "nullable": true,
+                  "description": "Start of the segment's reporting interval; provided only for quarterly data."
+                },
+                "segments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "description": "Label of the segment dimension."
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of the segment dimension."
+                      }
+                    }
+                  },
+                  "description": "Dimension breakdown describing how the segment is classified."
+                }
+              }
+            }
+          }
+        }
+      },
+      "IncomeStatement": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the underlying report covers, marking which fiscal point the figures belong to."
+          },
+          "fiscal_period": {
+            "type": "string",
+            "description": "Issuer's fiscal-period label for the reporting interval."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "ttm",
+              "annual"
+            ],
+            "description": "Reporting cadence to which this record's figures correspond."
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency in which the monetary figures in this record are reported."
+          },
+          "revenue": {
+            "type": "number",
+            "nullable": false,
+            "description": "Total sales the company generated over the reporting period."
+          },
+          "cost_of_revenue": {
+            "type": "number",
+            "nullable": false,
+            "description": "Direct costs attributable to producing the goods or services sold."
+          },
+          "gross_profit": {
+            "type": "number",
+            "nullable": false,
+            "description": "Revenue remaining after subtracting the cost of revenue."
+          },
+          "operating_expense": {
+            "type": "number",
+            "nullable": false,
+            "description": "Operating costs incurred outside the direct cost of revenue."
+          },
+          "selling_general_and_administrative_expenses": {
+            "type": "number",
+            "nullable": false,
+            "description": "Selling, general, and administrative overhead for the period."
+          },
+          "research_and_development": {
+            "type": "number",
+            "nullable": false,
+            "description": "Spending on research and development activities."
+          },
+          "operating_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "Profit from core operations before interest and taxes."
+          },
+          "interest_expense": {
+            "type": "number",
+            "nullable": false,
+            "description": "Cost of interest on the company's borrowings."
+          },
+          "ebit": {
+            "type": "number",
+            "nullable": false,
+            "description": "Earnings before interest and taxes."
+          },
+          "income_tax_expense": {
+            "type": "number",
+            "nullable": false,
+            "description": "Income tax charged against the period's profit."
+          },
+          "net_income_discontinued_operations": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net income contributed by operations that have been discontinued."
+          },
+          "net_income_non_controlling_interests": {
+            "type": "number",
+            "nullable": false,
+            "description": "Portion of net income attributable to non-controlling (minority) interests."
+          },
+          "net_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "Bottom-line profit after all expenses, interest, and taxes."
+          },
+          "net_income_common_stock": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net income attributable to common shareholders after preferred claims."
+          },
+          "preferred_dividends_impact": {
+            "type": "number",
+            "nullable": false,
+            "description": "Effect of preferred dividends on income available to common shareholders."
+          },
+          "consolidated_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "Total consolidated income including all controlled entities."
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net income allocated to each outstanding common share."
+          },
+          "earnings_per_share_diluted": {
+            "type": "number",
+            "nullable": false,
+            "description": "Earnings per share assuming all dilutive securities are converted."
+          },
+          "dividends_per_common_share": {
+            "type": "number",
+            "nullable": false,
+            "description": "Dividends declared per common share for the period."
+          },
+          "weighted_average_shares": {
+            "type": "number",
+            "nullable": false,
+            "description": "Time-weighted average of common shares outstanding during the period."
+          },
+          "weighted_average_shares_diluted": {
+            "type": "number",
+            "nullable": false,
+            "description": "Diluted weighted-average share count including dilutive securities."
+          }
+        }
+      },
+      "BalanceSheet": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the underlying report covers, marking which fiscal point the figures belong to."
+          },
+          "fiscal_period": {
+            "type": "string",
+            "description": "Issuer's fiscal-period label for the reporting interval."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "ttm",
+              "annual"
+            ],
+            "description": "Reporting cadence to which this record's figures correspond."
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency in which the monetary figures in this record are reported."
+          },
+          "total_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "Sum of all assets the company holds."
+          },
+          "current_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "Assets expected to be converted to cash or used within one year."
+          },
+          "cash_and_equivalents": {
+            "type": "number",
+            "nullable": false,
+            "description": "Cash on hand plus highly liquid short-term holdings."
+          },
+          "inventory": {
+            "type": "number",
+            "nullable": false,
+            "description": "Value of goods held for sale or production."
+          },
+          "current_investments": {
+            "type": "number",
+            "nullable": false,
+            "description": "Short-term investments classified as current assets."
+          },
+          "trade_and_non_trade_receivables": {
+            "type": "number",
+            "nullable": false,
+            "description": "Amounts owed to the company from trade and non-trade sources."
+          },
+          "non_current_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "Assets not expected to be realized within one year."
+          },
+          "property_plant_and_equipment": {
+            "type": "number",
+            "nullable": false,
+            "description": "Carrying value of property, plant, and equipment."
+          },
+          "goodwill_and_intangible_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "Goodwill together with other intangible assets."
+          },
+          "investments": {
+            "type": "number",
+            "nullable": false,
+            "description": "Total investment holdings of the company."
+          },
+          "non_current_investments": {
+            "type": "number",
+            "nullable": false,
+            "description": "Investments held beyond one year."
+          },
+          "outstanding_shares": {
+            "type": "number",
+            "nullable": false,
+            "description": "Number of common shares currently issued and outstanding."
+          },
+          "tax_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "Recognized tax-related assets such as deferred tax assets."
+          },
+          "total_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "Sum of all the company's liabilities."
+          },
+          "current_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "Obligations due within one year."
+          },
+          "current_debt": {
+            "type": "number",
+            "nullable": false,
+            "description": "Portion of debt due within one year."
+          },
+          "trade_and_non_trade_payables": {
+            "type": "number",
+            "nullable": false,
+            "description": "Amounts the company owes from trade and non-trade sources."
+          },
+          "deferred_revenue": {
+            "type": "number",
+            "nullable": false,
+            "description": "Payments received for goods or services not yet delivered."
+          },
+          "deposit_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "Liabilities arising from customer or counterparty deposits."
+          },
+          "non_current_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "Obligations due beyond one year."
+          },
+          "non_current_debt": {
+            "type": "number",
+            "nullable": false,
+            "description": "Portion of debt due beyond one year."
+          },
+          "tax_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "Recognized tax-related obligations such as deferred tax liabilities."
+          },
+          "shareholders_equity": {
+            "type": "number",
+            "nullable": false,
+            "description": "Residual interest in assets after deducting liabilities."
+          },
+          "retained_earnings": {
+            "type": "number",
+            "nullable": false,
+            "description": "Cumulative earnings retained rather than distributed as dividends."
+          },
+          "accumulated_other_comprehensive_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "Cumulative gains and losses recorded outside the income statement."
+          },
+          "total_debt": {
+            "type": "number",
+            "nullable": false,
+            "description": "Combined current and non-current interest-bearing debt."
+          }
+        }
+      },
+      "CashFlowStatement": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the underlying report covers, marking which fiscal point the figures belong to."
+          },
+          "fiscal_period": {
+            "type": "string",
+            "description": "Issuer's fiscal-period label for the reporting interval."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "ttm",
+              "annual"
+            ],
+            "description": "Reporting cadence to which this record's figures correspond."
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency in which the monetary figures in this record are reported."
+          },
+          "net_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net income carried from the income statement as the starting point of the cash flow."
+          },
+          "depreciation_and_amortization": {
+            "type": "number",
+            "nullable": false,
+            "description": "Non-cash depreciation and amortization added back to earnings."
+          },
+          "share_based_compensation": {
+            "type": "number",
+            "nullable": false,
+            "description": "Non-cash expense from share-based employee compensation."
+          },
+          "net_cash_flow_from_operations": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net cash generated by core operating activities."
+          },
+          "capital_expenditure": {
+            "type": "number",
+            "nullable": false,
+            "description": "Cash spent acquiring or upgrading long-term assets."
+          },
+          "business_acquisitions_and_disposals": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net cash from acquiring or disposing of businesses."
+          },
+          "investment_acquisitions_and_disposals": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net cash from buying or selling investments."
+          },
+          "net_cash_flow_from_investing": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net cash generated or used by investing activities."
+          },
+          "issuance_or_repayment_of_debt_securities": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net cash from issuing or repaying debt securities."
+          },
+          "issuance_or_purchase_of_equity_shares": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net cash from issuing or repurchasing equity shares."
+          },
+          "dividends_and_other_cash_distributions": {
+            "type": "number",
+            "nullable": false,
+            "description": "Cash paid out as dividends and other distributions."
+          },
+          "net_cash_flow_from_financing": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net cash generated or used by financing activities."
+          },
+          "change_in_cash_and_equivalents": {
+            "type": "number",
+            "nullable": false,
+            "description": "Net change in cash and equivalents over the period."
+          },
+          "effect_of_exchange_rate_changes": {
+            "type": "number",
+            "nullable": false,
+            "description": "Impact of foreign-exchange rate movements on cash balances."
+          },
+          "ending_cash_balance": {
+            "type": "number",
+            "nullable": false,
+            "description": "Cash and equivalents balance at the end of the period."
+          },
+          "free_cash_flow": {
+            "type": "number",
+            "nullable": false,
+            "description": "Operating cash flow remaining after capital expenditure."
+          }
+        }
+      },
+      "CompanyFacts": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "name": {
+            "type": "string",
+            "description": "Full legal or common name of the company."
+          },
+          "cik": {
+            "type": "string",
+            "description": "SEC Central Index Key assigned to the company."
+          },
+          "industry": {
+            "type": "string",
+            "description": "Industry classification of the company."
+          },
+          "sector": {
+            "type": "string",
+            "description": "Sector classification of the company."
+          },
+          "category": {
+            "type": "string",
+            "description": "Business category of the company."
+          },
+          "exchange": {
+            "type": "string",
+            "description": "Stock exchange on which the company is listed."
+          },
+          "is_active": {
+            "type": "boolean",
+            "description": "Whether the company is currently active."
+          },
+          "listing_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the company was listed on the exchange."
+          },
+          "location": {
+            "type": "string",
+            "description": "Geographic location of the company."
+          },
+          "market_cap": {
+            "type": "number",
+            "description": "Market capitalization of the company."
+          },
+          "number_of_employees": {
+            "type": "number",
+            "description": "Total number of employees at the company."
+          },
+          "sec_filings_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the company's SEC filings."
+          },
+          "sic_code": {
+            "type": "string",
+            "description": "Standard Industrial Classification code of the company."
+          },
+          "sic_industry": {
+            "type": "string",
+            "description": "Industry derived from the company's SIC code."
+          },
+          "sic_sector": {
+            "type": "string",
+            "description": "Sector derived from the company's SIC code."
+          },
+          "website_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the company's website."
+          },
+          "weighted_average_shares": {
+            "type": "number",
+            "description": "Weighted-average shares outstanding for the company."
+          }
+        }
+      },
+      "Filing": {
+        "type": "object",
+        "properties": {
+          "cik": {
+            "type": "integer",
+            "description": "SEC Central Index Key of the filing company."
+          },
+          "accession_number": {
+            "type": "string",
+            "description": "SEC accession number uniquely identifying the filing."
+          },
+          "filing_type": {
+            "type": "string",
+            "description": "SEC form type of the filing."
+          },
+          "report_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the filing's report covers."
+          },
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the filing on the SEC website."
+          }
+        }
+      },
+      "FilingItem": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "Identifier of the filing Item."
+          },
+          "name": {
+            "type": "string",
+            "description": "Title of the filing Item."
+          },
+          "text": {
+            "type": "string",
+            "description": "Raw text content of the filing Item."
+          }
+        }
+      },
+      "PressRelease": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "title": {
+            "type": "string",
+            "description": "Headline of the press release."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the full press release."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Publication date of the press release."
+          },
+          "text": {
+            "type": "string",
+            "description": "Full body text of the press release."
+          }
+        }
+      },
+      "PriceSnapshot": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "description": "Current trading price of the stock."
+          },
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "day_change": {
+            "type": "number",
+            "description": "Price change since the previous trading day's close."
+          },
+          "day_change_percent": {
+            "type": "number",
+            "description": "Percentage price change since the previous trading day's close."
+          },
+          "market_cap": {
+            "type": "number",
+            "description": "Current market capitalization of the company."
+          },
+          "time": {
+            "type": "string",
+            "description": "Timestamp of the snapshot as a human-readable UTC value."
+          },
+          "time_milliseconds": {
+            "type": "number",
+            "description": "Timestamp of the snapshot in milliseconds since the Unix epoch."
+          }
+        }
+      },
+      "CryptoPriceSnapshot": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "description": "The current price of the cryptocurrency."
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The ticker symbol."
+          },
+          "day_change": {
+            "type": "number",
+            "description": "The price change over the last 24 hours."
+          },
+          "day_change_percent": {
+            "type": "number",
+            "description": "The percentage price change over the last 24 hours."
+          },
+          "time": {
+            "type": "string",
+            "description": "The timestamp of the price snapshot in human-readable format in UTC."
+          }
+        }
+      },
+      "News": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "title": {
+            "type": "string",
+            "description": "Headline of the news article."
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of the news article."
+          },
+          "source": {
+            "type": "string",
+            "description": "Publisher or source of the news article."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Publication date of the news article."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to the full news article."
+          },
+          "sentiment": {
+            "type": "string",
+            "description": "Sentiment classification assigned to the news article."
+          }
+        }
+      },
+      "Price": {
+        "type": "object",
+        "properties": {
+          "open": {
+            "type": "number",
+            "description": "Opening price of the ticker for the interval."
+          },
+          "close": {
+            "type": "number",
+            "description": "Closing price of the ticker for the interval."
+          },
+          "high": {
+            "type": "number",
+            "description": "Highest price of the ticker during the interval."
+          },
+          "low": {
+            "type": "number",
+            "description": "Lowest price of the ticker during the interval."
+          },
+          "volume": {
+            "type": "integer",
+            "format": "number",
+            "description": "Trading volume of the ticker during the interval."
+          },
+          "time": {
+            "type": "string",
+            "description": "Interval timestamp as a human-readable UTC value."
+          },
+          "time_milliseconds": {
+            "type": "number",
+            "description": "Interval timestamp in milliseconds since the Unix epoch."
+          }
+        }
+      },
+      "FinancialMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "market_cap": {
+            "type": "number",
+            "description": "Total market value of the company's outstanding shares."
+          },
+          "enterprise_value": {
+            "type": "number",
+            "description": "Total company value combining equity market cap with debt, net of cash."
+          },
+          "price_to_earnings_ratio": {
+            "type": "number",
+            "description": "Share price relative to earnings per share."
+          },
+          "price_to_book_ratio": {
+            "type": "number",
+            "description": "Share price relative to book value per share."
+          },
+          "price_to_sales_ratio": {
+            "type": "number",
+            "description": "Share price relative to revenue per share."
+          },
+          "enterprise_value_to_ebitda_ratio": {
+            "type": "number",
+            "description": "Enterprise value relative to EBITDA."
+          },
+          "enterprise_value_to_revenue_ratio": {
+            "type": "number",
+            "description": "Enterprise value relative to revenue."
+          },
+          "free_cash_flow_yield": {
+            "type": "number",
+            "description": "Free cash flow relative to market capitalization.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "peg_ratio": {
+            "type": "number",
+            "description": "Price-to-earnings ratio relative to earnings growth."
+          },
+          "gross_margin": {
+            "type": "number",
+            "description": "Gross profit expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "operating_margin": {
+            "type": "number",
+            "description": "Operating income expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "net_margin": {
+            "type": "number",
+            "description": "Net income expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_equity": {
+            "type": "number",
+            "description": "Net income expressed relative to shareholders' equity.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_assets": {
+            "type": "number",
+            "description": "Net income expressed relative to total assets.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_invested_capital": {
+            "type": "number",
+            "description": "After-tax operating profit relative to invested capital.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "asset_turnover": {
+            "type": "number",
+            "description": "Revenue generated per unit of average total assets."
+          },
+          "inventory_turnover": {
+            "type": "number",
+            "description": "Cost of goods sold relative to average inventory."
+          },
+          "receivables_turnover": {
+            "type": "number",
+            "description": "Revenue relative to average accounts receivable."
+          },
+          "days_sales_outstanding": {
+            "type": "number",
+            "description": "Average number of days to collect receivables."
+          },
+          "operating_cycle": {
+            "type": "number",
+            "description": "Combined cycle of converting inventory and receivables into cash."
+          },
+          "working_capital_turnover": {
+            "type": "number",
+            "description": "Revenue generated per unit of average working capital."
+          },
+          "current_ratio": {
+            "type": "number",
+            "description": "Current assets relative to current liabilities."
+          },
+          "quick_ratio": {
+            "type": "number",
+            "description": "Liquid current assets relative to current liabilities."
+          },
+          "cash_ratio": {
+            "type": "number",
+            "description": "Cash and equivalents relative to current liabilities."
+          },
+          "operating_cash_flow_ratio": {
+            "type": "number",
+            "description": "Operating cash flow relative to current liabilities."
+          },
+          "debt_to_equity": {
+            "type": "number",
+            "description": "Total debt relative to shareholders' equity."
+          },
+          "debt_to_assets": {
+            "type": "number",
+            "description": "Total debt relative to total assets."
+          },
+          "interest_coverage": {
+            "type": "number",
+            "description": "EBIT relative to interest expense."
+          },
+          "revenue_growth": {
+            "type": "number",
+            "description": "Year-over-year change in revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_growth": {
+            "type": "number",
+            "description": "Year-over-year change in earnings.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "book_value_growth": {
+            "type": "number",
+            "description": "Year-over-year change in book value.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_per_share_growth": {
+            "type": "number",
+            "description": "Change in earnings per share over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "free_cash_flow_growth": {
+            "type": "number",
+            "description": "Change in free cash flow over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "operating_income_growth": {
+            "type": "number",
+            "description": "Change in operating income over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "ebitda_growth": {
+            "type": "number",
+            "description": "Change in EBITDA over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "payout_ratio": {
+            "type": "number",
+            "description": "Dividends paid relative to net income.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "description": "Net income allocated to each outstanding common share."
+          },
+          "book_value_per_share": {
+            "type": "number",
+            "description": "Shareholders' equity allocated to each outstanding share."
+          },
+          "free_cash_flow_per_share": {
+            "type": "number",
+            "description": "Free cash flow allocated to each outstanding share."
+          }
+        }
+      },
+      "AnalystEstimatesResponse": {
+        "type": "object",
+        "properties": {
+          "analyst_estimates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnalystEstimate"
+            }
+          }
+        }
+      },
+      "AnalystEstimate": {
+        "type": "object",
+        "properties": {
+          "fiscal_period": {
+            "type": "string",
+            "format": "date",
+            "description": "The fiscal period of the analyst estimate."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "annual",
+              "quarterly"
+            ],
+            "description": "The period of the analyst estimate."
+          },
+          "revenue": {
+            "type": "integer",
+            "description": "The estimated revenue."
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "description": "The estimated earnings per share."
+          }
+        }
+      },
+      "EarningsTimeDimension": {
+        "type": "object",
+        "properties": {
+          "fiscal_period": {
+            "type": "string",
+            "nullable": true,
+            "description": "Issuer's fiscal-period label for the reporting interval."
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true,
+            "description": "Currency in which the monetary figures in this record are reported."
+          },
+          "revenue": {
+            "type": "number",
+            "nullable": true,
+            "description": "Reported revenue for the period."
+          },
+          "estimated_revenue": {
+            "type": "number",
+            "description": "Analyst-consensus estimated revenue for the period; present only when available."
+          },
+          "revenue_surprise": {
+            "type": "string",
+            "description": "Whether reported revenue beat, missed, or met the estimate; present only when available.",
+            "enum": [
+              "BEAT",
+              "MISS",
+              "MEET"
+            ]
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "nullable": true,
+            "description": "Reported earnings per share for the period."
+          },
+          "estimated_earnings_per_share": {
+            "type": "number",
+            "description": "Analyst-consensus estimated earnings per share; present only when available."
+          },
+          "eps_surprise": {
+            "type": "string",
+            "description": "Whether reported EPS beat, missed, or met the estimate; present only when available.",
+            "enum": [
+              "BEAT",
+              "MISS",
+              "MEET"
+            ]
+          },
+          "net_income": {
+            "type": "number",
+            "nullable": true,
+            "description": "Reported net income for the period."
+          },
+          "gross_profit": {
+            "type": "number",
+            "nullable": true,
+            "description": "Reported gross profit for the period."
+          },
+          "operating_income": {
+            "type": "number",
+            "nullable": true,
+            "description": "Reported operating income for the period."
+          },
+          "weighted_average_shares": {
+            "type": "number",
+            "nullable": true,
+            "description": "Weighted-average common shares outstanding for the period."
+          },
+          "weighted_average_shares_diluted": {
+            "type": "number",
+            "nullable": true,
+            "description": "Diluted weighted-average share count for the period."
+          },
+          "cash_and_equivalents": {
+            "type": "number",
+            "nullable": true,
+            "description": "Cash and equivalents at period end."
+          },
+          "total_debt": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total interest-bearing debt at period end."
+          },
+          "total_assets": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total assets at period end."
+          },
+          "total_liabilities": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total liabilities at period end."
+          },
+          "shareholders_equity": {
+            "type": "number",
+            "nullable": true,
+            "description": "Shareholders' equity at period end."
+          },
+          "net_cash_flow_from_operations": {
+            "type": "number",
+            "nullable": true,
+            "description": "Net cash from operating activities for the period."
+          },
+          "capital_expenditure": {
+            "type": "number",
+            "nullable": true,
+            "description": "Capital expenditure for the period."
+          },
+          "net_cash_flow_from_investing": {
+            "type": "number",
+            "nullable": true,
+            "description": "Net cash from investing activities for the period."
+          },
+          "net_cash_flow_from_financing": {
+            "type": "number",
+            "nullable": true,
+            "description": "Net cash from financing activities for the period."
+          },
+          "change_in_cash_and_equivalents": {
+            "type": "number",
+            "nullable": true,
+            "description": "Net change in cash and equivalents for the period."
+          },
+          "free_cash_flow": {
+            "type": "number",
+            "nullable": true,
+            "description": "Free cash flow for the period."
+          },
+          "revenue_chg": {
+            "type": "number",
+            "description": "Percentage change in revenue, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable."
+          },
+          "net_income_chg": {
+            "type": "number",
+            "description": "Percentage change in net income, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable."
+          },
+          "operating_income_chg": {
+            "type": "number",
+            "description": "Percentage change in operating income, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable."
+          },
+          "gross_profit_chg": {
+            "type": "number",
+            "description": "Percentage change in gross profit, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable."
+          },
+          "net_cash_flow_from_operations_chg": {
+            "type": "number",
+            "description": "Percentage change in operating cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable."
+          },
+          "net_cash_flow_from_investing_chg": {
+            "type": "number",
+            "description": "Percentage change in investing cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable."
+          },
+          "net_cash_flow_from_financing_chg": {
+            "type": "number",
+            "description": "Percentage change in financing cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable."
+          },
+          "free_cash_flow_chg": {
+            "type": "number",
+            "description": "Percentage change in free cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable."
+          }
+        }
+      },
+      "Earnings": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Ticker symbol the snapshot was requested for."
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "Most recent report period found for the ticker."
+          },
+          "fiscal_period": {
+            "type": "string",
+            "nullable": true,
+            "description": "Fiscal-period label for the snapshot."
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true,
+            "description": "ISO currency code in which the figures are reported."
+          },
+          "quarterly": {
+            "$ref": "#/components/schemas/EarningsTimeDimension",
+            "description": "Quarterly earnings view, where change fields are quarter-over-quarter."
+          },
+          "annual": {
+            "$ref": "#/components/schemas/EarningsTimeDimension",
+            "description": "Annual earnings view, where change fields are year-over-year."
+          }
+        }
+      },
+      "EarningsResponse": {
+        "type": "object",
+        "properties": {
+          "earnings": {
+            "$ref": "#/components/schemas/Earnings",
+            "description": "Earnings snapshot for the ticker, split into quarterly and annual views."
+          }
+        }
+      },
+      "Beta": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Beta coefficient of stock monthly returns vs benchmark monthly returns."
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The requested ticker symbol."
+          },
+          "benchmark": {
+            "type": "string",
+            "description": "Benchmark ticker used for beta calculation."
+          },
+          "requested_lookback": {
+            "type": "string",
+            "description": "Requested lookback window."
+          },
+          "interval": {
+            "type": "string",
+            "description": "Interval used for returns alignment."
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "First aligned month-end date used."
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Last aligned month-end date used."
+          },
+          "n_observations": {
+            "type": "integer",
+            "description": "Number of overlapping monthly observations used."
+          },
+          "r_squared": {
+            "type": "number",
+            "nullable": true,
+            "description": "Coefficient of determination for the OLS fit."
+          },
+          "method": {
+            "type": "string",
+            "description": "Computation method used."
+          },
+          "price_type": {
+            "type": "string",
+            "description": "Price type used to compute returns."
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Present when value is null due to insufficient or invalid input data."
+          }
+        }
+      },
+      "BetaResponse": {
+        "type": "object",
+        "properties": {
+          "beta": {
+            "$ref": "#/components/schemas/Beta"
+          }
+        }
+      },
+      "PriceSnapshotMarketResponse": {
+        "type": "object",
+        "properties": {
+          "snapshots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PriceSnapshot"
+            }
+          }
+        }
+      },
+      "TickersResponse": {
+        "type": "object",
+        "properties": {
+          "resource": {
+            "type": "string",
+            "description": "The resource type identifier."
+          },
+          "tickers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of available ticker symbols."
+          }
+        }
+      },
+      "CiksResponse": {
+        "type": "object",
+        "properties": {
+          "resource": {
+            "type": "string",
+            "description": "The resource type identifier."
+          },
+          "ciks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of available CIK codes."
+          }
+        }
+      },
+      "FinancialMetricSnapshotResponse": {
+        "type": "object",
+        "properties": {
+          "snapshot": {
+            "$ref": "#/components/schemas/FinancialMetricSnapshot",
+            "description": "Real-time snapshot of the stock's financial metrics."
+          }
+        }
+      },
+      "FinancialMetricSnapshot": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol identifying the company to query."
+          },
+          "market_cap": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total market capitalization, computed from current share price and shares outstanding."
+          },
+          "enterprise_value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total company value combining equity market cap with debt, net of cash."
+          },
+          "price_to_earnings_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Share price relative to earnings per share."
+          },
+          "price_to_book_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Share price relative to book value per share."
+          },
+          "price_to_sales_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Share price relative to revenue per share."
+          },
+          "enterprise_value_to_ebitda_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Enterprise value relative to EBITDA."
+          },
+          "enterprise_value_to_revenue_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Enterprise value relative to revenue."
+          },
+          "free_cash_flow_yield": {
+            "type": "number",
+            "nullable": true,
+            "description": "Free cash flow relative to market capitalization.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "peg_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Price-to-earnings ratio relative to earnings growth."
+          },
+          "gross_margin": {
+            "type": "number",
+            "nullable": true,
+            "description": "Gross profit expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "operating_margin": {
+            "type": "number",
+            "nullable": true,
+            "description": "Operating income expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "net_margin": {
+            "type": "number",
+            "nullable": true,
+            "description": "Net income expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_equity": {
+            "type": "number",
+            "nullable": true,
+            "description": "Net income expressed relative to shareholders' equity.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_assets": {
+            "type": "number",
+            "nullable": true,
+            "description": "Net income expressed relative to total assets.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_invested_capital": {
+            "type": "number",
+            "nullable": true,
+            "description": "After-tax operating profit relative to invested capital.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "asset_turnover": {
+            "type": "number",
+            "nullable": true,
+            "description": "Revenue generated per unit of average total assets."
+          },
+          "inventory_turnover": {
+            "type": "number",
+            "nullable": true,
+            "description": "Cost of goods sold relative to average inventory."
+          },
+          "receivables_turnover": {
+            "type": "number",
+            "nullable": true,
+            "description": "Revenue relative to average accounts receivable."
+          },
+          "days_sales_outstanding": {
+            "type": "number",
+            "nullable": true,
+            "description": "Average number of days to collect receivables."
+          },
+          "operating_cycle": {
+            "type": "number",
+            "nullable": true,
+            "description": "Combined cycle of converting inventory and receivables into cash."
+          },
+          "working_capital_turnover": {
+            "type": "number",
+            "nullable": true,
+            "description": "Revenue generated per unit of average working capital."
+          },
+          "current_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Current assets relative to current liabilities."
+          },
+          "quick_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Liquid current assets relative to current liabilities."
+          },
+          "cash_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Cash and equivalents relative to current liabilities."
+          },
+          "operating_cash_flow_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Operating cash flow relative to current liabilities."
+          },
+          "debt_to_equity": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total debt relative to shareholders' equity."
+          },
+          "debt_to_assets": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total debt relative to total assets."
+          },
+          "interest_coverage": {
+            "type": "number",
+            "nullable": true,
+            "description": "EBIT relative to interest expense."
+          },
+          "revenue_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "Year-over-year change in revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "Year-over-year change in earnings.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "book_value_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "Year-over-year change in book value.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_per_share_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "Change in earnings per share over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "free_cash_flow_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "Change in free cash flow over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "operating_income_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "Change in operating income over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "ebitda_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "Change in EBITDA over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "payout_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "Dividends paid relative to net income.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "nullable": true,
+            "description": "Net income allocated to each outstanding common share."
+          },
+          "book_value_per_share": {
+            "type": "number",
+            "nullable": true,
+            "description": "Shareholders' equity allocated to each outstanding share."
+          },
+          "free_cash_flow_per_share": {
+            "type": "number",
+            "nullable": true,
+            "description": "Free cash flow allocated to each outstanding share."
+          }
+        }
+      },
+      "InterestRatesResponse": {
+        "type": "object",
+        "properties": {
+          "interest_rates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InterestRate"
+            }
+          }
+        }
+      },
+      "SegmentBreakdown": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "The label for the segment (e.g., 'iPhone', 'Americas')."
+          },
+          "value": {
+            "type": "number",
+            "description": "The value for the segment."
+          }
+        }
+      },
+      "SegmentCategory": {
+        "type": "object",
+        "description": "Segment breakdowns grouped by category.",
+        "properties": {
+          "product": {
+            "type": "array",
+            "description": "Breakdowns by product line.",
+            "items": {
+              "$ref": "#/components/schemas/SegmentBreakdown"
+            }
+          },
+          "segment": {
+            "type": "array",
+            "description": "Breakdowns by business or operating segment.",
+            "items": {
+              "$ref": "#/components/schemas/SegmentBreakdown"
+            }
+          }
+        }
+      },
+      "SegmentMetadata": {
+        "type": "object",
+        "description": "Common metadata fields for all segment responses.",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "The ticker symbol."
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "The reporting period."
+          },
+          "fiscal_period": {
+            "type": "string",
+            "description": "The fiscal period (e.g., Q1, Q2, Q3, Q4, FY)."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ],
+            "description": "The time period."
+          },
+          "currency": {
+            "type": "string",
+            "description": "The reporting currency (e.g., USD, EUR, GBP)."
+          },
+          "accession_number": {
+            "type": "string",
+            "description": "The SEC filing accession number."
+          },
+          "filing_url": {
+            "type": "string",
+            "description": "URL to the SEC filing."
+          }
+        }
+      },
+      "IncomeStatementSegments": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SegmentMetadata"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "revenue": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Revenue broken down by product and/or segment."
+              },
+              "operating_income": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Operating income broken down by segment."
+              },
+              "depreciation": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Depreciation broken down by segment."
+              }
+            }
+          }
+        ]
+      },
+      "BalanceSheetSegments": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SegmentMetadata"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "assets": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Assets broken down by segment."
+              },
+              "goodwill": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Goodwill broken down by segment."
+              },
+              "long_lived_assets": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Long-lived assets broken down by segment."
+              }
+            }
+          }
+        ]
+      },
+      "CashFlowStatementSegments": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SegmentMetadata"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "capital_expenditure": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Capital expenditure broken down by segment."
+              }
+            }
+          }
+        ]
+      },
+      "IncomeStatementSegmentsResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_financials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncomeStatementSegments"
+            }
+          }
+        }
+      },
+      "BalanceSheetSegmentsResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_financials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceSheetSegments"
+            }
+          }
+        }
+      },
+      "CashFlowStatementSegmentsResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_financials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CashFlowStatementSegments"
+            }
+          }
+        }
+      },
+      "SegmentedFinancialsResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_financials": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SegmentMetadata"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "income_statement": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Income statement segment breakdowns for this period.",
+                      "properties": {
+                        "revenue": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        },
+                        "operating_income": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        },
+                        "depreciation": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "balance_sheet": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Balance sheet segment breakdowns for this period.",
+                      "properties": {
+                        "assets": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        },
+                        "goodwill": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        },
+                        "long_lived_assets": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "cash_flow_statement": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Cash flow statement segment breakdowns for this period.",
+                      "properties": {
+                        "capital_expenditure": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Exhibit": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "The exhibit number (e.g., '99.1')."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the exhibit."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL to the exhibit document on the SEC website."
+          },
+          "text": {
+            "type": "string",
+            "description": "The raw text content of the exhibit. Only included when 'include_exhibits' parameter is set to true."
+          }
+        }
+      },
+      "InterestRate": {
+        "type": "object",
+        "properties": {
+          "bank": {
+            "type": "string",
+            "description": "The symbol of the central bank."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the central bank."
+          },
+          "rate": {
+            "type": "number",
+            "description": "The interest rate of the central bank."
+          },
+          "date": {
+            "type": "string",
+            "description": "The date of the interest rate in YYYY-MM-DD format."
+          }
+        }
+      },
+      "KPIMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "kpi_metrics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KPIMetric"
+            }
+          }
+        }
+      },
+      "KPIMetric": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "metric_name",
+          "value",
+          "unit",
+          "period",
+          "period_type"
+        ],
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol.",
+            "example": "DAL"
+          },
+          "metric_name": {
+            "type": "string",
+            "description": "Canonical metric name.",
+            "example": "load_factor"
+          },
+          "value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Extracted numeric value.",
+            "example": 82.0
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measure (e.g., %, cents, dollars, miles, count).",
+            "example": "%"
+          },
+          "period": {
+            "type": "string",
+            "description": "Reporting period (e.g., Q4 2025, FY 2025, or a date like 2025-04-30 for non-standard fiscal years).",
+            "example": "Q4 2025"
+          },
+          "period_type": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ],
+            "description": "Whether this is a quarterly or annual figure.",
+            "example": "quarterly"
+          },
+          "segment": {
+            "type": "string",
+            "nullable": true,
+            "description": "Business segment, geography, or sub-category. Only present when the metric is reported for a sub-unit rather than the consolidated entity.",
+            "example": "Commercial Engines & Services"
+          },
+          "yoy_value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Year-over-year comparison value from the prior period.",
+            "example": 84.0
+          },
+          "yoy_change_pct": {
+            "type": "number",
+            "nullable": true,
+            "description": "Year-over-year percentage change.",
+            "example": -2.381
+          },
+          "source_text": {
+            "type": "string",
+            "nullable": true,
+            "description": "The source text span from the filing where this value was found.",
+            "example": "Passenger load factor"
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Direct link to the SEC filing. When available, includes a text fragment that highlights the source in the browser.",
+            "example": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000008/deltaairlinesannouncesdece.htm"
+          }
+        }
+      },
+      "KPIGuidanceResponse": {
+        "type": "object",
+        "properties": {
+          "kpi_guidance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KPIGuidanceItem"
+            }
+          }
+        }
+      },
+      "KPIGuidanceItem": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "metric_name",
+          "period",
+          "period_type"
+        ],
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "example": "DAL"
+          },
+          "metric_name": {
+            "type": "string",
+            "example": "Operating Margin"
+          },
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "unit": {
+            "type": "string",
+            "example": "%"
+          },
+          "period": {
+            "type": "string",
+            "example": "Q2 2026"
+          },
+          "period_type": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ]
+          },
+          "segment": {
+            "type": "string",
+            "nullable": true
+          },
+          "low": {
+            "type": "number",
+            "nullable": true,
+            "description": "Low end of guidance range.",
+            "example": 6.0
+          },
+          "high": {
+            "type": "number",
+            "nullable": true,
+            "description": "High end of guidance range.",
+            "example": 8.0
+          },
+          "point_estimate": {
+            "type": "number",
+            "nullable": true,
+            "description": "Single-point guidance when no range is given."
+          },
+          "prior_value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Prior guidance value for revisions."
+          },
+          "raw_text": {
+            "type": "string",
+            "nullable": true,
+            "description": "Original guidance text from the filing."
+          },
+          "change_direction": {
+            "type": "string",
+            "nullable": true,
+            "description": "Direction: raised, lowered, maintained, initiated, withdrawn.",
+            "example": "initiated"
+          },
+          "source_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        }
+      },
+      "KPINonGAAPResponse": {
+        "type": "object",
+        "properties": {
+          "kpi_non_gaap": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KPINonGAAPMetric"
+            }
+          }
+        }
+      },
+      "KPINonGAAPMetric": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "metric_name",
+          "value",
+          "unit",
+          "period",
+          "period_type"
+        ],
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "example": "DAL"
+          },
+          "metric_name": {
+            "type": "string",
+            "example": "Adjusted Diluted EPS"
+          },
+          "value": {
+            "type": "number",
+            "nullable": true,
+            "example": 0.64
+          },
+          "unit": {
+            "type": "string",
+            "example": "USD per share"
+          },
+          "period": {
+            "type": "string",
+            "example": "Q1 2026"
+          },
+          "period_type": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ]
+          },
+          "gaap_equivalent": {
+            "type": "string",
+            "nullable": true,
+            "description": "The GAAP line item this metric adjusts.",
+            "example": "Diluted earnings per share"
+          },
+          "key_adjustments": {
+            "type": "string",
+            "nullable": true,
+            "description": "Description of adjustments made.",
+            "example": "Excludes restructuring charges of $150M"
+          },
+          "source_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Bad Request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Unauthorized",
+              "message": "Invalid API key provided"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Not Found",
+              "message": "Ticker XXXX not found"
+            }
+          }
+        }
+      },
+      "PaymentRequiredError": {
+        "description": "The request requires a paid subscription",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Payment Required",
+              "message": "This endpoint requires a paid subscription. Please upgrade your plan."
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "ReportPeriod": {
+        "name": "report_period",
+        "in": "query",
+        "description": "Filter by exact report period date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "ReportPeriodGte": {
+        "name": "report_period_gte",
+        "in": "query",
+        "description": "Filter by report period greater than or equal to date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "ReportPeriodLte": {
+        "name": "report_period_lte",
+        "in": "query",
+        "description": "Filter by report period less than or equal to date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "ReportPeriodGt": {
+        "name": "report_period_gt",
+        "in": "query",
+        "description": "Filter by report period greater than date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "ReportPeriodLt": {
+        "name": "report_period_lt",
+        "in": "query",
+        "description": "Filter by report period less than date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "requestBodies": {},
+    "examples": {}
+  }
+}

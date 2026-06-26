@@ -1,0 +1,730 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API",
+    "version": "1.0.0",
+    "description": "Twitter data API, providing endpoints for user and tweet information."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "UserProfileAboutResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "用户的唯一标识。"
+              },
+              "name": {
+                "type": "string",
+                "description": "用户在资料页展示的昵称。"
+              },
+              "userName": {
+                "type": "string",
+                "description": "用户的 @ 用户名，在 X/Twitter 上唯一。"
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "用户账号的创建时间。"
+              },
+              "isBlueVerified": {
+                "type": "boolean",
+                "description": "用户是否拥有付费的 X（Twitter）Blue 认证。"
+              },
+              "protected": {
+                "type": "boolean",
+                "description": "账号是否为受保护状态，即推文仅对获批准的关注者可见。"
+              },
+              "affiliates_highlighted_label": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "object",
+                    "properties": {
+                      "badge": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "徽章图标的网页链接。"
+                          }
+                        },
+                        "description": "所属机构徽章的图标。"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "描述所属机构的文字，如母机构名称。"
+                      },
+                      "url": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "所属机构链接的目标地址。"
+                          },
+                          "urlType": {
+                            "type": "string",
+                            "description": "所属机构链接的类别，指示其处理方式。\n[⚠️批注:源码未声明 urlType 的可取值及各自含义，待研发确认。]"
+                          }
+                        },
+                        "description": "所属机构徽章指向的链接。"
+                      },
+                      "userLabelDisplayType": {
+                        "type": "string",
+                        "description": "该所属机构标签在资料页的呈现方式。\n[⚠️批注:源码未声明 userLabelDisplayType 的可取值及各自含义，待研发确认。]"
+                      },
+                      "userLabelType": {
+                        "type": "string",
+                        "description": "该徽章所代表的用户标签种类。\n[⚠️批注:源码未声明 userLabelType 的可取值及各自含义，待研发确认。]"
+                      }
+                    },
+                    "description": "所属机构徽章的详情。"
+                  }
+                },
+                "description": "突出展示的所属机构徽章，标识用户隶属于某个母机构。"
+              },
+              "about_profile": {
+                "type": "object",
+                "properties": {
+                  "account_based_in": {
+                    "type": "string",
+                    "description": "X 标注的账号所在国家或地区。"
+                  },
+                  "location_accurate": {
+                    "type": "boolean",
+                    "description": "标注的账号所在地是否被认为准确。"
+                  },
+                  "learn_more_url": {
+                    "type": "string",
+                    "description": "指向 X 帮助页的链接，说明账号相关信息。"
+                  },
+                  "affiliate_username": {
+                    "type": "string",
+                    "description": "该账号所属机构的用户名。"
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "「关于此账号」信息的来源。\n[⚠️批注:源码未声明 source 的可取值及各自含义，待研发确认。]"
+                  },
+                  "username_changes": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string",
+                        "description": "账号修改过用户名的次数。"
+                      }
+                    },
+                    "description": "账号修改用户名的次数概况。"
+                  }
+                },
+                "description": "「关于此账号」面板的内容，如账号所在地及其判定方式。"
+              },
+              "identity_profile_labels_highlighted_label": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "描述该身份标签的文字。"
+                      },
+                      "badge": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "徽章图标的网页链接。"
+                          }
+                        },
+                        "description": "身份标签的徽章图标。"
+                      },
+                      "url": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "身份标签链接的目标地址。"
+                          },
+                          "urlType": {
+                            "type": "string",
+                            "description": "身份标签链接的类别，指示其处理方式。\n[⚠️批注:源码未声明 urlType 的可取值及各自含义，待研发确认。]"
+                          }
+                        },
+                        "description": "身份标签指向的链接。"
+                      },
+                      "userLabelDisplayType": {
+                        "type": "string",
+                        "description": "该身份标签在资料页的呈现方式。\n[⚠️批注:源码未声明 userLabelDisplayType 的可取值及各自含义，待研发确认。]"
+                      },
+                      "userLabelType": {
+                        "type": "string",
+                        "description": "该身份徽章所代表的用户标签种类。\n[⚠️批注:源码未声明 userLabelType 的可取值及各自含义，待研发确认。]"
+                      }
+                    },
+                    "description": "身份标签的详情。"
+                  }
+                },
+                "description": "突出展示的身份标签，如政府或官方账号标记。"
+              }
+            },
+            "description": "用户的资料及 About 面板详情。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求结果标记：成功返回资料为 success，否则为 error。"
+          },
+          "msg": {
+            "type": "string",
+            "description": "可读的提示信息；当 status 为 error 时承载错误详情。"
+          }
+        }
+      },
+      "BatchUserInfoResponse": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "对象类型标记，标识该条目为用户。"
+                },
+                "userName": {
+                  "type": "string",
+                  "description": "关注者的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "关注者资料页的网页链接。"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "关注者的唯一标识。"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "关注者在资料页展示的昵称。"
+                },
+                "isBlueVerified": {
+                  "type": "boolean",
+                  "description": "关注者是否拥有付费的 X（Twitter）Blue 认证。"
+                },
+                "verifiedType": {
+                  "type": "string",
+                  "description": "关注者的认证类别，如企业或政府账号。"
+                },
+                "profilePicture": {
+                  "type": "string",
+                  "description": "关注者头像图片的网页链接。"
+                },
+                "coverPicture": {
+                  "type": "string",
+                  "description": "关注者资料页横幅图片的网页链接。"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "关注者资料页的个人简介文字。"
+                },
+                "location": {
+                  "type": "string",
+                  "description": "关注者在资料页填写的所在地（自由文本）。"
+                },
+                "followers": {
+                  "type": "integer",
+                  "description": "关注该关注者的账号数。"
+                },
+                "following": {
+                  "type": "integer",
+                  "description": "该关注者关注的账号数。"
+                },
+                "canDm": {
+                  "type": "boolean",
+                  "description": "该关注者当前是否接受请求方的私信。"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "该关注者账号的创建时间。"
+                },
+                "favouritesCount": {
+                  "type": "integer",
+                  "description": "该关注者点赞过的推文数。"
+                },
+                "hasCustomTimelines": {
+                  "type": "boolean",
+                  "description": "该关注者是否创建过自定义时间线。"
+                },
+                "isTranslator": {
+                  "type": "boolean",
+                  "description": "该关注者是否参与 Twitter 翻译计划。"
+                },
+                "mediaCount": {
+                  "type": "integer",
+                  "description": "该关注者发布过的媒体条目数。"
+                },
+                "statusesCount": {
+                  "type": "integer",
+                  "description": "该关注者发布过的推文总数。"
+                },
+                "withheldInCountries": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "因法律原因屏蔽该关注者账号的国家／地区代码列表。"
+                },
+                "possiblySensitive": {
+                  "type": "boolean",
+                  "description": "该关注者的内容是否被标记为可能含敏感信息。"
+                },
+                "pinnedTweetIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "该关注者置顶在资料页顶部的推文标识列表。"
+                },
+                "isAutomated": {
+                  "type": "boolean",
+                  "description": "该账号是否被标记为自动化（机器人）账号。"
+                },
+                "automatedBy": {
+                  "type": "string",
+                  "description": "管理该自动化账号的个人或机构的用户名。"
+                },
+                "unavailable": {
+                  "type": "boolean",
+                  "description": "该关注者账号当前是否不可用，例如被封禁或停用。"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "账号不可用时返回的说明信息。"
+                },
+                "unavailableReason": {
+                  "type": "string",
+                  "description": "描述账号不可用原因的代码或文字。"
+                }
+              }
+            },
+            "description": "本页返回的关注该用户的关注者。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求结果标记：成功返回关注者为 success，否则为 error。"
+          },
+          "msg": {
+            "type": "string",
+            "description": "可读的提示信息；当 status 为 error 时承载错误详情。"
+          }
+        }
+      },
+      "UserTweetsResponse": {
+        "type": "object",
+        "properties": {
+          "tweets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "对象类型标记，标识该条目为推文。"
+                },
+                "id": {
+                  "type": "string",
+                  "description": "推文的唯一标识。"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "推文在 X/Twitter 上的网页链接。"
+                },
+                "text": {
+                  "type": "string",
+                  "description": "推文的完整正文内容。"
+                },
+                "source": {
+                  "type": "string",
+                  "description": "发布该推文所用的客户端应用名称。"
+                },
+                "retweetCount": {
+                  "type": "integer",
+                  "description": "推文被转发的次数。"
+                },
+                "replyCount": {
+                  "type": "integer",
+                  "description": "推文收到的回复数。"
+                },
+                "likeCount": {
+                  "type": "integer",
+                  "description": "推文获得的点赞数。"
+                },
+                "quoteCount": {
+                  "type": "integer",
+                  "description": "引用该推文的引用推文数。"
+                },
+                "viewCount": {
+                  "type": "integer",
+                  "description": "推文的浏览次数。"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "推文的创建时间。"
+                },
+                "lang": {
+                  "type": "string",
+                  "description": "推文正文被识别出的语言，以语言代码表示。"
+                },
+                "bookmarkCount": {
+                  "type": "integer",
+                  "description": "推文被收藏的次数。"
+                },
+                "isReply": {
+                  "type": "boolean",
+                  "description": "该推文是否为对另一条推文的回复。"
+                },
+                "inReplyToId": {
+                  "type": "string",
+                  "description": "该推文直接回复的目标推文标识；仅当 isReply 为真时存在。"
+                },
+                "conversationId": {
+                  "type": "string",
+                  "description": "该推文所属对话线程的起始推文标识。"
+                },
+                "displayTextRange": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "description": "标记推文正文中可显示部分的起止字符位置。"
+                },
+                "inReplyToUserId": {
+                  "type": "string",
+                  "description": "被回复用户的标识。"
+                },
+                "inReplyToUsername": {
+                  "type": "string",
+                  "description": "被回复用户的用户名。"
+                }
+              }
+            },
+            "description": "本页返回的用户最新推文。"
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求结果标记：成功返回推文为 success，否则为 error。"
+          },
+          "message": {
+            "type": "string",
+            "description": "可读的提示信息；当 status 为 error 时承载错误详情。"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/user_about": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_about"
+        ],
+        "summary": "获取用户 About 资料 GET /twitter/user_about",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询其 About 资料的用户名（@ 后的部分，不含 @）。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileAboutResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "按用户名获取单个用户的公开资料及「关于此账号」面板，包含账号归属地、身份标签与所属机构徽章等信息。"
+      }
+    },
+    "/twitter/user/batch_info_by_ids": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/batch_get_user_by_userids"
+        ],
+        "summary": "按 ID 批量获取用户信息 GET /twitter/user/batch_info_by_ids",
+        "parameters": [
+          {
+            "name": "userIds",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "本次批量查询的数字用户 ID 列表，以逗号分隔。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchUserInfoResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "一次请求传入多个数字用户 ID，批量查询这些用户的资料，避免逐个用户单独请求。"
+      }
+    },
+    "/twitter/user/info": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_by_username"
+        ],
+        "summary": "获取用户信息 GET /twitter/user/info",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询其资料的用户名（@ 后的部分，不含 @）。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchUserInfoResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "按用户名获取单个用户的资料。"
+      }
+    },
+    "/twitter/user/tweet_timeline": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_timeline"
+        ],
+        "summary": "获取用户推文时间线 GET /twitter/user/tweet_timeline",
+        "description": "按时间倒序获取某个用户自己发布的推文，顺序与其资料页一致。可选择是否包含回复及被回复的父推文，并通过游标翻页。",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要获取其时间线的用户标识。"
+          },
+          {
+            "name": "includeReplies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "是否在用户的原创推文之外一并返回其发布的回复。"
+          },
+          {
+            "name": "includeParentTweet",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "当返回的推文是一条回复时，是否同时返回其所回复的父推文。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User tweet timeline",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserTweetsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/last_tweets": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_last_tweets"
+        ],
+        "summary": "获取用户最新推文 GET /twitter/user/last_tweets",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "要获取其最新推文的用户标识；与 userName 二选一提供。"
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "要获取其最新推文的用户名；与 userId 二选一提供。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          },
+          {
+            "name": "includeReplies",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "是否在用户的原创推文之外一并返回其发布的回复。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User tweets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserTweetsResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "获取某个用户最近发布的推文，可用用户 ID 或用户名指定，支持可选包含回复及游标翻页。"
+      }
+    },
+    "/twitter/user/followers": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_followers"
+        ],
+        "summary": "获取用户关注者 GET /twitter/user/followers",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询其关注者的用户名（@ 后的部分，不含 @）。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 200,
+              "minimum": 20,
+              "maximum": 200
+            },
+            "description": "每页返回的关注者数量。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User followers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchUserInfoResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "按用户名获取关注某个用户的账号列表，支持游标翻页与可配置的每页数量。"
+      }
+    }
+  }
+}

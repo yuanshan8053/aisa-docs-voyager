@@ -1,0 +1,204 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Financial Datasets API — Analyst Estimates",
+    "version": "1.0.0",
+    "description": "Consensus Wall Street analyst estimates (estimated revenue + estimated earnings per share) for US stock tickers, broken down by fiscal period (annual or quarterly). Proxied through AIsa from the Financial Datasets API."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1/financial",
+      "description": "Production API"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "AnalystEstimatesResponse": {
+        "type": "object",
+        "properties": {
+          "analyst_estimates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnalystEstimate"
+            },
+            "description": "分析师预估记录列表,每个财报周期一条,按时间从近到远排列。"
+          }
+        }
+      },
+      "AnalystEstimate": {
+        "type": "object",
+        "properties": {
+          "fiscal_period": {
+            "type": "string",
+            "format": "date",
+            "description": "该预估对应的财报周期,以周期日期表示。结合 `period` 可判断它代表的是某个财年还是财季。"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "annual",
+              "quarterly"
+            ],
+            "description": "本条记录是年度还是季度预估,与请求的粒度一致。"
+          },
+          "revenue": {
+            "type": "integer",
+            "description": "该财报周期的一致预期总营收,以公司报告币种计。\n[⚠️批注:源码未声明金额单位(整额或千/百万),待研发确认。]"
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "description": "该财报周期的一致预期每股收益(EPS),以公司报告币种计。"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "A short error message."
+          },
+          "message": {
+            "type": "string",
+            "description": "A more detailed error message."
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Bad Request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Not Found",
+              "message": "Ticker XXXX not found"
+            }
+          }
+        }
+      },
+      "PaymentRequiredError": {
+        "description": "The request requires a paid subscription",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Payment Required",
+              "message": "This endpoint requires a paid subscription. Please upgrade your plan."
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Unauthorized",
+              "message": "Invalid API key provided"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/analyst-estimates": {
+      "get": {
+        "summary": "查询分析师预估 getAnalystEstimates",
+        "description": "返回单只美股的华尔街分析师一致预期 —— 预估营收与每股收益 —— 并按财报周期拆分。这是只读查询:可选年度或季度粒度,并限定返回的周期数量。典型场景为估值建模、财报前瞻,以及与实际值对比。\n\n**错误码**\n\n| 状态码 | 说明 |\n| --- | --- |\n| `400` | 请求参数无效,例如漏传必填的 `ticker` 或取值非法。 |\n| `401` | 鉴权失败,Bearer API Key 缺失或无效。 |\n| `402` | 该接口需要付费订阅,当前套餐无权访问,需升级套餐。 |\n| `404` | 未找到指定的 ticker。 |",
+        "operationId": "getAnalystEstimates",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "要查询分析师预估的美股股票代码,如 `AAPL`。每次请求一只。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "预估的财报粒度:`annual` 为整年预测,`quarterly` 为分季度预测。可用周期可通过 `/analyst-estimates/periods` 接口查询。",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "限定返回最近多少个预估周期。上限随粒度而定 —— 年度最多 3 个、季度最多 12 个;超出会被截到上限。",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analyst estimates response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalystEstimatesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,804 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API - Community Endpoints",
+    "version": "1.0.0",
+    "description": "Consolidated API documentation for Twitter community-related endpoints."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "CommunityInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "社区的唯一标识。"
+          },
+          "name": {
+            "type": "string",
+            "description": "社区的显示名称。"
+          },
+          "description": {
+            "type": "string",
+            "description": "介绍该社区的描述文字。"
+          },
+          "question": {
+            "type": "string",
+            "description": "新成员加入时被问及的入会问题。"
+          },
+          "member_count": {
+            "type": "integer",
+            "description": "社区的成员总数。"
+          },
+          "moderator_count": {
+            "type": "integer",
+            "description": "社区的版主总数。"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "社区的创建时间。"
+          },
+          "join_policy": {
+            "type": "string",
+            "description": "规定新成员如何加入该社区的策略。"
+          },
+          "invites_policy": {
+            "type": "string",
+            "description": "规定谁可以邀请他人加入该社区的策略。"
+          },
+          "is_nsfw": {
+            "type": "boolean",
+            "description": "该社区是否被标记为不适宜在工作场合浏览（NSFW）。"
+          },
+          "is_pinned": {
+            "type": "boolean",
+            "description": "该社区是否被请求方置顶。"
+          },
+          "role": {
+            "type": "string",
+            "description": "请求方在该社区中的角色，如成员、版主或管理员。"
+          },
+          "primary_topic": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "主要主题的标识。"
+              },
+              "name": {
+                "type": "string",
+                "description": "主要主题的显示名称。"
+              }
+            },
+            "description": "社区的主要主题。"
+          },
+          "banner_url": {
+            "type": "string",
+            "description": "社区横幅图片的网页链接。"
+          },
+          "search_tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "与该社区关联、便于在搜索中被发现的标签。"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "规则的标识。"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "规则的简短名称或标题。"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "解释该规则的详细文字。"
+                }
+              }
+            },
+            "description": "社区成员需遵守的规则。"
+          },
+          "creator": {
+            "$ref": "#/components/schemas/User",
+            "description": "创建该社区的用户资料。"
+          },
+          "admin": {
+            "$ref": "#/components/schemas/User",
+            "description": "社区管理员的用户资料。"
+          },
+          "members_preview": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "社区成员的小幅预览样本。"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "对象类型标记，标识该条目为用户。"
+          },
+          "userName": {
+            "type": "string",
+            "description": "作者的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。"
+          },
+          "url": {
+            "type": "string",
+            "description": "作者资料页的网页链接。"
+          },
+          "id": {
+            "type": "string",
+            "description": "作者的唯一标识。"
+          },
+          "name": {
+            "type": "string",
+            "description": "作者在资料页展示的昵称。"
+          },
+          "isBlueVerified": {
+            "type": "boolean",
+            "description": "作者是否拥有付费的 X（Twitter）Blue 认证。"
+          },
+          "verifiedType": {
+            "type": "string",
+            "description": "作者的认证类别，如企业或政府账号。"
+          },
+          "profilePicture": {
+            "type": "string",
+            "description": "作者头像图片的网页链接。"
+          },
+          "coverPicture": {
+            "type": "string",
+            "description": "作者资料页横幅图片的网页链接。"
+          },
+          "description": {
+            "type": "string",
+            "description": "作者资料页的个人简介文字。"
+          },
+          "location": {
+            "type": "string",
+            "description": "作者在资料页填写的所在地（自由文本）。"
+          },
+          "followers": {
+            "type": "integer",
+            "description": "关注作者的账号数。"
+          },
+          "following": {
+            "type": "integer",
+            "description": "作者关注的账号数。"
+          },
+          "canDm": {
+            "type": "boolean",
+            "description": "作者当前是否接受请求方的私信。"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "作者账号的创建时间。"
+          },
+          "favouritesCount": {
+            "type": "integer",
+            "description": "作者点赞过的推文数。"
+          },
+          "hasCustomTimelines": {
+            "type": "boolean",
+            "description": "作者是否创建过自定义时间线。"
+          },
+          "isTranslator": {
+            "type": "boolean",
+            "description": "作者是否参与 Twitter 翻译计划。"
+          },
+          "mediaCount": {
+            "type": "integer",
+            "description": "作者发布过的媒体条目数。"
+          },
+          "statusesCount": {
+            "type": "integer",
+            "description": "作者发布过的推文总数。"
+          },
+          "withheldInCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "因法律原因屏蔽作者账号的国家／地区代码列表。"
+          },
+          "possiblySensitive": {
+            "type": "boolean",
+            "description": "作者的内容是否被标记为可能含敏感信息。"
+          },
+          "pinnedTweetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "作者置顶在资料页顶部的推文标识列表。"
+          },
+          "isAutomated": {
+            "type": "boolean",
+            "description": "该账号是否被标记为自动化（机器人）账号。"
+          },
+          "automatedBy": {
+            "type": "string",
+            "description": "管理该自动化账号的个人或机构的用户名。"
+          },
+          "unavailable": {
+            "type": "boolean",
+            "description": "作者账号当前是否不可用，例如被封禁或停用。"
+          },
+          "message": {
+            "type": "string",
+            "description": "账号不可用时返回的说明信息。"
+          },
+          "unavailableReason": {
+            "type": "string",
+            "description": "描述账号不可用原因的代码或文字。"
+          },
+          "profile_bio": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "作者资料页展示的原始简介文字。"
+              },
+              "entities": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "display_url": {
+                              "type": "string",
+                              "description": "简介中显示的链接的短化、易读形式。"
+                            },
+                            "expanded_url": {
+                              "type": "string",
+                              "description": "显示链接最终指向的完整目标地址。"
+                            },
+                            "indices": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer"
+                              },
+                              "description": "该链接在简介文字中的起止字符位置。"
+                            },
+                            "url": {
+                              "type": "string",
+                              "description": "简介文字中实际出现的 t.co 短链接。"
+                            }
+                          }
+                        },
+                        "description": "简介描述文字中出现的链接。"
+                      }
+                    },
+                    "description": "从简介描述文字中解析出的实体。"
+                  },
+                  "url": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "display_url": {
+                              "type": "string",
+                              "description": "显示的网址链接的短化、易读形式。"
+                            },
+                            "expanded_url": {
+                              "type": "string",
+                              "description": "显示的网址链接最终指向的完整目标地址。"
+                            },
+                            "indices": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer"
+                              },
+                              "description": "该链接在网址字段中的起止字符位置。"
+                            },
+                            "url": {
+                              "type": "string",
+                              "description": "网址字段中实际出现的 t.co 短链接。"
+                            }
+                          }
+                        },
+                        "description": "资料页网址字段中出现的链接。"
+                      }
+                    },
+                    "description": "从资料页网址字段中解析出的实体。"
+                  }
+                },
+                "description": "从简介中解析出的结构化实体，涵盖简介文字与资料页网址字段。"
+              }
+            },
+            "description": "作者的资料简介及从中解析出的实体。"
+          }
+        }
+      },
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "对象类型标记，标识该条目为推文。"
+          },
+          "id": {
+            "type": "string",
+            "description": "推文的唯一标识。"
+          },
+          "url": {
+            "type": "string",
+            "description": "推文在 X/Twitter 上的网页链接。"
+          },
+          "text": {
+            "type": "string",
+            "description": "推文的完整正文内容。"
+          },
+          "source": {
+            "type": "string",
+            "description": "发布该推文所用的客户端应用名称。"
+          },
+          "retweetCount": {
+            "type": "integer",
+            "description": "推文被转发的次数。"
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "推文收到的回复数。"
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "推文获得的点赞数。"
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "引用该推文的引用推文数。"
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "推文的浏览次数。"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "推文的创建时间。"
+          },
+          "lang": {
+            "type": "string",
+            "description": "推文正文被识别出的语言，以语言代码表示。"
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "description": "推文被收藏的次数。"
+          },
+          "isReply": {
+            "type": "boolean",
+            "description": "该推文是否为对另一条推文的回复。"
+          },
+          "inReplyToId": {
+            "type": "string",
+            "description": "该推文直接回复的目标推文标识；仅当 isReply 为真时存在。"
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "该推文所属对话线程的起始推文标识。"
+          },
+          "displayTextRange": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "标记推文正文中可显示部分的起止字符位置。"
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "description": "被回复用户的标识。"
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "description": "被回复用户的用户名。"
+          },
+          "author": {
+            "$ref": "#/components/schemas/User",
+            "description": "发布该推文的用户资料。"
+          },
+          "entities": {
+            "type": "object",
+            "properties": {
+              "hashtags": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "该话题标签在推文正文中的起止字符位置。"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "话题标签的文字，不含开头的 # 号。"
+                    }
+                  }
+                },
+                "description": "推文正文中出现的话题标签。"
+              },
+              "urls": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "display_url": {
+                      "type": "string",
+                      "description": "推文中显示的链接的短化、易读形式。"
+                    },
+                    "expanded_url": {
+                      "type": "string",
+                      "description": "显示链接最终指向的完整目标地址。"
+                    },
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "该链接在推文正文中的起止字符位置。"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "推文正文中实际出现的 t.co 短链接。"
+                    }
+                  }
+                },
+                "description": "推文正文中出现的链接。"
+              },
+              "user_mentions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id_str": {
+                      "type": "string",
+                      "description": "被提及用户的标识。"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "被提及用户的昵称。"
+                    },
+                    "screen_name": {
+                      "type": "string",
+                      "description": "被提及用户的 @ 用户名。"
+                    }
+                  }
+                },
+                "description": "推文正文中提及的用户。"
+              }
+            },
+            "description": "从推文正文解析出的结构化实体，如话题标签、链接与用户提及。"
+          },
+          "quoted_tweet": {
+            "type": "string",
+            "description": "当该推文为引用推文时，其所引用的推文。\n[⚠️批注:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]"
+          },
+          "retweeted_tweet": {
+            "type": "string",
+            "description": "当该推文为转发时，其所转发的原推文。\n[⚠️批注:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]"
+          },
+          "isLimitedReply": {
+            "type": "boolean",
+            "description": "该推文的回复是否受作者的回复权限设置限制。"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/community/info": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_community_by_id"
+        ],
+        "summary": "按 ID 获取社区信息 GET /twitter/community/info",
+        "description": "按社区 ID 获取单个社区的详细信息，包含其资料、成员数量、主题、规则以及请求方在该社区中的角色。",
+        "parameters": [
+          {
+            "name": "community_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要获取信息的社区标识。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community info response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunityInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/community/members": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_community_members"
+        ],
+        "summary": "获取社区成员 GET /twitter/community/members",
+        "description": "获取某社区的成员，按页返回并通过游标翻页。",
+        "parameters": [
+          {
+            "name": "community_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要列出其成员的社区标识。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community members response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      },
+                      "description": "本页返回的社区成员。"
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/community/moderators": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_community_moderators"
+        ],
+        "summary": "获取社区版主 GET /twitter/community/moderators",
+        "description": "获取某社区的版主，按页返回并通过游标翻页。",
+        "parameters": [
+          {
+            "name": "community_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要列出其版主的社区标识。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community moderators response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      },
+                      "description": "本页返回的社区版主。"
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/community/tweets": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_community_tweets"
+        ],
+        "summary": "获取社区推文 GET /twitter/community/tweets",
+        "description": "获取某社区内发布的推文，按页返回并通过游标翻页。",
+        "parameters": [
+          {
+            "name": "community_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要列出其推文的社区标识。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community tweets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tweets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tweet"
+                      },
+                      "description": "本页返回的该社区内发布的推文。"
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/community/get_tweets_from_all_community": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_all_community_tweets"
+        ],
+        "summary": "搜索全部社区的推文 GET /twitter/community/get_tweets_from_all_community",
+        "description": "使用查询字符串跨全部社区搜索推文，可在最新匹配与热门排序结果之间选择，并通过游标翻页。",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "搜索查询字符串（如关键词），用于跨全部社区匹配推文。"
+          },
+          {
+            "name": "queryType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Latest",
+                "Top"
+              ],
+              "default": "Latest"
+            },
+            "description": "结果的排序模式：Latest 返回最新匹配，Top 返回最相关或最热门的结果。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tweets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tweets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tweet"
+                      },
+                      "description": "本页返回的跨社区匹配搜索条件的推文。"
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,392 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TwitterAPI Unified API",
+    "version": "1.0.0",
+    "description": "Unified OpenAPI 3.0 specification for TwitterAPI endpoints."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Trend": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Display name of the trend."
+          },
+          "target": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "The search query string that opens this trend's results."
+              }
+            },
+            "description": "The search target this trend resolves to."
+          },
+          "rank": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Position of the trend in the list, where a smaller number ranks higher."
+          },
+          "meta_description": {
+            "type": "string",
+            "description": "Supplementary descriptive text for the trend, such as associated post volume or context."
+          }
+        }
+      },
+      "TrendsResponse": {
+        "type": "object",
+        "properties": {
+          "trends": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Trend"
+            },
+            "description": "The list of trending topics for the requested location."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Whether the request succeeded or errored."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Accompanying message, typically the error detail when the request did not succeed."
+          }
+        }
+      },
+      "SpaceDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identifier of the Space."
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the Space."
+          },
+          "state": {
+            "type": "string",
+            "description": "Current lifecycle state of the Space, such as whether it is scheduled, live, or ended."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the Space was created."
+          },
+          "scheduled_start": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the Space is scheduled to start."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the Space's record was last updated."
+          },
+          "media_key": {
+            "type": "string",
+            "description": "Media key referencing the Space's audio stream."
+          },
+          "is_subscribed": {
+            "type": "boolean",
+            "description": "Whether the requesting user is subscribed to the Space."
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "conversation_controls": {
+                "type": "integer",
+                "description": "Coded value indicating who is permitted to participate in the conversation.\n[⚠️Note:源码未声明该整数各取值的含义，待研发确认。]"
+              },
+              "disallow_join": {
+                "type": "boolean",
+                "description": "Whether new participants are blocked from joining the Space."
+              },
+              "is_employee_only": {
+                "type": "boolean",
+                "description": "Whether the Space is restricted to employees only."
+              },
+              "is_locked": {
+                "type": "boolean",
+                "description": "Whether the Space is locked."
+              },
+              "is_muted": {
+                "type": "boolean",
+                "description": "Whether the Space is muted for the requesting user."
+              },
+              "is_space_available_for_clipping": {
+                "type": "boolean",
+                "description": "Whether clips may be created from the Space."
+              },
+              "is_space_available_for_replay": {
+                "type": "boolean",
+                "description": "Whether a replay of the Space is available."
+              },
+              "no_incognito": {
+                "type": "boolean",
+                "description": "Whether anonymous (incognito) listening is disallowed."
+              },
+              "narrow_cast_space_type": {
+                "type": "integer",
+                "description": "Coded value indicating the Space's narrowcast type.\n[⚠️Note:源码未声明该整数各取值的含义，待研发确认。]"
+              },
+              "max_guest_sessions": {
+                "type": "integer",
+                "description": "Maximum number of concurrent guest speaker sessions allowed."
+              },
+              "max_admin_capacity": {
+                "type": "integer",
+                "description": "Maximum number of admins the Space can have."
+              }
+            },
+            "description": "The Space's configuration settings."
+          },
+          "stats": {
+            "type": "object",
+            "properties": {
+              "total_replay_watched": {
+                "type": "integer",
+                "description": "Total number of replay views."
+              },
+              "total_live_listeners": {
+                "type": "integer",
+                "description": "Total number of live listeners."
+              },
+              "total_participants": {
+                "type": "integer",
+                "description": "Total number of participants across the Space."
+              }
+            },
+            "description": "Audience statistics for the Space."
+          },
+          "creator": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Identifier of the creator."
+              },
+              "name": {
+                "type": "string",
+                "description": "Display name of the creator."
+              },
+              "userName": {
+                "type": "string",
+                "description": "Handle (@username) of the creator."
+              },
+              "location": {
+                "type": "string",
+                "description": "Location listed on the creator's profile."
+              },
+              "url": {
+                "type": "string",
+                "description": "Website URL listed on the creator's profile."
+              },
+              "description": {
+                "type": "string",
+                "description": "Bio text on the creator's profile."
+              },
+              "protected": {
+                "type": "boolean",
+                "description": "Whether the creator's account is protected (private)."
+              },
+              "isVerified": {
+                "type": "boolean",
+                "description": "Whether the creator's account is verified."
+              },
+              "isBlueVerified": {
+                "type": "boolean",
+                "description": "Whether the creator holds a Twitter Blue verification."
+              },
+              "verifiedType": {
+                "type": "string",
+                "description": "The kind of verification the creator's account holds."
+              },
+              "followers": {
+                "type": "integer",
+                "description": "Number of accounts following the creator."
+              },
+              "following": {
+                "type": "integer",
+                "description": "Number of accounts the creator follows."
+              },
+              "favouritesCount": {
+                "type": "integer",
+                "description": "Number of tweets the creator has liked."
+              },
+              "statusesCount": {
+                "type": "integer",
+                "description": "Number of tweets the creator has posted."
+              },
+              "mediaCount": {
+                "type": "integer",
+                "description": "Number of media items the creator has posted."
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the creator's account was created."
+              },
+              "coverPicture": {
+                "type": "string",
+                "description": "URL of the creator's profile cover image."
+              },
+              "profilePicture": {
+                "type": "string",
+                "description": "URL of the creator's profile avatar."
+              },
+              "canDm": {
+                "type": "boolean",
+                "description": "Whether the requesting user can send the creator a direct message."
+              },
+              "affiliatesHighlightedLabel": {
+                "type": "object",
+                "description": "Highlighted affiliation label shown on the creator's profile."
+              },
+              "isAutomated": {
+                "type": "boolean",
+                "description": "Whether the creator's account is marked as automated (a bot)."
+              },
+              "automatedBy": {
+                "type": "string",
+                "description": "Identifier of the account that manages this automated account."
+              }
+            },
+            "description": "Profile of the user who created the Space."
+          }
+        }
+      },
+      "SpaceDetailResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/SpaceDetail",
+            "description": "The Space's detail payload."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Whether the request succeeded or errored."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Accompanying message, typically the error detail when the request did not succeed."
+          }
+        }
+      },
+      "MyInfoResponse": {
+        "type": "object",
+        "properties": {
+          "recharge_credits": {
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/trends": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_trends"
+        ],
+        "summary": "Get Trends",
+        "description": "Return the list of trending topics for a given location, identified by its WOEID.",
+        "parameters": [
+          {
+            "name": "woeid",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "The WOEID (Where On Earth ID) identifying the location whose trends you want."
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 30,
+              "minimum": 30
+            },
+            "description": "How many trends to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrendsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/spaces/detail": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_space_detail"
+        ],
+        "summary": "Get Space Detail",
+        "description": "Return the full details of a single Twitter Space, including its settings, audience stats, and creator profile.",
+        "parameters": [
+          {
+            "name": "space_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the Twitter Space to look up."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpaceDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/oapi/my/info": {}
+  }
+}

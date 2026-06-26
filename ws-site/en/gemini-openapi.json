@@ -1,0 +1,215 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Google Gemini Generate Content API",
+    "version": "v1beta",
+    "description": "Google Gemini API for content generation (text, image, audio) based on official documentation."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/v1",
+      "description": "Gemini API base URL"
+    }
+  ],
+  "paths": {
+    "/models/{model}:generateContent": {
+      "post": {
+        "summary": "Generate content using the specified Gemini model",
+        "operationId": "generateContent",
+        "parameters": [
+          {
+            "name": "model",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Which Gemini model to run, given in the path as `models/{model}`."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateContentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful content generation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateContentResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "description": "Invoke a Gemini model to generate content from a multi-turn conversation. Drive the output with tools, safety settings, a system instruction, and generation parameters, and optionally reuse previously cached context."
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Key"
+      }
+    },
+    "schemas": {
+      "GenerateContentRequest": {
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Content"
+            },
+            "description": "The ordered conversation turns sent to the model; each turn carries its content parts and the role that produced them. This is the primary input the model responds to."
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tool"
+            },
+            "description": "Tools the model is allowed to call during generation, enabling capabilities such as function calling."
+          },
+          "toolConfig": {
+            "type": "object",
+            "description": "Configuration that governs how the model selects and invokes the provided tools."
+          },
+          "safetySettings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SafetySetting"
+            },
+            "description": "Per-request safety controls that adjust how generated content is filtered against harm categories."
+          },
+          "systemInstruction": {
+            "$ref": "#/components/schemas/Content",
+            "description": "A top-level instruction that sets the model's persona, rules, or task framing, applied across the whole conversation."
+          },
+          "generationConfig": {
+            "$ref": "#/components/schemas/GenerationConfig",
+            "description": "Parameters that shape the generation itself, such as sampling and output-length controls."
+          },
+          "cachedContent": {
+            "type": "string",
+            "description": "Reference to previously cached context to reuse, avoiding resending large shared content on each call.\n[⚠️Note:源码未声明该缓存 ID 的获取接口与生效条件,待研发确认。]"
+          }
+        },
+        "required": [
+          "contents"
+        ]
+      },
+      "Content": {
+        "type": "object",
+        "properties": {
+          "parts": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "The text payload of a part, used when the part carries written content."
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "inline_data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              ]
+            },
+            "description": "The pieces that make up one conversation turn. A part is either a text segment or inline binary data (such as an image), letting a single turn mix modalities."
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "system",
+              "user",
+              "assistant"
+            ],
+            "description": "Who authored this turn, distinguishing system guidance, end-user input, and prior model output so the model reads the dialogue in the right voice."
+          }
+        }
+      },
+      "Tool": {
+        "type": "object"
+      },
+      "SafetySetting": {
+        "type": "object"
+      },
+      "GenerationConfig": {
+        "type": "object"
+      },
+      "GenerateContentResponse": {
+        "type": "object",
+        "properties": {
+          "candidates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Content"
+            },
+            "description": "The content the model generated; each candidate is one self-contained response made up of content parts and its role."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "description": "Numeric error code identifying the failure category."
+              },
+              "message": {
+                "type": "string",
+                "description": "Human-readable explanation of what went wrong."
+              },
+              "status": {
+                "type": "string",
+                "description": "Symbolic status string for the error, suitable for programmatic branching."
+              }
+            },
+            "description": "The error payload returned when generation fails, carrying a code, a human-readable message, and a symbolic status."
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Financial Datasets API — Macro Interest Rates",
+    "version": "1.0.0",
+    "description": "Central bank interest rate data (historical series + real-time snapshot), proxied through AIsa."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1/financial",
+      "description": "Production API"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "InterestRatesResponse": {
+        "type": "object",
+        "properties": {
+          "interest_rates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InterestRate"
+            },
+            "description": "The current rate record for the requested bank. Returned as a list for shape consistency with the historical endpoint, typically holding the single latest observation."
+          }
+        }
+      },
+      "InterestRate": {
+        "type": "object",
+        "properties": {
+          "bank": {
+            "type": "string",
+            "description": "Code of the central bank this record belongs to, matching the `bank` you queried."
+          },
+          "name": {
+            "type": "string",
+            "description": "Full human-readable name of the central bank."
+          },
+          "rate": {
+            "type": "number",
+            "description": "The bank's policy interest rate currently in effect.\n[⚠️Note:源码未声明利率单位(百分数还是小数,如 5.25 还是 0.0525),待研发确认。]"
+          },
+          "date": {
+            "type": "string",
+            "description": "Date this current rate took effect, in `YYYY-MM-DD`."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "A short error message."
+          },
+          "message": {
+            "type": "string",
+            "description": "A more detailed error message."
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Bad Request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Not Found",
+              "message": "Ticker XXXX not found"
+            }
+          }
+        }
+      },
+      "PaymentRequiredError": {
+        "description": "The request requires a paid subscription",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Payment Required",
+              "message": "This endpoint requires a paid subscription. Please upgrade your plan."
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Unauthorized",
+              "message": "Invalid API key provided"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/macro/interest-rates": {
+      "get": {
+        "summary": "Interest Rates (Historical)",
+        "description": "Return the historical policy interest-rate series for a single central bank, optionally bounded to a date window. This is a read-only time-series query: omit the dates to get the full available history, or set a start and/or end to slice a range. Typical uses are charting rate trends and back-testing rate-sensitive models.\n\n**Error status codes:** `400`, `401`, `402`, `404`",
+        "operationId": "getInterestRatesHistorical",
+        "parameters": [
+          {
+            "name": "bank",
+            "in": "query",
+            "description": "Identifier of the central bank whose rate history to return, e.g. `FED` or `ECB`. The full list of accepted bank codes is available from the `/macro/interest-rates/banks` endpoint.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Lower bound of the date window, in `YYYY-MM-DD`. Records on or after this date are returned. Omit it to start from the earliest available record.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "Upper bound of the date window, in `YYYY-MM-DD`. Records on or before this date are returned. Omit it to run through the most recent record.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Interest rates response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterestRatesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/macro/interest-rates/snapshot": {
+      "get": {
+        "summary": "Interest Rates (Real-Time)",
+        "description": "Return the current policy interest rate for a single central bank — the latest point in its rate series, not the full history. Use it when you only need the rate in effect right now, e.g. for a live dashboard or a one-off lookup.\n\n**Error status codes:** `401`, `402`, `404`",
+        "operationId": "getInterestRatesSnapshot",
+        "parameters": [
+          {
+            "name": "bank",
+            "in": "query",
+            "description": "Identifier of the central bank whose current rate to return, e.g. `FED`, `ECB`, `BOJ`. The full list of accepted bank codes is available from the `/macro/interest-rates/banks` endpoint.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Interest rates snapshot response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterestRatesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    }
+  }
+}

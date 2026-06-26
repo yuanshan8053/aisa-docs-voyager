@@ -1,0 +1,911 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Tavily API",
+    "version": "1.0.0",
+    "description": "Unified API documentation for Tavily endpoints including Search, Extract, Crawl, and Map."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/tavily/search": {
+      "post": {
+        "tags": [
+          "https://docs.tavily.com/documentation/api-reference/endpoint/search"
+        ],
+        "summary": "执行搜索 POST /tavily/search",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "要在网络上检索的自然语言查询。",
+                    "example": "Who is Leo Messi?"
+                  },
+                  "search_depth": {
+                    "type": "string",
+                    "enum": [
+                      "advanced",
+                      "basic",
+                      "fast",
+                      "ultra-fast"
+                    ],
+                    "default": "basic",
+                    "description": "延迟与相关度的取舍：较轻量的模式返回更快但更浅，较重的模式检索更彻底，但延迟和成本更高。\n[⚠️批注:各枚举值与延迟/成本的具体对应关系源码未说明，待研发确认。]"
+                  },
+                  "chunks_per_source": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "每个命中来源保留的最相关文本片段数量。",
+                    "minimum": 1,
+                    "maximum": 3
+                  },
+                  "max_results": {
+                    "type": "integer",
+                    "default": 5,
+                    "description": "返回搜索结果数量的上限。",
+                    "minimum": 0,
+                    "maximum": 20
+                  },
+                  "topic": {
+                    "type": "string",
+                    "enum": [
+                      "general",
+                      "news",
+                      "finance"
+                    ],
+                    "default": "general",
+                    "description": "搜索类别，会影响排序与时效偏好：`general` 面向通用网页，`news` 面向时事新闻，`finance` 面向金融来源。"
+                  },
+                  "time_range": {
+                    "type": "string",
+                    "enum": [
+                      "day",
+                      "week",
+                      "month",
+                      "year",
+                      "d",
+                      "w",
+                      "m",
+                      "y"
+                    ],
+                    "description": "将结果限制在相对当前的近期时间窗内发布的内容；支持完整单词与单字母简写两种写法。"
+                  },
+                  "start_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "仅保留在该日期当天或之后发布的结果。",
+                    "example": "2025-02-09"
+                  },
+                  "end_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "仅保留在该日期当天或之前发布的结果。",
+                    "example": "2025-12-29"
+                  },
+                  "include_answer": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，响应中附带一段由 LLM 生成的简洁问题答案。"
+                  },
+                  "include_raw_content": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，为每条结果附带清洗解析后的完整页面内容，而不仅是摘要片段。"
+                  },
+                  "include_images": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，额外执行图片搜索并返回匹配的图片。"
+                  },
+                  "include_image_descriptions": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，为每张返回的图片附加描述文字；仅在请求图片结果时生效。"
+                  },
+                  "include_favicon": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，为每条结果附带来源站点的 favicon URL。"
+                  },
+                  "include_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "将搜索限定在这些域名内，其他站点的结果会被剔除。",
+                    "maxItems": 300
+                  },
+                  "exclude_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "剔除来自这些域名的结果。",
+                    "maxItems": 150
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "提升来自指定国家的结果权重，对地域性查询效果最明显。",
+                    "enum": [
+                      "afghanistan",
+                      "albania",
+                      "algeria",
+                      "andorra",
+                      "angola",
+                      "argentina",
+                      "armenia",
+                      "australia",
+                      "austria",
+                      "azerbaijan",
+                      "bahamas",
+                      "bahrain",
+                      "bangladesh",
+                      "barbados",
+                      "belarus",
+                      "belgium",
+                      "belize",
+                      "benin",
+                      "bhutan",
+                      "bolivia",
+                      "bosnia and herzegovina",
+                      "botswana",
+                      "brazil",
+                      "brunei",
+                      "bulgaria",
+                      "burkina faso",
+                      "burundi",
+                      "cambodia",
+                      "cameroon",
+                      "canada",
+                      "cape verde",
+                      "central african republic",
+                      "chad",
+                      "chile",
+                      "china",
+                      "colombia",
+                      "comoros",
+                      "congo",
+                      "costa rica",
+                      "croatia",
+                      "cuba",
+                      "cyprus",
+                      "czech republic",
+                      "denmark",
+                      "djibouti",
+                      "dominican republic",
+                      "ecuador",
+                      "egypt",
+                      "el salvador",
+                      "equatorial guinea",
+                      "eritrea",
+                      "estonia",
+                      "ethiopia",
+                      "fiji",
+                      "finland",
+                      "france",
+                      "gabon",
+                      "gambia",
+                      "georgia",
+                      "germany",
+                      "ghana",
+                      "greece",
+                      "guatemala",
+                      "guinea",
+                      "haiti",
+                      "honduras",
+                      "hungary",
+                      "iceland",
+                      "india",
+                      "indonesia",
+                      "iran",
+                      "iraq",
+                      "ireland",
+                      "israel",
+                      "italy",
+                      "jamaica",
+                      "japan",
+                      "jordan",
+                      "kazakhstan",
+                      "kenya",
+                      "kuwait",
+                      "kyrgyzstan",
+                      "latvia",
+                      "lebanon",
+                      "lesotho",
+                      "liberia",
+                      "libya",
+                      "liechtenstein",
+                      "lithuania",
+                      "luxembourg",
+                      "madagascar",
+                      "malawi",
+                      "malaysia",
+                      "maldives",
+                      "mali",
+                      "malta",
+                      "mauritania",
+                      "mauritius",
+                      "mexico",
+                      "moldova",
+                      "monaco",
+                      "mongolia",
+                      "montenegro",
+                      "morocco",
+                      "mozambique",
+                      "myanmar",
+                      "namibia",
+                      "nepal",
+                      "netherlands",
+                      "new zealand",
+                      "nicaragua",
+                      "niger",
+                      "nigeria",
+                      "north korea",
+                      "north macedonia",
+                      "norway",
+                      "oman",
+                      "pakistan",
+                      "panama",
+                      "papua new guinea",
+                      "paraguay",
+                      "peru",
+                      "philippines",
+                      "poland",
+                      "portugal",
+                      "qatar",
+                      "romania",
+                      "russia",
+                      "rwanda",
+                      "saudi arabia",
+                      "senegal",
+                      "serbia",
+                      "singapore",
+                      "slovakia",
+                      "slovenia",
+                      "somalia",
+                      "south africa",
+                      "south korea",
+                      "south sudan",
+                      "spain",
+                      "sri lanka",
+                      "sudan",
+                      "sweden",
+                      "switzerland",
+                      "syria",
+                      "taiwan",
+                      "tajikistan",
+                      "tanzania",
+                      "thailand",
+                      "togo",
+                      "trinidad and tobago",
+                      "tunisia",
+                      "turkey",
+                      "turkmenistan",
+                      "uganda",
+                      "ukraine",
+                      "united arab emirates",
+                      "united kingdom",
+                      "united states",
+                      "uruguay",
+                      "uzbekistan",
+                      "venezuela",
+                      "vietnam",
+                      "yemen",
+                      "zambia",
+                      "zimbabwe"
+                    ]
+                  },
+                  "auto_parameters": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，由 Tavily 依据查询内容自动推断并设置搜索参数。"
+                  },
+                  "include_usage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，在响应中包含本次请求的积分用量明细。"
+                  }
+                },
+                "required": [
+                  "query"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "本次实际执行的搜索查询回显。"
+                    },
+                    "answer": {
+                      "type": "string",
+                      "description": "针对查询由 LLM 生成的简短答案，仅在请求答案时出现。"
+                    },
+                    "images": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "匹配图片的直接 URL。"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "描述该图片的文字说明，仅在请求图片描述时出现。"
+                          }
+                        }
+                      },
+                      "description": "与查询匹配的图片，仅在请求图片搜索时出现。"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "结果页面的标题。"
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "结果页面的 URL。"
+                          },
+                          "content": {
+                            "type": "string",
+                            "description": "从结果页面中提取的最相关文本片段。"
+                          },
+                          "score": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "该结果与查询的相关度评分，越高越相关。"
+                          },
+                          "favicon": {
+                            "type": "string",
+                            "description": "结果来源站点的 favicon URL，仅在请求 favicon 时出现。"
+                          }
+                        }
+                      },
+                      "description": "按相关度排序的网页搜索结果列表。"
+                    },
+                    "response_time": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "服务端完成本次请求所用的时间，单位为秒。"
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "description": "本次请求消耗的积分数。"
+                        }
+                      },
+                      "description": "本次请求的积分用量，仅在请求用量信息时出现。"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "本次请求的唯一标识，便于追踪与排障。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "通过 Tavily 执行联网搜索，返回按相关度排序的结果，并可选附带 LLM 生成的答案、图片、原始网页内容与积分用量。可用 search_depth 在相关度与延迟间取舍，并以主题、时间窗、域名和国家等筛选缩小范围。"
+      }
+    },
+    "/tavily/extract": {
+      "post": {
+        "tags": [
+          "https://docs.tavily.com/documentation/api-reference/endpoint/extract"
+        ],
+        "summary": "提取网页内容 POST /tavily/extract",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "要提取内容的一个或多个网页 URL。",
+                    "example": [
+                      "https://en.wikipedia.org/wiki/Artificial_intelligence"
+                    ]
+                  },
+                  "query": {
+                    "type": "string",
+                    "description": "用于对提取出的内容片段重排序的意图说明，使最相关的片段优先呈现。"
+                  },
+                  "chunks_per_source": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "每个 URL 保留的最相关文本片段数量。",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "extract_depth": {
+                    "type": "string",
+                    "enum": [
+                      "basic",
+                      "advanced"
+                    ],
+                    "default": "basic",
+                    "description": "提取的彻底程度：`basic` 更快更轻量，`advanced` 解析更彻底，但延迟和成本更高。"
+                  },
+                  "include_images": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，额外返回从被提取页面中找到的图片。"
+                  },
+                  "include_favicon": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，为每个被提取页面附带其 favicon URL。"
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "markdown",
+                      "text"
+                    ],
+                    "default": "markdown",
+                    "description": "提取内容的输出格式：`markdown` 保留结构，`text` 返回纯文本。"
+                  },
+                  "timeout": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "等待单个 URL 抓取与提取完成的最长时间，单位为秒。",
+                    "minimum": 1,
+                    "maximum": 60
+                  },
+                  "include_usage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，在响应中包含本次请求的积分用量明细。"
+                  }
+                },
+                "required": [
+                  "urls"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Extraction results returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "被提取内容的 URL。"
+                          },
+                          "raw_content": {
+                            "type": "string",
+                            "description": "按所请求格式清洗解析后的页面内容。"
+                          },
+                          "favicon": {
+                            "type": "string",
+                            "description": "被提取页面的 favicon URL，仅在请求 favicon 时出现。"
+                          }
+                        }
+                      },
+                      "description": "成功提取的页面，每个 URL 对应一项。"
+                    },
+                    "failed_results": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "无法抓取或提取的 URL 列表。"
+                    },
+                    "response_time": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "服务端完成本次请求所用的时间，单位为秒。"
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "description": "本次请求消耗的积分数。"
+                        }
+                      },
+                      "description": "本次请求的积分用量，仅在请求用量信息时出现。"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "本次请求的唯一标识，便于追踪与排障。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "通过 Tavily Extract 抓取并清洗一个或多个 URL 的可读正文，返回解析后的页面文本，并可选附带图片与积分用量。可用 query 按你的意图对提取出的片段重排序。"
+      }
+    },
+    "/tavily/crawl": {
+      "post": {
+        "tags": [
+          "https://docs.tavily.com/documentation/api-reference/endpoint/crawl"
+        ],
+        "summary": "爬取站点 POST /tavily/crawl",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "爬取的起始根 URL。",
+                    "example": "docs.tavily.com"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "用自然语言告诉爬虫在遍历链接时优先关注哪些内容。"
+                  },
+                  "chunks_per_source": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "每个被爬页面保留的最相关文本片段数量。",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "max_depth": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "爬虫从根 URL 出发可跟进的链接跳数（层级深度）。",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "max_breadth": {
+                    "type": "integer",
+                    "default": 20,
+                    "description": "在链接树每一层级上爬虫可跟进的链接数量。",
+                    "minimum": 1,
+                    "maximum": 500
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "default": 50,
+                    "description": "爬虫停止前总共处理的链接数量上限。",
+                    "minimum": 1
+                  },
+                  "select_paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "正则表达式模式；仅爬取路径匹配的 URL。"
+                  },
+                  "select_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "正则表达式模式；将爬取范围限定在匹配的域名或子域名。"
+                  },
+                  "exclude_paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "正则表达式模式；路径匹配的 URL 会被跳过。"
+                  },
+                  "exclude_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "正则表达式模式；匹配的域名或子域名会被跳过。"
+                  },
+                  "allow_external": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "开启后，指向外部域名的链接也会保留在结果中。"
+                  },
+                  "include_images": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，额外返回爬取过程中找到的图片。"
+                  },
+                  "extract_depth": {
+                    "type": "string",
+                    "enum": [
+                      "basic",
+                      "advanced"
+                    ],
+                    "default": "basic",
+                    "description": "对每个被爬页面的提取彻底程度：`basic` 更快更轻量，`advanced` 解析更彻底，但延迟和成本更高。"
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "markdown",
+                      "text"
+                    ],
+                    "default": "markdown",
+                    "description": "提取页面内容的输出格式：`markdown` 保留结构，`text` 返回纯文本。"
+                  },
+                  "include_favicon": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，为每个被爬页面附带其 favicon URL。"
+                  },
+                  "timeout": {
+                    "type": "number",
+                    "format": "float",
+                    "default": 150,
+                    "description": "等待整个爬取操作完成的最长时间，单位为秒。",
+                    "minimum": 10,
+                    "maximum": 150
+                  },
+                  "include_usage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，在响应中包含本次请求的积分用量明细。"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Crawl results returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "base_url": {
+                      "type": "string",
+                      "description": "实际被爬取的根 URL。"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "被爬页面的 URL。"
+                          },
+                          "raw_content": {
+                            "type": "string",
+                            "description": "按所请求格式清洗解析后的被爬页面内容。"
+                          },
+                          "favicon": {
+                            "type": "string",
+                            "description": "被爬页面的 favicon URL，仅在请求 favicon 时出现。"
+                          }
+                        }
+                      },
+                      "description": "爬取过程中访问的页面及其提取内容。"
+                    },
+                    "response_time": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "服务端完成本次请求所用的时间，单位为秒。"
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "description": "本次请求消耗的积分数。"
+                        }
+                      },
+                      "description": "本次请求的积分用量，仅在请求用量信息时出现。"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "本次请求的唯一标识，便于追踪与排障。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "从根 URL 出发遍历整站，在可配置的深度与广度上限内沿链接抓取，返回每个访问页面的提取内容。可用自然语言指令以及路径/域名的包含或排除筛选，控制跟进哪些链接。"
+      }
+    },
+    "/tavily/map": {
+      "post": {
+        "tags": [
+          "https://docs.tavily.com/documentation/api-reference/endpoint/map"
+        ],
+        "summary": "生成站点地图 POST /tavily/map",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "站点映射的起始根 URL。",
+                    "example": "docs.tavily.com"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "用自然语言告诉爬虫在映射站点时优先跟进哪些链接。"
+                  },
+                  "max_depth": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "映射从根 URL 出发可跟进的链接跳数（层级深度）。",
+                    "minimum": 1,
+                    "maximum": 5
+                  },
+                  "max_breadth": {
+                    "type": "integer",
+                    "default": 20,
+                    "description": "在链接树每一层级上可跟进的链接数量。",
+                    "minimum": 1,
+                    "maximum": 500
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "default": 50,
+                    "description": "爬虫停止前总共处理的链接数量上限。",
+                    "minimum": 1
+                  },
+                  "select_paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "正则表达式模式；仅映射路径匹配的 URL。"
+                  },
+                  "select_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "正则表达式模式；将映射范围限定在匹配的域名或子域名。"
+                  },
+                  "exclude_paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "正则表达式模式；路径匹配的 URL 会被跳过。"
+                  },
+                  "exclude_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "正则表达式模式；匹配的域名或子域名会被跳过。"
+                  },
+                  "allow_external": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "开启后，指向外部域名的链接也会保留在结果中。"
+                  },
+                  "timeout": {
+                    "type": "number",
+                    "format": "float",
+                    "default": 150,
+                    "description": "等待整个映射操作完成的最长时间，单位为秒。",
+                    "minimum": 10,
+                    "maximum": 150
+                  },
+                  "include_usage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "开启后，在响应中包含本次请求的积分用量明细。"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Map results returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "base_url": {
+                      "type": "string",
+                      "description": "实际被映射的根 URL。"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "URLs discovered during the mapping."
+                      },
+                      "description": "映射站点过程中发现的 URL 平铺列表。"
+                    },
+                    "response_time": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "服务端完成本次请求所用的时间，单位为秒。"
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "description": "本次请求消耗的积分数。"
+                        }
+                      },
+                      "description": "本次请求的积分用量，仅在请求用量信息时出现。"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "本次请求的唯一标识，便于追踪与排障。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "从根 URL 出发探测整站的链接结构，返回可达 URL 列表，但不提取页面正文。适合在决定爬取或提取之前先摸清站点结构。"
+      }
+    }
+  }
+}

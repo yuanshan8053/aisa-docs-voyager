@@ -1,0 +1,461 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AIsa Video Generation API (async)",
+    "version": "1.0.0",
+    "description": "Asynchronous video generation. Submit a task via `POST /apis/v1/services/aigc/video-generation/video-synthesis`, then poll `GET /apis/v1/services/aigc/tasks/{task_id}` until the status is `SUCCEEDED` or `FAILED`."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key"
+      }
+    }
+  },
+  "paths": {
+    "/services/aigc/video-generation/video-synthesis": {
+      "post": {
+        "summary": "创建视频生成任务 createVideoSynthesisTask",
+        "description": "在某个 Wan 模型上提交异步的文生视频或图生视频任务，返回可交给 getVideoSynthesisTask 轮询的 task_id。需开启异步请求头，且不同图生视频模型传参考图的字段不同（input.img_url 与 input.media）。",
+        "operationId": "createVideoSynthesisTask",
+        "tags": [
+          "Video Generation"
+        ],
+        "parameters": [
+          {
+            "name": "X-DashScope-Async",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "enable"
+              ]
+            },
+            "description": "将请求切换为异步任务模式，也是该接口唯一支持的模式。"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "input"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "wan2.6-t2v",
+                      "wan2.6-i2v",
+                      "wan2.7-t2v",
+                      "wan2.7-i2v"
+                    ],
+                    "description": "选择由哪个 Wan 模型来处理任务；后缀区分文生视频与图生视频，两个图生视频变体通过不同字段传入参考图。",
+                    "example": "wan2.6-t2v"
+                  },
+                  "input": {
+                    "type": "object",
+                    "required": [
+                      "prompt"
+                    ],
+                    "description": "生成输入的容器（提示词及可选的参考图、参考音频）。",
+                    "properties": {
+                      "prompt": {
+                        "type": "string",
+                        "description": "描述要生成视频的文本提示词；必须包含实际词语，纯空白会被上游拒绝。"
+                      },
+                      "negative_prompt": {
+                        "type": "string",
+                        "description": "描述希望在生成视频中避免出现的内容。"
+                      },
+                      "img_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "wan2.6-i2v 图生视频模型的参考图链接；文生视频模型会忽略它，wan2.7-i2v 改用 input.media。"
+                      },
+                      "media": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "description": "以数组形式传入的参考图链接，供 wan2.7-i2v 图生视频模型使用；该模型不要改用 input.img_url。"
+                      },
+                      "audio_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "可选的参考音频链接。"
+                      }
+                    }
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "resolution": {
+                        "type": "string",
+                        "enum": [
+                          "720P",
+                          "1080P"
+                        ],
+                        "default": "720P",
+                        "description": "生成视频的输出分辨率。"
+                      },
+                      "duration": {
+                        "type": "integer",
+                        "enum": [
+                          5,
+                          10
+                        ],
+                        "default": 5,
+                        "description": "生成片段的时长，单位为秒。"
+                      },
+                      "shot_type": {
+                        "type": "string",
+                        "enum": [
+                          "single",
+                          "multi"
+                        ],
+                        "default": "single",
+                        "description": "输出为单一连续镜头还是由多个镜头拼接。"
+                      },
+                      "watermark": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "是否在生成视频上叠加水印。"
+                      },
+                      "seed": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2147483647,
+                        "description": "控制生成的随机种子；在相同输入下复用同一种子可复现相同结果。"
+                      }
+                    },
+                    "description": "生成调节项的容器，如分辨率、时长、随机种子等。"
+                  }
+                }
+              },
+              "examples": {
+                "wan26_t2v": {
+                  "summary": "wan2.6-t2v — text-to-video, 5 s, 720P",
+                  "value": {
+                    "model": "wan2.6-t2v",
+                    "input": {
+                      "prompt": "cinematic close-up, slow push-in, shallow depth of field"
+                    },
+                    "parameters": {
+                      "resolution": "720P",
+                      "duration": 5
+                    }
+                  }
+                },
+                "wan26_i2v": {
+                  "summary": "wan2.6-i2v — image-to-video (uses img_url)",
+                  "value": {
+                    "model": "wan2.6-i2v",
+                    "input": {
+                      "prompt": "gentle camera orbit, golden hour lighting",
+                      "img_url": "https://example.com/reference.jpg"
+                    },
+                    "parameters": {
+                      "resolution": "1080P",
+                      "duration": 10
+                    }
+                  }
+                },
+                "wan27_t2v": {
+                  "summary": "wan2.7-t2v — text-to-video, newer model",
+                  "value": {
+                    "model": "wan2.7-t2v",
+                    "input": {
+                      "prompt": "wide sweeping shot of a neon cyberpunk skyline at dusk"
+                    },
+                    "parameters": {
+                      "resolution": "720P",
+                      "duration": 5
+                    }
+                  }
+                },
+                "wan27_i2v": {
+                  "summary": "wan2.7-i2v — image-to-video (uses media ARRAY, not img_url)",
+                  "value": {
+                    "model": "wan2.7-i2v",
+                    "input": {
+                      "prompt": "gentle zoom with parallax, cinematic color grading",
+                      "media": [
+                        "https://example.com/reference.jpg"
+                      ]
+                    },
+                    "parameters": {
+                      "resolution": "720P",
+                      "duration": 5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created — poll `/services/aigc/tasks/{task_id}` for progress.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "type": "string",
+                          "description": "所创建任务的标识，传给 getVideoSynthesisTask 轮询结果。"
+                        },
+                        "task_status": {
+                          "type": "string",
+                          "enum": [
+                            "PENDING"
+                          ],
+                          "description": "任务创建之后、开始处理之前的生命周期状态。"
+                        }
+                      },
+                      "description": "新建任务的标识与初始状态的容器。"
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "本次接口调用的标识，便于追踪与排障。"
+                    }
+                  }
+                },
+                "example": {
+                  "output": {
+                    "task_id": "b3be072e-cc82-4033-8fb7-0b089846544f",
+                    "task_status": "PENDING"
+                  },
+                  "request_id": "8a931b13-c44f-9230-a76b-83487d840060"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "`model not supported` (the model isn't routed through this endpoint) or `input param is required` (body missing `input`).\n\nNote: for `wan2.7-i2v`, submission **succeeds with HTTP 200** even without the image input — the task later lands in `FAILED` status with `code: \"InvalidParameter\"` and `message: \"Field required: input.media\"`."
+          }
+        }
+      }
+    },
+    "/services/aigc/tasks/{task_id}": {
+      "get": {
+        "summary": "查询视频生成任务结果 getVideoSynthesisTask",
+        "description": "轮询由 createVideoSynthesisTask 创建的任务的状态与结果。通过 output.task_status 区分各生命周期状态，成功后可在 output.video_url 取到视频地址。",
+        "operationId": "getVideoSynthesisTask",
+        "tags": [
+          "Video Generation"
+        ],
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询的任务标识，由 createVideoSynthesisTask 返回；无法识别的 ID 会返回未知状态而非报错。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task status response. Always HTTP 200 — inspect `output.task_status` to tell lifecycle states apart.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "type": "string",
+                          "description": "所查询任务的标识。"
+                        },
+                        "task_status": {
+                          "type": "string",
+                          "enum": [
+                            "PENDING",
+                            "RUNNING",
+                            "SUCCEEDED",
+                            "FAILED",
+                            "CANCELED",
+                            "UNKNOWN"
+                          ],
+                          "description": "任务当前的生命周期状态；据此决定继续轮询、读取结果还是查看失败字段。"
+                        },
+                        "video_url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "生成视频的链接，任务成功后才出现；该链接有效期短，请尽快下载并自行保存。"
+                        },
+                        "orig_prompt": {
+                          "type": "string",
+                          "description": "上游服务保存的原始提示词。"
+                        },
+                        "submit_time": {
+                          "type": "string",
+                          "description": "任务被受理的时间。"
+                        },
+                        "scheduled_time": {
+                          "type": "string",
+                          "description": "任务被调度执行的时间。"
+                        },
+                        "end_time": {
+                          "type": "string",
+                          "description": "任务到达终态的时间。"
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "机器可读的错误码，任务失败时出现。"
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "可读的失败原因，任务失败时出现。"
+                        }
+                      },
+                      "description": "任务当前状态的容器，任务结束后还含结果或失败详情。"
+                    },
+                    "usage": {
+                      "type": "object",
+                      "description": "资源用量数据的容器，任务成功后出现。",
+                      "properties": {
+                        "input_video_duration": {
+                          "type": "integer",
+                          "description": "输入视频参考的时长（秒），未提供输入视频时为 0。"
+                        },
+                        "output_video_duration": {
+                          "type": "integer",
+                          "description": "生成视频的时长，单位为秒。"
+                        },
+                        "duration": {
+                          "type": "number",
+                          "description": "用作计费依据的时长数值。"
+                        },
+                        "video_count": {
+                          "type": "integer",
+                          "description": "任务生成的视频数量。"
+                        },
+                        "size": {
+                          "type": "string",
+                          "description": "生成视频的实际像素尺寸，以宽乘高的形式给出。",
+                          "example": "1920*1080"
+                        },
+                        "ratio": {
+                          "type": "string",
+                          "description": "生成视频的宽高比。",
+                          "example": "16:9"
+                        },
+                        "SR": {
+                          "type": "integer",
+                          "description": "视频经超分辨率放大后的输出高度。",
+                          "example": 1080
+                        }
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "本次接口调用的标识，便于追踪与排障。"
+                    }
+                  }
+                },
+                "examples": {
+                  "succeeded": {
+                    "summary": "SUCCEEDED — video_url is populated",
+                    "value": {
+                      "output": {
+                        "task_id": "b3be072e-cc82-4033-8fb7-0b089846544f",
+                        "task_status": "SUCCEEDED",
+                        "video_url": "https://cdn.aisa.one/videos/wan2.6/20260418-abc.mp4",
+                        "orig_prompt": "cinematic close-up, slow push-in, shallow depth of field",
+                        "submit_time": "2026-04-18 15:16:01.841",
+                        "scheduled_time": "2026-04-18 15:16:01.867",
+                        "end_time": "2026-04-18 15:16:42.512"
+                      },
+                      "usage": {
+                        "output_video_duration": 5,
+                        "video_count": 1,
+                        "SR": 720
+                      },
+                      "request_id": "8a931b13-c44f-9230-a76b-83487d840060"
+                    }
+                  },
+                  "failed": {
+                    "summary": "FAILED (invalid prompt — not billed)",
+                    "value": {
+                      "output": {
+                        "task_id": "b3be072e-cc82-4033-8fb7-0b089846544f",
+                        "task_status": "FAILED",
+                        "code": "InvalidParameter",
+                        "message": "prompt must contain words",
+                        "submit_time": "2026-04-18 15:16:01.841",
+                        "scheduled_time": "2026-04-18 15:16:01.867",
+                        "end_time": "2026-04-18 15:16:01.941"
+                      },
+                      "request_id": "8a931b13-c44f-9230-a76b-83487d840060"
+                    }
+                  },
+                  "running": {
+                    "summary": "RUNNING (still processing)",
+                    "value": {
+                      "output": {
+                        "task_id": "b3be072e-cc82-4033-8fb7-0b089846544f",
+                        "task_status": "RUNNING"
+                      },
+                      "request_id": "8a931b13-c44f-9230-a76b-83487d840060"
+                    }
+                  },
+                  "unknown": {
+                    "summary": "UNKNOWN task_id (still returns HTTP 200)",
+                    "value": {
+                      "output": {
+                        "task_id": "bogus-task-id",
+                        "task_status": "UNKNOWN"
+                      },
+                      "request_id": "71b2b0ad-cb6f-9de4-a8bc-a88e4fb72f0e"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "500": {
+            "description": "`unsupported uri` — check the path. The correct pattern is `/services/aigc/tasks/{task_id}`, not `/services/aigc/tasks?task_id=`."
+          }
+        }
+      }
+    }
+  }
+}

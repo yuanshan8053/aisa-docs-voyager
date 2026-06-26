@@ -1,0 +1,5195 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Apollo API",
+    "version": "1.0.0",
+    "description": "Apollo API endpoints exposed through the AIsa unified gateway."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/apollo/people/match": {
+      "post": {
+        "summary": "匹配并丰富单个联系人 post_apollo_people_match",
+        "description": "用 Apollo 的联系人与公司数据丰富单个人；可选触发邮箱/电话瀑布式补全，并解锁个人邮箱或电话号码。尽量多提供标识参数（姓名、邮箱、域名、LinkedIn 链接、Apollo id）以提升匹配准确率。",
+        "operationId": "post_apollo_people_match",
+        "parameters": [
+          {
+            "name": "first_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "人的名字；在没有邮箱或 id 时与 last_name 搭配按全名匹配。"
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "人的姓氏；与 first_name 搭配使用。"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "全名，可替代分别传 first_name 与 last_name。"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "人的邮箱地址；单一最强的精确匹配信号。"
+          },
+          {
+            "name": "hashed_email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "邮箱哈希值，用于在不传明文邮箱的情况下匹配。\n[⚠️批注:源码未声明 MD5 与 SHA-256 之外的取值，详细哈希规范待研发确认。]"
+          },
+          {
+            "name": "organization_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "人的雇主名称（现任或曾任），用于区分匹配。"
+          },
+          {
+            "name": "domain",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "人的雇主主域名（现任或曾任），用于区分匹配。"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "该人员的 Apollo 标识。"
+          },
+          {
+            "name": "linkedin_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "人的 LinkedIn 主页链接；很强的匹配信号。"
+          },
+          {
+            "name": "run_waterfall_email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "启用邮箱瀑布式补全，调用更多数据源来寻找邮箱。"
+          },
+          {
+            "name": "run_waterfall_phone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "启用电话瀑布式补全，调用更多数据源来寻找电话。"
+          },
+          {
+            "name": "reveal_personal_emails",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "在结果中包含个人邮箱；可能额外消耗额度。"
+          },
+          {
+            "name": "reveal_phone_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "在结果中包含所有可用电话；启用后 webhook_url 变为必填，因为号码异步回传。"
+          },
+          {
+            "name": "webhook_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "异步接收已揭示电话号码的回调地址；reveal_phone_number 启用时必填。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "person": {
+                      "type": "object",
+                      "description": "匹配到的人员的丰富后画像。"
+                    },
+                    "waterfall": {
+                      "type": "object",
+                      "description": "触发的邮箱/电话瀑布式补全的状态与结果。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/people/bulk_match": {
+      "post": {
+        "summary": "批量匹配并丰富联系人 post_apollo_people_bulk_match",
+        "description": "一次调用最多丰富 10 个人，传入人员记录数组。返回每条记录的匹配结果，以及成功丰富数量、消耗额度等汇总计数。",
+        "operationId": "post_apollo_people_bulk_match",
+        "parameters": [
+          {
+            "name": "run_waterfall_email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "为批次中每条记录启用邮箱瀑布式补全。"
+          },
+          {
+            "name": "run_waterfall_phone",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "为批次中每条记录启用电话瀑布式补全。"
+          },
+          {
+            "name": "reveal_personal_emails",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "为每条记录包含个人邮箱；可能额外消耗额度。"
+          },
+          {
+            "name": "reveal_phone_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "为每条记录包含所有电话；需 webhook_url 异步回传。"
+          },
+          {
+            "name": "webhook_url",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "接收已揭示电话号码的回调地址；reveal_phone_number 启用时必填。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "批量请求的整体处理状态。"
+                    },
+                    "error_code": {
+                      "type": "string",
+                      "description": "失败时的错误码；成功时不返回。"
+                    },
+                    "error_message": {
+                      "type": "string",
+                      "description": "失败时的可读错误说明。"
+                    },
+                    "total_requested_enrichments": {
+                      "type": "integer",
+                      "description": "本次调用请求的丰富数量。"
+                    },
+                    "unique_enriched_records": {
+                      "type": "integer",
+                      "description": "成功丰富的去重记录数。"
+                    },
+                    "missing_records": {
+                      "type": "integer",
+                      "description": "未能匹配的记录数。"
+                    },
+                    "credits_consumed": {
+                      "type": "integer",
+                      "description": "本次批量丰富消耗的额度。"
+                    },
+                    "matches": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "逐条记录的丰富结果，与输入顺序对应。"
+                    },
+                    "waterfall": {
+                      "type": "object",
+                      "description": "整批瀑布式补全的汇总状态。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "details": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "待丰富的人员记录数组，每人一个对象，最多 10 条。"
+                  }
+                },
+                "required": [
+                  "details"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/organizations/enrich": {
+      "get": {
+        "summary": "丰富单个公司信息 get_apollo_organizations_enrich",
+        "description": "按公司主域名丰富单个公司，返回 Apollo 完整的公司画像。",
+        "operationId": "get_apollo_organizations_enrich",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "待丰富公司的主域名，例如 apollo.io。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "organization": {
+                      "type": "object",
+                      "description": "丰富后的公司画像。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/organizations/bulk_enrich": {
+      "post": {
+        "summary": "批量丰富公司信息 post_apollo_organizations_bulk_enrich",
+        "description": "一次调用最多丰富 10 个公司，传入多个域名。返回匹配到的公司画像，以及请求数、去重数、丰富数、未命中数等计数。",
+        "operationId": "post_apollo_organizations_bulk_enrich",
+        "parameters": [
+          {
+            "name": "domains[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "待丰富的公司域名，每次最多 10 个。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "批量请求的整体处理状态。"
+                    },
+                    "error_code": {
+                      "type": "string",
+                      "description": "失败时的错误码；成功时不返回。"
+                    },
+                    "error_message": {
+                      "type": "string",
+                      "description": "失败时的可读错误说明。"
+                    },
+                    "total_requested_domains": {
+                      "type": "integer",
+                      "description": "本次调用提交的域名数量。"
+                    },
+                    "unique_domains": {
+                      "type": "integer",
+                      "description": "去重后的域名数量。"
+                    },
+                    "unique_enriched_records": {
+                      "type": "integer",
+                      "description": "成功丰富的去重公司数。"
+                    },
+                    "missing_records": {
+                      "type": "integer",
+                      "description": "未能匹配的域名数。"
+                    },
+                    "organizations": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "丰富后的公司画像，每个匹配域名一条。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/mixed_people/api_search": {
+      "post": {
+        "summary": "搜索人员 post_apollo_mixed_people_api_search",
+        "description": "用职位、资历、地区、雇主属性、所用技术等筛选条件在 Apollo 库中查找全新人员。结果分页；组合多个筛选可缩小目标人群。",
+        "operationId": "post_apollo_mixed_people_api_search",
+        "parameters": [
+          {
+            "name": "person_titles[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要匹配的职位；人的当前职位命中任一值即纳入。"
+          },
+          {
+            "name": "include_similar_titles",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "同时纳入职位与所列相近的人，扩大目标人群。"
+          },
+          {
+            "name": "q_keywords",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "用于进一步筛选结果的自由文本关键词。"
+          },
+          {
+            "name": "person_locations[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "人的居住地；可按城市、美国州、国家匹配。"
+          },
+          {
+            "name": "person_seniorities[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "在现任雇主的资历层级，用于按层级定位。"
+          },
+          {
+            "name": "organization_locations[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "人现任雇主的总部所在地。"
+          },
+          {
+            "name": "q_organization_domains_list[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要匹配的雇主主域名（现任或曾任）。"
+          },
+          {
+            "name": "contact_email_status[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要纳入的邮箱验证状态，用于控制匹配质量。"
+          },
+          {
+            "name": "organization_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "其员工应被纳入的 Apollo 公司 id。"
+          },
+          {
+            "name": "organization_num_employees_ranges[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "现任雇主的员工人数区间，用于按公司规模定位。"
+          },
+          {
+            "name": "revenue_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "现任雇主的最低营收；与 revenue_range[max] 搭配。"
+          },
+          {
+            "name": "revenue_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "现任雇主的最高营收；与 revenue_range[min] 搭配。"
+          },
+          {
+            "name": "currently_using_all_of_technology_uids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "匹配同时使用所列全部技术的雇主（与逻辑）。"
+          },
+          {
+            "name": "currently_using_any_of_technology_uids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "匹配使用所列任一技术的雇主（或逻辑）。"
+          },
+          {
+            "name": "currently_not_using_any_of_technology_uids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "排除使用所列任一技术的雇主。"
+          },
+          {
+            "name": "q_organization_job_titles[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "出现在雇主在招职位中的职位名称。"
+          },
+          {
+            "name": "organization_job_locations[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "雇主正在招聘的职位所在地。"
+          },
+          {
+            "name": "organization_num_jobs_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "雇主在招职位的最少数量。"
+          },
+          {
+            "name": "organization_num_jobs_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "雇主在招职位的最多数量。"
+          },
+          {
+            "name": "organization_job_posted_at_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "雇主职位发布的最早日期；与最大值搭配。"
+          },
+          {
+            "name": "organization_job_posted_at_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "雇主职位发布的最晚日期；与最小值搭配。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码，与 per_page 配合分页。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数；调小可加快响应。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_entries": {
+                      "type": "integer",
+                      "description": "所有页中匹配该筛选的人员总数。"
+                    },
+                    "people": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "当前页匹配到的人员。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/mixed_companies/search": {
+      "post": {
+        "summary": "搜索公司 post_apollo_mixed_companies_search",
+        "description": "用域名、人数区间、地区、营收、融资、技术栈、在招职位等筛选条件在 Apollo 库中查找公司。结果分页。",
+        "operationId": "post_apollo_mixed_companies_search",
+        "parameters": [
+          {
+            "name": "q_organization_domains_list[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要匹配的公司主域名。"
+          },
+          {
+            "name": "organization_num_employees_ranges[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "按公司规模定位的员工人数区间。"
+          },
+          {
+            "name": "organization_locations[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要纳入的公司总部所在地。"
+          },
+          {
+            "name": "organization_not_locations[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要排除的公司总部所在地。"
+          },
+          {
+            "name": "revenue_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "公司最低营收；与 revenue_range[max] 搭配。"
+          },
+          {
+            "name": "revenue_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "公司最高营收；与 revenue_range[min] 搭配。"
+          },
+          {
+            "name": "currently_using_any_of_technology_uids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "匹配使用所列任一技术的公司。"
+          },
+          {
+            "name": "q_organization_keyword_tags[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "描述公司行业或方向的关键词标签。"
+          },
+          {
+            "name": "q_organization_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "按公司名称筛选。"
+          },
+          {
+            "name": "organization_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要纳入的 Apollo 公司 id。"
+          },
+          {
+            "name": "latest_funding_amount_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "公司最近一轮融资的最小金额。"
+          },
+          {
+            "name": "latest_funding_amount_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "公司最近一轮融资的最大金额。"
+          },
+          {
+            "name": "total_funding_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "公司累计融资的最小总额。"
+          },
+          {
+            "name": "total_funding_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "公司累计融资的最大总额。"
+          },
+          {
+            "name": "latest_funding_date_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "公司最近一轮融资的最早日期；与最大值搭配。"
+          },
+          {
+            "name": "latest_funding_date_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "公司最近一轮融资的最晚日期；与最小值搭配。"
+          },
+          {
+            "name": "q_organization_job_titles[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "出现在公司在招职位中的职位名称。"
+          },
+          {
+            "name": "organization_job_locations[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "公司正在招聘的职位所在地。"
+          },
+          {
+            "name": "organization_num_jobs_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "公司在招职位的最少数量。"
+          },
+          {
+            "name": "organization_num_jobs_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "公司在招职位的最多数量。"
+          },
+          {
+            "name": "organization_job_posted_at_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "公司职位发布的最早日期；与最大值搭配。"
+          },
+          {
+            "name": "organization_job_posted_at_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "公司职位发布的最晚日期；与最小值搭配。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码，与 per_page 配合分页。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数；调小可加快响应。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "breadcrumbs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "已应用筛选的面包屑，回显结果是如何被缩小的。"
+                    },
+                    "partial_results_only": {
+                      "type": "boolean",
+                      "description": "是否只返回了部分结果。"
+                    },
+                    "has_join": {
+                      "type": "boolean",
+                      "description": "内部标志，表示查询进行了 join。\n[⚠️批注:源码未声明该字段的业务含义，待研发确认。]"
+                    },
+                    "disable_eu_prospecting": {
+                      "type": "boolean",
+                      "description": "本次查询是否按合规设置禁用了欧盟潜客挖掘。"
+                    },
+                    "partial_results_limit": {
+                      "type": "integer",
+                      "description": "触发部分结果时所对应的上限。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    },
+                    "accounts": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "已作为账户保存在 CRM 中的匹配公司。"
+                    },
+                    "organizations": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "来自 Apollo 库的匹配公司。"
+                    },
+                    "model_ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "支撑结果的记录标识。\n[⚠️批注:源码未声明该字段的业务含义，待研发确认。]"
+                    },
+                    "num_fetch_result": {
+                      "type": "string",
+                      "description": "本页抓取的记录数。"
+                    },
+                    "derived_params": {
+                      "type": "string",
+                      "description": "Apollo 根据你的输入推导出的查询参数。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/organizations/{organization_id}/job_postings": {
+      "get": {
+        "summary": "查询公司在招职位 get_apollo_organizations_organization_id_job_postings",
+        "description": "获取指定公司当前在招的职位，可用于识别招聘信号与增长方向。",
+        "operationId": "get_apollo_organizations_organization_id_job_postings",
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询在招职位的公司 Apollo id。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码，与 per_page 配合分页。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数；调小可加快响应。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "organization_job_postings": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "该公司当前在招的职位。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/organizations/{id}": {
+      "get": {
+        "summary": "查询公司完整信息 get_apollo_organizations_id",
+        "description": "按 Apollo id 获取公司的完整画像。",
+        "operationId": "get_apollo_organizations_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询的公司 Apollo id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "organization": {
+                      "type": "object",
+                      "description": "公司的完整画像。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/news_articles/search": {
+      "post": {
+        "summary": "搜索公司新闻 post_apollo_news_articles_search",
+        "description": "查找与 Apollo 库中公司关联的新闻，可按公司、类别、发布时间窗口筛选。结果分页。",
+        "operationId": "post_apollo_news_articles_search",
+        "parameters": [
+          {
+            "name": "organization_ids[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要查询新闻的 Apollo 公司 id。"
+          },
+          {
+            "name": "categories[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要筛选的新闻类别，如融资、管理层变动等。\n[⚠️批注:源码未声明完整的类别取值，待研发确认。]"
+          },
+          {
+            "name": "published_at[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "最早发布日期；与 published_at[max] 搭配。"
+          },
+          {
+            "name": "published_at[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "最晚发布日期；与 published_at[min] 搭配。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码，与 per_page 配合分页。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数；调小可加快响应。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    },
+                    "news_articles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "当前页匹配到的新闻。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/accounts": {
+      "post": {
+        "summary": "创建账户 post_apollo_accounts",
+        "description": "创建账户（保存在团队 CRM 中的公司）。域名重复会被拒绝。需主 API key。",
+        "operationId": "post_apollo_accounts",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "要创建的账户（公司）名称。"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "description": "账户的主域名；须唯一，重复会被拒绝。"
+                  },
+                  "owner_id": {
+                    "type": "string",
+                    "description": "指派为账户负责人的 Apollo 用户 id。"
+                  },
+                  "account_stage_id": {
+                    "type": "string",
+                    "description": "将账户置于其中的阶段 id。"
+                  }
+                },
+                "required": [
+                  "name",
+                  "domain"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/accounts/{account_id}": {
+      "patch": {
+        "summary": "更新账户 patch_apollo_accounts_account_id",
+        "description": "按 account_id 更新已有账户的字段，仅修改你传入的字段。需主 API key。",
+        "operationId": "patch_apollo_accounts_account_id",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要更新的账户 Apollo id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "新的账户名称。"
+                  },
+                  "domain": {
+                    "type": "string",
+                    "description": "新的主域名。"
+                  },
+                  "owner_id": {
+                    "type": "string",
+                    "description": "新的账户负责人 Apollo 用户 id。"
+                  },
+                  "account_stage_id": {
+                    "type": "string",
+                    "description": "账户的新阶段 id。"
+                  },
+                  "raw_address": {
+                    "type": "string",
+                    "description": "账户的自由文本邮寄地址。"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "账户的电话号码。"
+                  },
+                  "typed_custom_fields": {
+                    "type": "object",
+                    "description": "要设置的自定义字段值，以字段 id 为键。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/accounts/bulk_create": {
+      "post": {
+        "summary": "批量创建账户 post_apollo_accounts_bulk_create",
+        "description": "一次创建多个账户。响应把新建记录与已存在记录分开返回。需主 API key。",
+        "operationId": "post_apollo_accounts_bulk_create",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created_accounts": {
+                      "type": "string",
+                      "description": "本次新建的账户。"
+                    },
+                    "created_accounts[].id": {
+                      "type": "string",
+                      "description": "该账户的 Apollo id。"
+                    },
+                    "created_accounts[].name": {
+                      "type": "string",
+                      "description": "账户（公司）名称。"
+                    },
+                    "created_accounts[].domain": {
+                      "type": "string",
+                      "description": "账户的主域名。"
+                    },
+                    "created_accounts[].team_id": {
+                      "type": "string",
+                      "description": "拥有该账户的团队 id。"
+                    },
+                    "created_accounts[].owner_id": {
+                      "type": "string",
+                      "description": "账户负责人的 Apollo 用户 id。"
+                    },
+                    "created_accounts[].account_stage_id": {
+                      "type": "string",
+                      "description": "账户当前阶段的 id。"
+                    },
+                    "created_accounts[].phone": {
+                      "type": "string",
+                      "description": "账户的电话号码。"
+                    },
+                    "created_accounts[].created_at": {
+                      "type": "string",
+                      "description": "账户创建时间。"
+                    },
+                    "created_accounts[].updated_at": {
+                      "type": "string",
+                      "description": "账户最近更新时间。"
+                    },
+                    "existing_accounts": {
+                      "type": "string",
+                      "description": "已存在、被匹配而非新建的账户。"
+                    },
+                    "existing_accounts[].id": {
+                      "type": "string",
+                      "description": "该账户的 Apollo id。"
+                    },
+                    "existing_accounts[].name": {
+                      "type": "string",
+                      "description": "账户（公司）名称。"
+                    },
+                    "existing_accounts[].domain": {
+                      "type": "string",
+                      "description": "账户的主域名。"
+                    },
+                    "existing_accounts[].team_id": {
+                      "type": "string",
+                      "description": "拥有该账户的团队 id。"
+                    },
+                    "existing_accounts[].owner_id": {
+                      "type": "string",
+                      "description": "账户负责人的 Apollo 用户 id。"
+                    },
+                    "existing_accounts[].account_stage_id": {
+                      "type": "string",
+                      "description": "账户当前阶段的 id。"
+                    },
+                    "existing_accounts[].phone": {
+                      "type": "string",
+                      "description": "账户的电话号码。"
+                    },
+                    "existing_accounts[].created_at": {
+                      "type": "string",
+                      "description": "账户创建时间。"
+                    },
+                    "existing_accounts[].updated_at": {
+                      "type": "string",
+                      "description": "账户最近更新时间。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accounts": {
+                    "type": "string",
+                    "description": "要创建的账户对象数组。"
+                  },
+                  "append_label_names": {
+                    "type": "string",
+                    "description": "附加到每个新建账户上的标签名。"
+                  },
+                  "run_dedupe": {
+                    "type": "boolean",
+                    "description": "执行去重，使已存在账户被复用而非重复创建。"
+                  }
+                },
+                "required": [
+                  "accounts"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/accounts/bulk_update": {
+      "post": {
+        "summary": "批量更新账户 post_apollo_accounts_bulk_update",
+        "description": "一次更新多个账户，将 account_ids 与要修改的属性配对。支持异步处理。需主 API key。",
+        "operationId": "post_apollo_accounts_bulk_update",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accounts": {
+                      "type": "string",
+                      "description": "已更新的账户。"
+                    },
+                    "accounts[].id": {
+                      "type": "string",
+                      "description": "已更新账户的 Apollo id。"
+                    },
+                    "accounts[].account_stage_id": {
+                      "type": "string",
+                      "description": "更新后账户的阶段 id。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account_ids": {
+                    "type": "string",
+                    "description": "要更新的账户 id。"
+                  },
+                  "account_attributes": {
+                    "type": "string",
+                    "description": "应用到目标账户的属性值。"
+                  },
+                  "account_attributes[].name": {
+                    "type": "string",
+                    "description": "要应用的新账户名称。"
+                  },
+                  "account_attributes[].owner_id": {
+                    "type": "string",
+                    "description": "要应用的新负责人 Apollo 用户 id。"
+                  },
+                  "account_attributes[].account_stage_id": {
+                    "type": "string",
+                    "description": "要应用的新阶段 id。"
+                  },
+                  "async": {
+                    "type": "boolean",
+                    "description": "异步处理更新，而非等待完成。"
+                  }
+                },
+                "required": [
+                  "account_ids",
+                  "account_attributes"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/accounts/search": {
+      "post": {
+        "summary": "搜索账户 post_apollo_accounts_search",
+        "description": "按名称、阶段、标签搜索团队账户，支持排序与分页。需主 API key。",
+        "operationId": "post_apollo_accounts_search",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "q_organization_name": {
+                    "type": "string",
+                    "description": "按公司名称筛选账户。"
+                  },
+                  "account_stage_ids": {
+                    "type": "string",
+                    "description": "仅纳入处于这些阶段的账户。"
+                  },
+                  "account_label_ids": {
+                    "type": "string",
+                    "description": "仅纳入带有这些标签的账户。"
+                  },
+                  "sort_by_field": {
+                    "type": "string",
+                    "description": "结果排序所依据的字段。"
+                  },
+                  "sort_ascending": {
+                    "type": "boolean",
+                    "description": "为 true 时升序，false 时降序。"
+                  },
+                  "page": {
+                    "type": "integer",
+                    "description": "要获取的页码。"
+                  },
+                  "per_page": {
+                    "type": "integer",
+                    "description": "每页结果数。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/accounts/{id}": {
+      "get": {
+        "summary": "查询账户 get_apollo_accounts_id",
+        "description": "按 id 获取单个账户。需主 API key。",
+        "operationId": "get_apollo_accounts_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询的账户 Apollo id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/accounts/update_owners": {
+      "post": {
+        "summary": "批量更新账户负责人 post_apollo_accounts_update_owners",
+        "description": "一次为多个账户重新指派负责人。需主 API key。",
+        "operationId": "post_apollo_accounts_update_owners",
+        "parameters": [
+          {
+            "name": "account_ids[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要重新指派的账户 id。"
+          },
+          {
+            "name": "owner_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "所有所列账户的新负责人 Apollo 用户 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accounts": {
+                      "type": "string",
+                      "description": "负责人已变更的账户。"
+                    },
+                    "accounts[].id": {
+                      "type": "string",
+                      "description": "账户的 Apollo id。"
+                    },
+                    "accounts[].owner_id": {
+                      "type": "string",
+                      "description": "变更后账户负责人的 Apollo 用户 id。"
+                    },
+                    "accounts[].crm_owner_id": {
+                      "type": "string",
+                      "description": "已同步时在所连 CRM 中对应的负责人 id。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/account_stages": {
+      "get": {
+        "summary": "列出账户阶段 get_apollo_account_stages",
+        "description": "列出团队配置的所有账户阶段。返回的 id 可在别处用于设置或筛选 account_stage_id。需主 API key。",
+        "operationId": "get_apollo_account_stages",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "account_stages": {
+                      "type": "string",
+                      "description": "已配置的账户阶段列表。"
+                    },
+                    "account_stages[].id": {
+                      "type": "string",
+                      "description": "阶段 id；可用于设置或筛选 account_stage_id。"
+                    },
+                    "account_stages[].team_id": {
+                      "type": "string",
+                      "description": "拥有该阶段的团队 id。"
+                    },
+                    "account_stages[].display_name": {
+                      "type": "string",
+                      "description": "在 Apollo 界面中显示的阶段名称。"
+                    },
+                    "account_stages[].name": {
+                      "type": "string",
+                      "description": "阶段的内部名称。"
+                    },
+                    "account_stages[].display_order": {
+                      "type": "integer",
+                      "description": "阶段在有序流程中的位置。"
+                    },
+                    "account_stages[].default_exclude_for_leadgen": {
+                      "type": "boolean",
+                      "description": "处于该阶段的账户是否默认从潜客生成中排除。"
+                    },
+                    "account_stages[].category": {
+                      "type": "string",
+                      "description": "阶段所属的类别。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+                    },
+                    "account_stages[].is_meeting_set": {
+                      "type": "boolean",
+                      "description": "该阶段是否代表已安排会议。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/contacts": {
+      "post": {
+        "summary": "创建联系人 post_apollo_contacts",
+        "description": "创建联系人（保存在团队 CRM 中的人）。需主 API key。",
+        "operationId": "post_apollo_contacts",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "联系人的名字。"
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "联系人的姓氏。"
+                  },
+                  "organization_name": {
+                    "type": "string",
+                    "description": "联系人雇主的名称。"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "联系人的职位。"
+                  },
+                  "account_id": {
+                    "type": "string",
+                    "description": "要关联此联系人的账户 Apollo id。"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "联系人的邮箱地址。"
+                  },
+                  "website_url": {
+                    "type": "string",
+                    "description": "联系人的网站链接。"
+                  },
+                  "label_names": {
+                    "type": "string",
+                    "description": "要应用到联系人的标签。"
+                  },
+                  "contact_stage_id": {
+                    "type": "string",
+                    "description": "将联系人置于其中的阶段 id。"
+                  },
+                  "present_raw_address": {
+                    "type": "string",
+                    "description": "联系人当前的自由文本地址。"
+                  },
+                  "direct_phone": {
+                    "type": "string",
+                    "description": "联系人的直拨电话。"
+                  },
+                  "corporate_phone": {
+                    "type": "string",
+                    "description": "联系人的公司电话。"
+                  },
+                  "mobile_phone": {
+                    "type": "string",
+                    "description": "联系人的手机号码。"
+                  },
+                  "home_phone": {
+                    "type": "string",
+                    "description": "联系人的家庭电话。"
+                  },
+                  "other_phone": {
+                    "type": "string",
+                    "description": "联系人的其他电话。"
+                  },
+                  "typed_custom_fields": {
+                    "type": "object",
+                    "description": "要设置的自定义字段值，以字段 id 为键。"
+                  },
+                  "run_dedupe": {
+                    "type": "boolean",
+                    "description": "执行去重，使匹配到的已有联系人被复用而非重复创建。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/contacts/{contact_id}": {
+      "get": {
+        "summary": "查询联系人 get_apollo_contacts_contact_id",
+        "description": "按 id 获取单个联系人。需主 API key。",
+        "operationId": "get_apollo_contacts_contact_id",
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询的联系人 Apollo id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contact": {
+                      "type": "object",
+                      "description": "查询到的联系人。"
+                    },
+                    "contact.id": {
+                      "type": "string",
+                      "description": "联系人的 Apollo id。"
+                    },
+                    "contact.first_name": {
+                      "type": "string",
+                      "description": "联系人的名字。"
+                    },
+                    "contact.last_name": {
+                      "type": "string",
+                      "description": "联系人的姓氏。"
+                    },
+                    "contact.organization_name": {
+                      "type": "string",
+                      "description": "联系人雇主的名称。"
+                    },
+                    "contact.title": {
+                      "type": "string",
+                      "description": "联系人的职位。"
+                    },
+                    "contact.email": {
+                      "type": "string",
+                      "description": "联系人的邮箱地址。"
+                    },
+                    "contact.phone_numbers": {
+                      "type": "string",
+                      "description": "联系人的电话号码列表。"
+                    },
+                    "contact.phone_numbers[].raw_number": {
+                      "type": "string",
+                      "description": "原始存储的电话号码。"
+                    },
+                    "contact.phone_numbers[].sanitized_number": {
+                      "type": "string",
+                      "description": "规范化为标准格式的电话号码。"
+                    },
+                    "contact.owner_id": {
+                      "type": "string",
+                      "description": "联系人负责人的 Apollo 用户 id。"
+                    },
+                    "contact.account_id": {
+                      "type": "string",
+                      "description": "所关联账户的 Apollo id。"
+                    },
+                    "contact.present_raw_address": {
+                      "type": "string",
+                      "description": "联系人当前的自由文本地址。"
+                    },
+                    "contact.linkedin_url": {
+                      "type": "string",
+                      "description": "联系人 LinkedIn 主页链接。"
+                    },
+                    "contact.updated_at": {
+                      "type": "string",
+                      "description": "联系人最近更新时间。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "更新联系人 patch_apollo_contacts_contact_id",
+        "description": "按 contact_id 更新已有联系人的字段，仅修改你传入的字段。需主 API key。",
+        "operationId": "patch_apollo_contacts_contact_id",
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要更新的联系人 Apollo id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contact": {
+                      "type": "object",
+                      "description": "已更新的联系人。"
+                    },
+                    "contact.id": {
+                      "type": "string",
+                      "description": "联系人的 Apollo id。"
+                    },
+                    "contact.first_name": {
+                      "type": "string",
+                      "description": "联系人的名字。"
+                    },
+                    "contact.last_name": {
+                      "type": "string",
+                      "description": "联系人的姓氏。"
+                    },
+                    "contact.email": {
+                      "type": "string",
+                      "description": "联系人的邮箱地址。"
+                    },
+                    "contact.title": {
+                      "type": "string",
+                      "description": "联系人的职位。"
+                    },
+                    "contact.organization_name": {
+                      "type": "string",
+                      "description": "联系人雇主的名称。"
+                    },
+                    "contact.owner_id": {
+                      "type": "string",
+                      "description": "联系人负责人的 Apollo 用户 id。"
+                    },
+                    "contact.account_id": {
+                      "type": "string",
+                      "description": "所关联账户的 Apollo id。"
+                    },
+                    "contact.present_raw_address": {
+                      "type": "string",
+                      "description": "联系人当前的自由文本地址。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "联系人的名字。"
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "联系人的姓氏。"
+                  },
+                  "organization_name": {
+                    "type": "string",
+                    "description": "联系人雇主的名称。"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "联系人的职位。"
+                  },
+                  "account_id": {
+                    "type": "string",
+                    "description": "要关联此联系人的账户 Apollo id。"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "联系人的邮箱地址。"
+                  },
+                  "website_url": {
+                    "type": "string",
+                    "description": "联系人的网站链接。"
+                  },
+                  "label_names": {
+                    "type": "string",
+                    "description": "要应用到联系人的标签。"
+                  },
+                  "contact_stage_id": {
+                    "type": "string",
+                    "description": "将联系人置于其中的阶段 id。"
+                  },
+                  "present_raw_address": {
+                    "type": "string",
+                    "description": "联系人当前的自由文本地址。"
+                  },
+                  "direct_phone": {
+                    "type": "string",
+                    "description": "联系人的直拨电话。"
+                  },
+                  "corporate_phone": {
+                    "type": "string",
+                    "description": "联系人的公司电话。"
+                  },
+                  "mobile_phone": {
+                    "type": "string",
+                    "description": "联系人的手机号码。"
+                  },
+                  "home_phone": {
+                    "type": "string",
+                    "description": "联系人的家庭电话。"
+                  },
+                  "other_phone": {
+                    "type": "string",
+                    "description": "联系人的其他电话。"
+                  },
+                  "typed_custom_fields": {
+                    "type": "object",
+                    "description": "要设置的自定义字段值，以字段 id 为键。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/contacts/bulk_create": {
+      "post": {
+        "summary": "批量创建联系人 post_apollo_contacts_bulk_create",
+        "description": "一次创建多个联系人。响应把新建记录与已存在记录分开返回。需主 API key。",
+        "operationId": "post_apollo_contacts_bulk_create",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created_contacts": {
+                      "type": "string",
+                      "description": "本次新建的联系人。"
+                    },
+                    "created_contacts[].id": {
+                      "type": "string",
+                      "description": "联系人的 Apollo id。"
+                    },
+                    "created_contacts[].first_name": {
+                      "type": "string",
+                      "description": "联系人的名字。"
+                    },
+                    "created_contacts[].last_name": {
+                      "type": "string",
+                      "description": "联系人的姓氏。"
+                    },
+                    "created_contacts[].organization_name": {
+                      "type": "string",
+                      "description": "联系人雇主的名称。"
+                    },
+                    "created_contacts[].title": {
+                      "type": "string",
+                      "description": "联系人的职位。"
+                    },
+                    "created_contacts[].owner_id": {
+                      "type": "string",
+                      "description": "联系人负责人的 Apollo 用户 id。"
+                    },
+                    "created_contacts[].account_id": {
+                      "type": "string",
+                      "description": "所关联账户的 Apollo id。"
+                    },
+                    "created_contacts[].email": {
+                      "type": "string",
+                      "description": "联系人的邮箱地址。"
+                    },
+                    "created_contacts[].phone_numbers": {
+                      "type": "string",
+                      "description": "联系人的电话号码列表。"
+                    },
+                    "created_contacts[].typed_custom_fields": {
+                      "type": "object",
+                      "description": "联系人上的自定义字段值。"
+                    },
+                    "created_contacts[].updated_at": {
+                      "type": "string",
+                      "description": "联系人最近更新时间。"
+                    },
+                    "existing_contacts": {
+                      "type": "string",
+                      "description": "已存在、被匹配而非新建的联系人。"
+                    },
+                    "existing_contacts[].id": {
+                      "type": "string",
+                      "description": "联系人的 Apollo id。"
+                    },
+                    "existing_contacts[].first_name": {
+                      "type": "string",
+                      "description": "联系人的名字。"
+                    },
+                    "existing_contacts[].last_name": {
+                      "type": "string",
+                      "description": "联系人的姓氏。"
+                    },
+                    "existing_contacts[].organization_name": {
+                      "type": "string",
+                      "description": "联系人雇主的名称。"
+                    },
+                    "existing_contacts[].title": {
+                      "type": "string",
+                      "description": "联系人的职位。"
+                    },
+                    "existing_contacts[].owner_id": {
+                      "type": "string",
+                      "description": "联系人负责人的 Apollo 用户 id。"
+                    },
+                    "existing_contacts[].account_id": {
+                      "type": "string",
+                      "description": "所关联账户的 Apollo id。"
+                    },
+                    "existing_contacts[].email": {
+                      "type": "string",
+                      "description": "联系人的邮箱地址。"
+                    },
+                    "existing_contacts[].phone_numbers": {
+                      "type": "string",
+                      "description": "联系人的电话号码列表。"
+                    },
+                    "existing_contacts[].typed_custom_fields": {
+                      "type": "object",
+                      "description": "联系人上的自定义字段值。"
+                    },
+                    "existing_contacts[].updated_at": {
+                      "type": "string",
+                      "description": "联系人最近更新时间。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contacts": {
+                    "type": "string",
+                    "description": "要创建的联系人对象数组。"
+                  },
+                  "append_label_names": {
+                    "type": "string",
+                    "description": "附加到每个新建联系人上的标签名。"
+                  },
+                  "run_dedupe": {
+                    "type": "boolean",
+                    "description": "执行去重，使已存在联系人被复用而非重复创建。"
+                  }
+                },
+                "required": [
+                  "contacts"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/contacts/bulk_update": {
+      "post": {
+        "summary": "批量更新联系人 post_apollo_contacts_bulk_update",
+        "description": "一次更新多个联系人。需主 API key。",
+        "operationId": "post_apollo_contacts_bulk_update",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contacts": {
+                      "type": "string",
+                      "description": "已更新的联系人。"
+                    },
+                    "contacts[].id": {
+                      "type": "string",
+                      "description": "联系人的 Apollo id。"
+                    },
+                    "contacts[].first_name": {
+                      "type": "string",
+                      "description": "联系人的名字。"
+                    },
+                    "contacts[].last_name": {
+                      "type": "string",
+                      "description": "联系人的姓氏。"
+                    },
+                    "contacts[].email": {
+                      "type": "string",
+                      "description": "联系人的邮箱地址。"
+                    },
+                    "contacts[].title": {
+                      "type": "string",
+                      "description": "联系人的职位。"
+                    },
+                    "contacts[].organization_name": {
+                      "type": "string",
+                      "description": "联系人雇主的名称。"
+                    },
+                    "contacts[].owner_id": {
+                      "type": "string",
+                      "description": "联系人负责人的 Apollo 用户 id。"
+                    },
+                    "contacts[].account_id": {
+                      "type": "string",
+                      "description": "所关联账户的 Apollo id。"
+                    },
+                    "contacts[].present_raw_address": {
+                      "type": "string",
+                      "description": "联系人当前的自由文本地址。"
+                    },
+                    "contacts[].linkedin_url": {
+                      "type": "string",
+                      "description": "联系人 LinkedIn 主页链接。"
+                    },
+                    "contacts[].updated_at": {
+                      "type": "string",
+                      "description": "联系人最近更新时间。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/contacts/search": {
+      "post": {
+        "summary": "搜索联系人 post_apollo_contacts_search",
+        "description": "按关键词、阶段、标签搜索团队联系人，支持排序与分页。需主 API key。",
+        "operationId": "post_apollo_contacts_search",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "q_keywords": {
+                    "type": "string",
+                    "description": "用于筛选联系人的自由文本关键词。"
+                  },
+                  "contact_stage_ids": {
+                    "type": "string",
+                    "description": "仅纳入处于这些阶段的联系人。"
+                  },
+                  "contact_label_ids": {
+                    "type": "string",
+                    "description": "仅纳入带有这些标签的联系人。"
+                  },
+                  "sort_by_field": {
+                    "type": "string",
+                    "description": "结果排序所依据的字段。"
+                  },
+                  "sort_ascending": {
+                    "type": "boolean",
+                    "description": "为 true 时升序，false 时降序。"
+                  },
+                  "per_page": {
+                    "type": "integer",
+                    "description": "每页结果数。"
+                  },
+                  "page": {
+                    "type": "integer",
+                    "description": "要获取的页码。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/contacts/update_stages": {
+      "post": {
+        "summary": "批量更新联系人阶段 post_apollo_contacts_update_stages",
+        "description": "一次把多个联系人移动到同一个联系人阶段。需主 API key。",
+        "operationId": "post_apollo_contacts_update_stages",
+        "parameters": [
+          {
+            "name": "contact_ids[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要移动的联系人 id。"
+          },
+          {
+            "name": "contact_stage_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "将所有所列联系人移入的阶段 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contacts": {
+                      "type": "string",
+                      "description": "阶段已变更的联系人。"
+                    },
+                    "contacts[].id": {
+                      "type": "string",
+                      "description": "联系人的 Apollo id。"
+                    },
+                    "contacts[].first_name": {
+                      "type": "string",
+                      "description": "联系人的名字。"
+                    },
+                    "contacts[].last_name": {
+                      "type": "string",
+                      "description": "联系人的姓氏。"
+                    },
+                    "contacts[].contact_stage_id": {
+                      "type": "string",
+                      "description": "变更后联系人的阶段 id。"
+                    },
+                    "contacts[].owner_id": {
+                      "type": "string",
+                      "description": "联系人负责人的 Apollo 用户 id。"
+                    },
+                    "contacts[].email": {
+                      "type": "string",
+                      "description": "联系人的邮箱地址。"
+                    },
+                    "contacts[].organization_name": {
+                      "type": "string",
+                      "description": "联系人雇主的名称。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/contacts/update_owners": {
+      "post": {
+        "summary": "批量更新联系人负责人 post_apollo_contacts_update_owners",
+        "description": "一次为多个联系人重新指派负责人。需主 API key。",
+        "operationId": "post_apollo_contacts_update_owners",
+        "parameters": [
+          {
+            "name": "contact_ids[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要重新指派的联系人 id。"
+          },
+          {
+            "name": "owner_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "所有所列联系人的新负责人 Apollo 用户 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contacts": {
+                      "type": "string",
+                      "description": "负责人已变更的联系人。"
+                    },
+                    "contacts[].id": {
+                      "type": "string",
+                      "description": "联系人的 Apollo id。"
+                    },
+                    "contacts[].owner_id": {
+                      "type": "string",
+                      "description": "变更后联系人负责人的 Apollo 用户 id。"
+                    },
+                    "contacts[].crm_owner_id": {
+                      "type": "string",
+                      "description": "已同步时在所连 CRM 中对应的负责人 id。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/contact_stages": {
+      "get": {
+        "summary": "列出联系人阶段 get_apollo_contact_stages",
+        "description": "列出团队配置的所有联系人阶段。返回的 id 可在别处用于设置或筛选 contact_stage_id。需主 API key。",
+        "operationId": "get_apollo_contact_stages",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contact_stages": {
+                      "type": "string",
+                      "description": "已配置的联系人阶段列表。"
+                    },
+                    "contact_stages[].id": {
+                      "type": "string",
+                      "description": "阶段 id；可用于设置或筛选 contact_stage_id。"
+                    },
+                    "contact_stages[].team_id": {
+                      "type": "string",
+                      "description": "拥有该阶段的团队 id。"
+                    },
+                    "contact_stages[].display_name": {
+                      "type": "string",
+                      "description": "在 Apollo 界面中显示的阶段名称。"
+                    },
+                    "contact_stages[].name": {
+                      "type": "string",
+                      "description": "阶段的内部名称。"
+                    },
+                    "contact_stages[].display_order": {
+                      "type": "integer",
+                      "description": "阶段在有序流程中的位置。"
+                    },
+                    "contact_stages[].ignore_trigger_override": {
+                      "type": "boolean",
+                      "description": "联系人进入该阶段时是否忽略自动化触发。"
+                    },
+                    "contact_stages[].category": {
+                      "type": "string",
+                      "description": "阶段所属的类别。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+                    },
+                    "contact_stages[].is_meeting_set": {
+                      "type": "boolean",
+                      "description": "该阶段是否代表已安排会议。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/opportunities": {
+      "post": {
+        "summary": "创建商机 post_apollo_opportunities",
+        "description": "创建商机（deal），并关联到某个账户。需主 API key。",
+        "operationId": "post_apollo_opportunities",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "要创建的商机名称。"
+                  },
+                  "owner_id": {
+                    "type": "string",
+                    "description": "指派为商机负责人的 Apollo 用户 id。"
+                  },
+                  "account_id": {
+                    "type": "string",
+                    "description": "该商机所属账户的 Apollo id。"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "商机的金额。"
+                  },
+                  "opportunity_stage_id": {
+                    "type": "string",
+                    "description": "将商机置于其中的阶段 id。"
+                  },
+                  "closed_date": {
+                    "type": "string",
+                    "description": "商机的预计或实际关闭日期。"
+                  },
+                  "typed_custom_fields": {
+                    "type": "object",
+                    "description": "要设置的自定义字段值，以字段 id 为键。"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/opportunities/search": {
+      "get": {
+        "summary": "列出商机 get_apollo_opportunities_search",
+        "description": "列出全部商机，支持排序与分页。需主 API key。",
+        "operationId": "get_apollo_opportunities_search",
+        "parameters": [
+          {
+            "name": "sort_by_field",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "商机排序所依据的字段。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "opportunities": {
+                      "type": "string",
+                      "description": "当前页的商机。"
+                    },
+                    "opportunities[].id": {
+                      "type": "string",
+                      "description": "商机的 Apollo id。"
+                    },
+                    "opportunities[].owner_id": {
+                      "type": "string",
+                      "description": "商机负责人的 Apollo 用户 id。"
+                    },
+                    "opportunities[].account_id": {
+                      "type": "string",
+                      "description": "商机所属账户的 Apollo id。"
+                    },
+                    "opportunities[].amount": {
+                      "type": "number",
+                      "description": "商机的金额。"
+                    },
+                    "opportunities[].name": {
+                      "type": "string",
+                      "description": "商机名称。"
+                    },
+                    "opportunities[].opportunity_stage_id": {
+                      "type": "string",
+                      "description": "商机当前阶段的 id。"
+                    },
+                    "opportunities[].is_closed": {
+                      "type": "boolean",
+                      "description": "商机是否已关闭（赢单或输单）。"
+                    },
+                    "opportunities[].is_won": {
+                      "type": "boolean",
+                      "description": "商机是否赢单。"
+                    },
+                    "opportunities[].created_at": {
+                      "type": "string",
+                      "description": "商机创建时间。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    },
+                    "pagination.page": {
+                      "type": "integer",
+                      "description": "当前页码。"
+                    },
+                    "pagination.per_page": {
+                      "type": "integer",
+                      "description": "所用的每页结果数。"
+                    },
+                    "pagination.total_entries": {
+                      "type": "integer",
+                      "description": "所有页的商机总数。"
+                    },
+                    "pagination.total_pages": {
+                      "type": "integer",
+                      "description": "总页数。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/opportunities/{opportunity_id}": {
+      "get": {
+        "summary": "查询商机 get_apollo_opportunities_opportunity_id",
+        "description": "按 id 获取单个商机。需主 API key。",
+        "operationId": "get_apollo_opportunities_opportunity_id",
+        "parameters": [
+          {
+            "name": "opportunity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询的商机 Apollo id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "opportunity": {
+                      "type": "object",
+                      "description": "查询到的商机。"
+                    },
+                    "opportunity.id": {
+                      "type": "string",
+                      "description": "商机的 Apollo id。"
+                    },
+                    "opportunity.owner_id": {
+                      "type": "string",
+                      "description": "商机负责人的 Apollo 用户 id。"
+                    },
+                    "opportunity.account_id": {
+                      "type": "string",
+                      "description": "商机所属账户的 Apollo id。"
+                    },
+                    "opportunity.amount": {
+                      "type": "number",
+                      "description": "商机的金额。"
+                    },
+                    "opportunity.name": {
+                      "type": "string",
+                      "description": "商机名称。"
+                    },
+                    "opportunity.opportunity_stage_id": {
+                      "type": "string",
+                      "description": "商机当前阶段的 id。"
+                    },
+                    "opportunity.is_closed": {
+                      "type": "boolean",
+                      "description": "商机是否已关闭（赢单或输单）。"
+                    },
+                    "opportunity.is_won": {
+                      "type": "boolean",
+                      "description": "商机是否赢单。"
+                    },
+                    "opportunity.created_at": {
+                      "type": "string",
+                      "description": "商机创建时间。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "patch": {
+        "summary": "更新商机 patch_apollo_opportunities_opportunity_id",
+        "description": "更新已有商机的字段，仅修改你传入的字段。需主 API key。",
+        "operationId": "patch_apollo_opportunities_opportunity_id",
+        "parameters": [
+          {
+            "name": "opportunity_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要更新的商机 Apollo id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "owner_id": {
+                    "type": "string",
+                    "description": "新的商机负责人 Apollo 用户 id。"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "新的商机名称。"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "商机的新金额。"
+                  },
+                  "opportunity_stage_id": {
+                    "type": "string",
+                    "description": "商机的新阶段 id。"
+                  },
+                  "closed_date": {
+                    "type": "string",
+                    "description": "新的预计或实际关闭日期。"
+                  },
+                  "typed_custom_fields": {
+                    "type": "object",
+                    "description": "要设置的自定义字段值，以字段 id 为键。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/opportunity_stages": {
+      "get": {
+        "summary": "列出商机阶段 get_apollo_opportunity_stages",
+        "description": "列出团队配置的所有商机阶段。返回的 id 可在别处用于设置或筛选 opportunity_stage_id。需主 API key。",
+        "operationId": "get_apollo_opportunity_stages",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "opportunity_stages": {
+                      "type": "string",
+                      "description": "已配置的商机阶段列表。"
+                    },
+                    "opportunity_stages[].id": {
+                      "type": "string",
+                      "description": "阶段 id；可用于设置或筛选 opportunity_stage_id。"
+                    },
+                    "opportunity_stages[].team_id": {
+                      "type": "string",
+                      "description": "拥有该阶段的团队 id。"
+                    },
+                    "opportunity_stages[].name": {
+                      "type": "string",
+                      "description": "阶段名称。"
+                    },
+                    "opportunity_stages[].display_order": {
+                      "type": "integer",
+                      "description": "阶段在有序流程中的位置。"
+                    },
+                    "opportunity_stages[].forecast_category_cd": {
+                      "type": "string",
+                      "description": "该阶段归入的预测类别。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+                    },
+                    "opportunity_stages[].is_won": {
+                      "type": "boolean",
+                      "description": "到达该阶段是否代表赢单。"
+                    },
+                    "opportunity_stages[].is_closed": {
+                      "type": "boolean",
+                      "description": "到达该阶段是否代表关闭。"
+                    },
+                    "opportunity_stages[].probability": {
+                      "type": "number",
+                      "description": "与该阶段关联的赢单概率。"
+                    },
+                    "opportunity_stages[].description": {
+                      "type": "string",
+                      "description": "阶段的描述。"
+                    },
+                    "opportunity_stages[].opportunity_pipeline_id": {
+                      "type": "string",
+                      "description": "该阶段所属流程的 id。"
+                    },
+                    "opportunity_stages[].type": {
+                      "type": "string",
+                      "description": "阶段的类型。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/emailer_campaigns/search": {
+      "post": {
+        "summary": "搜索序列 post_apollo_emailer_campaigns_search",
+        "description": "按名称搜索 Apollo 账号中的序列（外联活动），支持分页。需主 API key。",
+        "operationId": "post_apollo_emailer_campaigns_search",
+        "parameters": [
+          {
+            "name": "q_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "按名称筛选序列。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "emailer_campaigns": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "当前页匹配到的序列。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/emailer_campaigns/{sequence_id}/add_contact_ids": {
+      "post": {
+        "summary": "向序列添加联系人 post_apollo_emailer_campaigns_sequence_id_add_contact_ids",
+        "description": "通过联系人 id 和/或标签名把联系人加入序列。多个开关可覆盖安全校验（如允许无邮箱、或已在其他序列中活跃的联系人）。需主 API key。",
+        "operationId": "post_apollo_emailer_campaigns_sequence_id_add_contact_ids",
+        "parameters": [
+          {
+            "name": "sequence_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要添加联系人的序列 id。"
+          },
+          {
+            "name": "emailer_campaign_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "与路径相同的序列 id；作为请求体别名提供。"
+          },
+          {
+            "name": "contact_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要添加的联系人 id；与 label_names[] 二者可任选其一或同时提供。"
+          },
+          {
+            "name": "label_names[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要添加其联系人的标签名；与 contact_ids[] 二者可任选其一或同时提供。"
+          },
+          {
+            "name": "send_email_from_email_account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "序列发信所用的邮箱账户 id（可多个）。"
+          },
+          {
+            "name": "send_email_from_email_address",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "可选的发件地址别名。"
+          },
+          {
+            "name": "sequence_no_email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "允许添加没有邮箱的联系人。"
+          },
+          {
+            "name": "sequence_unverified_email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "允许添加邮箱未验证的联系人。"
+          },
+          {
+            "name": "sequence_job_change",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "允许添加被标记为已换工作的联系人。"
+          },
+          {
+            "name": "sequence_active_in_other_campaigns",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "允许添加已在其他序列中活跃的联系人。"
+          },
+          {
+            "name": "sequence_finished_in_other_campaigns",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "允许添加已在其他序列中结束的联系人。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "联系人是否添加成功。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/emailer_campaigns/remove_or_stop_contact_ids": {
+      "post": {
+        "summary": "更新联系人在序列中的状态 post_apollo_emailer_campaigns_remove_or_stop_contact_ids",
+        "description": "在一个或多个序列中移除或停止联系人。mode 参数决定是标记完成、移除还是停止。需主 API key。",
+        "operationId": "post_apollo_emailer_campaigns_remove_or_stop_contact_ids",
+        "parameters": [
+          {
+            "name": "emailer_campaign_ids[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要操作的序列 id。"
+          },
+          {
+            "name": "contact_ids[]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "要移除或停止的联系人 id。"
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "对联系人采取的动作：标记完成、移除或停止。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "操作是否成功。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/emailer_campaigns/{sequence_id}/approve": {
+      "post": {
+        "summary": "激活序列 post_apollo_emailer_campaigns_sequence_id_approve",
+        "description": "激活序列，使其开始发送。需主 API key。",
+        "operationId": "post_apollo_emailer_campaigns_sequence_id_approve",
+        "parameters": [
+          {
+            "name": "sequence_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要操作的序列 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "emailer_campaign": {
+                      "type": "object",
+                      "description": "已激活的序列。"
+                    },
+                    "emailer_steps": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "已激活序列的各个步骤。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/emailer_campaigns/{sequence_id}/abort": {
+      "post": {
+        "summary": "停用序列 post_apollo_emailer_campaigns_sequence_id_abort",
+        "description": "停用序列，使其停止发送。需主 API key。",
+        "operationId": "post_apollo_emailer_campaigns_sequence_id_abort",
+        "parameters": [
+          {
+            "name": "sequence_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要操作的序列 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "emailer_campaign": {
+                      "type": "object",
+                      "description": "已停用的序列。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/emailer_campaigns/{sequence_id}/archive": {
+      "post": {
+        "summary": "归档序列 post_apollo_emailer_campaigns_sequence_id_archive",
+        "description": "归档序列：将其标记为非活跃并结束其中的联系人。需主 API key。",
+        "operationId": "post_apollo_emailer_campaigns_sequence_id_archive",
+        "parameters": [
+          {
+            "name": "sequence_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要操作的序列 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "emailer_campaign": {
+                      "type": "object",
+                      "description": "已归档的序列。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/emailer_messages/search": {
+      "get": {
+        "summary": "搜索外联邮件 get_apollo_emailer_messages_search",
+        "description": "搜索外联邮件，可按邮件统计、回复分类、用户、邮箱账户、序列筛选。结果分页。需主 API key。",
+        "operationId": "get_apollo_emailer_messages_search",
+        "parameters": [
+          {
+            "name": "emailer_message_stats[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "按邮件互动统计筛选，如已打开、已点击。\n[⚠️批注:源码未声明完整的取值集合，待研发确认。]"
+          },
+          {
+            "name": "emailer_message_reply_classes[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "按回复分类筛选，如正面、休假自动回复等。\n[⚠️批注:源码未声明完整的取值集合，待研发确认。]"
+          },
+          {
+            "name": "user_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "仅纳入这些用户发出的邮件。"
+          },
+          {
+            "name": "email_account_id_and_aliases",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "按发件邮箱账户及其别名筛选。"
+          },
+          {
+            "name": "emailer_campaign_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "仅纳入来自这些序列的邮件。"
+          },
+          {
+            "name": "not_emailer_campaign_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "排除来自这些序列的邮件。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "emailer_messages": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "当前页匹配到的外联邮件。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/emailer_messages/{id}/activities": {
+      "get": {
+        "summary": "查询邮件统计 get_apollo_emailer_messages_id_activities",
+        "description": "获取单封外联邮件的活动记录（打开、点击、回复等）。需主 API key。",
+        "operationId": "get_apollo_emailer_messages_id_activities",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询活动记录的外联邮件 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "emailer_message": {
+                      "type": "object",
+                      "description": "被查询的外联邮件。"
+                    },
+                    "activities": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "该邮件的活动事件，如打开、点击、回复。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/tasks": {
+      "post": {
+        "summary": "创建任务 post_apollo_tasks",
+        "description": "创建单个任务，指派给某用户并关联到联系人。需主 API key。",
+        "operationId": "post_apollo_tasks",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "task": {
+                      "type": "object",
+                      "description": "创建的任务。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "要指派任务的 Apollo 用户 id。"
+                  },
+                  "contact_id": {
+                    "type": "string",
+                    "description": "任务针对的联系人 Apollo id。"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "任务类型，如电话或邮件。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "任务优先级。\n[⚠️批注:源码未声明优先级取值集合，待研发确认。]"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "任务状态。\n[⚠️批注:源码未声明状态取值集合，待研发确认。]"
+                  },
+                  "due_at": {
+                    "type": "string",
+                    "description": "任务到期时间。"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "任务标题。"
+                  }
+                },
+                "required": [
+                  "user_id",
+                  "contact_id",
+                  "type",
+                  "status",
+                  "due_at"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/tasks/bulk_create": {
+      "post": {
+        "summary": "批量创建任务 post_apollo_tasks_bulk_create",
+        "description": "一次为多个联系人各创建一个任务。需主 API key。",
+        "operationId": "post_apollo_tasks_bulk_create",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "创建的任务列表。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "要指派所有新建任务的 Apollo 用户 id。"
+                  },
+                  "contact_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "为其各创建一个任务的联系人 id。"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "应用到每个新建任务的任务类型。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "应用到每个新建任务的优先级。\n[⚠️批注:源码未声明优先级取值集合，待研发确认。]"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "应用到每个新建任务的状态。\n[⚠️批注:源码未声明状态取值集合，待研发确认。]"
+                  },
+                  "due_at": {
+                    "type": "string",
+                    "description": "应用到每个新建任务的到期时间。"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "应用到每个新建任务的标题。"
+                  }
+                },
+                "required": [
+                  "user_id",
+                  "contact_ids",
+                  "type",
+                  "status",
+                  "due_at"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/tasks/search": {
+      "post": {
+        "summary": "搜索任务 post_apollo_tasks_search",
+        "description": "搜索任务，支持排序与分页。需主 API key。",
+        "operationId": "post_apollo_tasks_search",
+        "parameters": [
+          {
+            "name": "sort_by_field",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "任务排序所依据的字段。"
+          },
+          {
+            "name": "open_factor_names[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "可选的 open factor 名称，用于进一步限定返回的任务。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "当前页匹配到的任务。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/reports/sync_report": {
+      "post": {
+        "summary": "查询分析报表 post_apollo_reports_sync_report",
+        "description": "同步查询分析报表，指定指标、分组维度、排序、筛选和时间范围。需主 API key。",
+        "operationId": "post_apollo_reports_sync_report",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "report": {
+                      "type": "object",
+                      "description": "计算得到的报表。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "metrics": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "报表要计算的指标。"
+                  },
+                  "group_by": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "报表行所依据的分组维度。"
+                  },
+                  "pivot_group_by": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "可选的透视维度，将报表透视为列。"
+                  },
+                  "sorts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "报表行的排序规格。"
+                  },
+                  "filters": {
+                    "type": "string",
+                    "description": "限定纳入哪些记录的筛选规格。"
+                  },
+                  "date_range": {
+                    "type": "object",
+                    "description": "约束报表时间窗口的日期范围筛选。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/phone_calls": {
+      "post": {
+        "summary": "创建通话记录 post_apollo_phone_calls",
+        "description": "为联系人与账户登记一条或多条通话记录。需主 API key。",
+        "operationId": "post_apollo_phone_calls",
+        "parameters": [
+          {
+            "name": "logged",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "是否为该通话创建单独的登记记录。"
+          },
+          {
+            "name": "user_id[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "主叫方的 Apollo 用户 id（可多个）。"
+          },
+          {
+            "name": "contact_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "参与通话的联系人 Apollo id。"
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "参与通话的账户 Apollo id。"
+          },
+          {
+            "name": "to_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "被拨打的电话号码。"
+          },
+          {
+            "name": "from_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "主叫方使用的电话号码。"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "通话的结果状态。\n[⚠️批注:源码未声明状态取值集合，待研发确认。]"
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "通话开始时间。"
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "通话结束时间。"
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "通话时长，单位为秒。"
+          },
+          {
+            "name": "phone_call_purpose_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "已配置的通话目的 id。"
+          },
+          {
+            "name": "phone_call_outcome_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "已配置的通话结果 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "phone_call": {
+                      "type": "object",
+                      "description": "创建的通话记录。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/phone_calls/search": {
+      "get": {
+        "summary": "搜索通话记录 get_apollo_phone_calls_search",
+        "description": "按时间范围、时长、呼叫方向、用户、标签、目的、结果、关键词搜索通话记录。结果分页。需主 API key。",
+        "operationId": "get_apollo_phone_calls_search",
+        "parameters": [
+          {
+            "name": "date_range[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "纳入的最晚通话日期；与 date_range[min] 搭配。"
+          },
+          {
+            "name": "date_range[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "纳入的最早通话日期；与 date_range[max] 搭配。"
+          },
+          {
+            "name": "duration[max]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "最大通话时长（秒）；与 duration[min] 搭配。"
+          },
+          {
+            "name": "duration[min]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "最小通话时长（秒）；与 duration[max] 搭配。"
+          },
+          {
+            "name": "inbound",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "为 true 时筛选呼入通话，false 时筛选呼出通话。"
+          },
+          {
+            "name": "user_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "仅纳入这些用户的通话。"
+          },
+          {
+            "name": "contact_label_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "仅纳入联系人带有这些标签的通话。"
+          },
+          {
+            "name": "phone_call_purpose_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "仅纳入具有这些目的的通话。"
+          },
+          {
+            "name": "phone_call_outcome_ids[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "仅纳入具有这些结果的通话。"
+          },
+          {
+            "name": "q_keywords",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "用于筛选通话的自由文本关键词。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "phone_calls": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "当前页匹配到的通话记录。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/phone_calls/{id}": {
+      "put": {
+        "summary": "更新通话记录 put_apollo_phone_calls_id",
+        "description": "按 id 更新已有的通话记录。需主 API key。",
+        "operationId": "put_apollo_phone_calls_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要更新的通话记录 Apollo id。"
+          },
+          {
+            "name": "logged",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "是否为该通话创建单独的登记记录。"
+          },
+          {
+            "name": "user_id[]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "主叫方的 Apollo 用户 id（可多个）。"
+          },
+          {
+            "name": "contact_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "参与通话的联系人 Apollo id。"
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "参与通话的账户 Apollo id。"
+          },
+          {
+            "name": "to_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "被拨打的电话号码。"
+          },
+          {
+            "name": "from_number",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "主叫方使用的电话号码。"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "通话的结果状态。\n[⚠️批注:源码未声明状态取值集合，待研发确认。]"
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "通话开始时间。"
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "通话结束时间。"
+          },
+          {
+            "name": "duration",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "通话时长，单位为秒。"
+          },
+          {
+            "name": "phone_call_purpose_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "已配置的通话目的 id。"
+          },
+          {
+            "name": "phone_call_outcome_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "已配置的通话结果 id。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "phone_call": {
+                      "type": "object",
+                      "description": "已更新的通话记录。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/usage_stats/api_usage_stats": {
+      "post": {
+        "summary": "查询 API 用量与限流 post_apollo_usage_stats_api_usage_stats",
+        "description": "获取你的 API 用量统计和当前限流状态。需主 API key。",
+        "operationId": "post_apollo_usage_stats_api_usage_stats",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "api_usage_stats": {
+                      "type": "object",
+                      "description": "你的 API 用量统计与当前限流状态。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/users/search": {
+      "get": {
+        "summary": "列出用户 get_apollo_users_search",
+        "description": "分页获取团队用户列表。返回的 id 可用于在别处填写 owner_id / user_id。需主 API key。",
+        "operationId": "get_apollo_users_search",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "当前页的用户。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/email_accounts": {
+      "get": {
+        "summary": "列出邮箱账户 get_apollo_email_accounts",
+        "description": "获取已连接用于发信的邮箱账户列表。返回的 id 可作为 send_email_from_email_account_id。需主 API key。",
+        "operationId": "get_apollo_email_accounts",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email_accounts": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "已连接用于发信的邮箱账户列表。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/labels": {
+      "get": {
+        "summary": "列出标签 get_apollo_labels",
+        "description": "获取账号中所有列表（标签）。需主 API key。",
+        "operationId": "get_apollo_labels",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "[]": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "账号中标签（列表）名称的集合。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/typed_custom_fields": {
+      "get": {
+        "summary": "列出自定义字段 get_apollo_typed_custom_fields",
+        "description": "获取团队定义的所有带类型自定义字段。需主 API key。",
+        "operationId": "get_apollo_typed_custom_fields",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "typed_custom_fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "团队定义的带类型自定义字段列表。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/apollo/fields": {
+      "get": {
+        "summary": "列出字段 get_apollo_fields",
+        "description": "获取团队记录上可用的字段列表。需主 API key。",
+        "operationId": "get_apollo_fields",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "记录上可用的字段列表。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "创建自定义字段 post_apollo_fields",
+        "description": "在指定实体类型（如 contact）上创建自定义字段。需主 API key。",
+        "operationId": "post_apollo_fields",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "typed_custom_fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "创建新字段后的自定义字段列表。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "description": "要创建的自定义字段的显示标签。"
+                  },
+                  "modality": {
+                    "type": "string",
+                    "description": "字段适用的实体类型，如 contact 或 account。"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "自定义字段的数据类型，如文本域。\n[⚠️批注:源码未声明完整的类型取值集合，待研发确认。]"
+                  },
+                  "meta": {
+                    "type": "object",
+                    "description": "字段的附加配置，如可选项等。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apollo/notes": {
+      "get": {
+        "summary": "列出备注 get_apollo_notes",
+        "description": "获取备注列表，可按所附记录（联系人、账户、商机、日历事件、会话）筛选。需主 API key。",
+        "operationId": "get_apollo_notes",
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "仅纳入附在该联系人上的备注。"
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "仅纳入附在该账户上的备注。"
+          },
+          {
+            "name": "opportunity_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "仅纳入附在该商机上的备注。"
+          },
+          {
+            "name": "calendar_event_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "仅纳入附在该日历事件上的备注。"
+          },
+          {
+            "name": "conversation_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "仅纳入附在该会话上的备注。"
+          },
+          {
+            "name": "conversation_ids",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "仅纳入附在这些会话上的备注。"
+          },
+          {
+            "name": "contact_ids",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "仅纳入附在这些联系人上的备注。"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "仅纳入在该日期当天或之后创建的备注（在支持时）。"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "要获取的页码。"
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "每页结果数。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "notes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "当前页匹配到的备注。"
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "description": "结果集的分页元数据。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

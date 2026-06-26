@@ -1,0 +1,197 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API - Tweet Replies V2",
+    "version": "1.0.0",
+    "description": "Get tweet replies with advanced sorting options."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object kind of the record, distinguishing a tweet from other entities the API may return."
+          },
+          "id": {
+            "type": "string",
+            "description": "The reply tweet's unique identifier; use it to fetch this reply's own replies or to build its URL."
+          },
+          "url": {
+            "type": "string",
+            "description": "Direct, clickable link to the reply tweet."
+          },
+          "text": {
+            "type": "string",
+            "description": "Full body text of the reply."
+          },
+          "source": {
+            "type": "string",
+            "description": "The client application from which the reply was posted, such as a web or mobile app."
+          },
+          "retweetCount": {
+            "type": "integer",
+            "description": "Number of times the reply has been retweeted."
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "Number of replies this reply itself has received."
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "Number of likes the reply has received."
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "Number of times the reply has been quote-tweeted."
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "Number of times the reply has been viewed."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp of when the reply was posted."
+          },
+          "lang": {
+            "type": "string",
+            "description": "Detected language of the reply text, as a language code."
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "description": "Number of times the reply has been bookmarked."
+          },
+          "isReply": {
+            "type": "boolean",
+            "description": "Whether this tweet is itself a reply to another tweet."
+          },
+          "inReplyToId": {
+            "type": "string",
+            "description": "Identifier of the tweet this reply is responding to."
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "Identifier of the conversation thread the reply belongs to; typically the ID of the original tweet that started the thread."
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "description": "Identifier of the user being replied to."
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "description": "Handle of the user being replied to."
+          },
+          "isLimitedReply": {
+            "type": "boolean",
+            "description": "Whether replying to this tweet is restricted by the author's reply settings."
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/tweet/replies/v2": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_tweet_replies_v2"
+        ],
+        "summary": "Get Tweet Replies V2",
+        "description": "Fetch the replies to a given tweet, returned one page at a time and ordered by relevance, recency, or like count. Read-only; use the returned cursor to walk through subsequent pages.",
+        "parameters": [
+          {
+            "name": "tweetId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the tweet whose replies you want to retrieve. It is the numeric ID found in the tweet's URL."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination token pointing at the next batch of replies. Take it from the `next_cursor` of a previous response; leave it unset to start from the first page."
+          },
+          {
+            "name": "queryType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Relevance",
+                "Latest",
+                "Likes"
+              ],
+              "default": "Relevance"
+            },
+            "description": "Ordering applied to the returned replies: `Relevance` surfaces the replies the platform deems most relevant, `Latest` orders by most recent first, and `Likes` orders by most-liked first."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tweet replies response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "replies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tweet"
+                      },
+                      "description": "The replies on this page, each a full tweet object."
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "Whether more replies remain beyond the current page."
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "Token to pass back as `cursor` to retrieve the next page of replies."
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "error"
+                      ],
+                      "example": "success",
+                      "description": "Outcome of the request: `success` for a normal result, `error` when the request failed."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Human-readable error detail, populated only when the request failed."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

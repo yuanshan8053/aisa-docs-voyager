@@ -1,0 +1,204 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Financial Datasets API — Analyst Estimates",
+    "version": "1.0.0",
+    "description": "Consensus Wall Street analyst estimates (estimated revenue + estimated earnings per share) for US stock tickers, broken down by fiscal period (annual or quarterly). Proxied through AIsa from the Financial Datasets API."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1/financial",
+      "description": "Production API"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "AnalystEstimatesResponse": {
+        "type": "object",
+        "properties": {
+          "analyst_estimates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnalystEstimate"
+            },
+            "description": "List of analyst estimate records, one per fiscal period, ordered from most recent."
+          }
+        }
+      },
+      "AnalystEstimate": {
+        "type": "object",
+        "properties": {
+          "fiscal_period": {
+            "type": "string",
+            "format": "date",
+            "description": "The fiscal period the estimate applies to, expressed as the period's date. Combine it with `period` to know whether it denotes a fiscal year or a fiscal quarter."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "annual",
+              "quarterly"
+            ],
+            "description": "Whether this record is an annual or a quarterly estimate, matching the requested granularity."
+          },
+          "revenue": {
+            "type": "integer",
+            "description": "Consensus estimated total revenue for the fiscal period, in the company's reporting currency.\n[⚠️Note:源码未声明金额单位(整额或千/百万),待研发确认。]"
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "description": "Consensus estimated earnings per share (EPS) for the fiscal period, in the company's reporting currency."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "A short error message."
+          },
+          "message": {
+            "type": "string",
+            "description": "A more detailed error message."
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Bad Request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Not Found",
+              "message": "Ticker XXXX not found"
+            }
+          }
+        }
+      },
+      "PaymentRequiredError": {
+        "description": "The request requires a paid subscription",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Payment Required",
+              "message": "This endpoint requires a paid subscription. Please upgrade your plan."
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Unauthorized",
+              "message": "Invalid API key provided"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/analyst-estimates": {
+      "get": {
+        "summary": "Analyst Estimates",
+        "description": "Return consensus Wall Street analyst estimates — projected revenue and earnings per share — for a single US stock ticker, broken down by fiscal period. This is a read-only query: pick annual or quarterly granularity and cap how many periods come back. Typical uses are valuation models, earnings previews, and comparison against actuals.\n\n**Error status codes:** `400`, `401`, `402`, `404`",
+        "operationId": "getAnalystEstimates",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "Stock ticker symbol of the US-listed company to pull analyst estimates for, e.g. `AAPL`. One ticker per request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Fiscal granularity of the estimates: `annual` for full-year projections, `quarterly` for per-quarter ones. The list of valid periods can be checked via the `/analyst-estimates/periods` endpoint.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Caps how many of the most recent estimate periods are returned. The accepted ceiling depends on granularity — up to 3 for annual and 12 for quarterly. Higher values are clamped to that ceiling.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analyst estimates response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalystEstimatesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    }
+  }
+}

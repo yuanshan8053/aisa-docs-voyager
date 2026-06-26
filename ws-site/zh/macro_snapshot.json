@@ -1,0 +1,234 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Financial Datasets API — Macro Interest Rates",
+    "version": "1.0.0",
+    "description": "Central bank interest rate data (historical series + real-time snapshot), proxied through AIsa."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1/financial",
+      "description": "Production API"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "InterestRatesResponse": {
+        "type": "object",
+        "properties": {
+          "interest_rates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InterestRate"
+            },
+            "description": "所查央行的当前利率记录。为与历史接口保持结构一致而以列表返回,通常只含最新一条观测。"
+          }
+        }
+      },
+      "InterestRate": {
+        "type": "object",
+        "properties": {
+          "bank": {
+            "type": "string",
+            "description": "本条记录所属央行的代码,与查询的 `bank` 一致。"
+          },
+          "name": {
+            "type": "string",
+            "description": "央行的完整可读名称。"
+          },
+          "rate": {
+            "type": "number",
+            "description": "该央行当前生效的政策利率。\n[⚠️批注:源码未声明利率单位(百分数还是小数,如 5.25 还是 0.0525),待研发确认。]"
+          },
+          "date": {
+            "type": "string",
+            "description": "该当前利率的生效日期,格式 `YYYY-MM-DD`。"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "A short error message."
+          },
+          "message": {
+            "type": "string",
+            "description": "A more detailed error message."
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Bad Request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Not Found",
+              "message": "Ticker XXXX not found"
+            }
+          }
+        }
+      },
+      "PaymentRequiredError": {
+        "description": "The request requires a paid subscription",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Payment Required",
+              "message": "This endpoint requires a paid subscription. Please upgrade your plan."
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Unauthorized",
+              "message": "Invalid API key provided"
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/macro/interest-rates": {
+      "get": {
+        "summary": "查询央行历史利率 getInterestRatesHistorical",
+        "description": "返回单个央行的历史政策利率序列,可选地限定日期区间。这是只读的时间序列查询:不传日期则取全部可得历史,或设定起止日期截取某段区间。典型场景为绘制利率走势、回测对利率敏感的模型。\n\n**错误码**\n\n| 状态码 | 说明 |\n| --- | --- |\n| `400` | 请求参数无效,例如漏传必填的 `bank` 或日期格式非法。 |\n| `401` | 鉴权失败,Bearer API Key 缺失或无效。 |\n| `402` | 该接口需要付费订阅,当前套餐无权访问,需升级套餐。 |\n| `404` | 未找到指定的央行。 |",
+        "operationId": "getInterestRatesHistorical",
+        "parameters": [
+          {
+            "name": "bank",
+            "in": "query",
+            "description": "要查询利率历史的央行标识,如 `FED`、`ECB`。完整的可用央行代码可通过 `/macro/interest-rates/banks` 接口获取。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "日期区间的下界,格式 `YYYY-MM-DD`,返回该日期及之后的记录。留空则从最早的可得记录开始。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "日期区间的上界,格式 `YYYY-MM-DD`,返回该日期及之前的记录。留空则一直取到最新记录。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Interest rates response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterestRatesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/macro/interest-rates/snapshot": {
+      "get": {
+        "summary": "查询央行实时利率 getInterestRatesSnapshot",
+        "description": "返回单个央行当前的政策利率 —— 即其利率序列的最新一点,而非完整历史。当你只需当下生效的利率时使用,例如实时看板或一次性查询。\n\n**错误码**\n\n| 状态码 | 说明 |\n| --- | --- |\n| `401` | 鉴权失败,Bearer API Key 缺失或无效。 |\n| `402` | 该接口需要付费订阅,当前套餐无权访问,需升级套餐。 |\n| `404` | 未找到指定的央行。 |",
+        "operationId": "getInterestRatesSnapshot",
+        "parameters": [
+          {
+            "name": "bank",
+            "in": "query",
+            "description": "要查询当前利率的央行标识,如 `FED`、`ECB`、`BOJ`。完整的可用央行代码可通过 `/macro/interest-rates/banks` 接口获取。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Interest rates snapshot response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterestRatesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    }
+  }
+}

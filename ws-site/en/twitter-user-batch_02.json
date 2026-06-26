@@ -1,0 +1,697 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API",
+    "version": "1.0.0",
+    "description": "Twitter API endpoints for user data and interactions."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "UserFollowingsResponse": {
+        "type": "object",
+        "properties": {
+          "followings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "description": "Accounts the user follows, returned for this page."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when followings were returned, error otherwise."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "UserMentionsResponse": {
+        "type": "object",
+        "properties": {
+          "tweets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tweet"
+            },
+            "description": "Tweets that mention the user, returned for this page."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when mentions were returned, error otherwise."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "FollowRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "following": {
+                "type": "boolean",
+                "description": "Whether the source user follows the target user."
+              },
+              "followed_by": {
+                "type": "boolean",
+                "description": "Whether the target user follows the source user back."
+              }
+            },
+            "description": "The directional follow relationship between the two users."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when the relationship was returned, error otherwise."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "SearchUserResponse": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "description": "Users matching the keyword, returned for this page."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when users were returned, error otherwise."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "VerifiedFollowersResponse": {
+        "type": "object",
+        "properties": {
+          "followers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "description": "Verified accounts following the user, returned for this page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when followers were returned, error otherwise."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object type tag identifying the entry as a user."
+          },
+          "userName": {
+            "type": "string",
+            "description": "The follower's @handle, unique across X/Twitter and used in profile URLs."
+          },
+          "url": {
+            "type": "string",
+            "description": "Web link to the follower's profile page."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the follower."
+          },
+          "name": {
+            "type": "string",
+            "description": "The follower's display name shown on the profile."
+          },
+          "isBlueVerified": {
+            "type": "boolean",
+            "description": "Whether the follower holds a paid X (Twitter) Blue verification."
+          },
+          "verifiedType": {
+            "type": "string",
+            "description": "The follower's verification category, such as a business or government account."
+          },
+          "profilePicture": {
+            "type": "string",
+            "description": "Web link to the follower's avatar image."
+          },
+          "coverPicture": {
+            "type": "string",
+            "description": "Web link to the follower's profile banner image."
+          },
+          "description": {
+            "type": "string",
+            "description": "The follower's profile bio text."
+          },
+          "location": {
+            "type": "string",
+            "description": "Free-text location the follower lists on their profile."
+          },
+          "followers": {
+            "type": "integer",
+            "description": "Number of accounts following the follower."
+          },
+          "following": {
+            "type": "integer",
+            "description": "Number of accounts the follower follows."
+          },
+          "canDm": {
+            "type": "boolean",
+            "description": "Whether the follower currently accepts direct messages from the requester."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the follower's account was created."
+          },
+          "favouritesCount": {
+            "type": "integer",
+            "description": "Number of tweets the follower has liked."
+          },
+          "hasCustomTimelines": {
+            "type": "boolean",
+            "description": "Whether the follower has created custom timelines."
+          },
+          "isTranslator": {
+            "type": "boolean",
+            "description": "Whether the follower participates in the Twitter translation program."
+          },
+          "mediaCount": {
+            "type": "integer",
+            "description": "Number of media items the follower has posted."
+          },
+          "statusesCount": {
+            "type": "integer",
+            "description": "Total number of tweets the follower has posted."
+          },
+          "withheldInCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Country codes where the follower's account is withheld for legal reasons."
+          },
+          "possiblySensitive": {
+            "type": "boolean",
+            "description": "Whether the follower's posts are flagged as potentially sensitive."
+          },
+          "pinnedTweetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Identifiers of tweets the follower has pinned to the top of their profile."
+          },
+          "isAutomated": {
+            "type": "boolean",
+            "description": "Whether the account is labeled as an automated (bot) account."
+          },
+          "automatedBy": {
+            "type": "string",
+            "description": "Username of the person or entity managing the automated account."
+          },
+          "unavailable": {
+            "type": "boolean",
+            "description": "Whether the follower's account is currently unavailable, for example suspended or deactivated."
+          },
+          "message": {
+            "type": "string",
+            "description": "Explanatory message returned when the account is unavailable."
+          },
+          "unavailableReason": {
+            "type": "string",
+            "description": "Reason code or text describing why the account is unavailable."
+          }
+        }
+      },
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object type tag identifying the entry as a tweet."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the tweet."
+          },
+          "url": {
+            "type": "string",
+            "description": "Web link to the tweet on X/Twitter."
+          },
+          "text": {
+            "type": "string",
+            "description": "Full text content of the tweet."
+          },
+          "source": {
+            "type": "string",
+            "description": "Name of the client application used to post the tweet."
+          },
+          "retweetCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been retweeted."
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "Number of replies to the tweet."
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "Number of likes on the tweet."
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "Number of quote tweets referencing this tweet."
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been viewed."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the tweet was created."
+          },
+          "lang": {
+            "type": "string",
+            "description": "Detected language of the tweet text, as a language code."
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been bookmarked."
+          },
+          "isReply": {
+            "type": "boolean",
+            "description": "Whether the tweet is a reply to another tweet."
+          },
+          "inReplyToId": {
+            "type": "string",
+            "description": "Identifier of the tweet this one directly replies to; present only when isReply is true."
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "Identifier of the root tweet that started the conversation thread this tweet belongs to."
+          },
+          "displayTextRange": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Start and end character offsets marking the displayable portion of the tweet text."
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "description": "Identifier of the user being replied to."
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "description": "Username of the user being replied to."
+          },
+          "author": {
+            "$ref": "#/components/schemas/User",
+            "description": "Profile of the user who posted the tweet."
+          },
+          "entities": {
+            "type": "object",
+            "properties": {
+              "hashtags": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "Start and end character offsets of the hashtag within the tweet text."
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "The hashtag word, without the leading # sign."
+                    }
+                  }
+                },
+                "description": "Hashtags found in the tweet text."
+              },
+              "urls": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "display_url": {
+                      "type": "string",
+                      "description": "Shortened, human-readable form of the link as displayed in the tweet."
+                    },
+                    "expanded_url": {
+                      "type": "string",
+                      "description": "Full destination URL the displayed link resolves to."
+                    },
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "Start and end character offsets of the link within the tweet text."
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The t.co shortened URL as it literally appears in the tweet text."
+                    }
+                  }
+                },
+                "description": "Links found in the tweet text."
+              },
+              "user_mentions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id_str": {
+                      "type": "string",
+                      "description": "Identifier of the mentioned user."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Display name of the mentioned user."
+                    },
+                    "screen_name": {
+                      "type": "string",
+                      "description": "@handle of the mentioned user."
+                    }
+                  }
+                },
+                "description": "Users mentioned in the tweet text."
+              }
+            },
+            "description": "Structured entities parsed from the tweet text, such as hashtags, links, and user mentions."
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/user/followings": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_followings"
+        ],
+        "summary": "Get User Followings",
+        "description": "List the accounts a given user follows, identified by screen name, with cursor pagination and a configurable page size.",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Screen name (@handle, without the @) of the user whose followings you want."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 200,
+              "minimum": 20,
+              "maximum": 200
+            },
+            "description": "How many followings to return per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserFollowingsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/mentions": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_mention"
+        ],
+        "summary": "Get User Mentions",
+        "description": "List tweets that mention a given user by screen name, in reverse-chronological order, optionally bounded by a time window and paginated with the cursor.",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Screen name (@handle, without the @) of the user whose mentions you want."
+          },
+          {
+            "name": "sinceTime",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Only return mentions posted at or after this Unix timestamp in seconds."
+          },
+          {
+            "name": "untilTime",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "Only return mentions posted before this Unix timestamp in seconds."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserMentionsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/check_follow_relationship": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/check_follow_relationship"
+        ],
+        "summary": "Check Follow Relationship",
+        "description": "Check the directional follow relationship between a source user and a target user: whether the source follows the target and whether the target follows the source back.",
+        "parameters": [
+          {
+            "name": "source_user_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Screen name of the source user whose follow direction is being checked."
+          },
+          {
+            "name": "target_user_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Screen name of the target user the relationship is checked against."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowRelationshipResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/search": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/search_user"
+        ],
+        "summary": "Search User by Keyword",
+        "description": "Search for users whose profile matches a keyword, paginated with the cursor.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Keyword to match against user profiles when searching."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchUserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/verifiedFollowers": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_verified_followers"
+        ],
+        "summary": "Get User Verified Followers",
+        "description": "List the verified accounts that follow a given user, identified by user ID, in reverse-chronological order with cursor pagination.",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the user whose verified followers you want."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifiedFollowersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

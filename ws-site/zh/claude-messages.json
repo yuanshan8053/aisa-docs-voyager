@@ -1,0 +1,343 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Claude Messages API",
+    "version": "1.0.0",
+    "description": "Anthropic-compatible Messages API, exposed through AIsa. Send structured messages and generate responses using Claude models."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key",
+        "description": "Your AIsa API key as a Bearer token."
+      }
+    }
+  },
+  "paths": {
+    "/messages": {
+      "post": {
+        "summary": "创建消息 createMessage",
+        "description": "向 Claude 模型发送结构化的多轮对话并获取应答。兼容 Anthropic Messages API,支持工具调用、扩展思考、流式输出与细粒度采样控制。\n\n**错误码**\n\n| 状态码 | 说明 |\n| --- | --- |\n| `400` | 请求参数无效。 |\n| `401` | API Key 缺失或无效。 |\n| `429` | 触发限流。 |\n| `500` | 服务内部错误。 |",
+        "operationId": "createMessage",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "max_tokens",
+                  "messages"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "本次调用使用的 Claude 模型。",
+                    "example": "claude-sonnet-4-6"
+                  },
+                  "max_tokens": {
+                    "type": "integer",
+                    "description": "模型在被强制停止前最多可生成的 token 数。模型也可能提前自行停止。",
+                    "example": 1024
+                  },
+                  "messages": {
+                    "type": "array",
+                    "description": "有序的对话轮次。以用户与助手轮次交替提供既往上下文,模型从最后一轮接续生成。",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "assistant"
+                          ],
+                          "description": "该轮的作者身份,用于区分用户输入与助手既往输出。"
+                        },
+                        "content": {
+                          "description": "该轮的内容,可以是纯文本,也可以是一组结构化内容块(例如文本搭配图像或工具结果)。",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "role": "user",
+                        "content": "Hello, Claude"
+                      }
+                    ]
+                  },
+                  "system": {
+                    "description": "顶层系统提示,用于框定模型在整段对话中的行为,可为文本或一组文本块。",
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "temperature": {
+                    "type": "number",
+                    "format": "float",
+                    "minimum": 0.0,
+                    "maximum": 1.0,
+                    "default": 1.0,
+                    "description": "控制输出的随机性;取值越低应答越聚焦、越确定,越高则越多样。请在本参数与 `top_p` 之间二选一调节,不要同时调。"
+                  },
+                  "top_p": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "核采样:模型仅从累计概率达到该阈值的最高概率 token 中采样。作为 `temperature` 的替代方案使用。"
+                  },
+                  "top_k": {
+                    "type": "integer",
+                    "description": "将每一步的采样限制在概率最高的 K 个 token 内,剔除长尾低概率选项。"
+                  },
+                  "stop_sequences": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "自定义文本序列,一旦被生成即立刻停止本次生成。"
+                  },
+                  "stream": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "是否以服务器发送事件(SSE)增量流式返回应答,而非一次性返回全部内容。"
+                  },
+                  "tools": {
+                    "type": "array",
+                    "description": "本轮允许模型调用的工具集合。",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "input_schema"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "工具名称,模型调用时以此引用该工具。"
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "对工具用途的说明,模型据此判断何时、如何调用。"
+                        },
+                        "input_schema": {
+                          "type": "object",
+                          "description": "描述工具入参的 JSON Schema,用于校验并规范模型的工具调用。"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "custom",
+                          "description": "工具类别,用于区分自定义工具与其他受支持的工具类型。"
+                        }
+                      }
+                    }
+                  },
+                  "tool_choice": {
+                    "type": "object",
+                    "description": "约束本轮模型是否以及如何调用所提供的工具。",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "auto",
+                          "any",
+                          "tool",
+                          "none"
+                        ],
+                        "description": "工具使用策略:让模型自行决定、要求其必须使用某个工具、强制使用某个指定工具,或完全禁止使用工具。"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "要强制使用的具体工具,在策略指向单个指定工具时使用。"
+                      },
+                      "disable_parallel_tool_use": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "开启后,限制模型每次只发起一个工具调用,而非并行发起多个。"
+                      }
+                    }
+                  },
+                  "thinking": {
+                    "type": "object",
+                    "description": "启用扩展思考,让模型在应答复杂问题前进行更充分的内部推理。",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "enabled"
+                        ],
+                        "description": "用于开启扩展思考的开关。"
+                      },
+                      "budget_tokens": {
+                        "type": "integer",
+                        "example": 10000,
+                        "description": "为模型内部推理预留的 token 额度。"
+                      },
+                      "display": {
+                        "type": "string",
+                        "enum": [
+                          "summarized",
+                          "omitted"
+                        ],
+                        "description": "思考过程在响应中的呈现方式:以摘要形式返回,或从输出中略去。"
+                      }
+                    }
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "string",
+                        "description": "标识发起请求的终端用户的不透明 ID,不得包含个人可识别信息。"
+                      }
+                    },
+                    "description": "可选的请求元数据,用于追踪与分析。"
+                  },
+                  "service_tier": {
+                    "type": "string",
+                    "enum": [
+                      "auto",
+                      "standard_only"
+                    ],
+                    "default": "auto",
+                    "description": "为请求选择服务层级,在自动选择容量与仅锁定标准容量之间权衡。"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "msg_024e7cf42f5d47cfa6982b5ff8b55642",
+                      "description": "生成消息的唯一标识。"
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "message",
+                      "description": "载荷的对象类型。"
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "assistant",
+                      "description": "应答的作者角色,即助手。"
+                    },
+                    "content": {
+                      "type": "array",
+                      "description": "以一系列内容块组成的应答正文,可能包含文本、工具调用请求或思考输出。",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "model": {
+                      "type": "string",
+                      "example": "claude-sonnet-4-6",
+                      "description": "产生该应答的模型。"
+                    },
+                    "stop_reason": {
+                      "type": "string",
+                      "enum": [
+                        "end_turn",
+                        "stop_sequence",
+                        "max_tokens",
+                        "tool_use"
+                      ],
+                      "description": "生成结束的原因:自然结束本轮、命中停止序列、达到 token 上限,或为调用工具而暂停。"
+                    },
+                    "stop_sequence": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "当因停止序列而结束时,触发停止的那个具体序列。"
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "input_tokens": {
+                          "type": "integer",
+                          "description": "输入消耗的 token 数。"
+                        },
+                        "output_tokens": {
+                          "type": "integer",
+                          "description": "输出生成的 token 数。"
+                        },
+                        "cache_creation_input_tokens": {
+                          "type": "integer",
+                          "description": "用于向提示缓存写入新条目的输入 token 数。"
+                        },
+                        "cache_read_input_tokens": {
+                          "type": "integer",
+                          "description": "从提示缓存命中读取、而非重新计算的输入 token 数。"
+                        }
+                      },
+                      "description": "本次请求的 token 计量,含提示缓存的读取与写入。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

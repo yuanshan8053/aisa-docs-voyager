@@ -1,0 +1,520 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API Aggregated Documentation",
+    "version": "1.0.0",
+    "description": "This OpenAPI specification aggregates multiple Twitter API endpoints for list followers and list members."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "ListTweetsTimelineResponse": {
+        "type": "object",
+        "properties": {
+          "tweets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tweet"
+            },
+            "description": "Tweets returned for this page of the list timeline."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "example": "success",
+            "description": "Outcome marker of the request: success when the timeline was returned, error otherwise."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object type tag identifying the entry as a tweet."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the tweet."
+          },
+          "url": {
+            "type": "string",
+            "description": "Web link to the tweet on X/Twitter."
+          },
+          "text": {
+            "type": "string",
+            "description": "Full text content of the tweet."
+          },
+          "source": {
+            "type": "string",
+            "description": "Name of the client application used to post the tweet, such as the web or a mobile app."
+          },
+          "retweetCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been retweeted."
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "Number of replies to the tweet."
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "Number of likes on the tweet."
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "Number of quote tweets referencing this tweet."
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been viewed."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the tweet was created."
+          },
+          "lang": {
+            "type": "string",
+            "description": "Detected language of the tweet text, as a language code."
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been bookmarked."
+          },
+          "isReply": {
+            "type": "boolean",
+            "description": "Whether the tweet is a reply to another tweet."
+          },
+          "inReplyToId": {
+            "type": "string",
+            "description": "Identifier of the tweet this one directly replies to; present only when isReply is true."
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "Identifier of the root tweet that started the conversation thread this tweet belongs to."
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "description": "Identifier of the user being replied to."
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "description": "Username of the user being replied to."
+          },
+          "author": {
+            "$ref": "#/components/schemas/TwitterUser",
+            "description": "Profile of the user who posted the tweet."
+          }
+        }
+      },
+      "TwitterListFollowersResponse": {
+        "type": "object",
+        "properties": {
+          "followers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TwitterUser"
+            },
+            "description": "Users following the list, returned for this page."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when followers were returned, error otherwise."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "TwitterListMembersResponse": {
+        "type": "object",
+        "properties": {
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TwitterUser"
+            },
+            "description": "Member users of the list, returned for this page."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when members were returned, error otherwise."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "TwitterUser": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object type tag identifying the entry as a user."
+          },
+          "userName": {
+            "type": "string",
+            "description": "The user's @handle, unique across X/Twitter and used in profile URLs."
+          },
+          "url": {
+            "type": "string",
+            "description": "Web link to the user's profile page."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the user."
+          },
+          "name": {
+            "type": "string",
+            "description": "The user's display name shown on the profile."
+          },
+          "isBlueVerified": {
+            "type": "boolean",
+            "description": "Whether the user holds a paid X (Twitter) Blue verification."
+          },
+          "verifiedType": {
+            "type": "string",
+            "description": "The user's verification category, such as a business or government account."
+          },
+          "profilePicture": {
+            "type": "string",
+            "description": "Web link to the user's avatar image."
+          },
+          "coverPicture": {
+            "type": "string",
+            "description": "Web link to the user's profile banner image."
+          },
+          "description": {
+            "type": "string",
+            "description": "The user's profile bio text."
+          },
+          "location": {
+            "type": "string",
+            "description": "Free-text location the user lists on their profile."
+          },
+          "followers": {
+            "type": "integer",
+            "description": "Number of accounts following the user."
+          },
+          "following": {
+            "type": "integer",
+            "description": "Number of accounts the user follows."
+          },
+          "canDm": {
+            "type": "boolean",
+            "description": "Whether the user currently accepts direct messages from the requester."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the user's account was created."
+          },
+          "favouritesCount": {
+            "type": "integer",
+            "description": "Number of tweets the user has liked."
+          },
+          "hasCustomTimelines": {
+            "type": "boolean",
+            "description": "Whether the user has created custom timelines."
+          },
+          "isTranslator": {
+            "type": "boolean",
+            "description": "Whether the user participates in the Twitter translation program."
+          },
+          "mediaCount": {
+            "type": "integer",
+            "description": "Number of media items the user has posted."
+          },
+          "statusesCount": {
+            "type": "integer",
+            "description": "Total number of tweets the user has posted."
+          },
+          "withheldInCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Country codes where the user's account is withheld for legal reasons."
+          },
+          "possiblySensitive": {
+            "type": "boolean",
+            "description": "Whether the user's posts are flagged as potentially sensitive."
+          },
+          "pinnedTweetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Identifiers of tweets the user has pinned to the top of their profile."
+          },
+          "isAutomated": {
+            "type": "boolean",
+            "description": "Whether the account is labeled as an automated (bot) account."
+          },
+          "automatedBy": {
+            "type": "string",
+            "description": "Username of the person or entity managing the automated account."
+          },
+          "unavailable": {
+            "type": "boolean",
+            "description": "Whether the user's account is currently unavailable, for example suspended or deactivated."
+          },
+          "message": {
+            "type": "string",
+            "description": "Explanatory message returned when the account is unavailable."
+          },
+          "unavailableReason": {
+            "type": "string",
+            "description": "Reason code or text describing why the account is unavailable."
+          },
+          "profile_bio": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Raw bio text exactly as shown on the profile."
+              },
+              "entities": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TwitterUrl"
+                        },
+                        "description": "List of links found in the bio description."
+                      }
+                    },
+                    "description": "Links detected within the bio description text."
+                  },
+                  "url": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TwitterUrl"
+                        },
+                        "description": "List of links found in the profile website field."
+                      }
+                    },
+                    "description": "Links detected in the profile's dedicated website field."
+                  }
+                },
+                "description": "Entities parsed from the bio, grouping links found in the description text and in the profile's website field."
+              }
+            },
+            "description": "Structured profile bio, including the raw description text and the entities parsed out of it."
+          }
+        }
+      },
+      "TwitterUrl": {
+        "type": "object",
+        "properties": {
+          "display_url": {
+            "type": "string",
+            "description": "Shortened, human-readable form of the website link as displayed."
+          },
+          "expanded_url": {
+            "type": "string",
+            "description": "Full destination URL the website link resolves to."
+          },
+          "indices": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Start and end character offsets of the link within the website field."
+          },
+          "url": {
+            "type": "string",
+            "description": "The t.co shortened URL as it literally appears in the website field."
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/list/tweets_timeline": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/list_timeline"
+        ],
+        "summary": "Get List Tweet Timeline",
+        "description": "Fetch the reverse-chronological tweets posted by members of a given Twitter list, one page at a time. Pass the cursor returned by the previous call to walk through older tweets.",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the Twitter list whose member tweets you want to read."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List tweet timeline response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListTweetsTimelineResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/list/followers": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_list_followers"
+        ],
+        "summary": "Get List Followers",
+        "description": "List the users who follow a given Twitter list, one page at a time, paginating with the cursor from the previous response.",
+        "parameters": [
+          {
+            "name": "list_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the Twitter list whose followers you want to read."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List followers of the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwitterListFollowersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/list/members": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_list_members"
+        ],
+        "summary": "Get List Members",
+        "description": "List the users who are members of a given Twitter list, one page at a time, paginating with the cursor from the previous response.",
+        "parameters": [
+          {
+            "name": "list_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the Twitter list whose members you want to read."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List members response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwitterListMembersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

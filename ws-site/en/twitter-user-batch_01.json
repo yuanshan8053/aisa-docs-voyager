@@ -1,0 +1,730 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API",
+    "version": "1.0.0",
+    "description": "Twitter data API, providing endpoints for user and tweet information."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "UserProfileAboutResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier of the user."
+              },
+              "name": {
+                "type": "string",
+                "description": "The user's display name shown on the profile."
+              },
+              "userName": {
+                "type": "string",
+                "description": "The user's @handle, unique across X/Twitter."
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "Timestamp when the user's account was created."
+              },
+              "isBlueVerified": {
+                "type": "boolean",
+                "description": "Whether the user holds a paid X (Twitter) Blue verification."
+              },
+              "protected": {
+                "type": "boolean",
+                "description": "Whether the account is protected, meaning its tweets are visible only to approved followers."
+              },
+              "affiliates_highlighted_label": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "object",
+                    "properties": {
+                      "badge": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "Web link to the badge image."
+                          }
+                        },
+                        "description": "The badge image of the affiliation."
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "Text describing the affiliation, such as the parent organization's name."
+                      },
+                      "url": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "Destination address of the affiliation link."
+                          },
+                          "urlType": {
+                            "type": "string",
+                            "description": "Category of the affiliation link, indicating how it should be handled.\n[⚠️Note:源码未声明 urlType 的可取值及各自含义，待研发确认。]"
+                          }
+                        },
+                        "description": "Link the affiliation badge points to."
+                      },
+                      "userLabelDisplayType": {
+                        "type": "string",
+                        "description": "How the affiliation label is rendered on the profile.\n[⚠️Note:源码未声明 userLabelDisplayType 的可取值及各自含义，待研发确认。]"
+                      },
+                      "userLabelType": {
+                        "type": "string",
+                        "description": "The kind of user label this badge represents.\n[⚠️Note:源码未声明 userLabelType 的可取值及各自含义，待研发确认。]"
+                      }
+                    },
+                    "description": "Details of the affiliation badge."
+                  }
+                },
+                "description": "The highlighted affiliation badge that marks the user as belonging to a parent organization."
+              },
+              "about_profile": {
+                "type": "object",
+                "properties": {
+                  "account_based_in": {
+                    "type": "string",
+                    "description": "Country or region X reports the account is based in."
+                  },
+                  "location_accurate": {
+                    "type": "boolean",
+                    "description": "Whether the reported account location is considered accurate."
+                  },
+                  "learn_more_url": {
+                    "type": "string",
+                    "description": "Link to X's help page explaining the About-account information."
+                  },
+                  "affiliate_username": {
+                    "type": "string",
+                    "description": "Screen name of the organization this account is affiliated with."
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "Where the About-account information was sourced from.\n[⚠️Note:源码未声明 source 的可取值及各自含义，待研发确认。]"
+                  },
+                  "username_changes": {
+                    "type": "object",
+                    "properties": {
+                      "count": {
+                        "type": "string",
+                        "description": "Number of times the account has changed its username."
+                      }
+                    },
+                    "description": "Summary of how often the account has changed its username."
+                  }
+                },
+                "description": "Contents of the 'About this account' panel, such as where the account is based and how that location was determined."
+              },
+              "identity_profile_labels_highlighted_label": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "description": "Text describing the identity label."
+                      },
+                      "badge": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "Web link to the badge image."
+                          }
+                        },
+                        "description": "The badge image of the identity label."
+                      },
+                      "url": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "Destination address of the identity-label link."
+                          },
+                          "urlType": {
+                            "type": "string",
+                            "description": "Category of the identity-label link, indicating how it should be handled.\n[⚠️Note:源码未声明 urlType 的可取值及各自含义，待研发确认。]"
+                          }
+                        },
+                        "description": "Link the identity label points to."
+                      },
+                      "userLabelDisplayType": {
+                        "type": "string",
+                        "description": "How the identity label is rendered on the profile.\n[⚠️Note:源码未声明 userLabelDisplayType 的可取值及各自含义，待研发确认。]"
+                      },
+                      "userLabelType": {
+                        "type": "string",
+                        "description": "The kind of user label this identity badge represents.\n[⚠️Note:源码未声明 userLabelType 的可取值及各自含义，待研发确认。]"
+                      }
+                    },
+                    "description": "Details of the identity label."
+                  }
+                },
+                "description": "Highlighted identity label, such as a government or official-account marker."
+              }
+            },
+            "description": "The user's profile and About-panel details."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when the profile was returned, error otherwise."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "BatchUserInfoResponse": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Object type tag identifying the entry as a user."
+                },
+                "userName": {
+                  "type": "string",
+                  "description": "The follower's @handle, unique across X/Twitter and used in profile URLs."
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Web link to the follower's profile page."
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier of the follower."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "The follower's display name shown on the profile."
+                },
+                "isBlueVerified": {
+                  "type": "boolean",
+                  "description": "Whether the follower holds a paid X (Twitter) Blue verification."
+                },
+                "verifiedType": {
+                  "type": "string",
+                  "description": "The follower's verification category, such as a business or government account."
+                },
+                "profilePicture": {
+                  "type": "string",
+                  "description": "Web link to the follower's avatar image."
+                },
+                "coverPicture": {
+                  "type": "string",
+                  "description": "Web link to the follower's profile banner image."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "The follower's profile bio text."
+                },
+                "location": {
+                  "type": "string",
+                  "description": "Free-text location the follower lists on their profile."
+                },
+                "followers": {
+                  "type": "integer",
+                  "description": "Number of accounts following the follower."
+                },
+                "following": {
+                  "type": "integer",
+                  "description": "Number of accounts the follower follows."
+                },
+                "canDm": {
+                  "type": "boolean",
+                  "description": "Whether the follower currently accepts direct messages from the requester."
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "Timestamp when the follower's account was created."
+                },
+                "favouritesCount": {
+                  "type": "integer",
+                  "description": "Number of tweets the follower has liked."
+                },
+                "hasCustomTimelines": {
+                  "type": "boolean",
+                  "description": "Whether the follower has created custom timelines."
+                },
+                "isTranslator": {
+                  "type": "boolean",
+                  "description": "Whether the follower participates in the Twitter translation program."
+                },
+                "mediaCount": {
+                  "type": "integer",
+                  "description": "Number of media items the follower has posted."
+                },
+                "statusesCount": {
+                  "type": "integer",
+                  "description": "Total number of tweets the follower has posted."
+                },
+                "withheldInCountries": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Country codes where the follower's account is withheld for legal reasons."
+                },
+                "possiblySensitive": {
+                  "type": "boolean",
+                  "description": "Whether the follower's posts are flagged as potentially sensitive."
+                },
+                "pinnedTweetIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "Identifiers of tweets the follower has pinned to the top of their profile."
+                },
+                "isAutomated": {
+                  "type": "boolean",
+                  "description": "Whether the account is labeled as an automated (bot) account."
+                },
+                "automatedBy": {
+                  "type": "string",
+                  "description": "Username of the person or entity managing the automated account."
+                },
+                "unavailable": {
+                  "type": "boolean",
+                  "description": "Whether the follower's account is currently unavailable, for example suspended or deactivated."
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Explanatory message returned when the account is unavailable."
+                },
+                "unavailableReason": {
+                  "type": "string",
+                  "description": "Reason code or text describing why the account is unavailable."
+                }
+              }
+            },
+            "description": "Followers of the user, returned for this page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when followers were returned, error otherwise."
+          },
+          "msg": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "UserTweetsResponse": {
+        "type": "object",
+        "properties": {
+          "tweets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Object type tag identifying the entry as a tweet."
+                },
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier of the tweet."
+                },
+                "url": {
+                  "type": "string",
+                  "description": "Web link to the tweet on X/Twitter."
+                },
+                "text": {
+                  "type": "string",
+                  "description": "Full text content of the tweet."
+                },
+                "source": {
+                  "type": "string",
+                  "description": "Name of the client application used to post the tweet."
+                },
+                "retweetCount": {
+                  "type": "integer",
+                  "description": "Number of times the tweet has been retweeted."
+                },
+                "replyCount": {
+                  "type": "integer",
+                  "description": "Number of replies to the tweet."
+                },
+                "likeCount": {
+                  "type": "integer",
+                  "description": "Number of likes on the tweet."
+                },
+                "quoteCount": {
+                  "type": "integer",
+                  "description": "Number of quote tweets referencing this tweet."
+                },
+                "viewCount": {
+                  "type": "integer",
+                  "description": "Number of times the tweet has been viewed."
+                },
+                "createdAt": {
+                  "type": "string",
+                  "description": "Timestamp when the tweet was created."
+                },
+                "lang": {
+                  "type": "string",
+                  "description": "Detected language of the tweet text, as a language code."
+                },
+                "bookmarkCount": {
+                  "type": "integer",
+                  "description": "Number of times the tweet has been bookmarked."
+                },
+                "isReply": {
+                  "type": "boolean",
+                  "description": "Whether the tweet is a reply to another tweet."
+                },
+                "inReplyToId": {
+                  "type": "string",
+                  "description": "Identifier of the tweet this one directly replies to; present only when isReply is true."
+                },
+                "conversationId": {
+                  "type": "string",
+                  "description": "Identifier of the root tweet that started the conversation thread this tweet belongs to."
+                },
+                "displayTextRange": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "description": "Start and end character offsets marking the displayable portion of the tweet text."
+                },
+                "inReplyToUserId": {
+                  "type": "string",
+                  "description": "Identifier of the user being replied to."
+                },
+                "inReplyToUsername": {
+                  "type": "string",
+                  "description": "Username of the user being replied to."
+                }
+              }
+            },
+            "description": "The user's most recent tweets returned for this page."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when tweets were returned, error otherwise."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/user_about": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_about"
+        ],
+        "summary": "Get User Profile About",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Screen name (@handle, without the @) of the user whose About profile you want."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileAboutResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Fetch the public profile and the 'About this account' panel for a single user identified by screen name, including account origin, identity labels, and affiliate badges."
+      }
+    },
+    "/twitter/user/batch_info_by_ids": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/batch_get_user_by_userids"
+        ],
+        "summary": "Batch Get User Info By UserIds",
+        "parameters": [
+          {
+            "name": "userIds",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Comma-separated list of numeric user IDs to look up in this batch."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch user information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchUserInfoResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Look up the profiles of multiple users in one call by passing their numeric user IDs, avoiding one request per user."
+      }
+    },
+    "/twitter/user/info": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_by_username"
+        ],
+        "summary": "Get User Info",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Screen name (@handle, without the @) of the user whose profile you want."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchUserInfoResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Fetch the profile of a single user identified by screen name."
+      }
+    },
+    "/twitter/user/tweet_timeline": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_timeline"
+        ],
+        "summary": "Get User Tweet Timeline",
+        "description": "Retrieve a user's own tweets in reverse-chronological order, matching the ordering shown on their profile. Optionally include replies and the parent tweets they reply to; paginate with the cursor.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the user whose timeline to retrieve."
+          },
+          {
+            "name": "includeReplies",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Whether replies posted by the user are included alongside their original tweets."
+          },
+          {
+            "name": "includeParentTweet",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "When a returned tweet is a reply, whether to also include the tweet it replies to."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User tweet timeline",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserTweetsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/last_tweets": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_last_tweets"
+        ],
+        "summary": "Get User Last Tweets",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the user whose recent tweets to retrieve; provide this or userName."
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Screen name of the user whose recent tweets to retrieve; provide this or userId."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          },
+          {
+            "name": "includeReplies",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            },
+            "description": "Whether replies posted by the user are included alongside their original tweets."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User tweets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserTweetsResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a user's most recent tweets, identified by either user ID or screen name, with optional replies and cursor pagination."
+      }
+    },
+    "/twitter/user/followers": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_followers"
+        ],
+        "summary": "Get User Followers",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Screen name (@handle, without the @) of the user whose followers you want."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 200,
+              "minimum": 20,
+              "maximum": 200
+            },
+            "description": "How many followers to return per page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User followers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchUserInfoResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "List the accounts that follow a given user, identified by screen name, with cursor pagination and a configurable page size."
+      }
+    }
+  }
+}

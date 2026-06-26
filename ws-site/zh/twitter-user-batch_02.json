@@ -1,0 +1,697 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API",
+    "version": "1.0.0",
+    "description": "Twitter API endpoints for user data and interactions."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "UserFollowingsResponse": {
+        "type": "object",
+        "properties": {
+          "followings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "description": "本页返回的该用户所关注的账号。"
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求结果标记：成功返回关注列表为 success，否则为 error。"
+          },
+          "message": {
+            "type": "string",
+            "description": "可读的提示信息；当 status 为 error 时承载错误详情。"
+          }
+        }
+      },
+      "UserMentionsResponse": {
+        "type": "object",
+        "properties": {
+          "tweets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tweet"
+            },
+            "description": "本页返回的提及该用户的推文。"
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求结果标记：成功返回提及推文为 success，否则为 error。"
+          },
+          "message": {
+            "type": "string",
+            "description": "可读的提示信息；当 status 为 error 时承载错误详情。"
+          }
+        }
+      },
+      "FollowRelationshipResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "following": {
+                "type": "boolean",
+                "description": "来源用户是否关注目标用户。"
+              },
+              "followed_by": {
+                "type": "boolean",
+                "description": "目标用户是否回关来源用户。"
+              }
+            },
+            "description": "两个用户之间的关注关系方向。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求结果标记：成功返回关系为 success，否则为 error。"
+          },
+          "message": {
+            "type": "string",
+            "description": "可读的提示信息；当 status 为 error 时承载错误详情。"
+          }
+        }
+      },
+      "SearchUserResponse": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "description": "本页返回的匹配关键词的用户。"
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求结果标记：成功返回用户为 success，否则为 error。"
+          },
+          "msg": {
+            "type": "string",
+            "description": "可读的提示信息；当 status 为 error 时承载错误详情。"
+          }
+        }
+      },
+      "VerifiedFollowersResponse": {
+        "type": "object",
+        "properties": {
+          "followers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "description": "本页返回的关注该用户的认证账号。"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "请求结果标记：成功返回关注者为 success，否则为 error。"
+          },
+          "message": {
+            "type": "string",
+            "description": "可读的提示信息；当 status 为 error 时承载错误详情。"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "对象类型标记，标识该条目为用户。"
+          },
+          "userName": {
+            "type": "string",
+            "description": "关注者的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。"
+          },
+          "url": {
+            "type": "string",
+            "description": "关注者资料页的网页链接。"
+          },
+          "id": {
+            "type": "string",
+            "description": "关注者的唯一标识。"
+          },
+          "name": {
+            "type": "string",
+            "description": "关注者在资料页展示的昵称。"
+          },
+          "isBlueVerified": {
+            "type": "boolean",
+            "description": "关注者是否拥有付费的 X（Twitter）Blue 认证。"
+          },
+          "verifiedType": {
+            "type": "string",
+            "description": "关注者的认证类别，如企业或政府账号。"
+          },
+          "profilePicture": {
+            "type": "string",
+            "description": "关注者头像图片的网页链接。"
+          },
+          "coverPicture": {
+            "type": "string",
+            "description": "关注者资料页横幅图片的网页链接。"
+          },
+          "description": {
+            "type": "string",
+            "description": "关注者资料页的个人简介文字。"
+          },
+          "location": {
+            "type": "string",
+            "description": "关注者在资料页填写的所在地（自由文本）。"
+          },
+          "followers": {
+            "type": "integer",
+            "description": "关注该关注者的账号数。"
+          },
+          "following": {
+            "type": "integer",
+            "description": "该关注者关注的账号数。"
+          },
+          "canDm": {
+            "type": "boolean",
+            "description": "该关注者当前是否接受请求方的私信。"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "该关注者账号的创建时间。"
+          },
+          "favouritesCount": {
+            "type": "integer",
+            "description": "该关注者点赞过的推文数。"
+          },
+          "hasCustomTimelines": {
+            "type": "boolean",
+            "description": "该关注者是否创建过自定义时间线。"
+          },
+          "isTranslator": {
+            "type": "boolean",
+            "description": "该关注者是否参与 Twitter 翻译计划。"
+          },
+          "mediaCount": {
+            "type": "integer",
+            "description": "该关注者发布过的媒体条目数。"
+          },
+          "statusesCount": {
+            "type": "integer",
+            "description": "该关注者发布过的推文总数。"
+          },
+          "withheldInCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "因法律原因屏蔽该关注者账号的国家／地区代码列表。"
+          },
+          "possiblySensitive": {
+            "type": "boolean",
+            "description": "该关注者的内容是否被标记为可能含敏感信息。"
+          },
+          "pinnedTweetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "该关注者置顶在资料页顶部的推文标识列表。"
+          },
+          "isAutomated": {
+            "type": "boolean",
+            "description": "该账号是否被标记为自动化（机器人）账号。"
+          },
+          "automatedBy": {
+            "type": "string",
+            "description": "管理该自动化账号的个人或机构的用户名。"
+          },
+          "unavailable": {
+            "type": "boolean",
+            "description": "该关注者账号当前是否不可用，例如被封禁或停用。"
+          },
+          "message": {
+            "type": "string",
+            "description": "账号不可用时返回的说明信息。"
+          },
+          "unavailableReason": {
+            "type": "string",
+            "description": "描述账号不可用原因的代码或文字。"
+          }
+        }
+      },
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "对象类型标记，标识该条目为推文。"
+          },
+          "id": {
+            "type": "string",
+            "description": "推文的唯一标识。"
+          },
+          "url": {
+            "type": "string",
+            "description": "推文在 X/Twitter 上的网页链接。"
+          },
+          "text": {
+            "type": "string",
+            "description": "推文的完整正文内容。"
+          },
+          "source": {
+            "type": "string",
+            "description": "发布该推文所用的客户端应用名称。"
+          },
+          "retweetCount": {
+            "type": "integer",
+            "description": "推文被转发的次数。"
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "推文收到的回复数。"
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "推文获得的点赞数。"
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "引用该推文的引用推文数。"
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "推文的浏览次数。"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "推文的创建时间。"
+          },
+          "lang": {
+            "type": "string",
+            "description": "推文正文被识别出的语言，以语言代码表示。"
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "description": "推文被收藏的次数。"
+          },
+          "isReply": {
+            "type": "boolean",
+            "description": "该推文是否为对另一条推文的回复。"
+          },
+          "inReplyToId": {
+            "type": "string",
+            "description": "该推文直接回复的目标推文标识；仅当 isReply 为真时存在。"
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "该推文所属对话线程的起始推文标识。"
+          },
+          "displayTextRange": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "标记推文正文中可显示部分的起止字符位置。"
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "description": "被回复用户的标识。"
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "description": "被回复用户的用户名。"
+          },
+          "author": {
+            "$ref": "#/components/schemas/User",
+            "description": "发布该推文的用户资料。"
+          },
+          "entities": {
+            "type": "object",
+            "properties": {
+              "hashtags": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "该话题标签在推文正文中的起止字符位置。"
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "话题标签的文字，不含开头的 # 号。"
+                    }
+                  }
+                },
+                "description": "推文正文中出现的话题标签。"
+              },
+              "urls": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "display_url": {
+                      "type": "string",
+                      "description": "推文中显示的链接的短化、易读形式。"
+                    },
+                    "expanded_url": {
+                      "type": "string",
+                      "description": "显示链接最终指向的完整目标地址。"
+                    },
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "该链接在推文正文中的起止字符位置。"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "推文正文中实际出现的 t.co 短链接。"
+                    }
+                  }
+                },
+                "description": "推文正文中出现的链接。"
+              },
+              "user_mentions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id_str": {
+                      "type": "string",
+                      "description": "被提及用户的标识。"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "被提及用户的昵称。"
+                    },
+                    "screen_name": {
+                      "type": "string",
+                      "description": "被提及用户的 @ 用户名。"
+                    }
+                  }
+                },
+                "description": "推文正文中提及的用户。"
+              }
+            },
+            "description": "从推文正文解析出的结构化实体，如话题标签、链接与用户提及。"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/user/followings": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_followings"
+        ],
+        "summary": "获取用户关注列表 GET /twitter/user/followings",
+        "description": "按用户名获取某个用户所关注的账号列表，支持游标翻页与可配置的每页数量。",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询其关注列表的用户名（@ 后的部分，不含 @）。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 200,
+              "minimum": 20,
+              "maximum": 200
+            },
+            "description": "每页返回的关注账号数量。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserFollowingsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/mentions": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_mention"
+        ],
+        "summary": "获取提及用户的推文 GET /twitter/user/mentions",
+        "description": "按用户名获取提及该用户的推文，按时间倒序排列，可选用时间窗口限定范围并通过游标翻页。",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询其被提及推文的用户名（@ 后的部分，不含 @）。"
+          },
+          {
+            "name": "sinceTime",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "仅返回在该 Unix 时间戳（秒）当时或之后发布的提及推文。"
+          },
+          {
+            "name": "untilTime",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "仅返回在该 Unix 时间戳（秒）之前发布的提及推文。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserMentionsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/check_follow_relationship": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/check_follow_relationship"
+        ],
+        "summary": "查询关注关系 GET /twitter/user/check_follow_relationship",
+        "description": "查询来源用户与目标用户之间的关注关系方向：来源用户是否关注目标用户，以及目标用户是否回关来源用户。",
+        "parameters": [
+          {
+            "name": "source_user_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "作为关注关系起点被检查的来源用户名。"
+          },
+          {
+            "name": "target_user_name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "作为关注关系对照对象的目标用户名。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FollowRelationshipResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/search": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/search_user"
+        ],
+        "summary": "按关键词搜索用户 GET /twitter/user/search",
+        "description": "按关键词搜索资料匹配的用户，并通过游标翻页。",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "用于匹配用户资料的搜索关键词。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchUserResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/user/verifiedFollowers": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_user_verified_followers"
+        ],
+        "summary": "获取用户认证关注者 GET /twitter/user/verifiedFollowers",
+        "description": "按用户 ID 获取关注某个用户的认证账号，按时间倒序排列并通过游标翻页。",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要查询其认证关注者的用户标识。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifiedFollowersResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

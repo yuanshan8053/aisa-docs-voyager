@@ -1,0 +1,4278 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Financial Datasets API",
+    "description": "Stock market API with real-time and historical financial data for 30,000+ tickers over 30+ years. Financial statements, equity prices, insider trades, SEC filings, and more.",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "name": "API Support",
+      "url": "https://financialdatasets.ai/support",
+      "email": "support@financialdatasets.ai"
+    },
+    "termsOfService": "https://financialdatasets.ai/terms"
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1/financial",
+      "description": "Production server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Financial Statements",
+      "description": "Access to income statements, balance sheets, and cash flow statements"
+    },
+    {
+      "name": "Market Data",
+      "description": "Real-time and historical price data"
+    },
+    {
+      "name": "Company Information",
+      "description": "Company facts like ticker, name, and description"
+    },
+    {
+      "name": "Earnings",
+      "description": "Earnings press releases and related data"
+    },
+    {
+      "name": "Crypto",
+      "description": "Cryptocurrency price data and market information"
+    },
+    {
+      "name": "News",
+      "description": "Real-time and historical news articles"
+    },
+    {
+      "name": "SEC Filings",
+      "description": "SEC filings and regulatory documents"
+    },
+    {
+      "name": "Insider Trades",
+      "description": "Insider trading activity and transactions"
+    },
+    {
+      "name": "Institutional Ownership",
+      "description": "Equity holdings of investment managers"
+    },
+    {
+      "name": "Financial Metrics",
+      "description": "Financial ratios, metrics, and key performance indicators"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/financials/search/line-items": {
+      "post": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "searchLineItems",
+        "summary": "搜索指定财务指标 (Search Line Items)",
+        "description": "在一个或多个股票代码的利润表、资产负债表与现金流量表中检索指定的财务行项目。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchLineItemsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialsSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/insider-trades": {
+      "get": {
+        "tags": [
+          "Insider Trades"
+        ],
+        "operationId": "getInsiderTrades",
+        "summary": "获取内部人交易 (Get Insider Trades)",
+        "description": "获取指定股票代码下公司内部人申报的买入与卖出交易记录。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "按内部人姓名筛选结果；有效姓名可从内部人姓名查询接口获取。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "transaction_type",
+            "in": "query",
+            "description": "按交易类型筛选结果；有效类型可从内部人交易类型查询接口获取。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filing_date",
+            "in": "query",
+            "description": "仅返回在该确切日期申报的交易。",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filing_date_gte",
+            "in": "query",
+            "description": "仅返回在该日期当天或之后申报的交易。",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filing_date_lte",
+            "in": "query",
+            "description": "仅返回在该日期当天或之前申报的交易。",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filing_date_gt",
+            "in": "query",
+            "description": "仅返回在该日期之后申报的交易。",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filing_date_lt",
+            "in": "query",
+            "description": "仅返回在该日期之前申报的交易。",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Insider trades response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InsiderTradesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/institutional-ownership": {
+      "get": {
+        "tags": [
+          "Institutional Ownership"
+        ],
+        "operationId": "getInstitutionalOwnership",
+        "summary": "获取机构持仓 (Get Institutional Ownership)",
+        "description": "按投资管理人或股票代码查询机构持有的股权头寸（二者须且仅须提供其一）。",
+        "parameters": [
+          {
+            "name": "investor",
+            "in": "query",
+            "description": "要查询其持仓的投资管理人名称。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "要查询其机构持有人的股票代码。",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Institutional ownership response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstitutionalOwnershipResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/company/facts": {
+      "get": {
+        "tags": [
+          "Company Information"
+        ],
+        "operationId": "getCompanyFacts",
+        "summary": "获取公司概况 (Get Company Facts)",
+        "description": "获取指定股票代码下公司的概况信息与标识。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company facts response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyFactsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/filings": {
+      "get": {
+        "tags": [
+          "SEC Filings"
+        ],
+        "operationId": "getFilings",
+        "summary": "获取 SEC 备案 (Get Filings)",
+        "description": "获取公司向 SEC 提交的备案文件列表。",
+        "parameters": [
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filing_type",
+            "in": "query",
+            "description": "按一种或多种 SEC 备案类型筛选；重复该参数可传入多个值。",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "10-K",
+                  "10-Q",
+                  "8-K",
+                  "20-F",
+                  "6-K"
+                ]
+              }
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SEC filings response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilingsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/filings/items": {
+      "get": {
+        "tags": [
+          "SEC Filings"
+        ],
+        "operationId": "getFilingItems",
+        "summary": "获取 SEC 备案条目正文 (Get Filing Items)",
+        "description": "获取某份 SEC 备案文件中各独立条目（Item）的原始正文。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filing_type",
+            "in": "query",
+            "description": "要读取条目的备案 SEC 表格类型。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "10-K",
+                "10-Q",
+                "8-K"
+              ]
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "要选取的备案年份。",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "quarter",
+            "in": "query",
+            "description": "备案季度，用于 10-Q 季报。",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "item",
+            "in": "query",
+            "description": "要获取的具体备案条目（Item）。",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Item-1",
+                "Item-1A",
+                "Item-1B",
+                "Item-2",
+                "Item-3",
+                "Item-4",
+                "Item-5",
+                "Item-6",
+                "Item-7",
+                "Item-7A",
+                "Item-8",
+                "Item-9",
+                "Item-9A",
+                "Item-9B",
+                "Item-10",
+                "Item-11",
+                "Item-12",
+                "Item-13",
+                "Item-14",
+                "Item-15",
+                "Item-16",
+                "Item-1.01",
+                "Item-1.02",
+                "Item-1.03",
+                "Item-1.04",
+                "Item-2.01",
+                "Item-2.02",
+                "Item-2.03",
+                "Item-2.04",
+                "Item-2.05",
+                "Item-2.06",
+                "Item-3.01",
+                "Item-3.02",
+                "Item-3.03",
+                "Item-4.01",
+                "Item-4.02",
+                "Item-5.01",
+                "Item-5.02",
+                "Item-5.03",
+                "Item-5.04",
+                "Item-5.05",
+                "Item-5.06",
+                "Item-5.07",
+                "Item-5.08",
+                "Item-6.01",
+                "Item-6.02",
+                "Item-6.03",
+                "Item-6.04",
+                "Item-6.05",
+                "Item-7.01",
+                "Item-8.01",
+                "Item-9.01"
+              ]
+            }
+          },
+          {
+            "name": "accession_number",
+            "in": "query",
+            "description": "标识该备案的受理编号，用于 8-K 文件。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "include_exhibits",
+            "in": "query",
+            "description": "是否包含所链接附件的原始正文；仅对 8-K 文件生效，启用后每个附件对象将携带其完整正文。",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SEC filing items response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilingItemsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials/segmented-revenues": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getSegmentedRevenues",
+        "summary": "获取分部营收（已废弃）(Get Segmented Revenues)",
+        "description": "已废弃。按报告分部拆分获取营业收入，建议改用利润表分部接口。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "目标公司的股票代码；未提供 `cik` 时必填。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "所报告营收对应的日期或时间区间，采用 ISO 8601 格式。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Segmented revenue response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SegmentedRevenuesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/financials/income-statements": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getIncomeStatements",
+        "summary": "获取利润表 (Get Income Statements)",
+        "description": "获取指定股票代码的利润表。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "目标公司的股票代码；未提供 `cik` 时必填。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "返回财务数据所采用的报告周期。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Income statements response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IncomeStatementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials/balance-sheets": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getBalanceSheets",
+        "summary": "获取资产负债表 (Get Balance Sheets)",
+        "description": "获取指定股票代码的资产负债表。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "目标公司的股票代码；未提供 `cik` 时必填。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "返回财务数据所采用的报告周期。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Balance sheets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceSheetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials/cash-flow-statements": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getCashFlowStatements",
+        "summary": "获取现金流量表 (Get Cash Flow Statements)",
+        "description": "获取指定股票代码的现金流量表。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "目标公司的股票代码；未提供 `cik` 时必填。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "返回财务数据所采用的报告周期。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cash flow statements response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CashFlowStatementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/earnings/press-releases": {
+      "get": {
+        "tags": [
+          "Earnings"
+        ],
+        "operationId": "getEarningsPressReleases",
+        "summary": "获取财报新闻稿 (Get Earnings Press Releases)",
+        "description": "获取指定股票代码的财报相关新闻稿。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Earnings press releases response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PressReleasesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/prices/snapshot": {
+      "get": {
+        "tags": [
+          "Market Data"
+        ],
+        "operationId": "getPriceSnapshot",
+        "summary": "获取实时价格快照 (Get Price Snapshot)",
+        "description": "获取股票的实时价格快照，含当前价格、当日涨跌额与当日涨跌幅。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Price snapshot response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriceSnapshotResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials": {
+      "get": {
+        "tags": [
+          "Financial Statements"
+        ],
+        "operationId": "getAllFinancialStatements",
+        "summary": "获取全部财务报表 (Get All Financial Statements)",
+        "description": "一次性获取指定股票代码的利润表、资产负债表与现金流量表。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "目标公司的股票代码；未提供 `cik` 时必填。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "返回财务数据所采用的报告周期。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Financial statements response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/news": {
+      "get": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "getNews",
+        "summary": "获取新闻资讯 (Get News)",
+        "description": "获取指定公司的近期新闻；省略股票代码时返回大盘新闻。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "用于获取特定公司新闻的股票代码；省略则返回大盘新闻。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5,
+              "maximum": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "News articles response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/prices": {
+      "get": {
+        "tags": [
+          "Market Data"
+        ],
+        "operationId": "getPrices",
+        "summary": "获取历史价格 (Get Prices)",
+        "description": "按日期区间获取股票的日终历史价格数据。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "description": "每条返回价格数据的聚合时间粒度。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "day",
+                "week",
+                "month",
+                "year"
+              ]
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "返回价格序列纳入的最早日期。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "返回价格序列纳入的最晚日期。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Price data response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PricesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financial-metrics": {
+      "get": {
+        "tags": [
+          "Financial Metrics"
+        ],
+        "operationId": "getFinancialMetrics",
+        "summary": "获取财务指标 (Get Financial Metrics)",
+        "description": "获取指定股票代码的财务指标，涵盖估值、盈利能力、运营效率、流动性、杠杆、成长性与每股指标。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "目标公司的股票代码；未提供 `cik` 时必填。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司的 SEC 中央索引号（CIK），可替代股票代码使用。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "返回财务数据所采用的报告周期。",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "annual",
+                "quarterly",
+                "ttm"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "单次响应返回记录数的上限。",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriod"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLte"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodGt"
+          },
+          {
+            "$ref": "#/components/parameters/ReportPeriodLt"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The historical financial metrics and ratios for a ticker",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialMetricsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financial-metrics/snapshot": {
+      "get": {
+        "tags": [
+          "Financial Metrics"
+        ],
+        "operationId": "getFinancialMetricsSnapshot",
+        "summary": "获取实时财务指标快照 (Get Financial Metrics Snapshot)",
+        "description": "获取股票财务指标的实时快照，涵盖估值、盈利能力、运营效率、流动性、杠杆、成长性与每股指标。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cik",
+            "in": "query",
+            "description": "公司的 SEC 中央索引号（CIK），可替代股票代码使用。",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Financial metrics snapshot response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialMetricSnapshotResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    },
+    "/financials/search/screener": {
+      "post": {
+        "summary": "股票筛选 (Stock Screener)",
+        "description": "通过对取自利润表、资产负债表与现金流量表的财务指标设定筛选条件来检索股票。",
+        "operationId": "stockScreener",
+        "tags": [
+          "Financials",
+          "Search"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchFiltersRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinancialsSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/earnings": {
+      "get": {
+        "tags": [
+          "Earnings"
+        ],
+        "operationId": "getEarnings",
+        "summary": "获取财报快照 (Get Earnings)",
+        "description": "获取指定股票代码的最新财报快照；可选的预期、超预期及变动字段仅在可获取时返回。",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "description": "标识目标公司的股票代码。",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Earnings response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EarningsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequiredError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "SearchFiltersRequest": {
+        "type": "object",
+        "required": [
+          "filters"
+        ],
+        "properties": {
+          "period": {
+            "type": "string",
+            "enum": [
+              "annual",
+              "quarterly",
+              "ttm"
+            ],
+            "default": "ttm",
+            "description": "返回财务数据所采用的报告周期。"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 100,
+            "description": "单次响应返回记录数的上限。"
+          },
+          "order_by": {
+            "type": "string",
+            "enum": [
+              "ticker",
+              "-ticker",
+              "report_period",
+              "-report_period"
+            ],
+            "default": "ticker",
+            "description": "用于结果排序的字段；前缀加减号表示降序排列。"
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "USD",
+              "EUR",
+              "GBP",
+              "JPY",
+              "CHF",
+              "AUD",
+              "CAD",
+              "SEK"
+            ],
+            "description": "筛选所依据的财务数值采用的计价货币。"
+          },
+          "historical": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否对历史财务数据（而非仅最新数据）应用筛选条件。"
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "field",
+                "operator",
+                "value"
+              ],
+              "properties": {
+                "field": {
+                  "type": "string",
+                  "description": "该条件所作用的财务指标或标识；指标字段使用比较运算符，ticker 或 cik 使用 'in' 运算符。"
+                },
+                "operator": {
+                  "type": "string",
+                  "enum": [
+                    "gt",
+                    "lt",
+                    "gte",
+                    "lte",
+                    "eq",
+                    "in"
+                  ],
+                  "description": "在字段与取值之间施加的比较运算符；'in' 运算符仅可与 ticker 或 cik 字段配合用于多值匹配。"
+                },
+                "value": {
+                  "oneOf": [
+                    {
+                      "type": "number",
+                      "description": "The value to compare against for single-value operators (gt, lt, gte, lte, eq)"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of ticker or cik values to compare against when using the 'in' operator"
+                    }
+                  ],
+                  "description": "用于比较的取值：比较运算符对应单个数值，'in' 运算符对应 ticker/cik 字符串列表。"
+                }
+              }
+            },
+            "minItems": 1,
+            "description": "用于组合筛选股票池的过滤条件列表。"
+          }
+        }
+      },
+      "SearchLineItemsRequest": {
+        "type": "object",
+        "required": [
+          "line_items",
+          "tickers"
+        ],
+        "properties": {
+          "line_items": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The financial metric to search for."
+            },
+            "minItems": 1,
+            "description": "要在各支持报表中检索的财务行项目名称列表。"
+          },
+          "tickers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The tickers to search for."
+            },
+            "minItems": 1,
+            "description": "要检索其财务数据的股票代码列表。"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "annual",
+              "quarterly",
+              "ttm"
+            ],
+            "default": "ttm",
+            "description": "返回财务数据所采用的报告周期。"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "单次响应返回记录数的上限。"
+          }
+        }
+      },
+      "FinancialsSearchResponse": {
+        "type": "object",
+        "properties": {
+          "search_results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ticker": {
+                  "type": "string",
+                  "description": "标识目标公司的股票代码。"
+                },
+                "report_period": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+                },
+                "period": {
+                  "type": "string",
+                  "enum": [
+                    "annual",
+                    "quarterly",
+                    "ttm"
+                  ],
+                  "description": "本条记录数值所对应的报告周期。"
+                },
+                "currency": {
+                  "type": "string",
+                  "description": "所返回财务数值采用的计价货币。"
+                }
+              },
+              "additionalProperties": {
+                "type": "string",
+                "description": "Additional financial metrics based on the search criteria."
+              }
+            },
+            "description": "满足全部筛选条件的股票列表。"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "A short error message."
+          },
+          "message": {
+            "type": "string",
+            "description": "A more detailed error message."
+          }
+        }
+      },
+      "InsiderTradesResponse": {
+        "type": "object",
+        "properties": {
+          "insider_trades": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InsiderTrade"
+            },
+            "description": "符合查询条件的内部人交易记录列表。"
+          }
+        }
+      },
+      "InstitutionalOwnershipResponse": {
+        "type": "object",
+        "properties": {
+          "institutional-ownership": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InstitutionalOwnership"
+            },
+            "description": "符合查询条件的机构持仓记录列表。"
+          }
+        }
+      },
+      "FinancialsResponse": {
+        "type": "object",
+        "properties": {
+          "financials": {
+            "type": "object",
+            "properties": {
+              "income_statements": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/IncomeStatement"
+                },
+                "description": "该股票代码的利润表记录列表。"
+              },
+              "balance_sheets": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BalanceSheet"
+                },
+                "description": "该股票代码的资产负债表记录列表。"
+              },
+              "cash_flow_statements": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CashFlowStatement"
+                },
+                "description": "该股票代码的现金流量表记录列表。"
+              }
+            },
+            "description": "汇总利润表、资产负债表与现金流量表的容器。"
+          }
+        }
+      },
+      "SegmentedRevenuesResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_revenues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SegmentedRevenues"
+            },
+            "description": "公司分部营收记录列表。"
+          }
+        }
+      },
+      "IncomeStatementResponse": {
+        "type": "object",
+        "properties": {
+          "income_statements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncomeStatement"
+            },
+            "description": "该股票代码的利润表记录列表。"
+          }
+        }
+      },
+      "BalanceSheetResponse": {
+        "type": "object",
+        "properties": {
+          "balance_sheets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceSheet"
+            },
+            "description": "该股票代码的资产负债表记录列表。"
+          }
+        }
+      },
+      "CashFlowStatementResponse": {
+        "type": "object",
+        "properties": {
+          "cash_flow_statements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CashFlowStatement"
+            },
+            "description": "该股票代码的现金流量表记录列表。"
+          }
+        }
+      },
+      "CompanyFactsResponse": {
+        "type": "object",
+        "properties": {
+          "company_facts": {
+            "$ref": "#/components/schemas/CompanyFacts",
+            "description": "公司的概况信息与标识。"
+          }
+        }
+      },
+      "FilingsResponse": {
+        "type": "object",
+        "properties": {
+          "filings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filing"
+            },
+            "description": "符合查询条件的 SEC 备案文件列表。"
+          }
+        }
+      },
+      "FilingItemsResponse": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "cik": {
+            "type": "string",
+            "description": "备案公司的 SEC 中央索引号（CIK）。"
+          },
+          "filing_type": {
+            "type": "string",
+            "description": "该备案的 SEC 表格类型。"
+          },
+          "accession_number": {
+            "type": "string",
+            "description": "标识该备案的 SEC 受理编号。"
+          },
+          "year": {
+            "type": "integer",
+            "description": "备案所属年份。"
+          },
+          "quarter": {
+            "type": "integer",
+            "description": "备案所属季度。"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FilingItem"
+            },
+            "description": "从该备案中抽取的条目（Item）小节列表。"
+          }
+        }
+      },
+      "PressReleasesResponse": {
+        "type": "object",
+        "properties": {
+          "press_releases": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PressRelease"
+            },
+            "description": "该股票代码的财报新闻稿列表。"
+          }
+        }
+      },
+      "PriceSnapshotResponse": {
+        "type": "object",
+        "properties": {
+          "snapshot": {
+            "$ref": "#/components/schemas/PriceSnapshot",
+            "description": "该股票的实时价格快照。"
+          }
+        }
+      },
+      "CryptoPriceSnapshotResponse": {
+        "type": "object",
+        "properties": {
+          "snapshot": {
+            "$ref": "#/components/schemas/CryptoPriceSnapshot"
+          }
+        }
+      },
+      "NewsResponse": {
+        "type": "object",
+        "properties": {
+          "news": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/News"
+            },
+            "description": "符合查询条件的新闻文章列表。"
+          }
+        }
+      },
+      "PricesResponse": {
+        "type": "object",
+        "properties": {
+          "prices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Price"
+            },
+            "description": "该股票代码的历史价格数据列表。"
+          },
+          "next_page_url": {
+            "type": "string",
+            "description": "当存在更多数据时，用于获取下一页价格结果的链接。"
+          }
+        }
+      },
+      "CryptoPricesResponse": {
+        "type": "object",
+        "properties": {
+          "prices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Price"
+            }
+          }
+        }
+      },
+      "InsiderTrade": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "issuer": {
+            "type": "string",
+            "description": "发行所交易证券的公司名称。"
+          },
+          "name": {
+            "type": "string",
+            "description": "实施该交易的内部人姓名。"
+          },
+          "title": {
+            "type": "string",
+            "description": "内部人在公司担任的职务或头衔。"
+          },
+          "is_board_director": {
+            "type": "boolean",
+            "description": "该内部人是否为公司董事会成员。"
+          },
+          "transaction_date": {
+            "type": "string",
+            "format": "date",
+            "description": "交易发生的日期。"
+          },
+          "transaction_shares": {
+            "type": "number",
+            "description": "本次交易买入或卖出的股数。"
+          },
+          "transaction_price_per_share": {
+            "type": "number",
+            "description": "本次交易成交的每股价格。"
+          },
+          "transaction_value": {
+            "type": "number",
+            "description": "本次交易的总金额。"
+          },
+          "shares_owned_before_transaction": {
+            "type": "number",
+            "description": "交易发生前该内部人持有的股数。"
+          },
+          "shares_owned_after_transaction": {
+            "type": "number",
+            "description": "交易发生后该内部人持有的股数。"
+          },
+          "security_title": {
+            "type": "string",
+            "description": "本次交易所涉证券的名称。"
+          },
+          "filing_date": {
+            "type": "string",
+            "format": "date",
+            "description": "该交易向监管机构申报的日期。"
+          }
+        }
+      },
+      "InstitutionalOwnership": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "所持证券的股票代码；按投资管理人查询时返回。"
+          },
+          "investor": {
+            "type": "string",
+            "description": "持有该证券的投资管理人名称；按股票代码查询时返回。"
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "本持仓记录所对应的报告期。"
+          },
+          "price": {
+            "type": "number",
+            "description": "该股权头寸的估算买入价格。"
+          },
+          "shares": {
+            "type": "number",
+            "description": "该头寸持有的股数。"
+          },
+          "market_value": {
+            "type": "number",
+            "description": "该股权头寸的市值。"
+          }
+        }
+      },
+      "SegmentedRevenues": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ],
+            "description": "本条记录数值所对应的报告周期。"
+          },
+          "items": {
+            "type": "array",
+            "description": "从 SEC 10-K 与 10-Q 备案的 XBRL 数据中解析出的营收分部。",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "该营收分部的名称。"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "该分部报告的营收金额，以公司报告货币计价（默认美元）。"
+                },
+                "end_period": {
+                  "type": "string",
+                  "format": "date",
+                  "nullable": true,
+                  "description": "该分部报告区间的结束时点；仅季度数据提供。"
+                },
+                "start_period": {
+                  "type": "string",
+                  "format": "date",
+                  "nullable": true,
+                  "description": "该分部报告区间的起始时点；仅季度数据提供。"
+                },
+                "segments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "description": "分部维度的标签。"
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "分部维度的类型。"
+                      }
+                    }
+                  },
+                  "description": "描述该分部如何归类的维度拆分。"
+                }
+              }
+            }
+          }
+        }
+      },
+      "IncomeStatement": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+          },
+          "fiscal_period": {
+            "type": "string",
+            "description": "本报告区间对应的公司财年周期标签。"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "ttm",
+              "annual"
+            ],
+            "description": "本条记录数值所对应的报告周期。"
+          },
+          "currency": {
+            "type": "string",
+            "description": "本条记录中各金额数值所采用的计价货币。"
+          },
+          "revenue": {
+            "type": "number",
+            "nullable": false,
+            "description": "公司在报告期内实现的销售总额。"
+          },
+          "cost_of_revenue": {
+            "type": "number",
+            "nullable": false,
+            "description": "与所售商品或服务直接相关的生产成本。"
+          },
+          "gross_profit": {
+            "type": "number",
+            "nullable": false,
+            "description": "营业收入扣除营业成本后的毛利润。"
+          },
+          "operating_expense": {
+            "type": "number",
+            "nullable": false,
+            "description": "营业成本之外发生的运营费用。"
+          },
+          "selling_general_and_administrative_expenses": {
+            "type": "number",
+            "nullable": false,
+            "description": "报告期内的销售、一般及管理费用。"
+          },
+          "research_and_development": {
+            "type": "number",
+            "nullable": false,
+            "description": "研发活动支出。"
+          },
+          "operating_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "核心经营在扣除利息与税项前产生的营业利润。"
+          },
+          "interest_expense": {
+            "type": "number",
+            "nullable": false,
+            "description": "公司债务产生的利息支出。"
+          },
+          "ebit": {
+            "type": "number",
+            "nullable": false,
+            "description": "息税前利润（EBIT）。"
+          },
+          "income_tax_expense": {
+            "type": "number",
+            "nullable": false,
+            "description": "计入本期利润的所得税费用。"
+          },
+          "net_income_discontinued_operations": {
+            "type": "number",
+            "nullable": false,
+            "description": "已终止经营业务贡献的净利润。"
+          },
+          "net_income_non_controlling_interests": {
+            "type": "number",
+            "nullable": false,
+            "description": "归属于非控股（少数股东）权益的净利润部分。"
+          },
+          "net_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "扣除全部费用、利息与税项后的净利润。"
+          },
+          "net_income_common_stock": {
+            "type": "number",
+            "nullable": false,
+            "description": "扣除优先股索偿后归属于普通股股东的净利润。"
+          },
+          "preferred_dividends_impact": {
+            "type": "number",
+            "nullable": false,
+            "description": "优先股股息对可分配给普通股股东利润的影响。"
+          },
+          "consolidated_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "涵盖全部受控主体的合并总收益。"
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "nullable": false,
+            "description": "分摊到每股流通普通股的净利润（基本每股收益）。"
+          },
+          "earnings_per_share_diluted": {
+            "type": "number",
+            "nullable": false,
+            "description": "假设全部稀释性证券转换后的每股收益（稀释每股收益）。"
+          },
+          "dividends_per_common_share": {
+            "type": "number",
+            "nullable": false,
+            "description": "报告期内每股普通股宣派的股息。"
+          },
+          "weighted_average_shares": {
+            "type": "number",
+            "nullable": false,
+            "description": "报告期内流通普通股的加权平均股数。"
+          },
+          "weighted_average_shares_diluted": {
+            "type": "number",
+            "nullable": false,
+            "description": "计入稀释性证券后的加权平均稀释股数。"
+          }
+        }
+      },
+      "BalanceSheet": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+          },
+          "fiscal_period": {
+            "type": "string",
+            "description": "本报告区间对应的公司财年周期标签。"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "ttm",
+              "annual"
+            ],
+            "description": "本条记录数值所对应的报告周期。"
+          },
+          "currency": {
+            "type": "string",
+            "description": "本条记录中各金额数值所采用的计价货币。"
+          },
+          "total_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "公司持有的全部资产合计。"
+          },
+          "current_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "预计在一年内变现或耗用的流动资产。"
+          },
+          "cash_and_equivalents": {
+            "type": "number",
+            "nullable": false,
+            "description": "库存现金及高流动性的短期等价物。"
+          },
+          "inventory": {
+            "type": "number",
+            "nullable": false,
+            "description": "为销售或生产而持有的存货价值。"
+          },
+          "current_investments": {
+            "type": "number",
+            "nullable": false,
+            "description": "归类为流动资产的短期投资。"
+          },
+          "trade_and_non_trade_receivables": {
+            "type": "number",
+            "nullable": false,
+            "description": "公司应收的贸易与非贸易款项。"
+          },
+          "non_current_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "预计一年内无法变现的非流动资产。"
+          },
+          "property_plant_and_equipment": {
+            "type": "number",
+            "nullable": false,
+            "description": "房产、厂房及设备的账面价值。"
+          },
+          "goodwill_and_intangible_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "商誉及其他无形资产合计。"
+          },
+          "investments": {
+            "type": "number",
+            "nullable": false,
+            "description": "公司投资持仓合计。"
+          },
+          "non_current_investments": {
+            "type": "number",
+            "nullable": false,
+            "description": "持有期超过一年的非流动投资。"
+          },
+          "outstanding_shares": {
+            "type": "number",
+            "nullable": false,
+            "description": "当前已发行并流通在外的普通股股数。"
+          },
+          "tax_assets": {
+            "type": "number",
+            "nullable": false,
+            "description": "已确认的税务相关资产，如递延所得税资产。"
+          },
+          "total_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "公司全部负债合计。"
+          },
+          "current_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "一年内到期的流动负债。"
+          },
+          "current_debt": {
+            "type": "number",
+            "nullable": false,
+            "description": "一年内到期的债务部分。"
+          },
+          "trade_and_non_trade_payables": {
+            "type": "number",
+            "nullable": false,
+            "description": "公司应付的贸易与非贸易款项。"
+          },
+          "deferred_revenue": {
+            "type": "number",
+            "nullable": false,
+            "description": "已收取但尚未交付商品或服务对应的递延收入。"
+          },
+          "deposit_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "客户或交易对手存入款项形成的存款负债。"
+          },
+          "non_current_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "一年以上到期的非流动负债。"
+          },
+          "non_current_debt": {
+            "type": "number",
+            "nullable": false,
+            "description": "一年以上到期的债务部分。"
+          },
+          "tax_liabilities": {
+            "type": "number",
+            "nullable": false,
+            "description": "已确认的税务相关负债，如递延所得税负债。"
+          },
+          "shareholders_equity": {
+            "type": "number",
+            "nullable": false,
+            "description": "资产扣除负债后归属于股东的剩余权益。"
+          },
+          "retained_earnings": {
+            "type": "number",
+            "nullable": false,
+            "description": "历年留存而未作为股息分配的累计利润。"
+          },
+          "accumulated_other_comprehensive_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "计入损益表之外的累计其他综合收益。"
+          },
+          "total_debt": {
+            "type": "number",
+            "nullable": false,
+            "description": "流动与非流动有息债务合计。"
+          }
+        }
+      },
+      "CashFlowStatement": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+          },
+          "fiscal_period": {
+            "type": "string",
+            "description": "本报告区间对应的公司财年周期标签。"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "ttm",
+              "annual"
+            ],
+            "description": "本条记录数值所对应的报告周期。"
+          },
+          "currency": {
+            "type": "string",
+            "description": "本条记录中各金额数值所采用的计价货币。"
+          },
+          "net_income": {
+            "type": "number",
+            "nullable": false,
+            "description": "由损益表结转、作为现金流量起点的净利润。"
+          },
+          "depreciation_and_amortization": {
+            "type": "number",
+            "nullable": false,
+            "description": "加回利润的非现金折旧与摊销。"
+          },
+          "share_based_compensation": {
+            "type": "number",
+            "nullable": false,
+            "description": "以股份为基础的员工薪酬产生的非现金费用。"
+          },
+          "net_cash_flow_from_operations": {
+            "type": "number",
+            "nullable": false,
+            "description": "核心经营活动产生的净现金流。"
+          },
+          "capital_expenditure": {
+            "type": "number",
+            "nullable": false,
+            "description": "用于购置或升级长期资产的资本性支出。"
+          },
+          "business_acquisitions_and_disposals": {
+            "type": "number",
+            "nullable": false,
+            "description": "收购或处置业务产生的净现金。"
+          },
+          "investment_acquisitions_and_disposals": {
+            "type": "number",
+            "nullable": false,
+            "description": "买入或卖出投资产生的净现金。"
+          },
+          "net_cash_flow_from_investing": {
+            "type": "number",
+            "nullable": false,
+            "description": "投资活动产生或消耗的净现金流。"
+          },
+          "issuance_or_repayment_of_debt_securities": {
+            "type": "number",
+            "nullable": false,
+            "description": "发行或偿还债务证券产生的净现金。"
+          },
+          "issuance_or_purchase_of_equity_shares": {
+            "type": "number",
+            "nullable": false,
+            "description": "发行或回购股本产生的净现金。"
+          },
+          "dividends_and_other_cash_distributions": {
+            "type": "number",
+            "nullable": false,
+            "description": "以股息及其他形式分配支付的现金。"
+          },
+          "net_cash_flow_from_financing": {
+            "type": "number",
+            "nullable": false,
+            "description": "融资活动产生或消耗的净现金流。"
+          },
+          "change_in_cash_and_equivalents": {
+            "type": "number",
+            "nullable": false,
+            "description": "报告期内现金及等价物的净变动额。"
+          },
+          "effect_of_exchange_rate_changes": {
+            "type": "number",
+            "nullable": false,
+            "description": "汇率变动对现金余额的影响。"
+          },
+          "ending_cash_balance": {
+            "type": "number",
+            "nullable": false,
+            "description": "报告期末的现金及等价物余额。"
+          },
+          "free_cash_flow": {
+            "type": "number",
+            "nullable": false,
+            "description": "经营现金流扣除资本性支出后的自由现金流。"
+          }
+        }
+      },
+      "CompanyFacts": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "name": {
+            "type": "string",
+            "description": "公司的法定或通用名称。"
+          },
+          "cik": {
+            "type": "string",
+            "description": "SEC 为该公司分配的中央索引号（CIK）。"
+          },
+          "industry": {
+            "type": "string",
+            "description": "公司所属的行业分类。"
+          },
+          "sector": {
+            "type": "string",
+            "description": "公司所属的板块分类。"
+          },
+          "category": {
+            "type": "string",
+            "description": "公司的业务类别。"
+          },
+          "exchange": {
+            "type": "string",
+            "description": "公司挂牌上市的证券交易所。"
+          },
+          "is_active": {
+            "type": "boolean",
+            "description": "公司目前是否处于存续状态。"
+          },
+          "listing_date": {
+            "type": "string",
+            "format": "date",
+            "description": "公司在交易所挂牌上市的日期。"
+          },
+          "location": {
+            "type": "string",
+            "description": "公司所在的地理位置。"
+          },
+          "market_cap": {
+            "type": "number",
+            "description": "公司的总市值。"
+          },
+          "number_of_employees": {
+            "type": "number",
+            "description": "公司的员工总数。"
+          },
+          "sec_filings_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "公司 SEC 备案文件的链接。"
+          },
+          "sic_code": {
+            "type": "string",
+            "description": "公司的标准产业分类（SIC）代码。"
+          },
+          "sic_industry": {
+            "type": "string",
+            "description": "依据 SIC 代码归类的公司行业。"
+          },
+          "sic_sector": {
+            "type": "string",
+            "description": "依据 SIC 代码归类的公司板块。"
+          },
+          "website_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "公司官方网站的链接。"
+          },
+          "weighted_average_shares": {
+            "type": "number",
+            "description": "公司的加权平均流通股数。"
+          }
+        }
+      },
+      "Filing": {
+        "type": "object",
+        "properties": {
+          "cik": {
+            "type": "integer",
+            "description": "备案公司的 SEC 中央索引号（CIK）。"
+          },
+          "accession_number": {
+            "type": "string",
+            "description": "唯一标识该备案的 SEC 受理编号。"
+          },
+          "filing_type": {
+            "type": "string",
+            "description": "该备案的 SEC 表格类型。"
+          },
+          "report_date": {
+            "type": "string",
+            "format": "date",
+            "description": "该备案报告所覆盖的日期。"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "该备案在 SEC 网站上的链接。"
+          }
+        }
+      },
+      "FilingItem": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "备案条目的编号。"
+          },
+          "name": {
+            "type": "string",
+            "description": "备案条目的标题。"
+          },
+          "text": {
+            "type": "string",
+            "description": "备案条目的原始正文内容。"
+          }
+        }
+      },
+      "PressRelease": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "title": {
+            "type": "string",
+            "description": "新闻稿的标题。"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "新闻稿全文的链接。"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "新闻稿的发布日期。"
+          },
+          "text": {
+            "type": "string",
+            "description": "新闻稿的完整正文。"
+          }
+        }
+      },
+      "PriceSnapshot": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "description": "该股票的当前成交价格。"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "day_change": {
+            "type": "number",
+            "description": "相对上一交易日收盘价的价格变动额。"
+          },
+          "day_change_percent": {
+            "type": "number",
+            "description": "相对上一交易日收盘价的价格变动百分比。"
+          },
+          "market_cap": {
+            "type": "number",
+            "description": "公司当前的总市值。"
+          },
+          "time": {
+            "type": "string",
+            "description": "快照时点的可读时间戳（UTC）。"
+          },
+          "time_milliseconds": {
+            "type": "number",
+            "description": "快照时点的时间戳，以 Unix 纪元起算的毫秒数表示。"
+          }
+        }
+      },
+      "CryptoPriceSnapshot": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "description": "The current price of the cryptocurrency."
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The ticker symbol."
+          },
+          "day_change": {
+            "type": "number",
+            "description": "The price change over the last 24 hours."
+          },
+          "day_change_percent": {
+            "type": "number",
+            "description": "The percentage price change over the last 24 hours."
+          },
+          "time": {
+            "type": "string",
+            "description": "The timestamp of the price snapshot in human-readable format in UTC."
+          }
+        }
+      },
+      "News": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "title": {
+            "type": "string",
+            "description": "新闻文章的标题。"
+          },
+          "author": {
+            "type": "string",
+            "description": "新闻文章的作者。"
+          },
+          "source": {
+            "type": "string",
+            "description": "新闻文章的发布方或来源。"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "新闻文章的发布日期。"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "新闻文章全文的链接。"
+          },
+          "sentiment": {
+            "type": "string",
+            "description": "为该新闻文章判定的情感倾向分类。"
+          }
+        }
+      },
+      "Price": {
+        "type": "object",
+        "properties": {
+          "open": {
+            "type": "number",
+            "description": "该时间区间内的开盘价。"
+          },
+          "close": {
+            "type": "number",
+            "description": "该时间区间内的收盘价。"
+          },
+          "high": {
+            "type": "number",
+            "description": "该时间区间内的最高价。"
+          },
+          "low": {
+            "type": "number",
+            "description": "该时间区间内的最低价。"
+          },
+          "volume": {
+            "type": "integer",
+            "format": "number",
+            "description": "该时间区间内的成交量。"
+          },
+          "time": {
+            "type": "string",
+            "description": "该数据时点的可读时间戳（UTC）。"
+          },
+          "time_milliseconds": {
+            "type": "number",
+            "description": "该数据时点的时间戳，以 Unix 纪元起算的毫秒数表示。"
+          }
+        }
+      },
+      "FinancialMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "market_cap": {
+            "type": "number",
+            "description": "公司全部流通股的总市值。"
+          },
+          "enterprise_value": {
+            "type": "number",
+            "description": "以股权市值叠加债务、扣除现金后的公司整体价值。"
+          },
+          "price_to_earnings_ratio": {
+            "type": "number",
+            "description": "股价相对于每股收益的倍数（市盈率）。"
+          },
+          "price_to_book_ratio": {
+            "type": "number",
+            "description": "股价相对于每股账面价值的倍数（市净率）。"
+          },
+          "price_to_sales_ratio": {
+            "type": "number",
+            "description": "股价相对于每股营收的倍数（市销率）。"
+          },
+          "enterprise_value_to_ebitda_ratio": {
+            "type": "number",
+            "description": "企业价值相对于 EBITDA 的倍数。"
+          },
+          "enterprise_value_to_revenue_ratio": {
+            "type": "number",
+            "description": "企业价值相对于营业收入的倍数。"
+          },
+          "free_cash_flow_yield": {
+            "type": "number",
+            "description": "自由现金流相对于市值的收益率。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "peg_ratio": {
+            "type": "number",
+            "description": "市盈率相对于盈利增长的比率（PEG）。"
+          },
+          "gross_margin": {
+            "type": "number",
+            "description": "毛利润相对于营业收入的占比（毛利率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "operating_margin": {
+            "type": "number",
+            "description": "营业利润相对于营业收入的占比（营业利润率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "net_margin": {
+            "type": "number",
+            "description": "净利润相对于营业收入的占比（净利率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_equity": {
+            "type": "number",
+            "description": "净利润相对于股东权益的回报水平（净资产收益率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_assets": {
+            "type": "number",
+            "description": "净利润相对于总资产的回报水平（总资产收益率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_invested_capital": {
+            "type": "number",
+            "description": "税后营业利润相对于投入资本的回报水平。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "asset_turnover": {
+            "type": "number",
+            "description": "每单位平均总资产所产生的营业收入（总资产周转率）。"
+          },
+          "inventory_turnover": {
+            "type": "number",
+            "description": "销货成本相对于平均存货的周转倍数（存货周转率）。"
+          },
+          "receivables_turnover": {
+            "type": "number",
+            "description": "营业收入相对于平均应收账款的周转倍数（应收账款周转率）。"
+          },
+          "days_sales_outstanding": {
+            "type": "number",
+            "description": "收回应收账款平均所需的天数。"
+          },
+          "operating_cycle": {
+            "type": "number",
+            "description": "存货与应收账款转化为现金的合计周期。"
+          },
+          "working_capital_turnover": {
+            "type": "number",
+            "description": "每单位平均营运资本所产生的营业收入。"
+          },
+          "current_ratio": {
+            "type": "number",
+            "description": "流动资产相对于流动负债的比率（流动比率）。"
+          },
+          "quick_ratio": {
+            "type": "number",
+            "description": "速动资产相对于流动负债的比率（速动比率）。"
+          },
+          "cash_ratio": {
+            "type": "number",
+            "description": "现金及等价物相对于流动负债的比率（现金比率）。"
+          },
+          "operating_cash_flow_ratio": {
+            "type": "number",
+            "description": "经营现金流相对于流动负债的比率。"
+          },
+          "debt_to_equity": {
+            "type": "number",
+            "description": "总债务相对于股东权益的比率（产权比率）。"
+          },
+          "debt_to_assets": {
+            "type": "number",
+            "description": "总债务相对于总资产的比率（资产负债率）。"
+          },
+          "interest_coverage": {
+            "type": "number",
+            "description": "息税前利润相对于利息支出的覆盖倍数（利息保障倍数）。"
+          },
+          "revenue_growth": {
+            "type": "number",
+            "description": "营业收入的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_growth": {
+            "type": "number",
+            "description": "盈利的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "book_value_growth": {
+            "type": "number",
+            "description": "账面价值的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_per_share_growth": {
+            "type": "number",
+            "description": "每股收益在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "free_cash_flow_growth": {
+            "type": "number",
+            "description": "自由现金流在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "operating_income_growth": {
+            "type": "number",
+            "description": "营业利润在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "ebitda_growth": {
+            "type": "number",
+            "description": "EBITDA 在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "payout_ratio": {
+            "type": "number",
+            "description": "已派股息相对于净利润的占比（派息率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "description": "分摊到每股流通普通股的净利润。"
+          },
+          "book_value_per_share": {
+            "type": "number",
+            "description": "分摊到每股流通股的股东权益（每股账面价值）。"
+          },
+          "free_cash_flow_per_share": {
+            "type": "number",
+            "description": "分摊到每股流通股的自由现金流。"
+          }
+        }
+      },
+      "AnalystEstimatesResponse": {
+        "type": "object",
+        "properties": {
+          "analyst_estimates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnalystEstimate"
+            }
+          }
+        }
+      },
+      "AnalystEstimate": {
+        "type": "object",
+        "properties": {
+          "fiscal_period": {
+            "type": "string",
+            "format": "date",
+            "description": "The fiscal period of the analyst estimate."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "annual",
+              "quarterly"
+            ],
+            "description": "The period of the analyst estimate."
+          },
+          "revenue": {
+            "type": "integer",
+            "description": "The estimated revenue."
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "description": "The estimated earnings per share."
+          }
+        }
+      },
+      "EarningsTimeDimension": {
+        "type": "object",
+        "properties": {
+          "fiscal_period": {
+            "type": "string",
+            "nullable": true,
+            "description": "本报告区间对应的公司财年周期标签。"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true,
+            "description": "本条记录中各金额数值所采用的计价货币。"
+          },
+          "revenue": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内实现的营业收入。"
+          },
+          "estimated_revenue": {
+            "type": "number",
+            "description": "本期分析师一致预期的营业收入；仅在可获取时返回。"
+          },
+          "revenue_surprise": {
+            "type": "string",
+            "description": "实际营业收入相对于预期为超预期、低于预期还是符合预期；仅在可获取时返回。",
+            "enum": [
+              "BEAT",
+              "MISS",
+              "MEET"
+            ]
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内的每股收益。"
+          },
+          "estimated_earnings_per_share": {
+            "type": "number",
+            "description": "本期分析师一致预期的每股收益；仅在可获取时返回。"
+          },
+          "eps_surprise": {
+            "type": "string",
+            "description": "实际每股收益相对于预期为超预期、低于预期还是符合预期；仅在可获取时返回。",
+            "enum": [
+              "BEAT",
+              "MISS",
+              "MEET"
+            ]
+          },
+          "net_income": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内的净利润。"
+          },
+          "gross_profit": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内的毛利润。"
+          },
+          "operating_income": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内的营业利润。"
+          },
+          "weighted_average_shares": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内的加权平均流通普通股股数。"
+          },
+          "weighted_average_shares_diluted": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内的加权平均稀释股数。"
+          },
+          "cash_and_equivalents": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期末的现金及等价物。"
+          },
+          "total_debt": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期末的有息债务合计。"
+          },
+          "total_assets": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期末的资产合计。"
+          },
+          "total_liabilities": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期末的负债合计。"
+          },
+          "shareholders_equity": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期末的股东权益。"
+          },
+          "net_cash_flow_from_operations": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内经营活动产生的净现金流。"
+          },
+          "capital_expenditure": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内的资本性支出。"
+          },
+          "net_cash_flow_from_investing": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内投资活动产生的净现金流。"
+          },
+          "net_cash_flow_from_financing": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内融资活动产生的净现金流。"
+          },
+          "change_in_cash_and_equivalents": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内现金及等价物的净变动额。"
+          },
+          "free_cash_flow": {
+            "type": "number",
+            "nullable": true,
+            "description": "报告期内的自由现金流。"
+          },
+          "revenue_chg": {
+            "type": "number",
+            "description": "营业收入的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+          },
+          "net_income_chg": {
+            "type": "number",
+            "description": "净利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+          },
+          "operating_income_chg": {
+            "type": "number",
+            "description": "营业利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+          },
+          "gross_profit_chg": {
+            "type": "number",
+            "description": "毛利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+          },
+          "net_cash_flow_from_operations_chg": {
+            "type": "number",
+            "description": "经营现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+          },
+          "net_cash_flow_from_investing_chg": {
+            "type": "number",
+            "description": "投资现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+          },
+          "net_cash_flow_from_financing_chg": {
+            "type": "number",
+            "description": "融资现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+          },
+          "free_cash_flow_chg": {
+            "type": "number",
+            "description": "自由现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+          }
+        }
+      },
+      "Earnings": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "本次查询所针对的股票代码。"
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "该股票代码可获取的最近报告期。"
+          },
+          "fiscal_period": {
+            "type": "string",
+            "nullable": true,
+            "description": "本快照对应的财年周期标签。"
+          },
+          "currency": {
+            "type": "string",
+            "nullable": true,
+            "description": "各数值采用的 ISO 货币代码。"
+          },
+          "quarterly": {
+            "$ref": "#/components/schemas/EarningsTimeDimension",
+            "description": "季度财报视图，其中变动字段为环比口径。"
+          },
+          "annual": {
+            "$ref": "#/components/schemas/EarningsTimeDimension",
+            "description": "年度财报视图，其中变动字段为同比口径。"
+          }
+        }
+      },
+      "EarningsResponse": {
+        "type": "object",
+        "properties": {
+          "earnings": {
+            "$ref": "#/components/schemas/Earnings",
+            "description": "该股票代码的财报快照，分为季度与年度两组视图。"
+          }
+        }
+      },
+      "Beta": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Beta coefficient of stock monthly returns vs benchmark monthly returns."
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The requested ticker symbol."
+          },
+          "benchmark": {
+            "type": "string",
+            "description": "Benchmark ticker used for beta calculation."
+          },
+          "requested_lookback": {
+            "type": "string",
+            "description": "Requested lookback window."
+          },
+          "interval": {
+            "type": "string",
+            "description": "Interval used for returns alignment."
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "First aligned month-end date used."
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "description": "Last aligned month-end date used."
+          },
+          "n_observations": {
+            "type": "integer",
+            "description": "Number of overlapping monthly observations used."
+          },
+          "r_squared": {
+            "type": "number",
+            "nullable": true,
+            "description": "Coefficient of determination for the OLS fit."
+          },
+          "method": {
+            "type": "string",
+            "description": "Computation method used."
+          },
+          "price_type": {
+            "type": "string",
+            "description": "Price type used to compute returns."
+          },
+          "reason": {
+            "type": "string",
+            "nullable": true,
+            "description": "Present when value is null due to insufficient or invalid input data."
+          }
+        }
+      },
+      "BetaResponse": {
+        "type": "object",
+        "properties": {
+          "beta": {
+            "$ref": "#/components/schemas/Beta"
+          }
+        }
+      },
+      "PriceSnapshotMarketResponse": {
+        "type": "object",
+        "properties": {
+          "snapshots": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PriceSnapshot"
+            }
+          }
+        }
+      },
+      "TickersResponse": {
+        "type": "object",
+        "properties": {
+          "resource": {
+            "type": "string",
+            "description": "The resource type identifier."
+          },
+          "tickers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of available ticker symbols."
+          }
+        }
+      },
+      "CiksResponse": {
+        "type": "object",
+        "properties": {
+          "resource": {
+            "type": "string",
+            "description": "The resource type identifier."
+          },
+          "ciks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of available CIK codes."
+          }
+        }
+      },
+      "FinancialMetricSnapshotResponse": {
+        "type": "object",
+        "properties": {
+          "snapshot": {
+            "$ref": "#/components/schemas/FinancialMetricSnapshot",
+            "description": "该股票财务指标的实时快照。"
+          }
+        }
+      },
+      "FinancialMetricSnapshot": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "标识目标公司的股票代码。"
+          },
+          "market_cap": {
+            "type": "number",
+            "nullable": true,
+            "description": "按当前股价与流通股数计算的总市值。"
+          },
+          "enterprise_value": {
+            "type": "number",
+            "nullable": true,
+            "description": "以股权市值叠加债务、扣除现金后的公司整体价值。"
+          },
+          "price_to_earnings_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "股价相对于每股收益的倍数（市盈率）。"
+          },
+          "price_to_book_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "股价相对于每股账面价值的倍数（市净率）。"
+          },
+          "price_to_sales_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "股价相对于每股营收的倍数（市销率）。"
+          },
+          "enterprise_value_to_ebitda_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "企业价值相对于 EBITDA 的倍数。"
+          },
+          "enterprise_value_to_revenue_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "企业价值相对于营业收入的倍数。"
+          },
+          "free_cash_flow_yield": {
+            "type": "number",
+            "nullable": true,
+            "description": "自由现金流相对于市值的收益率。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "peg_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "市盈率相对于盈利增长的比率（PEG）。"
+          },
+          "gross_margin": {
+            "type": "number",
+            "nullable": true,
+            "description": "毛利润相对于营业收入的占比（毛利率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "operating_margin": {
+            "type": "number",
+            "nullable": true,
+            "description": "营业利润相对于营业收入的占比（营业利润率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "net_margin": {
+            "type": "number",
+            "nullable": true,
+            "description": "净利润相对于营业收入的占比（净利率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_equity": {
+            "type": "number",
+            "nullable": true,
+            "description": "净利润相对于股东权益的回报水平（净资产收益率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_assets": {
+            "type": "number",
+            "nullable": true,
+            "description": "净利润相对于总资产的回报水平（总资产收益率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "return_on_invested_capital": {
+            "type": "number",
+            "nullable": true,
+            "description": "税后营业利润相对于投入资本的回报水平。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "asset_turnover": {
+            "type": "number",
+            "nullable": true,
+            "description": "每单位平均总资产所产生的营业收入（总资产周转率）。"
+          },
+          "inventory_turnover": {
+            "type": "number",
+            "nullable": true,
+            "description": "销货成本相对于平均存货的周转倍数（存货周转率）。"
+          },
+          "receivables_turnover": {
+            "type": "number",
+            "nullable": true,
+            "description": "营业收入相对于平均应收账款的周转倍数（应收账款周转率）。"
+          },
+          "days_sales_outstanding": {
+            "type": "number",
+            "nullable": true,
+            "description": "收回应收账款平均所需的天数。"
+          },
+          "operating_cycle": {
+            "type": "number",
+            "nullable": true,
+            "description": "存货与应收账款转化为现金的合计周期。"
+          },
+          "working_capital_turnover": {
+            "type": "number",
+            "nullable": true,
+            "description": "每单位平均营运资本所产生的营业收入。"
+          },
+          "current_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "流动资产相对于流动负债的比率（流动比率）。"
+          },
+          "quick_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "速动资产相对于流动负债的比率（速动比率）。"
+          },
+          "cash_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "现金及等价物相对于流动负债的比率（现金比率）。"
+          },
+          "operating_cash_flow_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "经营现金流相对于流动负债的比率。"
+          },
+          "debt_to_equity": {
+            "type": "number",
+            "nullable": true,
+            "description": "总债务相对于股东权益的比率（产权比率）。"
+          },
+          "debt_to_assets": {
+            "type": "number",
+            "nullable": true,
+            "description": "总债务相对于总资产的比率（资产负债率）。"
+          },
+          "interest_coverage": {
+            "type": "number",
+            "nullable": true,
+            "description": "息税前利润相对于利息支出的覆盖倍数（利息保障倍数）。"
+          },
+          "revenue_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "营业收入的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "盈利的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "book_value_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "账面价值的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_per_share_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "每股收益在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "free_cash_flow_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "自由现金流在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "operating_income_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "营业利润在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "ebitda_growth": {
+            "type": "number",
+            "nullable": true,
+            "description": "EBITDA 在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "payout_ratio": {
+            "type": "number",
+            "nullable": true,
+            "description": "已派股息相对于净利润的占比（派息率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+          },
+          "earnings_per_share": {
+            "type": "number",
+            "nullable": true,
+            "description": "分摊到每股流通普通股的净利润。"
+          },
+          "book_value_per_share": {
+            "type": "number",
+            "nullable": true,
+            "description": "分摊到每股流通股的股东权益（每股账面价值）。"
+          },
+          "free_cash_flow_per_share": {
+            "type": "number",
+            "nullable": true,
+            "description": "分摊到每股流通股的自由现金流。"
+          }
+        }
+      },
+      "InterestRatesResponse": {
+        "type": "object",
+        "properties": {
+          "interest_rates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InterestRate"
+            }
+          }
+        }
+      },
+      "SegmentBreakdown": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "The label for the segment (e.g., 'iPhone', 'Americas')."
+          },
+          "value": {
+            "type": "number",
+            "description": "The value for the segment."
+          }
+        }
+      },
+      "SegmentCategory": {
+        "type": "object",
+        "description": "Segment breakdowns grouped by category.",
+        "properties": {
+          "product": {
+            "type": "array",
+            "description": "Breakdowns by product line.",
+            "items": {
+              "$ref": "#/components/schemas/SegmentBreakdown"
+            }
+          },
+          "segment": {
+            "type": "array",
+            "description": "Breakdowns by business or operating segment.",
+            "items": {
+              "$ref": "#/components/schemas/SegmentBreakdown"
+            }
+          }
+        }
+      },
+      "SegmentMetadata": {
+        "type": "object",
+        "description": "Common metadata fields for all segment responses.",
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "The ticker symbol."
+          },
+          "report_period": {
+            "type": "string",
+            "format": "date",
+            "description": "The reporting period."
+          },
+          "fiscal_period": {
+            "type": "string",
+            "description": "The fiscal period (e.g., Q1, Q2, Q3, Q4, FY)."
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ],
+            "description": "The time period."
+          },
+          "currency": {
+            "type": "string",
+            "description": "The reporting currency (e.g., USD, EUR, GBP)."
+          },
+          "accession_number": {
+            "type": "string",
+            "description": "The SEC filing accession number."
+          },
+          "filing_url": {
+            "type": "string",
+            "description": "URL to the SEC filing."
+          }
+        }
+      },
+      "IncomeStatementSegments": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SegmentMetadata"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "revenue": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Revenue broken down by product and/or segment."
+              },
+              "operating_income": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Operating income broken down by segment."
+              },
+              "depreciation": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Depreciation broken down by segment."
+              }
+            }
+          }
+        ]
+      },
+      "BalanceSheetSegments": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SegmentMetadata"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "assets": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Assets broken down by segment."
+              },
+              "goodwill": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Goodwill broken down by segment."
+              },
+              "long_lived_assets": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Long-lived assets broken down by segment."
+              }
+            }
+          }
+        ]
+      },
+      "CashFlowStatementSegments": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SegmentMetadata"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "capital_expenditure": {
+                "nullable": true,
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SegmentCategory"
+                  }
+                ],
+                "description": "Capital expenditure broken down by segment."
+              }
+            }
+          }
+        ]
+      },
+      "IncomeStatementSegmentsResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_financials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IncomeStatementSegments"
+            }
+          }
+        }
+      },
+      "BalanceSheetSegmentsResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_financials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BalanceSheetSegments"
+            }
+          }
+        }
+      },
+      "CashFlowStatementSegmentsResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_financials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CashFlowStatementSegments"
+            }
+          }
+        }
+      },
+      "SegmentedFinancialsResponse": {
+        "type": "object",
+        "properties": {
+          "segmented_financials": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SegmentMetadata"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "income_statement": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Income statement segment breakdowns for this period.",
+                      "properties": {
+                        "revenue": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        },
+                        "operating_income": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        },
+                        "depreciation": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "balance_sheet": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Balance sheet segment breakdowns for this period.",
+                      "properties": {
+                        "assets": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        },
+                        "goodwill": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        },
+                        "long_lived_assets": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "cash_flow_statement": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Cash flow statement segment breakdowns for this period.",
+                      "properties": {
+                        "capital_expenditure": {
+                          "nullable": true,
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SegmentCategory"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Exhibit": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "The exhibit number (e.g., '99.1')."
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the exhibit."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL to the exhibit document on the SEC website."
+          },
+          "text": {
+            "type": "string",
+            "description": "The raw text content of the exhibit. Only included when 'include_exhibits' parameter is set to true."
+          }
+        }
+      },
+      "InterestRate": {
+        "type": "object",
+        "properties": {
+          "bank": {
+            "type": "string",
+            "description": "The symbol of the central bank."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the central bank."
+          },
+          "rate": {
+            "type": "number",
+            "description": "The interest rate of the central bank."
+          },
+          "date": {
+            "type": "string",
+            "description": "The date of the interest rate in YYYY-MM-DD format."
+          }
+        }
+      },
+      "KPIMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "kpi_metrics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KPIMetric"
+            }
+          }
+        }
+      },
+      "KPIMetric": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "metric_name",
+          "value",
+          "unit",
+          "period",
+          "period_type"
+        ],
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "description": "Stock ticker symbol.",
+            "example": "DAL"
+          },
+          "metric_name": {
+            "type": "string",
+            "description": "Canonical metric name.",
+            "example": "load_factor"
+          },
+          "value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Extracted numeric value.",
+            "example": 82.0
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measure (e.g., %, cents, dollars, miles, count).",
+            "example": "%"
+          },
+          "period": {
+            "type": "string",
+            "description": "Reporting period (e.g., Q4 2025, FY 2025, or a date like 2025-04-30 for non-standard fiscal years).",
+            "example": "Q4 2025"
+          },
+          "period_type": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ],
+            "description": "Whether this is a quarterly or annual figure.",
+            "example": "quarterly"
+          },
+          "segment": {
+            "type": "string",
+            "nullable": true,
+            "description": "Business segment, geography, or sub-category. Only present when the metric is reported for a sub-unit rather than the consolidated entity.",
+            "example": "Commercial Engines & Services"
+          },
+          "yoy_value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Year-over-year comparison value from the prior period.",
+            "example": 84.0
+          },
+          "yoy_change_pct": {
+            "type": "number",
+            "nullable": true,
+            "description": "Year-over-year percentage change.",
+            "example": -2.381
+          },
+          "source_text": {
+            "type": "string",
+            "nullable": true,
+            "description": "The source text span from the filing where this value was found.",
+            "example": "Passenger load factor"
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Direct link to the SEC filing. When available, includes a text fragment that highlights the source in the browser.",
+            "example": "https://www.sec.gov/Archives/edgar/data/27904/000002790426000008/deltaairlinesannouncesdece.htm"
+          }
+        }
+      },
+      "KPIGuidanceResponse": {
+        "type": "object",
+        "properties": {
+          "kpi_guidance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KPIGuidanceItem"
+            }
+          }
+        }
+      },
+      "KPIGuidanceItem": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "metric_name",
+          "period",
+          "period_type"
+        ],
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "example": "DAL"
+          },
+          "metric_name": {
+            "type": "string",
+            "example": "Operating Margin"
+          },
+          "value": {
+            "type": "number",
+            "nullable": true
+          },
+          "unit": {
+            "type": "string",
+            "example": "%"
+          },
+          "period": {
+            "type": "string",
+            "example": "Q2 2026"
+          },
+          "period_type": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ]
+          },
+          "segment": {
+            "type": "string",
+            "nullable": true
+          },
+          "low": {
+            "type": "number",
+            "nullable": true,
+            "description": "Low end of guidance range.",
+            "example": 6.0
+          },
+          "high": {
+            "type": "number",
+            "nullable": true,
+            "description": "High end of guidance range.",
+            "example": 8.0
+          },
+          "point_estimate": {
+            "type": "number",
+            "nullable": true,
+            "description": "Single-point guidance when no range is given."
+          },
+          "prior_value": {
+            "type": "number",
+            "nullable": true,
+            "description": "Prior guidance value for revisions."
+          },
+          "raw_text": {
+            "type": "string",
+            "nullable": true,
+            "description": "Original guidance text from the filing."
+          },
+          "change_direction": {
+            "type": "string",
+            "nullable": true,
+            "description": "Direction: raised, lowered, maintained, initiated, withdrawn.",
+            "example": "initiated"
+          },
+          "source_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        }
+      },
+      "KPINonGAAPResponse": {
+        "type": "object",
+        "properties": {
+          "kpi_non_gaap": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KPINonGAAPMetric"
+            }
+          }
+        }
+      },
+      "KPINonGAAPMetric": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "metric_name",
+          "value",
+          "unit",
+          "period",
+          "period_type"
+        ],
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "example": "DAL"
+          },
+          "metric_name": {
+            "type": "string",
+            "example": "Adjusted Diluted EPS"
+          },
+          "value": {
+            "type": "number",
+            "nullable": true,
+            "example": 0.64
+          },
+          "unit": {
+            "type": "string",
+            "example": "USD per share"
+          },
+          "period": {
+            "type": "string",
+            "example": "Q1 2026"
+          },
+          "period_type": {
+            "type": "string",
+            "enum": [
+              "quarterly",
+              "annual"
+            ]
+          },
+          "gaap_equivalent": {
+            "type": "string",
+            "nullable": true,
+            "description": "The GAAP line item this metric adjusts.",
+            "example": "Diluted earnings per share"
+          },
+          "key_adjustments": {
+            "type": "string",
+            "nullable": true,
+            "description": "Description of adjustments made.",
+            "example": "Excludes restructuring charges of $150M"
+          },
+          "source_text": {
+            "type": "string",
+            "nullable": true
+          },
+          "source_url": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequestError": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Bad Request",
+              "message": "Invalid request parameters"
+            }
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Unauthorized",
+              "message": "Invalid API key provided"
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Not Found",
+              "message": "Ticker XXXX not found"
+            }
+          }
+        }
+      },
+      "PaymentRequiredError": {
+        "description": "The request requires a paid subscription",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "Payment Required",
+              "message": "This endpoint requires a paid subscription. Please upgrade your plan."
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "ReportPeriod": {
+        "name": "report_period",
+        "in": "query",
+        "description": "Filter by exact report period date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "ReportPeriodGte": {
+        "name": "report_period_gte",
+        "in": "query",
+        "description": "Filter by report period greater than or equal to date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "ReportPeriodLte": {
+        "name": "report_period_lte",
+        "in": "query",
+        "description": "Filter by report period less than or equal to date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "ReportPeriodGt": {
+        "name": "report_period_gt",
+        "in": "query",
+        "description": "Filter by report period greater than date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "ReportPeriodLt": {
+        "name": "report_period_lt",
+        "in": "query",
+        "description": "Filter by report period less than date in YYYY-MM-DD format.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "requestBodies": {},
+    "examples": {}
+  }
+}

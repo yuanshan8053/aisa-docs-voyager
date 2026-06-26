@@ -1,0 +1,197 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API - Tweet Replies V2",
+    "version": "1.0.0",
+    "description": "Get tweet replies with advanced sorting options."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "记录的对象类型,用于区分推文与接口可能返回的其他实体。"
+          },
+          "id": {
+            "type": "string",
+            "description": "该回复推文的唯一标识;可用于获取这条回复下的下级回复,或拼接其 URL。"
+          },
+          "url": {
+            "type": "string",
+            "description": "该回复推文的可直接点击链接。"
+          },
+          "text": {
+            "type": "string",
+            "description": "回复的正文文本。"
+          },
+          "source": {
+            "type": "string",
+            "description": "发布该回复所用的客户端应用,例如网页端或移动端 App。"
+          },
+          "retweetCount": {
+            "type": "integer",
+            "description": "该回复被转推的次数。"
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "该回复自身收到的回复数。"
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "该回复收到的点赞数。"
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "该回复被引用转推的次数。"
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "该回复的浏览次数。"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "该回复的发布时间。"
+          },
+          "lang": {
+            "type": "string",
+            "description": "回复文本经识别得到的语言,以语言代码表示。"
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "description": "该回复被加入书签的次数。"
+          },
+          "isReply": {
+            "type": "boolean",
+            "description": "该推文本身是否为对另一条推文的回复。"
+          },
+          "inReplyToId": {
+            "type": "string",
+            "description": "该回复所回应的那条推文的标识。"
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "该回复所属对话串的标识,通常为开启该对话的原始推文 ID。"
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "description": "被回复用户的标识。"
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "description": "被回复用户的用户名。"
+          },
+          "isLimitedReply": {
+            "type": "boolean",
+            "description": "该推文是否因作者的回复设置而受限,无法自由回复。"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/tweet/replies/v2": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_tweet_replies_v2"
+        ],
+        "summary": "获取推文回复 GET /twitter/tweet/replies/v2",
+        "description": "拉取某条推文下的回复,分页返回,可按相关性、时间或点赞数排序。只读接口,借响应中返回的游标逐页向后翻。",
+        "parameters": [
+          {
+            "name": "tweetId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "要获取回复的目标推文标识,即推文 URL 中的那串数字 ID。"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "指向下一批回复的翻页令牌。取自上一次响应的 `next_cursor`;首次请求留空即从第一页开始。"
+          },
+          {
+            "name": "queryType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Relevance",
+                "Latest",
+                "Likes"
+              ],
+              "default": "Relevance"
+            },
+            "description": "返回回复的排序方式:`Relevance` 优先展示平台判定最相关的回复,`Latest` 按时间从新到旧,`Likes` 按点赞数从高到低。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tweet replies response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "replies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tweet"
+                      },
+                      "description": "本页的回复,每个元素是一条完整的推文对象。"
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "当前页之后是否还有更多回复。"
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "用于取回下一页回复的令牌,回传给 `cursor` 参数即可。"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "success",
+                        "error"
+                      ],
+                      "example": "success",
+                      "description": "请求结果:`success` 表示正常返回,`error` 表示请求失败。"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "可读的错误说明,仅在请求失败时才有内容。"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

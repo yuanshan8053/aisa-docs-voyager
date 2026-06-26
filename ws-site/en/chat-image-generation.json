@@ -1,0 +1,349 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Image Generation via Chat Completions",
+    "version": "1.0.0",
+    "description": "Wan 2.7 image models (`wan2.7-image`, `wan2.7-image-pro`) are exposed through the standard `POST /v1/chat/completions` endpoint rather than `/v1/images/generations`. Send a chat request with a multimodal `content` array; AIsa returns `choices[].message.content[]` containing one or more `{type: \"image\"}` parts."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key"
+      }
+    }
+  },
+  "paths": {
+    "/chat/completions": {
+      "post": {
+        "summary": "Generate images via Chat Completions (wan2.7 family)",
+        "description": "Generate images with the Wan 2.7 image models through the standard chat-completions endpoint. Send the prompt as typed parts inside the last user message, optionally with a reference image for image-to-image; generated images come back as image parts in the assistant message.\n\n**Error status codes:** `400`, `401`, `429`, `500`, `502`",
+        "operationId": "generateImageViaChat",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "messages"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "wan2.7-image",
+                      "wan2.7-image-pro"
+                    ],
+                    "description": "Which image model to run. The two variants trade off quality against price, with the pro variant offering higher fidelity at a higher per-image cost."
+                  },
+                  "messages": {
+                    "type": "array",
+                    "description": "The conversation sent to the model. Put the image prompt in the last user message; each message carries a role and a content array of typed parts.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "description": "Who authored the message, distinguishing system guidance, user input, and prior assistant output."
+                        },
+                        "content": {
+                          "type": "array",
+                          "description": "The typed parts making up one message. It must be an array of parts, not a plain string; for image generation include at least one text part holding the prompt, and add an image part for image-to-image.",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "text",
+                                  "image_url"
+                                ],
+                                "description": "What kind of part this is: a text segment carrying the prompt, or an image-URL part supplying a reference image for image-to-image."
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "The prompt text, used for a text-type part."
+                              },
+                              "image_url": {
+                                "type": "object",
+                                "description": "A reference image for image-to-image generation, supplied for an image-URL part.",
+                                "properties": {
+                                  "url": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "description": "Location of the reference image."
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "n": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4,
+                    "default": 4,
+                    "description": "How many candidate images to generate in one call. Each image is billed separately, so request fewer to save cost."
+                  }
+                }
+              },
+              "examples": {
+                "basic": {
+                  "summary": "Single-image prompt (n=1)",
+                  "value": {
+                    "model": "wan2.7-image",
+                    "messages": [
+                      {
+                        "role": "user",
+                        "content": [
+                          {
+                            "type": "text",
+                            "text": "A cute red panda, ultra-detailed, cinematic lighting"
+                          }
+                        ]
+                      }
+                    ],
+                    "n": 1
+                  }
+                },
+                "four_variants": {
+                  "summary": "Default 4 candidates for selection",
+                  "value": {
+                    "model": "wan2.7-image",
+                    "messages": [
+                      {
+                        "role": "user",
+                        "content": [
+                          {
+                            "type": "text",
+                            "text": "A futuristic cyberpunk city, neon lights, rainy night, 8k"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "pro": {
+                  "summary": "Higher-fidelity pro model",
+                  "value": {
+                    "model": "wan2.7-image-pro",
+                    "messages": [
+                      {
+                        "role": "user",
+                        "content": [
+                          {
+                            "type": "text",
+                            "text": "Oil painting of a rolling hillside at sunset, artstation"
+                          }
+                        ]
+                      }
+                    ],
+                    "n": 1
+                  }
+                },
+                "image_to_image": {
+                  "summary": "Image-to-image (reference + prompt)",
+                  "value": {
+                    "model": "wan2.7-image-pro",
+                    "messages": [
+                      {
+                        "role": "user",
+                        "content": [
+                          {
+                            "type": "image_url",
+                            "image_url": {
+                              "url": "https://example.com/reference.jpg"
+                            }
+                          },
+                          {
+                            "type": "text",
+                            "text": "Transform into an oil painting in the style of Van Gogh"
+                          }
+                        ]
+                      }
+                    ],
+                    "n": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Images generated. Returned as Chat Completion with `message.content[]` image parts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "chatcmpl-fcc86dfd-9424-9523-b0bd-cdf07383bee2",
+                      "description": "Unique identifier of this generation response."
+                    },
+                    "object": {
+                      "type": "string",
+                      "example": "chat.completion",
+                      "description": "Object type of the payload, mirroring the chat-completions response shape."
+                    },
+                    "created": {
+                      "type": "integer",
+                      "example": 1776495713,
+                      "description": "When the response was produced."
+                    },
+                    "model": {
+                      "type": "string",
+                      "example": "wan2.7-image",
+                      "description": "The image model that actually served the request."
+                    },
+                    "choices": {
+                      "type": "array",
+                      "description": "The generated results, one entry per image.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Position of this result within the choices list."
+                          },
+                          "finish_reason": {
+                            "type": "string",
+                            "example": "stop",
+                            "description": "Why generation for this result stopped."
+                          },
+                          "message": {
+                            "type": "object",
+                            "properties": {
+                              "role": {
+                                "type": "string",
+                                "example": "assistant",
+                                "description": "Author role of the generated message, always the assistant."
+                              },
+                              "content": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "required": [
+                                    "type"
+                                  ],
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "image"
+                                      ],
+                                      "description": "Part kind, marking the part as a generated image."
+                                    },
+                                    "image": {
+                                      "type": "string",
+                                      "description": "The generated image itself, delivered either as a short-lived URL or as base64 data depending on account configuration."
+                                    }
+                                  }
+                                },
+                                "description": "The message's parts; for this endpoint each part wraps one generated image."
+                              }
+                            },
+                            "description": "The assistant message that holds the generated image."
+                          }
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "prompt_tokens": {
+                          "type": "integer",
+                          "description": "Tokens consumed by the input prompt."
+                        },
+                        "completion_tokens": {
+                          "type": "integer",
+                          "description": "Tokens attributed to the generated output."
+                        },
+                        "total_tokens": {
+                          "type": "integer",
+                          "description": "Combined input and output token count."
+                        }
+                      },
+                      "description": "Token accounting for the request."
+                    }
+                  }
+                },
+                "example": {
+                  "id": "chatcmpl-fcc86dfd-9424-9523-b0bd-cdf07383bee2",
+                  "object": "chat.completion",
+                  "created": 1776495713,
+                  "model": "wan2.7-image",
+                  "choices": [
+                    {
+                      "index": 0,
+                      "finish_reason": "stop",
+                      "message": {
+                        "role": "assistant",
+                        "content": [
+                          {
+                            "type": "image",
+                            "image": "https://cdn.aisa.one/images/wan2.7/20260418-abc.png"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "usage": {
+                    "prompt_tokens": 104,
+                    "completion_tokens": 8,
+                    "total_tokens": 112
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request. Most common: `content` passed as a string instead of an array → `\"Input should be a valid list: messages[*].content\"`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream provider unreachable."
+          }
+        }
+      }
+    }
+  }
+}

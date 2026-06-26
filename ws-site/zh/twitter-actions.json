@@ -1,0 +1,794 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter Actions API",
+    "version": "1.0.0",
+    "description": "Write actions against X/Twitter, routed through the AIsa gateway. Modeled after the official X v2 API endpoints (e.g., POST /2/users/{id}/following)."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key",
+        "description": "Your AIsa API key. The authenticated source user (the account doing the follow) is determined by the OAuth session attached to your key."
+      }
+    }
+  },
+  "paths": {
+    "/twitter/auth_twitter": {
+      "post": {
+        "summary": "关联 X/Twitter 账号 authTwitterUser",
+        "description": "发起 OAuth 流程，把用户的 X/Twitter 账号关联到你的 AIsa API Key，返回供用户授权的链接。关联完成后，AIsa 会在后续每次 Twitter 写操作中自动复用该会话。",
+        "operationId": "authTwitterUser",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "scopes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "本次关联要申请的 X OAuth 2.0 权限范围；省略则使用覆盖 AIsa 全部 Twitter 写接口的默认集合。",
+                    "example": [
+                      "follows.write",
+                      "tweet.read",
+                      "users.read"
+                    ]
+                  }
+                }
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorization URL generated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "auth_url",
+                    "state"
+                  ],
+                  "properties": {
+                    "auth_url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "有效期短的 X 授权链接；在浏览器打开它，让来源用户批准所申请的权限。每次需要（重新）关联都应重新生成。"
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "用于防 CSRF 的不透明令牌，X 回跳时 AIsa 会校验它；若需关联本次流程可在客户端保存。"
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "授权链接失效的时间；用户若未在此前完成授权需重新申请。"
+                    }
+                  }
+                },
+                "example": {
+                  "auth_url": "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=AIsa&redirect_uri=https%3A%2F%2Fapi.aisa.one%2Fapis%2Fv1%2Ftwitter%2Foauth_callback&scope=follows.write%20tweet.read%20users.read&state=0c2...d1f&code_challenge=...&code_challenge_method=S256",
+                  "state": "0c2ad1f...",
+                  "expires_at": "2026-04-18T07:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid `scopes` list — contains an unsupported scope."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error generating the OAuth URL."
+          }
+        }
+      }
+    },
+    "/twitter/unlike_twitter": {
+      "post": {
+        "summary": "取消点赞推文 unlikeTwitter",
+        "description": "移除已授权来源用户对某条推文的点赞。对本就未点赞的推文取消点赞是空操作，仍会成功。",
+        "operationId": "unlikeTwitter",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tweet_id"
+                ],
+                "properties": {
+                  "tweet_id": {
+                    "type": "string",
+                    "description": "要取消点赞的推文标识。",
+                    "pattern": "^[0-9]{1,19}$",
+                    "example": "1346889436626259968"
+                  }
+                }
+              },
+              "examples": {
+                "unlike_tweet": {
+                  "summary": "Unlike tweet 1346889436626259968",
+                  "value": {
+                    "tweet_id": "1346889436626259968"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unlike succeeded (or the source user hadn't liked the tweet to begin with).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "liked": {
+                          "type": "boolean",
+                          "description": "来源用户当前是否仍点赞该推文；为 false 表示点赞已移除。"
+                        }
+                      },
+                      "description": "点赞结果状态的容器。"
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "liked": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or malformed `tweet_id`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking `like.write`. Re-authorize via `POST /apis/v1/twitter/auth_twitter`."
+          },
+          "404": {
+            "description": "Tweet not found or not visible to the source user."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable. Safe to retry with exponential backoff."
+          }
+        }
+      }
+    },
+    "/twitter/like_twitter": {
+      "post": {
+        "summary": "点赞推文 likeTwitter",
+        "description": "代表已授权来源用户点赞某条推文。对已点赞的推文再次点赞是空操作，仍会成功。",
+        "operationId": "likeTwitter",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tweet_id"
+                ],
+                "properties": {
+                  "tweet_id": {
+                    "type": "string",
+                    "description": "要点赞的推文标识。",
+                    "pattern": "^[0-9]{1,19}$",
+                    "example": "1346889436626259968"
+                  }
+                }
+              },
+              "examples": {
+                "like_tweet": {
+                  "summary": "Like tweet 1346889436626259968",
+                  "value": {
+                    "tweet_id": "1346889436626259968"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Like succeeded (or was already in place).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "liked": {
+                          "type": "boolean",
+                          "description": "来源用户当前是否点赞该推文；为 true 表示已点赞。"
+                        }
+                      },
+                      "description": "点赞结果状态的容器。"
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "liked": true
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or malformed `tweet_id`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking `like.write`. Re-authorize via `POST /apis/v1/twitter/auth_twitter`."
+          },
+          "404": {
+            "description": "Tweet not found or not visible to the source user."
+          },
+          "429": {
+            "description": "Rate limit hit — either your AIsa key's RPM cap or the upstream X rate limit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable. Safe to retry with exponential backoff."
+          }
+        }
+      }
+    },
+    "/twitter/post_twitter": {
+      "post": {
+        "summary": "发布或编辑推文 postTwitter",
+        "description": "代表已授权来源用户发布新推文，或编辑已有推文。media、poll、quote_tweet_id、card_uri 在同一次请求中至多只能设置其一。",
+        "operationId": "postTwitter",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "推文正文；发布媒体、投票或引用时可省略，否则必填。",
+                    "example": "Hello from AIsa — shipping agent-friendly Twitter APIs."
+                  },
+                  "reply": {
+                    "type": "object",
+                    "description": "把本推文设为对另一条推文回复的相关设置。",
+                    "required": [
+                      "in_reply_to_tweet_id"
+                    ],
+                    "properties": {
+                      "in_reply_to_tweet_id": {
+                        "type": "string",
+                        "description": "被回复推文的标识。",
+                        "pattern": "^[0-9]{1,19}$"
+                      },
+                      "auto_populate_reply_metadata": {
+                        "type": "boolean",
+                        "description": "是否在回复中自动 @ 原推文的参与者。"
+                      },
+                      "exclude_reply_user_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[0-9]{1,19}$"
+                        },
+                        "maxItems": 10,
+                        "description": "从自动生成的回复 @ 名单中排除的用户 ID。"
+                      }
+                    }
+                  },
+                  "quote_tweet_id": {
+                    "type": "string",
+                    "description": "要引用的推文标识；与 media、poll、card_uri 互斥。",
+                    "pattern": "^[0-9]{1,19}$"
+                  },
+                  "media": {
+                    "type": "object",
+                    "description": "为推文附加上传的媒体；与 poll、quote_tweet_id、card_uri 互斥。",
+                    "required": [
+                      "media_ids"
+                    ],
+                    "properties": {
+                      "media_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "minItems": 1,
+                        "maxItems": 4,
+                        "description": "要附加的媒体标识，需事先通过 X 的媒体上传接口获取。"
+                      },
+                      "tagged_user_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[0-9]{1,19}$"
+                        },
+                        "maxItems": 10,
+                        "description": "在所附媒体中标记的用户 ID。"
+                      }
+                    }
+                  },
+                  "poll": {
+                    "type": "object",
+                    "description": "为推文附加投票；与 media、quote_tweet_id、card_uri 互斥。",
+                    "required": [
+                      "options",
+                      "duration_minutes"
+                    ],
+                    "properties": {
+                      "options": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "maxLength": 25
+                        },
+                        "minItems": 2,
+                        "maxItems": 4,
+                        "description": "投票的选项。"
+                      },
+                      "duration_minutes": {
+                        "type": "integer",
+                        "minimum": 5,
+                        "maximum": 10080,
+                        "description": "投票开放的时长，单位为分钟。"
+                      },
+                      "reply_settings": {
+                        "type": "string",
+                        "enum": [
+                          "following",
+                          "mentionedUsers",
+                          "subscribers",
+                          "verified"
+                        ],
+                        "description": "限制谁可以回复这条带投票的推文。"
+                      }
+                    }
+                  },
+                  "card_uri": {
+                    "type": "string",
+                    "description": "要附加的卡片 URI；与 media、poll、quote_tweet_id、direct_message_deep_link 互斥。"
+                  },
+                  "direct_message_deep_link": {
+                    "type": "string",
+                    "description": "将对话引导进入私信的深度链接。"
+                  },
+                  "geo": {
+                    "type": "object",
+                    "description": "为推文附加地点。",
+                    "properties": {
+                      "place_id": {
+                        "type": "string",
+                        "description": "要附加的 X 地点标识。"
+                      }
+                    }
+                  },
+                  "reply_settings": {
+                    "type": "string",
+                    "enum": [
+                      "following",
+                      "mentionedUsers",
+                      "subscribers",
+                      "verified"
+                    ],
+                    "description": "限制谁可以回复该推文。"
+                  },
+                  "for_super_followers_only": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "是否让该推文仅对超级粉丝可见。"
+                  },
+                  "nullcast": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "是否发布为 nullcast（仅推广）推文，不出现在公开时间线或粉丝处。"
+                  },
+                  "paid_partnership": {
+                    "type": "boolean",
+                    "description": "是否将该推文标记为付费合作。"
+                  },
+                  "made_with_ai": {
+                    "type": "boolean",
+                    "description": "是否标记该推文含 AI 生成的媒体。"
+                  },
+                  "community_id": {
+                    "type": "string",
+                    "pattern": "^[0-9]{1,19}$",
+                    "description": "要发布到的社区标识。"
+                  },
+                  "share_with_followers": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "是否同时把社区帖子展示给你的粉丝。"
+                  },
+                  "edit_options": {
+                    "type": "object",
+                    "description": "将本次调用切换为编辑已有推文而非新建，受 X 的编辑时限约束。",
+                    "required": [
+                      "previous_post_id"
+                    ],
+                    "properties": {
+                      "previous_post_id": {
+                        "type": "string",
+                        "pattern": "^[0-9]{1,19}$",
+                        "description": "要编辑的已有推文标识。"
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "simple_text": {
+                  "summary": "Plain text tweet",
+                  "value": {
+                    "text": "Hello, World!"
+                  }
+                },
+                "reply": {
+                  "summary": "Reply to a tweet",
+                  "value": {
+                    "text": "Totally agree 👌",
+                    "reply": {
+                      "in_reply_to_tweet_id": "1234567890123456789",
+                      "auto_populate_reply_metadata": true
+                    }
+                  }
+                },
+                "with_poll": {
+                  "summary": "Tweet with a poll",
+                  "value": {
+                    "text": "Pick your favorite:",
+                    "poll": {
+                      "options": [
+                        "Option A",
+                        "Option B",
+                        "Option C"
+                      ],
+                      "duration_minutes": 60
+                    }
+                  }
+                },
+                "with_media": {
+                  "summary": "Tweet with media",
+                  "value": {
+                    "text": "Ship log 📸",
+                    "media": {
+                      "media_ids": [
+                        "1146654567674912769"
+                      ],
+                      "tagged_user_ids": [
+                        "2244994945"
+                      ]
+                    }
+                  }
+                },
+                "quote": {
+                  "summary": "Quote tweet",
+                  "value": {
+                    "text": "Worth reading:",
+                    "quote_tweet_id": "1234567890123456789"
+                  }
+                },
+                "edit": {
+                  "summary": "Edit an existing tweet",
+                  "value": {
+                    "text": "Updated tweet content (typo fixed).",
+                    "edit_options": {
+                      "previous_post_id": "1234567890123456789"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tweet created (or edited) successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[0-9]{1,19}$",
+                          "description": "生成推文的标识。"
+                        },
+                        "text": {
+                          "type": "string",
+                          "description": "X 实际保存的推文最终文本。"
+                        }
+                      },
+                      "description": "已创建或已编辑推文的容器。"
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "id": "1346889436626259968",
+                    "text": "Hello, World!"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — violated a mutual-exclusivity rule, missing required field, or text too long."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking `tweet.write`. Re-authorize via `POST /apis/v1/twitter/auth_twitter`."
+          },
+          "404": {
+            "description": "Referenced tweet (reply, quote, or edit target) not found."
+          },
+          "409": {
+            "description": "Conflict — e.g., duplicate tweet content or edit outside the allowed window."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable."
+          }
+        }
+      }
+    },
+    "/twitter/unfollow_twitter": {
+      "post": {
+        "summary": "取消关注用户 unfollowTwitterUser",
+        "description": "让已授权来源用户取消关注 X/Twitter 上的目标用户。取消关注本就未关注的用户是空操作，仍会成功。",
+        "operationId": "unfollowTwitterUser",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "target_user_id"
+                ],
+                "properties": {
+                  "target_user_id": {
+                    "type": "string",
+                    "description": "要取消关注的 X/Twitter 用户标识。",
+                    "pattern": "^[0-9]{1,19}$",
+                    "example": "2244994945"
+                  }
+                }
+              },
+              "examples": {
+                "unfollow_user": {
+                  "summary": "Unfollow @TwitterDev (id 2244994945)",
+                  "value": {
+                    "target_user_id": "2244994945"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unfollow succeeded (or the source user wasn't following the target to begin with).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "following": {
+                          "type": "boolean",
+                          "description": "来源用户是否仍关注目标用户；为 false 表示已取消关注。"
+                        }
+                      },
+                      "description": "关注结果状态的容器。"
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "following": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or malformed `target_user_id`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking the `follows.write` scope. Re-authorize via `POST /apis/v1/twitter/auth_twitter`."
+          },
+          "429": {
+            "description": "Rate limit hit — either your AIsa key's RPM cap or the upstream X rate limit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable or returned an error. Safe to retry with exponential backoff."
+          }
+        }
+      }
+    },
+    "/twitter/follow_twitter": {
+      "post": {
+        "summary": "关注用户 followTwitterUser",
+        "description": "让已授权来源用户关注 X/Twitter 上的目标用户。关注受保护账号时会产生待对方批准的关注请求。",
+        "operationId": "followTwitterUser",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "target_user_id"
+                ],
+                "properties": {
+                  "target_user_id": {
+                    "type": "string",
+                    "description": "要关注的 X/Twitter 用户标识。",
+                    "pattern": "^[0-9]{1,19}$",
+                    "example": "6253282"
+                  }
+                }
+              },
+              "examples": {
+                "follow_user": {
+                  "summary": "Follow @TwitterDev (id 2244994945)",
+                  "value": {
+                    "target_user_id": "2244994945"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Follow succeeded (or was already in place).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "following": {
+                          "type": "boolean",
+                          "description": "来源用户当前是否已关注目标用户。"
+                        },
+                        "pending_follow": {
+                          "type": "boolean",
+                          "description": "是否已向受保护账号发出关注请求并等待对方批准。"
+                        }
+                      },
+                      "description": "关注结果状态的容器。"
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "following": true,
+                    "pending_follow": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or malformed `target_user_id`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking the `follows.write` scope. Re-authorize from the dashboard."
+          },
+          "429": {
+            "description": "Rate limit hit — either your AIsa key's RPM cap or the upstream X rate limit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable or returned an error. Safe to retry with exponential backoff."
+          }
+        }
+      }
+    }
+  }
+}

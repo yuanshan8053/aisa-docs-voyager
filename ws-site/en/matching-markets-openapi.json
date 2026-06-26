@@ -1,0 +1,421 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AIsa API proxy",
+    "description": "APIs for prediction markets.",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/matching-markets/sports": {
+      "get": {
+        "summary": "Get Matching Markets for Sports",
+        "description": "Match equivalent prediction markets for the same sports events across platforms such as Polymarket and Kalshi. Seed the lookup with one or more Polymarket market slugs or Kalshi event tickers — the two seed types are mutually exclusive. Typical uses are cross-platform price comparison and arbitrage discovery.\n\n**Error status codes:** `400`, `404`",
+        "operationId": "get_matching-markets-sports",
+        "parameters": [
+          {
+            "name": "polymarket_market_slug",
+            "in": "query",
+            "required": false,
+            "description": "One or more Polymarket market slugs to find cross-platform equivalents for. Repeat the query parameter to pass several at once. Cannot be combined with `kalshi_event_ticker` — choose one seed type per request.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "nfl-ari-den-2025-08-16",
+                "nfl-dal-phi-2025-09-04"
+              ]
+            },
+            "style": "form",
+            "explode": true
+          },
+          {
+            "name": "kalshi_event_ticker",
+            "in": "query",
+            "required": false,
+            "description": "One or more Kalshi event tickers to find cross-platform equivalents for. Repeat the query parameter to pass several at once. Cannot be combined with `polymarket_market_slug` — choose one seed type per request.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "KXNFLGAME-25AUG16ARIDEN",
+                "KXNFLGAME-25SEP04DALPHI"
+              ]
+            },
+            "style": "form",
+            "explode": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching markets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "markets": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "description": "Kalshi market",
+                              "properties": {
+                                "platform": {
+                                  "type": "string",
+                                  "enum": [
+                                    "KALSHI"
+                                  ],
+                                  "example": "KALSHI"
+                                },
+                                "event_ticker": {
+                                  "type": "string",
+                                  "example": "KXNFLGAME-25AUG16ARIDEN"
+                                },
+                                "market_tickers": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "KXNFLGAME-25AUG16ARIDEN-ARI",
+                                    "KXNFLGAME-25AUG16ARIDEN-DEN"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "platform",
+                                "event_ticker",
+                                "market_tickers"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "description": "Polymarket market",
+                              "properties": {
+                                "platform": {
+                                  "type": "string",
+                                  "enum": [
+                                    "POLYMARKET"
+                                  ],
+                                  "example": "POLYMARKET"
+                                },
+                                "market_slug": {
+                                  "type": "string",
+                                  "example": "nfl-ari-den-2025-08-16"
+                                },
+                                "token_ids": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "34541522652444763571858406546623861155130750437169507355470933750634189084033",
+                                    "104612081187206848956763018128517335758189185749897027211060738913329108425255"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "platform",
+                                "market_slug",
+                                "token_ids"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "example": {
+                        "nfl-ari-den-2025-08-16": [
+                          {
+                            "platform": "KALSHI",
+                            "event_ticker": "KXNFLGAME-25AUG16ARIDEN",
+                            "market_tickers": [
+                              "KXNFLGAME-25AUG16ARIDEN-ARI",
+                              "KXNFLGAME-25AUG16ARIDEN-DEN"
+                            ]
+                          },
+                          {
+                            "platform": "POLYMARKET",
+                            "market_slug": "nfl-ari-den-2025-08-16",
+                            "token_ids": [
+                              "34541522652444763571858406546623861155130750437169507355470933750634189084033",
+                              "104612081187206848956763018128517335758189185749897027211060738913329108425255"
+                            ]
+                          }
+                        ],
+                        "nfl-dal-phi-2025-09-04": [
+                          {
+                            "platform": "KALSHI",
+                            "event_ticker": "KXNFLGAME-25SEP04DALPHI",
+                            "market_tickers": [
+                              "KXNFLGAME-25SEP04DALPHI-DAL",
+                              "KXNFLGAME-25SEP04DALPHI-PHI"
+                            ]
+                          }
+                        ]
+                      },
+                      "description": "Matched markets grouped by your seed: each key is the slug or ticker you supplied, and its value is the list of equivalent markets found across platforms. Each entry carries a `platform` discriminator (`KALSHI` or `POLYMARKET`) and that platform's native identifiers."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing or invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Missing required parameter",
+                      "description": "Short machine-readable error label for a bad request, e.g. missing required parameters."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "At least one polymarket_market_slug or kalshi_event_ticker is required",
+                      "description": "Human-readable detail explaining what was wrong with the request."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - No matching markets found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Not found",
+                      "description": "Short machine-readable error label indicating no matching markets were found."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No matching markets found for the provided parameters",
+                      "description": "Human-readable detail explaining that no equivalent markets matched the supplied seeds."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matching-markets/sports/{sport}": {
+      "parameters": [
+        {
+          "name": "sport",
+          "in": "path",
+          "required": true,
+          "description": "The sport to find matching markets for.\n\nSport abbreviations:\n- nfl = Football\n- mlb = Baseball\n- cfb = College Football\n- nba = Basketball\n- nhl = Hockey\n- cbb = College Basketball\n- pga = Golf\n- tennis = Tennis",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "nfl",
+              "mlb",
+              "cfb",
+              "nba",
+              "nhl",
+              "cbb",
+              "pga",
+              "tennis"
+            ],
+            "example": "nfl"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Matching Markets for Sports by Sport and Date",
+        "description": "Match equivalent prediction markets across platforms for a given sport on a given date, instead of seeding by specific market identifiers. Pick the sport from the path and the day from the query. Typical use is sweeping a whole day's slate for cross-platform equivalents.\n\n**Error status codes:** `400`",
+        "operationId": "get_matching-markets-sports-by-sport",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "description": "The day to search, in `YYYY-MM-DD`. Only events scheduled on this date are matched.",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "example": "2025-08-16"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching markets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "markets": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "description": "Kalshi market",
+                              "properties": {
+                                "platform": {
+                                  "type": "string",
+                                  "enum": [
+                                    "KALSHI"
+                                  ],
+                                  "example": "KALSHI"
+                                },
+                                "event_ticker": {
+                                  "type": "string",
+                                  "example": "KXNFLGAME-25AUG16ARIDEN"
+                                },
+                                "market_tickers": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "KXNFLGAME-25AUG16ARIDEN-ARI",
+                                    "KXNFLGAME-25AUG16ARIDEN-DEN"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "platform",
+                                "event_ticker",
+                                "market_tickers"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "description": "Polymarket market",
+                              "properties": {
+                                "platform": {
+                                  "type": "string",
+                                  "enum": [
+                                    "POLYMARKET"
+                                  ],
+                                  "example": "POLYMARKET"
+                                },
+                                "market_slug": {
+                                  "type": "string",
+                                  "example": "nfl-ari-den-2025-08-16"
+                                },
+                                "token_ids": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "34541522652444763571858406546623861155130750437169507355470933750634189084033",
+                                    "104612081187206848956763018128517335758189185749897027211060738913329108425255"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "platform",
+                                "market_slug",
+                                "token_ids"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "example": {
+                        "nfl-ari-den-2025-08-16": [
+                          {
+                            "platform": "KALSHI",
+                            "event_ticker": "KXNFLGAME-25AUG16ARIDEN",
+                            "market_tickers": [
+                              "KXNFLGAME-25AUG16ARIDEN-ARI",
+                              "KXNFLGAME-25AUG16ARIDEN-DEN"
+                            ]
+                          },
+                          {
+                            "platform": "POLYMARKET",
+                            "market_slug": "nfl-ari-den-2025-08-16",
+                            "token_ids": [
+                              "34541522652444763571858406546623861155130750437169507355470933750634189084033",
+                              "104612081187206848956763018128517335758189185749897027211060738913329108425255"
+                            ]
+                          }
+                        ]
+                      },
+                      "description": "Matched markets grouped by event: each key is an event identifier and its value is the list of equivalent markets found across platforms. Each entry carries a `platform` discriminator (`KALSHI` or `POLYMARKET`) and that platform's native identifiers."
+                    },
+                    "sport": {
+                      "type": "string",
+                      "example": "nfl",
+                      "description": "Echoes the sport code that was searched."
+                    },
+                    "date": {
+                      "type": "string",
+                      "example": "2025-08-16",
+                      "description": "Echoes the date that was searched, in `YYYY-MM-DD`."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing or invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Missing required parameter",
+                      "description": "Short machine-readable error label for a bad request, e.g. a missing required parameter."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "date parameter is required",
+                      "description": "Human-readable detail explaining what was wrong with the request, such as a missing `date`."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key",
+        "description": "Your AIsa API key as a Bearer token."
+      }
+    }
+  }
+}

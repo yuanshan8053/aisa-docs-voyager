@@ -1,0 +1,586 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API Aggregated Documentation",
+    "version": "1.0.0",
+    "description": "This OpenAPI specification aggregates multiple Twitter API endpoints into a single document."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "TweetThreadContextResponse": {
+        "type": "object",
+        "properties": {
+          "replies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tweet"
+            },
+            "description": "Reply tweets making up the thread context, returned for this page."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Outcome marker of the request: success when the thread was returned, error otherwise."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail when status is error."
+          }
+        }
+      },
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object type tag identifying the entry as a tweet."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the tweet."
+          },
+          "url": {
+            "type": "string",
+            "description": "Web link to the tweet on X/Twitter."
+          },
+          "text": {
+            "type": "string",
+            "description": "Full text content of the tweet."
+          },
+          "source": {
+            "type": "string",
+            "description": "Name of the client application used to post the tweet."
+          },
+          "retweetCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been retweeted."
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "Number of replies to the tweet."
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "Number of likes on the tweet."
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "Number of quote tweets referencing this tweet."
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been viewed."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the tweet was created."
+          },
+          "lang": {
+            "type": "string",
+            "description": "Detected language of the tweet text, as a language code."
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been bookmarked."
+          },
+          "isReply": {
+            "type": "boolean",
+            "description": "Whether the tweet is a reply to another tweet."
+          },
+          "inReplyToId": {
+            "type": "string",
+            "description": "Identifier of the tweet this one directly replies to; present only when isReply is true."
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "Identifier of the root tweet that started the conversation thread this tweet belongs to."
+          },
+          "displayTextRange": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Start and end character offsets marking the displayable portion of the tweet text."
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "description": "Identifier of the user being replied to."
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "description": "Username of the user being replied to."
+          },
+          "author": {
+            "$ref": "#/components/schemas/User",
+            "description": "Profile of the user who posted the tweet."
+          },
+          "entities": {
+            "$ref": "#/components/schemas/Entities",
+            "description": "Structured entities parsed from the tweet text, such as hashtags, links, and user mentions."
+          },
+          "quoted_tweet": {
+            "type": "string",
+            "description": "The tweet quoted by this tweet, when it is a quote tweet.\n[⚠️Note:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]"
+          },
+          "retweeted_tweet": {
+            "type": "string",
+            "description": "The original tweet this tweet retweets, when it is a retweet.\n[⚠️Note:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]"
+          },
+          "isLimitedReply": {
+            "type": "boolean",
+            "description": "Whether replies to this tweet are restricted by the author's reply settings."
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object type tag identifying the entry as a user."
+          },
+          "userName": {
+            "type": "string",
+            "description": "The author's @handle, unique across X/Twitter and used in profile URLs."
+          },
+          "url": {
+            "type": "string",
+            "description": "Web link to the author's profile page."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the author."
+          },
+          "name": {
+            "type": "string",
+            "description": "The author's display name shown on the profile."
+          },
+          "isBlueVerified": {
+            "type": "boolean",
+            "description": "Whether the author holds a paid X (Twitter) Blue verification."
+          },
+          "verifiedType": {
+            "type": "string",
+            "description": "The author's verification category, such as a business or government account."
+          },
+          "profilePicture": {
+            "type": "string",
+            "description": "Web link to the author's avatar image."
+          },
+          "coverPicture": {
+            "type": "string",
+            "description": "Web link to the author's profile banner image."
+          },
+          "description": {
+            "type": "string",
+            "description": "The author's profile bio text."
+          },
+          "location": {
+            "type": "string",
+            "description": "Free-text location the author lists on their profile."
+          },
+          "followers": {
+            "type": "integer",
+            "description": "Number of accounts following the author."
+          },
+          "following": {
+            "type": "integer",
+            "description": "Number of accounts the author follows."
+          },
+          "canDm": {
+            "type": "boolean",
+            "description": "Whether the author currently accepts direct messages from the requester."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the author's account was created."
+          },
+          "favouritesCount": {
+            "type": "integer",
+            "description": "Number of tweets the author has liked."
+          },
+          "hasCustomTimelines": {
+            "type": "boolean",
+            "description": "Whether the author has created custom timelines."
+          },
+          "isTranslator": {
+            "type": "boolean",
+            "description": "Whether the author participates in the Twitter translation program."
+          },
+          "mediaCount": {
+            "type": "integer",
+            "description": "Number of media items the author has posted."
+          },
+          "statusesCount": {
+            "type": "integer",
+            "description": "Total number of tweets the author has posted."
+          },
+          "withheldInCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Country codes where the author's account is withheld for legal reasons."
+          },
+          "possiblySensitive": {
+            "type": "boolean",
+            "description": "Whether the author's posts are flagged as potentially sensitive."
+          },
+          "pinnedTweetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Identifiers of tweets the author has pinned to the top of their profile."
+          },
+          "isAutomated": {
+            "type": "boolean",
+            "description": "Whether the account is labeled as an automated (bot) account."
+          },
+          "automatedBy": {
+            "type": "string",
+            "description": "Username of the person or entity managing the automated account."
+          },
+          "unavailable": {
+            "type": "boolean",
+            "description": "Whether the author's account is currently unavailable, for example suspended or deactivated."
+          },
+          "message": {
+            "type": "string",
+            "description": "Explanatory message returned when the account is unavailable."
+          },
+          "unavailableReason": {
+            "type": "string",
+            "description": "Reason code or text describing why the account is unavailable."
+          }
+        }
+      },
+      "Entities": {
+        "type": "object",
+        "properties": {
+          "hashtags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "indices": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "description": "Start and end character offsets of the hashtag within the tweet text."
+                },
+                "text": {
+                  "type": "string",
+                  "description": "The hashtag word, without the leading # sign."
+                }
+              }
+            },
+            "description": "Hashtags found in the tweet text."
+          },
+          "urls": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "display_url": {
+                  "type": "string",
+                  "description": "Shortened, human-readable form of the link as displayed in the tweet."
+                },
+                "expanded_url": {
+                  "type": "string",
+                  "description": "Full destination URL the displayed link resolves to."
+                },
+                "indices": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "description": "Start and end character offsets of the link within the tweet text."
+                },
+                "url": {
+                  "type": "string",
+                  "description": "The t.co shortened URL as it literally appears in the tweet text."
+                }
+              }
+            },
+            "description": "Links found in the tweet text."
+          },
+          "user_mentions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id_str": {
+                  "type": "string",
+                  "description": "Identifier of the mentioned user."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Display name of the mentioned user."
+                },
+                "screen_name": {
+                  "type": "string",
+                  "description": "@handle of the mentioned user."
+                }
+              }
+            },
+            "description": "Users mentioned in the tweet text."
+          }
+        }
+      },
+      "ArticleResponse": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "$ref": "#/components/schemas/Article",
+            "description": "The long-form Article content and metadata."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "failed"
+            ],
+            "description": "Outcome marker of the request: success when the article was returned, failed otherwise."
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable message; carries the error detail on failure."
+          }
+        }
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "$ref": "#/components/schemas/User",
+            "description": "Profile of the user who wrote the article."
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "Number of replies to the article's tweet."
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "Number of likes on the article's tweet."
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "Number of quote tweets referencing the article's tweet."
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "Number of times the article's tweet has been viewed."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the article was created."
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the article."
+          },
+          "preview_text": {
+            "type": "string",
+            "description": "Short preview excerpt of the article body."
+          },
+          "cover_media_img_url": {
+            "type": "string",
+            "description": "Web link to the article's cover image."
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "Text of a single article content block."
+                }
+              }
+            },
+            "description": "Ordered content blocks making up the article body."
+          }
+        }
+      },
+      "AdvancedSearchResponse": {
+        "type": "object",
+        "properties": {
+          "tweets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tweet"
+            },
+            "description": "Tweets matching the search, returned for this page."
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/tweet/thread_context": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_tweet_thread_context"
+        ],
+        "summary": "Get Tweet Thread Context",
+        "description": "Retrieve the conversation thread surrounding a tweet, returning the replies that make up its context. Works whether the given tweet is an original tweet or itself a reply.",
+        "parameters": [
+          {
+            "name": "tweetId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the tweet whose thread context you want; may be an original tweet or a reply."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TweetThreadContextResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/article": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_article"
+        ],
+        "summary": "Get Article",
+        "description": "Retrieve the long-form Article attached to a tweet, including its title, cover image, and body content blocks.",
+        "parameters": [
+          {
+            "name": "tweet_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the tweet that carries the Article you want."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/tweet/advanced_search": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/tweet_advanced_search"
+        ],
+        "summary": "Advanced Search",
+        "description": "Search tweets using a query string, choosing between the most recent matches or the top-ranked ones, with cursor pagination.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query string; supports advanced search operators to filter tweets."
+          },
+          {
+            "name": "queryType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Latest",
+                "Top"
+              ],
+              "default": "Latest"
+            },
+            "description": "Ranking mode of the results: Latest returns the most recent matches, Top returns the most relevant or popular ones."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdvancedSearchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

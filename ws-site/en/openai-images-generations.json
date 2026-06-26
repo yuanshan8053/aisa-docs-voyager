@@ -1,0 +1,196 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OpenAI-Compatible Image Generations",
+    "version": "1.0.0",
+    "description": "Standard OpenAI-compatible `POST /v1/images/generations` endpoint. Currently supports the **ByteDance Seedream** family. Wan 2.7 image models route through [`/v1/chat/completions`](/api-reference/chat/image-generation) instead, and Gemini image previews route through [`/v1/models/{model}:generateContent`](/api-reference/chat/generatecontent)."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key"
+      }
+    }
+  },
+  "paths": {
+    "/images/generations": {
+      "post": {
+        "summary": "Generate images (OpenAI-compatible)",
+        "description": "Generate images from a text prompt via the OpenAI-compatible images endpoint. On AIsa this path routes to the ByteDance Seedream family only; Wan 2.7 image models go through `/v1/chat/completions` and Gemini image previews through `/v1/models/{model}:generateContent`. Mind the upstream minimum-pixel requirement on the requested size, or the request is rejected.\n\n**Error status codes:** `400`, `401`, `404`, `429`, `500`, `502`",
+        "operationId": "createImageGeneration",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "prompt"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "seedream-4-5-251128"
+                    ],
+                    "description": "Which image model to run. On this endpoint it pins the call to the Seedream family; Wan 2.7 models must instead be called through `/v1/chat/completions`."
+                  },
+                  "prompt": {
+                    "type": "string",
+                    "description": "Natural-language description of the image you want. It is the main driver of the result — be specific about subject, style, and lighting for better output."
+                  },
+                  "n": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "default": 1,
+                    "description": "How many images to generate in one call. Each generated image is billed separately at the per-image rate, so a higher count multiplies cost."
+                  },
+                  "size": {
+                    "type": "string",
+                    "description": "Output dimensions in `WIDTHxHEIGHT` form. Seedream's upstream enforces a minimum of 3,686,400 pixels (`width × height`), so e.g. `1024x1024` is rejected while `1920x1920` and larger pass; any aspect ratio is fine as long as the pixel total clears the floor.",
+                    "example": "2048x2048"
+                  }
+                }
+              },
+              "examples": {
+                "basic": {
+                  "summary": "Single 2K image",
+                  "value": {
+                    "model": "seedream-4-5-251128",
+                    "prompt": "A cute red panda, ultra-detailed, cinematic lighting",
+                    "n": 1,
+                    "size": "2048x2048"
+                  }
+                },
+                "minimum_size": {
+                  "summary": "Exactly at minimum allowed size (1920×1920)",
+                  "value": {
+                    "model": "seedream-4-5-251128",
+                    "prompt": "A futuristic cyberpunk city, neon lights, rainy night, 8k",
+                    "n": 1,
+                    "size": "1920x1920"
+                  }
+                },
+                "batch": {
+                  "summary": "Four candidates for selection",
+                  "value": {
+                    "model": "seedream-4-5-251128",
+                    "prompt": "Oil painting of a rolling hillside at sunset",
+                    "n": 4,
+                    "size": "2048x2048"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Images generated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "model": {
+                      "type": "string",
+                      "example": "seedream-4-5-251128",
+                      "description": "The model that actually produced these images, echoing the requested model."
+                    },
+                    "created": {
+                      "type": "integer",
+                      "example": 1776495432,
+                      "description": "When the images were generated, as a Unix timestamp in seconds."
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "The generated images, one entry per image — its count matches the requested `n`.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "Short-lived URL to a generated image. It expires, so download and persist the image promptly rather than relying on the link long-term."
+                          },
+                          "size": {
+                            "type": "string",
+                            "description": "The actual dimensions of the returned image, which may differ from the requested size after upstream adjustment."
+                          }
+                        }
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "generated_images": {
+                          "type": "integer",
+                          "description": "Number of images actually generated and billed in this call."
+                        },
+                        "output_tokens": {
+                          "type": "integer",
+                          "description": "Tokens attributed to producing the output for this call, used in cost calculation."
+                        },
+                        "total_tokens": {
+                          "type": "integer",
+                          "description": "Total tokens charged for this call."
+                        }
+                      },
+                      "description": "Resource-usage breakdown for this call, used for billing and quota tracking."
+                    }
+                  }
+                },
+                "example": {
+                  "model": "seedream-4-5-251128",
+                  "created": 1776495432,
+                  "data": [
+                    {
+                      "url": "https://cdn.aisa.one/images/seedream/20260418-abc.png",
+                      "size": "2048x2048"
+                    }
+                  ],
+                  "usage": {
+                    "generated_images": 1,
+                    "output_tokens": 16384,
+                    "total_tokens": 16384
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request. Most common: `size` smaller than 3,686,400 pixels → `\"image size must be at least 3686400 pixels\"`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "404": {
+            "description": "The model isn't routed through this endpoint. Wan 2.7 models return `openai_error` here — use `/v1/chat/completions` for those."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream provider unreachable."
+          }
+        }
+      }
+    }
+  }
+}

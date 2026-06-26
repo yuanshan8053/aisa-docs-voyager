@@ -1,0 +1,794 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter Actions API",
+    "version": "1.0.0",
+    "description": "Write actions against X/Twitter, routed through the AIsa gateway. Modeled after the official X v2 API endpoints (e.g., POST /2/users/{id}/following)."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key",
+        "description": "Your AIsa API key. The authenticated source user (the account doing the follow) is determined by the OAuth session attached to your key."
+      }
+    }
+  },
+  "paths": {
+    "/twitter/auth_twitter": {
+      "post": {
+        "summary": "Link an X/Twitter account (start OAuth)",
+        "description": "Start the OAuth flow that links a user's X/Twitter account to your AIsa API key, returning an authorization URL for the user to approve. Once linked, AIsa reuses that session automatically for every subsequent Twitter write call.",
+        "operationId": "authTwitterUser",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "scopes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "X OAuth 2.0 scopes to request for the link; omit to use the default set covering all of AIsa's Twitter write endpoints.",
+                    "example": [
+                      "follows.write",
+                      "tweet.read",
+                      "users.read"
+                    ]
+                  }
+                }
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorization URL generated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "auth_url",
+                    "state"
+                  ],
+                  "properties": {
+                    "auth_url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Short-lived X authorization URL; open it in a browser so the source user can approve the requested scopes. Generate a fresh one each time a (re-)link is needed."
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "Opaque CSRF token AIsa validates when X redirects back; store it client-side if you need to correlate the flow."
+                    },
+                    "expires_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "When the authorization URL stops working; request a new one if the user hasn't finished authorizing by then."
+                    }
+                  }
+                },
+                "example": {
+                  "auth_url": "https://twitter.com/i/oauth2/authorize?response_type=code&client_id=AIsa&redirect_uri=https%3A%2F%2Fapi.aisa.one%2Fapis%2Fv1%2Ftwitter%2Foauth_callback&scope=follows.write%20tweet.read%20users.read&state=0c2...d1f&code_challenge=...&code_challenge_method=S256",
+                  "state": "0c2ad1f...",
+                  "expires_at": "2026-04-18T07:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid `scopes` list — contains an unsupported scope."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error generating the OAuth URL."
+          }
+        }
+      }
+    },
+    "/twitter/unlike_twitter": {
+      "post": {
+        "summary": "Unlike a tweet",
+        "description": "Remove the authenticated source user's like from a tweet. Unliking a tweet that was never liked is a no-op and still succeeds.",
+        "operationId": "unlikeTwitter",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tweet_id"
+                ],
+                "properties": {
+                  "tweet_id": {
+                    "type": "string",
+                    "description": "Identifier of the tweet to unlike.",
+                    "pattern": "^[0-9]{1,19}$",
+                    "example": "1346889436626259968"
+                  }
+                }
+              },
+              "examples": {
+                "unlike_tweet": {
+                  "summary": "Unlike tweet 1346889436626259968",
+                  "value": {
+                    "tweet_id": "1346889436626259968"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unlike succeeded (or the source user hadn't liked the tweet to begin with).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "liked": {
+                          "type": "boolean",
+                          "description": "Whether the source user currently likes the tweet; `false` confirms the like was removed."
+                        }
+                      },
+                      "description": "Container for the resulting like state."
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "liked": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or malformed `tweet_id`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking `like.write`. Re-authorize via `POST /apis/v1/twitter/auth_twitter`."
+          },
+          "404": {
+            "description": "Tweet not found or not visible to the source user."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable. Safe to retry with exponential backoff."
+          }
+        }
+      }
+    },
+    "/twitter/like_twitter": {
+      "post": {
+        "summary": "Like a tweet",
+        "description": "Like a tweet on behalf of the authenticated source user. Liking an already-liked tweet is a no-op and still succeeds.",
+        "operationId": "likeTwitter",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "tweet_id"
+                ],
+                "properties": {
+                  "tweet_id": {
+                    "type": "string",
+                    "description": "Identifier of the tweet to like.",
+                    "pattern": "^[0-9]{1,19}$",
+                    "example": "1346889436626259968"
+                  }
+                }
+              },
+              "examples": {
+                "like_tweet": {
+                  "summary": "Like tweet 1346889436626259968",
+                  "value": {
+                    "tweet_id": "1346889436626259968"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Like succeeded (or was already in place).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "liked": {
+                          "type": "boolean",
+                          "description": "Whether the source user currently likes the tweet; `true` confirms the like is in place."
+                        }
+                      },
+                      "description": "Container for the resulting like state."
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "liked": true
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or malformed `tweet_id`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking `like.write`. Re-authorize via `POST /apis/v1/twitter/auth_twitter`."
+          },
+          "404": {
+            "description": "Tweet not found or not visible to the source user."
+          },
+          "429": {
+            "description": "Rate limit hit — either your AIsa key's RPM cap or the upstream X rate limit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable. Safe to retry with exponential backoff."
+          }
+        }
+      }
+    },
+    "/twitter/post_twitter": {
+      "post": {
+        "summary": "Post or edit a tweet",
+        "description": "Publish a new tweet on behalf of the authenticated source user, or edit an existing one. At most one of `media`, `poll`, `quote_tweet_id`, and `card_uri` may be set in a single request.",
+        "operationId": "postTwitter",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "description": "Body text of the tweet; optional when posting media, a poll, or a quote, otherwise required.",
+                    "example": "Hello from AIsa — shipping agent-friendly Twitter APIs."
+                  },
+                  "reply": {
+                    "type": "object",
+                    "description": "Settings that turn this tweet into a reply to another tweet.",
+                    "required": [
+                      "in_reply_to_tweet_id"
+                    ],
+                    "properties": {
+                      "in_reply_to_tweet_id": {
+                        "type": "string",
+                        "description": "Identifier of the tweet being replied to.",
+                        "pattern": "^[0-9]{1,19}$"
+                      },
+                      "auto_populate_reply_metadata": {
+                        "type": "boolean",
+                        "description": "Whether to automatically @-mention the participants of the original tweet in the reply."
+                      },
+                      "exclude_reply_user_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[0-9]{1,19}$"
+                        },
+                        "maxItems": 10,
+                        "description": "User IDs to leave out of the auto-generated reply mentions."
+                      }
+                    }
+                  },
+                  "quote_tweet_id": {
+                    "type": "string",
+                    "description": "Identifier of the tweet to quote; mutually exclusive with `media`, `poll`, and `card_uri`.",
+                    "pattern": "^[0-9]{1,19}$"
+                  },
+                  "media": {
+                    "type": "object",
+                    "description": "Attaches uploaded media to the tweet; mutually exclusive with `poll`, `quote_tweet_id`, and `card_uri`.",
+                    "required": [
+                      "media_ids"
+                    ],
+                    "properties": {
+                      "media_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "minItems": 1,
+                        "maxItems": 4,
+                        "description": "Identifiers of media to attach, obtained beforehand from X's media-upload API."
+                      },
+                      "tagged_user_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "pattern": "^[0-9]{1,19}$"
+                        },
+                        "maxItems": 10,
+                        "description": "User IDs to tag in the attached media."
+                      }
+                    }
+                  },
+                  "poll": {
+                    "type": "object",
+                    "description": "Attaches a poll to the tweet; mutually exclusive with `media`, `quote_tweet_id`, and `card_uri`.",
+                    "required": [
+                      "options",
+                      "duration_minutes"
+                    ],
+                    "properties": {
+                      "options": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "maxLength": 25
+                        },
+                        "minItems": 2,
+                        "maxItems": 4,
+                        "description": "The poll's choices."
+                      },
+                      "duration_minutes": {
+                        "type": "integer",
+                        "minimum": 5,
+                        "maximum": 10080,
+                        "description": "How long the poll stays open, in minutes."
+                      },
+                      "reply_settings": {
+                        "type": "string",
+                        "enum": [
+                          "following",
+                          "mentionedUsers",
+                          "subscribers",
+                          "verified"
+                        ],
+                        "description": "Restricts who may reply to the tweet that carries this poll."
+                      }
+                    }
+                  },
+                  "card_uri": {
+                    "type": "string",
+                    "description": "URI of a card to attach; mutually exclusive with `media`, `poll`, `quote_tweet_id`, and `direct_message_deep_link`."
+                  },
+                  "direct_message_deep_link": {
+                    "type": "string",
+                    "description": "Deep link that routes the conversation into a private direct message."
+                  },
+                  "geo": {
+                    "type": "object",
+                    "description": "Attaches a place to the tweet.",
+                    "properties": {
+                      "place_id": {
+                        "type": "string",
+                        "description": "Identifier of the X place to attach."
+                      }
+                    }
+                  },
+                  "reply_settings": {
+                    "type": "string",
+                    "enum": [
+                      "following",
+                      "mentionedUsers",
+                      "subscribers",
+                      "verified"
+                    ],
+                    "description": "Restricts who is allowed to reply to the tweet."
+                  },
+                  "for_super_followers_only": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to make the tweet visible only to super followers."
+                  },
+                  "nullcast": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to post as a nullcast (promoted-only) tweet that does not appear in the public timeline or to followers."
+                  },
+                  "paid_partnership": {
+                    "type": "boolean",
+                    "description": "Whether to mark the tweet as a paid partnership."
+                  },
+                  "made_with_ai": {
+                    "type": "boolean",
+                    "description": "Whether to flag the tweet as containing AI-generated media."
+                  },
+                  "community_id": {
+                    "type": "string",
+                    "pattern": "^[0-9]{1,19}$",
+                    "description": "Identifier of the community to post into."
+                  },
+                  "share_with_followers": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to also surface the community post to your followers."
+                  },
+                  "edit_options": {
+                    "type": "object",
+                    "description": "Switches the call to edit an existing tweet rather than create a new one, subject to X's edit window.",
+                    "required": [
+                      "previous_post_id"
+                    ],
+                    "properties": {
+                      "previous_post_id": {
+                        "type": "string",
+                        "pattern": "^[0-9]{1,19}$",
+                        "description": "Identifier of the existing tweet to edit."
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "simple_text": {
+                  "summary": "Plain text tweet",
+                  "value": {
+                    "text": "Hello, World!"
+                  }
+                },
+                "reply": {
+                  "summary": "Reply to a tweet",
+                  "value": {
+                    "text": "Totally agree 👌",
+                    "reply": {
+                      "in_reply_to_tweet_id": "1234567890123456789",
+                      "auto_populate_reply_metadata": true
+                    }
+                  }
+                },
+                "with_poll": {
+                  "summary": "Tweet with a poll",
+                  "value": {
+                    "text": "Pick your favorite:",
+                    "poll": {
+                      "options": [
+                        "Option A",
+                        "Option B",
+                        "Option C"
+                      ],
+                      "duration_minutes": 60
+                    }
+                  }
+                },
+                "with_media": {
+                  "summary": "Tweet with media",
+                  "value": {
+                    "text": "Ship log 📸",
+                    "media": {
+                      "media_ids": [
+                        "1146654567674912769"
+                      ],
+                      "tagged_user_ids": [
+                        "2244994945"
+                      ]
+                    }
+                  }
+                },
+                "quote": {
+                  "summary": "Quote tweet",
+                  "value": {
+                    "text": "Worth reading:",
+                    "quote_tweet_id": "1234567890123456789"
+                  }
+                },
+                "edit": {
+                  "summary": "Edit an existing tweet",
+                  "value": {
+                    "text": "Updated tweet content (typo fixed).",
+                    "edit_options": {
+                      "previous_post_id": "1234567890123456789"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tweet created (or edited) successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[0-9]{1,19}$",
+                          "description": "Identifier of the resulting tweet."
+                        },
+                        "text": {
+                          "type": "string",
+                          "description": "Final text of the tweet as stored by X."
+                        }
+                      },
+                      "description": "Container for the created or edited tweet."
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "id": "1346889436626259968",
+                    "text": "Hello, World!"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — violated a mutual-exclusivity rule, missing required field, or text too long."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking `tweet.write`. Re-authorize via `POST /apis/v1/twitter/auth_twitter`."
+          },
+          "404": {
+            "description": "Referenced tweet (reply, quote, or edit target) not found."
+          },
+          "409": {
+            "description": "Conflict — e.g., duplicate tweet content or edit outside the allowed window."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable."
+          }
+        }
+      }
+    },
+    "/twitter/unfollow_twitter": {
+      "post": {
+        "summary": "Unfollow a user on X/Twitter",
+        "description": "Make the authenticated source user unfollow a target user on X/Twitter. Unfollowing someone not currently followed is a no-op and still succeeds.",
+        "operationId": "unfollowTwitterUser",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "target_user_id"
+                ],
+                "properties": {
+                  "target_user_id": {
+                    "type": "string",
+                    "description": "Identifier of the X/Twitter user to unfollow.",
+                    "pattern": "^[0-9]{1,19}$",
+                    "example": "2244994945"
+                  }
+                }
+              },
+              "examples": {
+                "unfollow_user": {
+                  "summary": "Unfollow @TwitterDev (id 2244994945)",
+                  "value": {
+                    "target_user_id": "2244994945"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unfollow succeeded (or the source user wasn't following the target to begin with).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "following": {
+                          "type": "boolean",
+                          "description": "Whether the source user still follows the target; `false` confirms the unfollow."
+                        }
+                      },
+                      "description": "Container for the resulting follow state."
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "following": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or malformed `target_user_id`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking the `follows.write` scope. Re-authorize via `POST /apis/v1/twitter/auth_twitter`."
+          },
+          "429": {
+            "description": "Rate limit hit — either your AIsa key's RPM cap or the upstream X rate limit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable or returned an error. Safe to retry with exponential backoff."
+          }
+        }
+      }
+    },
+    "/twitter/follow_twitter": {
+      "post": {
+        "summary": "Follow a user on X/Twitter",
+        "description": "Make the authenticated source user follow a target user on X/Twitter. Following a protected account yields a pending follow request awaiting approval.",
+        "operationId": "followTwitterUser",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "target_user_id"
+                ],
+                "properties": {
+                  "target_user_id": {
+                    "type": "string",
+                    "description": "Identifier of the X/Twitter user to follow.",
+                    "pattern": "^[0-9]{1,19}$",
+                    "example": "6253282"
+                  }
+                }
+              },
+              "examples": {
+                "follow_user": {
+                  "summary": "Follow @TwitterDev (id 2244994945)",
+                  "value": {
+                    "target_user_id": "2244994945"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Follow succeeded (or was already in place).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "following": {
+                          "type": "boolean",
+                          "description": "Whether the source user now follows the target user."
+                        },
+                        "pending_follow": {
+                          "type": "boolean",
+                          "description": "Whether a follow request was sent to a protected account and is awaiting the target's approval."
+                        }
+                      },
+                      "description": "Container for the resulting follow state."
+                    }
+                  }
+                },
+                "example": {
+                  "data": {
+                    "following": true,
+                    "pending_follow": false
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request — missing or malformed `target_user_id`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "403": {
+            "description": "OAuth session missing, expired, or lacking the `follows.write` scope. Re-authorize from the dashboard."
+          },
+          "429": {
+            "description": "Rate limit hit — either your AIsa key's RPM cap or the upstream X rate limit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream X API unreachable or returned an error. Safe to retry with exponential backoff."
+          }
+        }
+      }
+    }
+  }
+}

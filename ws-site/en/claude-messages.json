@@ -1,0 +1,343 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Claude Messages API",
+    "version": "1.0.0",
+    "description": "Anthropic-compatible Messages API, exposed through AIsa. Send structured messages and generate responses using Claude models."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key",
+        "description": "Your AIsa API key as a Bearer token."
+      }
+    }
+  },
+  "paths": {
+    "/messages": {
+      "post": {
+        "summary": "Create a message",
+        "description": "Send a structured, multi-turn conversation to a Claude model and get its response. Compatible with the Anthropic Messages API; supports tool use, extended thinking, streaming, and fine-grained sampling controls.\n\n**Error status codes:** `400`, `401`, `429`, `500`",
+        "operationId": "createMessage",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "max_tokens",
+                  "messages"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "Which Claude model to run.",
+                    "example": "claude-sonnet-4-6"
+                  },
+                  "max_tokens": {
+                    "type": "integer",
+                    "description": "Upper bound on how many tokens the model may generate before it is forced to stop. The model can stop earlier on its own.",
+                    "example": 1024
+                  },
+                  "messages": {
+                    "type": "array",
+                    "description": "The ordered conversation turns. Alternate user and assistant turns to supply prior context; the model continues from the last turn.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "assistant"
+                          ],
+                          "description": "Who authored the turn, distinguishing user input from prior assistant output."
+                        },
+                        "content": {
+                          "description": "The turn's content, given either as plain text or as an array of structured content blocks (for example text plus images or tool results).",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "role": "user",
+                        "content": "Hello, Claude"
+                      }
+                    ]
+                  },
+                  "system": {
+                    "description": "A top-level system prompt that frames the model's behavior across the whole conversation, given as text or as an array of text blocks.",
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    ]
+                  },
+                  "temperature": {
+                    "type": "number",
+                    "format": "float",
+                    "minimum": 0.0,
+                    "maximum": 1.0,
+                    "default": 1.0,
+                    "description": "Controls output randomness; lower values make replies more focused and deterministic, higher values make them more varied. Tune either this or `top_p`, not both."
+                  },
+                  "top_p": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Nucleus sampling: the model samples only from the most probable tokens whose cumulative probability reaches this threshold. Use as an alternative to `temperature`."
+                  },
+                  "top_k": {
+                    "type": "integer",
+                    "description": "Limits sampling to the K most likely tokens at each step, removing long-tail low-probability options."
+                  },
+                  "stop_sequences": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Custom text sequences that, once produced, immediately halt generation."
+                  },
+                  "stream": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to stream the response incrementally over server-sent events instead of returning it all at once."
+                  },
+                  "tools": {
+                    "type": "array",
+                    "description": "The set of tools the model is allowed to call during the turn.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "input_schema"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "The tool's name, by which the model refers to it when calling."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Explanation of what the tool does, which the model reads to decide when and how to call it."
+                        },
+                        "input_schema": {
+                          "type": "object",
+                          "description": "JSON Schema describing the arguments the tool accepts, used to validate and shape the model's tool calls."
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "custom",
+                          "description": "The kind of tool, distinguishing a custom-defined tool from other supported tool types."
+                        }
+                      }
+                    }
+                  },
+                  "tool_choice": {
+                    "type": "object",
+                    "description": "Governs whether and how the model is allowed to invoke the supplied tools on this turn.",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "auto",
+                          "any",
+                          "tool",
+                          "none"
+                        ],
+                        "description": "The tool-use strategy: let the model decide, require it to use some tool, force a specific named tool, or forbid tool use entirely."
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The specific tool to force, used when the strategy targets a single named tool."
+                      },
+                      "disable_parallel_tool_use": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "When set, restricts the model to one tool call at a time instead of issuing several in parallel."
+                      }
+                    }
+                  },
+                  "thinking": {
+                    "type": "object",
+                    "description": "Enables extended thinking, giving the model room to reason internally before answering complex problems.",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "enabled"
+                        ],
+                        "description": "Switch that turns extended thinking on."
+                      },
+                      "budget_tokens": {
+                        "type": "integer",
+                        "example": 10000,
+                        "description": "Token allowance set aside for the model's internal reasoning."
+                      },
+                      "display": {
+                        "type": "string",
+                        "enum": [
+                          "summarized",
+                          "omitted"
+                        ],
+                        "description": "How the thinking trace is surfaced in the response: returned as a summary, or omitted from the output."
+                      }
+                    }
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "string",
+                        "description": "An opaque identifier for the end user driving the request; must not contain personally identifiable information."
+                      }
+                    },
+                    "description": "Optional request metadata used for tracking and analytics."
+                  },
+                  "service_tier": {
+                    "type": "string",
+                    "enum": [
+                      "auto",
+                      "standard_only"
+                    ],
+                    "default": "auto",
+                    "description": "Selects the service tier for the request, trading off automatic capacity selection against pinning to standard capacity only."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "msg_024e7cf42f5d47cfa6982b5ff8b55642",
+                      "description": "Unique identifier of the generated message."
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "message",
+                      "description": "Object type of the payload."
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "assistant",
+                      "description": "Author role of the response, the assistant."
+                    },
+                    "content": {
+                      "type": "array",
+                      "description": "The response body as a sequence of content blocks, which may include text, tool-use requests, or thinking output.",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "model": {
+                      "type": "string",
+                      "example": "claude-sonnet-4-6",
+                      "description": "The model that produced the response."
+                    },
+                    "stop_reason": {
+                      "type": "string",
+                      "enum": [
+                        "end_turn",
+                        "stop_sequence",
+                        "max_tokens",
+                        "tool_use"
+                      ],
+                      "description": "Why generation ended: a natural end of turn, hitting a stop sequence, reaching the token cap, or pausing to call a tool."
+                    },
+                    "stop_sequence": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "The specific stop sequence that triggered the stop, when generation ended for that reason."
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "input_tokens": {
+                          "type": "integer",
+                          "description": "Tokens consumed by the input."
+                        },
+                        "output_tokens": {
+                          "type": "integer",
+                          "description": "Tokens produced in the output."
+                        },
+                        "cache_creation_input_tokens": {
+                          "type": "integer",
+                          "description": "Input tokens used to write new entries into the prompt cache."
+                        },
+                        "cache_read_input_tokens": {
+                          "type": "integer",
+                          "description": "Input tokens served from the prompt cache rather than recomputed."
+                        }
+                      },
+                      "description": "Token accounting for the request, including prompt-cache reads and writes."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

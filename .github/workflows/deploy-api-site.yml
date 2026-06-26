@@ -1,0 +1,91 @@
+# 把 Scalar 静态 API 站点发布到 GitHub Pages（阶段五产物 ws-site/）。
+#
+# 现状：本 workflow 仅作为「可选上线方案」放进仓库，默认不会自动跑——
+# 它只在手动触发（workflow_dispatch）或推送到 main 且改动 ws-site/ 时执行。
+# 是否启用、用哪个域名，交负责人决断（见 reports/scalar-api-site-2026-06-26.md）。
+#
+# 启用步骤（负责人侧，一次性）：
+#   1. 仓库 Settings → Pages → Build and deployment → Source 选 "GitHub Actions"。
+#   2. 合入本文件后，到 Actions 手动 Run，或推一次 ws-site/ 改动。
+#   3. 部署完成后站点地址形如：
+#        https://<owner>.github.io/<repo>/en/    （英文站）
+#        https://<owner>.github.io/<repo>/zh/    （中文站）
+#
+# 为什么能用：Scalar standalone 是官方支持的纯静态 CDN 模式（@scalar/api-reference
+# 从公共 jsDelivr 加载，spec 用相对 URL ./x.json 拉取）。GitHub Pages 是 http(s)
+# 静态托管，相对 fetch 正常工作（这解决了本地 file:// 直开时的浏览器 CORS 限制）。
+
+name: Deploy API Site (Scalar)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "ws-site/**"
+      - ".github/workflows/deploy-api-site.yml"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时刻只跑一个部署，新推送取消进行中的旧部署
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 只发布 ws-site/（en + zh + 各自投影 spec + index.html），不带源码与中间产物。
+      # 顶层放一个跳转页，打开站点根直接进双语入口。
+      - name: Assemble site root
+        run: |
+          mkdir -p _site
+          cp -r ws-site/en _site/en
+          cp -r ws-site/zh _site/zh
+          cat > _site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>AIsa API Reference</title>
+            <style>
+              body { font-family: system-ui, sans-serif; margin: 0; display: grid; place-items: center; min-height: 100vh; }
+              .wrap { text-align: center; }
+              a { display: inline-block; margin: 8px 12px; padding: 12px 28px; border: 1px solid #ccc; border-radius: 8px; text-decoration: none; color: #111; }
+              a:hover { background: #f5f5f5; }
+              h1 { font-weight: 600; }
+            </style>
+          </head>
+          <body>
+            <div class="wrap">
+              <h1>AIsa API Reference</h1>
+              <p>
+                <a href="./en/">English</a>
+                <a href="./zh/">中文</a>
+              </p>
+            </div>
+          </body>
+          </html>
+          HTML
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

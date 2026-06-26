@@ -1,0 +1,804 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API - Community Endpoints",
+    "version": "1.0.0",
+    "description": "Consolidated API documentation for Twitter community-related endpoints."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "CommunityInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the community."
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the community."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description text introducing the community."
+          },
+          "question": {
+            "type": "string",
+            "description": "Membership question prospective members are asked when joining."
+          },
+          "member_count": {
+            "type": "integer",
+            "description": "Total number of members in the community."
+          },
+          "moderator_count": {
+            "type": "integer",
+            "description": "Total number of moderators in the community."
+          },
+          "created_at": {
+            "type": "string",
+            "description": "Timestamp when the community was created."
+          },
+          "join_policy": {
+            "type": "string",
+            "description": "Policy governing how new members may join the community."
+          },
+          "invites_policy": {
+            "type": "string",
+            "description": "Policy governing who may invite others to the community."
+          },
+          "is_nsfw": {
+            "type": "boolean",
+            "description": "Whether the community is marked as not safe for work."
+          },
+          "is_pinned": {
+            "type": "boolean",
+            "description": "Whether the community is pinned by the requester."
+          },
+          "role": {
+            "type": "string",
+            "description": "The requester's role within the community, such as member, moderator, or admin."
+          },
+          "primary_topic": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Identifier of the primary topic."
+              },
+              "name": {
+                "type": "string",
+                "description": "Display name of the primary topic."
+              }
+            },
+            "description": "The community's primary topic."
+          },
+          "banner_url": {
+            "type": "string",
+            "description": "Web link to the community's banner image."
+          },
+          "search_tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tags associated with the community to aid discovery in search."
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Identifier of the rule."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Short name or title of the rule."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Detailed text explaining the rule."
+                }
+              }
+            },
+            "description": "Rules that members of the community must follow."
+          },
+          "creator": {
+            "$ref": "#/components/schemas/User",
+            "description": "Profile of the user who created the community."
+          },
+          "admin": {
+            "$ref": "#/components/schemas/User",
+            "description": "Profile of the community's administrator."
+          },
+          "members_preview": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "A small preview sample of community members."
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object type tag identifying the entry as a user."
+          },
+          "userName": {
+            "type": "string",
+            "description": "The author's @handle, unique across X/Twitter and used in profile URLs."
+          },
+          "url": {
+            "type": "string",
+            "description": "Web link to the author's profile page."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the author."
+          },
+          "name": {
+            "type": "string",
+            "description": "The author's display name shown on the profile."
+          },
+          "isBlueVerified": {
+            "type": "boolean",
+            "description": "Whether the author holds a paid X (Twitter) Blue verification."
+          },
+          "verifiedType": {
+            "type": "string",
+            "description": "The author's verification category, such as a business or government account."
+          },
+          "profilePicture": {
+            "type": "string",
+            "description": "Web link to the author's avatar image."
+          },
+          "coverPicture": {
+            "type": "string",
+            "description": "Web link to the author's profile banner image."
+          },
+          "description": {
+            "type": "string",
+            "description": "The author's profile bio text."
+          },
+          "location": {
+            "type": "string",
+            "description": "Free-text location the author lists on their profile."
+          },
+          "followers": {
+            "type": "integer",
+            "description": "Number of accounts following the author."
+          },
+          "following": {
+            "type": "integer",
+            "description": "Number of accounts the author follows."
+          },
+          "canDm": {
+            "type": "boolean",
+            "description": "Whether the author currently accepts direct messages from the requester."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the author's account was created."
+          },
+          "favouritesCount": {
+            "type": "integer",
+            "description": "Number of tweets the author has liked."
+          },
+          "hasCustomTimelines": {
+            "type": "boolean",
+            "description": "Whether the author has created custom timelines."
+          },
+          "isTranslator": {
+            "type": "boolean",
+            "description": "Whether the author participates in the Twitter translation program."
+          },
+          "mediaCount": {
+            "type": "integer",
+            "description": "Number of media items the author has posted."
+          },
+          "statusesCount": {
+            "type": "integer",
+            "description": "Total number of tweets the author has posted."
+          },
+          "withheldInCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Country codes where the author's account is withheld for legal reasons."
+          },
+          "possiblySensitive": {
+            "type": "boolean",
+            "description": "Whether the author's posts are flagged as potentially sensitive."
+          },
+          "pinnedTweetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Identifiers of tweets the author has pinned to the top of their profile."
+          },
+          "isAutomated": {
+            "type": "boolean",
+            "description": "Whether the account is labeled as an automated (bot) account."
+          },
+          "automatedBy": {
+            "type": "string",
+            "description": "Username of the person or entity managing the automated account."
+          },
+          "unavailable": {
+            "type": "boolean",
+            "description": "Whether the author's account is currently unavailable, for example suspended or deactivated."
+          },
+          "message": {
+            "type": "string",
+            "description": "Explanatory message returned when the account is unavailable."
+          },
+          "unavailableReason": {
+            "type": "string",
+            "description": "Reason code or text describing why the account is unavailable."
+          },
+          "profile_bio": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "The raw bio text shown on the author's profile."
+              },
+              "entities": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "display_url": {
+                              "type": "string",
+                              "description": "Shortened, human-readable form of the link as displayed in the bio."
+                            },
+                            "expanded_url": {
+                              "type": "string",
+                              "description": "Full destination URL the displayed link resolves to."
+                            },
+                            "indices": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer"
+                              },
+                              "description": "Start and end character offsets of the link within the bio text."
+                            },
+                            "url": {
+                              "type": "string",
+                              "description": "The t.co shortened URL as it literally appears in the bio text."
+                            }
+                          }
+                        },
+                        "description": "Links found in the bio description text."
+                      }
+                    },
+                    "description": "Entities parsed from the bio description text."
+                  },
+                  "url": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "display_url": {
+                              "type": "string",
+                              "description": "Shortened, human-readable form of the website link as displayed."
+                            },
+                            "expanded_url": {
+                              "type": "string",
+                              "description": "Full destination URL the displayed website link resolves to."
+                            },
+                            "indices": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer"
+                              },
+                              "description": "Start and end character offsets of the link within the website field."
+                            },
+                            "url": {
+                              "type": "string",
+                              "description": "The t.co shortened URL as it literally appears in the website field."
+                            }
+                          }
+                        },
+                        "description": "Links found in the profile website field."
+                      }
+                    },
+                    "description": "Entities parsed from the profile website field."
+                  }
+                },
+                "description": "Structured entities parsed from the bio, covering both the bio text and the profile website field."
+              }
+            },
+            "description": "The author's profile bio along with the entities parsed from it."
+          }
+        }
+      },
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Object type tag identifying the entry as a tweet."
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique identifier of the tweet."
+          },
+          "url": {
+            "type": "string",
+            "description": "Web link to the tweet on X/Twitter."
+          },
+          "text": {
+            "type": "string",
+            "description": "Full text content of the tweet."
+          },
+          "source": {
+            "type": "string",
+            "description": "Name of the client application used to post the tweet."
+          },
+          "retweetCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been retweeted."
+          },
+          "replyCount": {
+            "type": "integer",
+            "description": "Number of replies to the tweet."
+          },
+          "likeCount": {
+            "type": "integer",
+            "description": "Number of likes on the tweet."
+          },
+          "quoteCount": {
+            "type": "integer",
+            "description": "Number of quote tweets referencing this tweet."
+          },
+          "viewCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been viewed."
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the tweet was created."
+          },
+          "lang": {
+            "type": "string",
+            "description": "Detected language of the tweet text, as a language code."
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "description": "Number of times the tweet has been bookmarked."
+          },
+          "isReply": {
+            "type": "boolean",
+            "description": "Whether the tweet is a reply to another tweet."
+          },
+          "inReplyToId": {
+            "type": "string",
+            "description": "Identifier of the tweet this one directly replies to; present only when isReply is true."
+          },
+          "conversationId": {
+            "type": "string",
+            "description": "Identifier of the root tweet that started the conversation thread this tweet belongs to."
+          },
+          "displayTextRange": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Start and end character offsets marking the displayable portion of the tweet text."
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "description": "Identifier of the user being replied to."
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "description": "Username of the user being replied to."
+          },
+          "author": {
+            "$ref": "#/components/schemas/User",
+            "description": "Profile of the user who posted the tweet."
+          },
+          "entities": {
+            "type": "object",
+            "properties": {
+              "hashtags": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "Start and end character offsets of the hashtag within the tweet text."
+                    },
+                    "text": {
+                      "type": "string",
+                      "description": "The hashtag word, without the leading # sign."
+                    }
+                  }
+                },
+                "description": "Hashtags found in the tweet text."
+              },
+              "urls": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "display_url": {
+                      "type": "string",
+                      "description": "Shortened, human-readable form of the link as displayed in the tweet."
+                    },
+                    "expanded_url": {
+                      "type": "string",
+                      "description": "Full destination URL the displayed link resolves to."
+                    },
+                    "indices": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "Start and end character offsets of the link within the tweet text."
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The t.co shortened URL as it literally appears in the tweet text."
+                    }
+                  }
+                },
+                "description": "Links found in the tweet text."
+              },
+              "user_mentions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id_str": {
+                      "type": "string",
+                      "description": "Identifier of the mentioned user."
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Display name of the mentioned user."
+                    },
+                    "screen_name": {
+                      "type": "string",
+                      "description": "@handle of the mentioned user."
+                    }
+                  }
+                },
+                "description": "Users mentioned in the tweet text."
+              }
+            },
+            "description": "Structured entities parsed from the tweet text, such as hashtags, links, and user mentions."
+          },
+          "quoted_tweet": {
+            "type": "string",
+            "description": "The tweet quoted by this tweet, when it is a quote tweet.\n[⚠️Note:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]"
+          },
+          "retweeted_tweet": {
+            "type": "string",
+            "description": "The original tweet this tweet retweets, when it is a retweet.\n[⚠️Note:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]"
+          },
+          "isLimitedReply": {
+            "type": "boolean",
+            "description": "Whether replies to this tweet are restricted by the author's reply settings."
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/community/info": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_community_by_id"
+        ],
+        "summary": "Get Community Info By Id",
+        "description": "Retrieve detailed information about a single community by its ID, including its profile, membership counts, topic, rules, and the requester's role.",
+        "parameters": [
+          {
+            "name": "community_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the community whose information you want to retrieve."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community info response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunityInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/community/members": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_community_members"
+        ],
+        "summary": "Get Community Members",
+        "description": "Retrieve the members of a community, returned one page at a time with cursor pagination.",
+        "parameters": [
+          {
+            "name": "community_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the community whose members you want to list."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community members response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      },
+                      "description": "Community members returned for this page."
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/community/moderators": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_community_moderators"
+        ],
+        "summary": "Get Community Moderators",
+        "description": "Retrieve the moderators of a community, returned one page at a time with cursor pagination.",
+        "parameters": [
+          {
+            "name": "community_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the community whose moderators you want to list."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community moderators response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      },
+                      "description": "Community moderators returned for this page."
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/community/tweets": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_community_tweets"
+        ],
+        "summary": "Get Community Tweets",
+        "description": "Retrieve tweets posted within a community, returned one page at a time with cursor pagination.",
+        "parameters": [
+          {
+            "name": "community_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Identifier of the community whose tweets you want to list."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Community tweets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tweets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tweet"
+                      },
+                      "description": "Tweets posted in the community, returned for this page."
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/twitter/community/get_tweets_from_all_community": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_all_community_tweets"
+        ],
+        "summary": "Search Tweets From All Communities",
+        "description": "Search tweets across all communities using a query string, choosing between the most recent matches or the top-ranked ones, with cursor pagination.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query string, such as a keyword, used to match tweets across all communities."
+          },
+          {
+            "name": "queryType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Latest",
+                "Top"
+              ],
+              "default": "Latest"
+            },
+            "description": "Ranking mode of the results: Latest returns the most recent matches, Top returns the most relevant or popular ones."
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tweets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tweets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Tweet"
+                      },
+                      "description": "Tweets matching the search across communities, returned for this page."
+                    },
+                    "has_next_page": {
+                      "type": "boolean",
+                      "description": "Whether more pages remain; if true, call again with next_cursor to fetch them."
+                    },
+                    "next_cursor": {
+                      "type": "string",
+                      "description": "Cursor to pass as the cursor parameter on the next call to fetch the following page."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

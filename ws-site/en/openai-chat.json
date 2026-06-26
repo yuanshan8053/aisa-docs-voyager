@@ -1,0 +1,158 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OpenAI Chat API",
+    "version": "1.0.0",
+    "description": "OpenAI Chat Completion API including Image Analysis, Streaming, Function Calling, and Logprobs."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Key"
+      }
+    }
+  },
+  "paths": {
+    "/chat/completions": {
+      "post": {
+        "summary": "Create chat completion",
+        "description": "Generate a model response to a conversation. Beyond plain text, it supports image inputs in the message content, token-by-token streaming, function calling, and per-token log probabilities — letting one endpoint cover chat, multimodal analysis, and tool orchestration.",
+        "operationId": "createChatCompletion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "example": "gpt-4.1",
+                    "description": "Identifier of the model to run the completion against. Picks the capability tier and pricing for the call; the available identifiers come from the model catalog rather than this field."
+                  },
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "example": "user",
+                          "description": "Who is speaking in this turn — typically the system (instructions), the user, or the assistant (the model's prior replies). It tells the model how to weigh the turn."
+                        },
+                        "content": {
+                          "description": "The payload of the turn. Pass a plain string for a text-only message, or an array of typed parts to mix text with image inputs for multimodal analysis.",
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "description": "Marks what kind of part this is within a multimodal content array, so each block is interpreted as text or as an image reference."
+                                  },
+                                  "text": {
+                                    "type": "string",
+                                    "description": "The text of a text-type content part."
+                                  },
+                                  "image_url": {
+                                    "type": "string",
+                                    "description": "Location of the image for an image-type content part; the model fetches and analyzes it alongside the text parts."
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "description": "The conversation so far, as an ordered list of turns. The model reads them in order and continues from the last one, so sequence carries the dialogue state."
+                  },
+                  "stream": {
+                    "type": "boolean",
+                    "example": false,
+                    "description": "When on, the response is delivered as a stream of incremental chunks instead of one final payload — useful for showing output as it is generated. When off, the full reply returns in a single response."
+                  },
+                  "logprobs": {
+                    "type": "boolean",
+                    "description": "When on, the response includes the log probability of each returned token, letting you gauge the model's confidence at each step."
+                  },
+                  "top_logprobs": {
+                    "type": "integer",
+                    "description": "How many of the most likely alternative tokens to report at each position, each with its log probability. Requires logprobs to be on."
+                  },
+                  "functions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "The function's name, used by the model to refer to it when requesting a call and matched by your code when dispatching."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "What the function does, written for the model. A clear description is the main signal the model uses to decide when this function fits the user's intent."
+                        },
+                        "parameters": {
+                          "type": "object",
+                          "properties": {},
+                          "description": "A JSON Schema describing the function's arguments. The model generates argument values that conform to it when it requests the call."
+                        }
+                      }
+                    },
+                    "description": "Declares the functions the model may call. The model never runs them itself; it returns a structured request naming a function and its arguments, which your code then executes."
+                  },
+                  "function_call": {
+                    "oneOf": [
+                      {
+                        "type": "string",
+                        "example": "auto"
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "When forcing a call via the object form, the name of the function the model must invoke."
+                          }
+                        }
+                      }
+                    ],
+                    "description": "Controls function-calling behavior: pass a string mode such as `auto` to let the model decide whether to call, or an object naming one function to force that specific call."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful completion"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Examples"
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "YouTube Search API",
+    "description": "SearchApi.io YouTube Search endpoint",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1",
+      "description": "YouTube Search API Server"
+    }
+  ],
+  "paths": {
+    "/youtube/search": {
+      "get": {
+        "summary": "搜索 YouTube 视频 youtubeSearch",
+        "description": "通过 SearchApi 聚合引擎检索 YouTube 视频,返回结构化的命中列表。这是只读查询接口:可用地区与界面语言收窄结果,或借 YouTube 自身的过滤令牌翻页并施加高级排序。典型场景为内容发现、竞品监测与素材采集。\n\n**错误码**\n\n| 状态码 | 说明 |\n| --- | --- |\n| `400` | 请求参数无效,例如漏传必填的 `engine` 或 `q`,或取值不合法。 |\n| `401` | 鉴权失败,Bearer API Key 缺失或无效。 |",
+        "tags": [
+          "YouTube Search"
+        ],
+        "parameters": [
+          {
+            "name": "engine",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "youtube"
+              ]
+            },
+            "description": "选择请求路由到哪个搜索后端。本接口固定为 `youtube`,将调用锁定在 YouTube 搜索通道。"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "搜索短语,等同用户在 YouTube 搜索框中键入的内容。它是决定返回哪些视频、以何种相关性排序的首要信号。"
+          },
+          {
+            "name": "sp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "YouTube 的不透明过滤令牌。用它向后翻页,或承载上传时间、时长、排序等高级筛选。该值不靠手工拼造 —— 从上一次响应或 YouTube 前端取得后原样透传。"
+          },
+          {
+            "name": "gl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "检索所处的国家,用 `us`、`jp` 这类两字母代码表示。它决定结果的地域化呈现与排序。留空则回落到引擎默认地区。"
+          },
+          {
+            "name": "hl",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "检索的界面语言,用语言代码表示。它影响结果中本地化文案的语言,而非命中哪些视频。留空则回落到引擎默认语言。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful YouTube search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "YouTube search result payload",
+                  "properties": {
+                    "search_metadata": {
+                      "type": "object",
+                      "description": "本次检索请求的元信息,记录状态等查询级上下文,便于排障与审计。"
+                    },
+                    "search_results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "video_id": {
+                            "type": "string",
+                            "description": "视频在 YouTube 上的唯一标识。可用于拼接播放地址,或作为下游视频接口的入参。"
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "视频的展示标题。"
+                          },
+                          "link": {
+                            "type": "string",
+                            "description": "视频的可直接点击播放链接。"
+                          },
+                          "channel_name": {
+                            "type": "string",
+                            "description": "发布该视频的频道名称。"
+                          }
+                        }
+                      },
+                      "description": "命中的视频,按引擎相关性排序。每个元素是一条视频记录。"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "401": {
+            "description": "Unauthorized / Invalid API key"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
