@@ -19,9 +19,14 @@ AIsa 的文档同时是给人看的、也是给 Agent 读的契约(`llms.txt` / 
 ```
 aisa-docs-voyager/
 ├── STRATEGY.zh-CN.md                  # 策略简报:缺口、证据、方案、岗位映射
+├── WRITING-STANDARD.zh-CN.md          # 长期生效的写作规范
+├── planning/
+│   └── ROADMAP.zh-CN.md               # 工作规划:三步走、四条工作线、里程碑
 ├── aisa_doc_auditor/
 │   ├── __init__.py
 │   └── auditor.py                     # 核心:实时抓取线上源、检测漂移
+├── tools/
+│   └── docs_mirror.py                 # 全量文档镜像:把整个文档面拉到本地
 ├── .github/workflows/
 │   └── doc-reality-check.yml          # 把审计 Agent 嵌入 PR + 定时 CI
 ├── localized/
@@ -47,6 +52,26 @@ python -m aisa_doc_auditor.auditor --ci
 ```
 
 安装后也可用入口命令 `aisa-docs-voyager`(见 `pyproject.toml`)。审计对象全部是 AIsa 的公开资源,任何人都能复现下面的结论。
+
+## 把全部文档拉到本地
+
+如果你无法直接访问 AIsa 站点,`tools/docs_mirror.py` 能把整个文档面拉成本地镜像——不止 `llms.txt` 索引,而是把它指向的每一页 `.md` 正文与每个 OpenAPI spec 都抓下来,按 URL 路径还原成目录树,并写一份记录每个文件 SHA-256 与抓取时间的 `manifest.json`。
+
+```bash
+# 全量拉取到 ./docs-mirror
+python tools/docs_mirror.py
+
+# 只重抓内容有变化的页面
+python tools/docs_mirror.py --incremental
+
+# 打印与上次相比新增/删除/变更了哪些页
+python tools/docs_mirror.py --incremental --diff
+
+# 额外存一份人类页面的原始 HTML 外壳
+python tools/docs_mirror.py --keep-html
+```
+
+> 关于人类页面:`/docs/<path>` 的 HTML 是 Next.js 应用,正文被序列化进 RSC 负载里,需 JS 渲染才能干净提取;每页的 `.md` 孪生版以无损形式承载同样内容,所以镜像默认抓 `.md` 集合,`--keep-html` 仅用于归档原始外壳。
 
 ## 它检测什么
 
