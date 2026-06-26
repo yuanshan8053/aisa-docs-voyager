@@ -1,0 +1,112 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Access Chinese AI Models via One API - Qwen, DeepSeek, Kimi, ByteDance Seed, MiniMax and GLM
+
+> Current AIsa guide to Chinese LLM and media models: exact model IDs, context windows, capabilities, endpoints, and pricing links for Qwen, Wan, DeepSeek, Kimi, ByteDance Seed, Seedream, MiniMax, and glm-5. OpenAI-compatible through https://api.aisa.one/v1.
+
+AIsa gives you one API key for China's leading AI model families: Alibaba Qwen and Wan, DeepSeek, Moonshot Kimi, ByteDance Seed and Seedream, MiniMax, and Zhipu GLM. Use the same AIsa wallet, usage logs, and OpenAI-compatible SDK setup you use for GPT and Claude.
+
+This page was refreshed from the live [AIsa Model Gateway](https://aisa.one/models) and `https://console.aisa.one/api/model_pricing` feed on June 4, 2026. For exact prices at request time, check [aisa.one/models](https://aisa.one/models) or the [pricing guide](/guides/pricing/ai-model-pricing-llm-inference).
+
+## API base
+
+```python theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_AISA_API_KEY",
+    base_url="https://api.aisa.one/v1"
+)
+
+response = client.chat.completions.create(
+    model="qwen3.7-max",
+    messages=[{"role": "user", "content": "Compare Qwen, DeepSeek, and Kimi for a coding agent."}]
+)
+print(response.choices[0].message.content)
+```
+
+Most Chinese text, vision, coding, audio, video-understanding, and image models use `POST /v1/chat/completions`. `MiniMax-M3` and `deepseek-v4-pro` also expose `POST /v1/messages` and `POST /v1/responses`. Use the exact model IDs below.
+
+## Alibaba Qwen and Wan
+
+| Model ID                         |   Context | Capabilities                       | Best for                                          |
+| -------------------------------- | --------: | ---------------------------------- | ------------------------------------------------- |
+| `qwen-flash`                     | 1,000,000 | Audio, Coding, Text, Video, Vision | Lowest-cost high-volume multimodal work           |
+| `qwen-mt-flash`                  | 1,000,000 | Text                               | Fast translation                                  |
+| `qwen-mt-lite`                   | 1,000,000 | Text                               | Lowest-cost translation                           |
+| `qwen-plus-2025-12-01`           | 1,000,000 | Audio, Coding, Text, Video, Vision | General multimodal workloads                      |
+| `qwen3-coder-480b-a35b-instruct` |   262,144 | Coding, Text                       | Maximum Qwen coding capability                    |
+| `qwen3-coder-flash`              | 1,000,000 | Coding, Text                       | Fast coding pipelines                             |
+| `qwen3-coder-plus`               | 1,000,000 | Coding, Text                       | Balanced coding agents                            |
+| `qwen3-max`                      |   262,144 | Audio, Coding, Text, Video, Vision | Strong general Qwen model                         |
+| `qwen3-vl-flash`                 |   131,072 | Coding, Text, Video, Vision        | Low-cost vision and video understanding           |
+| `qwen3-vl-flash-2025-10-15`      |   131,072 | Coding, Text, Video, Vision        | Pinned Qwen VL Flash version                      |
+| `qwen3-vl-plus`                  |   131,072 | Coding, Text, Video, Vision        | Stronger document/spatial vision                  |
+| `qwen3.6-plus`                   | 1,000,000 | Coding, Text, Video, Vision        | Long-context Chinese and bilingual work           |
+| `qwen3.6-plus-2026-04-02`        |   262,144 | Coding, Text, Vision               | Pinned Qwen 3.6 Plus version                      |
+| `qwen3.7-max`                    | 1,000,000 | Coding, Text                       | Frontier Qwen reasoning and agentic coding        |
+| `wan2.7-image`                   |       N/A | Image, Text, Vision                | Image generation/editing, text in images          |
+| `wan2.7-image-pro`               |       N/A | Image, Text, Video, Vision         | Higher-quality image and image-to-video workflows |
+
+## DeepSeek
+
+| Model ID            | Context | Capabilities | Best for                                                           |
+| ------------------- | ------: | ------------ | ------------------------------------------------------------------ |
+| `deepseek-r1`       | 262,144 | Coding, Text | Reasoning-heavy DeepSeek tasks                                     |
+| `deepseek-v3`       | 262,144 | Coding, Text | Low-cost general and coding work                                   |
+| `deepseek-v3.1`     | 262,144 | Coding, Text | Balanced DeepSeek reasoning and coding                             |
+| `deepseek-v3.2`     | 128,000 | Coding, Text | Very low-cost current DeepSeek general use                         |
+| `deepseek-v4-flash` | 262,144 | Coding, Text | Very low-cost high-throughput coding/text                          |
+| `deepseek-v4-pro`   | 262,144 | Coding, Text | Strong DeepSeek route with chat, messages, and responses endpoints |
+
+## Kimi
+
+| Model ID           | Context | Capabilities                | Best for                                                 |
+| ------------------ | ------: | --------------------------- | -------------------------------------------------------- |
+| `kimi-k2-thinking` | 256,000 | Coding, Text                | Reasoning and agentic coding                             |
+| `kimi-k2.5`        | 262,144 | Coding, Text, Video, Vision | Visual coding, document vision, long-video understanding |
+| `kimi-k2.6`        | 128,000 | Text                        | General Kimi reasoning and long-context text             |
+
+## MiniMax and GLM
+
+| Model ID       | Provider  |   Context | Capabilities                | Best for                                       |
+| -------------- | --------- | --------: | --------------------------- | ---------------------------------------------- |
+| `MiniMax-M2.5` | MiniMax   |   262,144 | Coding, Text                | Cost-efficient long-document text and coding   |
+| `MiniMax-M3`   | MiniMax   | 1,000,000 | Coding, Text, Video, Vision | 1M-context MiniMax with vision/video tags      |
+| `glm-5`        | Zhipu GLM |   128,000 | Coding, Text                | Chinese reasoning, bilingual documents, coding |
+
+## ByteDance Seed and Seedream
+
+| Model ID                | Context | Capabilities                | Best for                          |
+| ----------------------- | ------: | --------------------------- | --------------------------------- |
+| `seed-1-6-250915`       | 262,144 | Text, Video, Vision         | Stable general Seed route         |
+| `seed-1-6-flash-250715` | 262,144 | Text, Video, Vision         | Fast, low-cost throughput         |
+| `seed-1-8-251228`       | 262,144 | Coding, Text, Video, Vision | Stronger agentic and coding tasks |
+| `seed-2-0-mini-260215`  | 262,144 | Coding, Text, Video, Vision | Low-cost Seed 2.0 route           |
+| `seed-2-0-lite-260228`  | 262,144 | Coding, Text, Video, Vision | Balanced Seed 2.0 route           |
+| `seed-2-0-pro-260328`   | 262,144 | Coding, Text, Video, Vision | Strongest Seed 2.0 route          |
+| `seedream-4-5-251128`   |     N/A | Image, Vision               | Image generation and editing      |
+| `seedream-5-0-260128`   | 262,144 | Image, Vision               | Newer Seedream image route        |
+
+## Choosing quickly
+
+| Need                                | Start with                                                          |
+| ----------------------------------- | ------------------------------------------------------------------- |
+| Lowest-cost text or coding          | `deepseek-v4-flash`, `qwen-flash`, `qwen-mt-flash`                  |
+| 1M-token Chinese/bilingual context  | `qwen3.7-max`, `qwen3.6-plus`, `MiniMax-M3`                         |
+| Coding agents                       | `qwen3-coder-plus`, `qwen3.7-max`, `kimi-k2-thinking`, `MiniMax-M3` |
+| Vision/document/video understanding | `qwen3-vl-plus`, `kimi-k2.5`, `seed-2-0-pro-260328`                 |
+| Image generation/editing            | `seedream-5-0-260128`, `seedream-4-5-251128`, `wan2.7-image-pro`    |
+| Chinese-language reasoning          | `glm-5`, `qwen3.7-max`, `MiniMax-M3`                                |
+
+## Provider guides
+
+* [Qwen and Wan models](/guides/chinese-llms/qwen)
+* [DeepSeek models](/guides/chinese-llms/deepseek)
+* [Kimi models](/guides/chinese-llms/kimi)
+* [ByteDance Seed and Seedream](/guides/chinese-llms/bytedance)
+* [MiniMax models](/guides/chinese-llms/minimax)
+* [GLM models](/guides/chinese-llms/glm)
+* [All supported AIsa models](/guides/models)

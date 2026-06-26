@@ -1,0 +1,155 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Analyst Estimates
+
+> Consensus Wall Street forecasts for a US stock ticker — estimated revenue and estimated earnings per share, broken down by fiscal period (annual or quarterly).
+
+
+
+## OpenAPI
+
+````yaml openapi/analyst-estimates.json GET /analyst-estimates
+openapi: 3.0.3
+info:
+  title: Financial Datasets API — Analyst Estimates
+  version: 1.0.0
+  description: >-
+    Consensus Wall Street analyst estimates (estimated revenue + estimated
+    earnings per share) for US stock tickers, broken down by fiscal period
+    (annual or quarterly). Proxied through AIsa from the Financial Datasets API.
+servers:
+  - url: https://api.aisa.one/apis/v1/financial
+    description: Production API
+security:
+  - bearerAuth: []
+paths:
+  /analyst-estimates:
+    get:
+      summary: Analyst Estimates
+      operationId: getAnalystEstimates
+      parameters:
+        - name: ticker
+          in: query
+          description: The ticker to get analyst estimates for.
+          required: true
+          schema:
+            type: string
+        - name: period
+          in: query
+          description: >-
+            The period to get analyst estimates for. Use the
+            /analyst-estimates/periods endpoint to get a list of available
+            periods. Defaults to 'annual'.
+          required: false
+          schema:
+            type: string
+            enum:
+              - annual
+              - quarterly
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of estimates to return (max 3 for annual, 12 for
+            quarterly).
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Analyst estimates response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalystEstimatesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '402':
+          $ref: '#/components/responses/PaymentRequiredError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+components:
+  schemas:
+    AnalystEstimatesResponse:
+      type: object
+      properties:
+        analyst_estimates:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnalystEstimate'
+    AnalystEstimate:
+      type: object
+      properties:
+        fiscal_period:
+          type: string
+          format: date
+          description: The fiscal period of the analyst estimate.
+        period:
+          type: string
+          enum:
+            - annual
+            - quarterly
+          description: The period of the analyst estimate.
+        revenue:
+          type: integer
+          description: The estimated revenue.
+        earnings_per_share:
+          type: number
+          description: The estimated earnings per share.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: A short error message.
+        message:
+          type: string
+          description: A more detailed error message.
+  responses:
+    BadRequestError:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: Bad Request
+            message: Invalid request parameters
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: Unauthorized
+            message: Invalid API key provided
+    PaymentRequiredError:
+      description: The request requires a paid subscription
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: Payment Required
+            message: >-
+              This endpoint requires a paid subscription. Please upgrade your
+              plan.
+    NotFoundError:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: Not Found
+            message: Ticker XXXX not found
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+````

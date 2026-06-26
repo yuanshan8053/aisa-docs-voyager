@@ -1,0 +1,269 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Sonar Deep Research
+
+> Sonar Deep Research — exhaustive research & comprehensive reports
+
+Sonar Deep Research is Perplexity's most thorough model. It conducts exhaustive multi-step web searches and generates comprehensive, well-cited research reports.
+
+**Best for:** In-depth research, comprehensive analysis, literature reviews, market research reports.
+
+**Model:** `sonar-deep-research`
+
+> **Note:** Deep research requests may take significantly longer to complete (up to several minutes) due to the exhaustive multi-step search process.
+
+## Example
+
+```bash theme={null}
+curl -X POST "https://api.aisa.one/apis/v1/perplexity/sonar-deep-research" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "sonar-deep-research",
+    "messages": [
+      {"role": "user", "content": "Write a comprehensive analysis of the global semiconductor supply chain risks in 2026"}
+    ]
+  }'
+```
+
+## Response
+
+The response follows the OpenAI chat completion format, with additional `citations` and `search_results` fields. Deep research responses are typically much longer and more detailed than other models.
+
+
+## OpenAPI
+
+````yaml openapi/perplexity-openapi.json POST /perplexity/sonar-deep-research
+openapi: 3.0.0
+info:
+  title: Perplexity Sonar API
+  version: 1.0.0
+  description: >-
+    Perplexity Sonar API — LLM with built-in web search. Returns AI-generated
+    answers with citations from web sources.
+servers:
+  - url: https://api.aisa.one/apis/v1
+security:
+  - bearerAuth: []
+paths:
+  /perplexity/sonar-deep-research:
+    post:
+      tags:
+        - Perplexity Deep Research
+      summary: Sonar Deep Research — exhaustive research & comprehensive reports
+      description: >-
+        Expert-level research model that conducts exhaustive multi-step web
+        searches and generates comprehensive reports. Best for deep-dive
+        research tasks. Uses model `sonar-deep-research`.
+
+
+        **Pricing:** $0.012 per request
+
+
+        > **Note:** Deep research requests may take significantly longer to
+        complete due to the exhaustive search process.
+      operationId: post_perplexity-sonar-deep-research
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+            example:
+              model: sonar-deep-research
+              messages:
+                - role: user
+                  content: >-
+                    Write a comprehensive analysis of the global semiconductor
+                    supply chain risks in 2026
+      responses:
+        '200':
+          description: Successful response with AI answer and citations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+components:
+  schemas:
+    ChatCompletionRequest:
+      type: object
+      required:
+        - model
+        - messages
+      properties:
+        model:
+          type: string
+          description: The Sonar model to use.
+          enum:
+            - sonar
+            - sonar-pro
+            - sonar-reasoning-pro
+            - sonar-deep-research
+        messages:
+          type: array
+          description: A list of messages comprising the conversation so far.
+          items:
+            type: object
+            required:
+              - role
+              - content
+            properties:
+              role:
+                type: string
+                enum:
+                  - system
+                  - user
+                  - assistant
+                description: The role of the message author.
+              content:
+                type: string
+                description: The content of the message.
+        max_tokens:
+          type: integer
+          description: The maximum number of tokens to generate in the response.
+        temperature:
+          type: number
+          description: >-
+            Sampling temperature between 0 and 2. Lower values make output more
+            focused and deterministic.
+          default: 0.2
+          minimum: 0
+          maximum: 2
+        top_p:
+          type: number
+          description: >-
+            Nucleus sampling parameter. The model considers tokens with top_p
+            probability mass.
+          default: 0.9
+          minimum: 0
+          maximum: 1
+        top_k:
+          type: integer
+          description: The number of tokens to keep for top-k filtering.
+          default: 0
+          minimum: 0
+          maximum: 2048
+        stream:
+          type: boolean
+          description: Whether to stream the response using server-sent events.
+          default: false
+        search_context:
+          type: string
+          description: Controls how much search context to use. Affects per-request cost.
+          enum:
+            - low
+            - medium
+            - high
+          default: low
+        frequency_penalty:
+          type: number
+          description: >-
+            Penalizes new tokens based on their existing frequency in the text
+            so far. Positive values decrease the likelihood of repeating the
+            same line verbatim.
+          default: 1
+          minimum: 0
+          maximum: 2
+        presence_penalty:
+          type: number
+          description: >-
+            Penalizes new tokens based on whether they appear in the text so
+            far. Positive values increase the likelihood of talking about new
+            topics.
+          default: 0
+          minimum: -2
+          maximum: 2
+        return_citations:
+          type: boolean
+          description: Whether to return citations and search results in the response.
+          default: true
+        search_recency_filter:
+          type: string
+          description: Filter search results by recency.
+          enum:
+            - month
+            - week
+            - day
+            - hour
+        search_domain_filter:
+          type: array
+          description: Limit search to specific domains.
+          items:
+            type: string
+    ChatCompletionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the completion.
+        model:
+          type: string
+          description: The model used for the completion.
+        object:
+          type: string
+          example: chat.completion
+        created:
+          type: integer
+          description: Unix timestamp of when the completion was created.
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+                properties:
+                  role:
+                    type: string
+                  content:
+                    type: string
+                    description: >-
+                      The AI-generated answer, with inline citation references
+                      like [1][2].
+              finish_reason:
+                type: string
+                enum:
+                  - stop
+                  - length
+        citations:
+          type: array
+          description: List of source URLs referenced in the answer.
+          items:
+            type: string
+        search_results:
+          type: array
+          description: Detailed search results with titles, snippets, and URLs.
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+              snippet:
+                type: string
+              date:
+                type: string
+              source:
+                type: string
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+            search_context_size:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+````

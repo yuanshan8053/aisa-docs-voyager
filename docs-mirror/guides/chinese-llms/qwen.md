@@ -1,0 +1,69 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Qwen and Wan API - Access Alibaba Models via AIsa
+
+> Current AIsa guide to Alibaba Qwen and Wan model IDs, context windows, capabilities, endpoints, and prices, including qwen3.7-max, qwen-flash, Qwen VL, Qwen Coder, Wan image models, and translation models.
+
+AIsa is an Alibaba Cloud Qwen Key Account Partner. Use one AIsa API key to access Qwen text, coding, vision, audio, video-understanding, translation, and Wan image models through the same gateway as your other LLMs.
+
+All models below use `POST /v1/chat/completions`. Wan image models are exposed through the chat-compatible model route in the current AIsa catalog and are billed per request.
+
+## Supported Alibaba models
+
+| Model ID                         |   Context | Capabilities                       | Input / 1M | Output / 1M or request | Best for                                     |
+| -------------------------------- | --------: | ---------------------------------- | ---------: | ---------------------: | -------------------------------------------- |
+| `qwen-flash`                     | 1,000,000 | Audio, Coding, Text, Video, Vision |   \$0.0225 |               \$0.1800 | High-volume multimodal work                  |
+| `qwen-mt-flash`                  | 1,000,000 | Text                               |   \$0.0720 |               \$0.2205 | Fast translation                             |
+| `qwen-mt-lite`                   | 1,000,000 | Text                               |   \$0.0840 |               \$0.2520 | Lightweight translation                      |
+| `qwen-plus-2025-12-01`           | 1,000,000 | Audio, Coding, Text, Video, Vision |   \$0.2800 |               \$0.8400 | General multimodal applications              |
+| `qwen3-coder-480b-a35b-instruct` |   262,144 | Coding, Text                       |   \$1.0500 |               \$5.2500 | Maximum Qwen coding capability               |
+| `qwen3-coder-flash`              | 1,000,000 | Coding, Text                       |   \$0.2100 |               \$1.0500 | Fast coding throughput                       |
+| `qwen3-coder-plus`               | 1,000,000 | Coding, Text                       |   \$0.7000 |               \$3.5000 | Coding agents and code review                |
+| `qwen3-max`                      |   262,144 | Audio, Coding, Text, Video, Vision |   \$0.7200 |               \$3.6000 | Strong general Qwen route                    |
+| `qwen3-vl-flash`                 |   131,072 | Coding, Text, Video, Vision        |   \$0.0350 |               \$0.2800 | Low-cost vision and video understanding      |
+| `qwen3-vl-flash-2025-10-15`      |   131,072 | Coding, Text, Video, Vision        |   \$0.0350 |               \$0.2800 | Pinned Qwen VL Flash version                 |
+| `qwen3-vl-plus`                  |   131,072 | Coding, Text, Video, Vision        |   \$0.1400 |               \$1.1200 | Stronger document and spatial vision         |
+| `qwen3.6-plus`                   | 1,000,000 | Coding, Text, Video, Vision        |   \$0.2760 |               \$1.6510 | Long-context Chinese/bilingual work          |
+| `qwen3.6-plus-2026-04-02`        |   262,144 | Coding, Text, Vision               |   \$0.2760 |               \$1.6510 | Pinned Qwen 3.6 Plus route                   |
+| `qwen3.7-max`                    | 1,000,000 | Coding, Text                       |   \$1.1550 |               \$3.4657 | Frontier Qwen reasoning and agentic coding   |
+| `wan2.7-image`                   |       N/A | Image, Text, Vision                |          - |        \$0.030/request | Image generation and editing                 |
+| `wan2.7-image-pro`               |       N/A | Image, Text, Video, Vision         |          - |        \$0.075/request | Higher-quality image and image-to-video work |
+
+## Quickstart
+
+```python theme={null}
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_AISA_API_KEY", base_url="https://api.aisa.one/v1")
+
+response = client.chat.completions.create(
+    model="qwen3.7-max",
+    messages=[{"role": "user", "content": "Plan a refactor for this Python service."}]
+)
+print(response.choices[0].message.content)
+```
+
+## Common choices
+
+| Need                                 | Use                                  |
+| ------------------------------------ | ------------------------------------ |
+| Cheapest high-volume text/multimodal | `qwen-flash`                         |
+| Dedicated translation                | `qwen-mt-flash` or `qwen-mt-lite`    |
+| Best coding balance                  | `qwen3-coder-plus`                   |
+| Fast coding                          | `qwen3-coder-flash`                  |
+| Maximum Qwen coding capability       | `qwen3-coder-480b-a35b-instruct`     |
+| Long-context reasoning               | `qwen3.7-max` or `qwen3.6-plus`      |
+| Vision/document/video work           | `qwen3-vl-plus` or `qwen3-vl-flash`  |
+| Image generation/editing             | `wan2.7-image-pro` or `wan2.7-image` |
+
+## Data privacy
+
+Qwen requests through AIsa are processed under AIsa's Alibaba Cloud Key Account enterprise agreement. For compliance documentation, [contact us](mailto:developer@aisa.one).
+
+## Next
+
+* [All Chinese AI models](/guides/chinese-llms)
+* [All supported AIsa models](/guides/models)
+* [AI model pricing](/guides/pricing/ai-model-pricing-llm-inference)

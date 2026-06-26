@@ -1,0 +1,147 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# YouTube SERP
+
+> YouTube search with ranked results and rich metadata for autonomous agents. Content gap analysis, competitor monitoring, keyword research, and region/language-specific audience research — powered by AIsa.
+
+[View on GitHub →](https://github.com/AIsa-team/agent-skills/tree/main/youtube-serp)
+
+**YouTube search results and rich metadata for autonomous agents.** One `AISA_API_KEY` returns ranked videos, view counts, publication dates, and thumbnails — filterable by country and language.
+
+## Install
+
+First, install the AIsa CLI if you have not already:
+
+```bash theme={null}
+npm install -g @aisa-one/cli
+```
+
+Then install the skill:
+
+```bash theme={null}
+aisa skills install youtube-serp
+```
+
+## What can agents do with it?
+
+<CardGroup cols={2}>
+  <Card title="Content gap analysis" icon="chart-gantt">
+    "Find what's ranking for 'AI agent tutorial' that our channel doesn't cover."
+  </Card>
+
+  <Card title="Competitor monitoring" icon="eye">
+    "Track new uploads from the top 5 channels in this niche."
+  </Card>
+
+  <Card title="Keyword research" icon="key">
+    "Which variations of 'RAG' pull the biggest view counts?"
+  </Card>
+
+  <Card title="Regional trends" icon="earth-americas">
+    "Surface top ML content in Japan (jp/ja) vs. the US (us/en)."
+  </Card>
+
+  <Card title="Audience research" icon="users">
+    "What thumbnails and titles work for agent demos?"
+  </Card>
+
+  <Card title="Trend spotting" icon="fire">
+    "Flag videos with unusual velocity relative to channel baseline."
+  </Card>
+</CardGroup>
+
+## Core capabilities
+
+* **Keyword search** — ranked YouTube results for any query
+* **Regional targeting** — `gl` (country: `us`, `jp`, `cn`, …) and `hl` (interface language: `en`, `ja`, `zh-CN`, …)
+* **Rich metadata** — titles, channels, view counts, publication dates, durations, thumbnails
+* **Pagination** — filter tokens for navigating beyond the first page
+
+## Quick start
+
+```bash theme={null}
+export AISA_API_KEY="your-key"
+```
+
+### Basic search
+
+```bash theme={null}
+curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=AI+agents+tutorial" \
+  -H "Authorization: Bearer $AISA_API_KEY"
+```
+
+### Region + language
+
+```bash theme={null}
+# ML content in Japan, Japanese interface
+curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=machine+learning&gl=jp&hl=ja" \
+  -H "Authorization: Bearer $AISA_API_KEY"
+
+# AI trends in US, English interface
+curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=AI+trends+2026&gl=us&hl=en" \
+  -H "Authorization: Bearer $AISA_API_KEY"
+```
+
+### Pagination
+
+The response includes a pagination token you can pass back to fetch the next page:
+
+```bash theme={null}
+curl "https://api.aisa.one/apis/v1/youtube/search?engine=youtube&q=AI+agents&sp=NEXT_PAGE_TOKEN" \
+  -H "Authorization: Bearer $AISA_API_KEY"
+```
+
+## Python client
+
+```bash theme={null}
+# Basic
+python3 scripts/youtube_client.py search --query "autonomous agents"
+
+# With country
+python3 scripts/youtube_client.py search --query "coding tutorial" --country us
+
+# With country + language
+python3 scripts/youtube_client.py search --query "機械学習" --country jp --lang ja
+```
+
+## Endpoint reference
+
+| Endpoint          | Method | Purpose                                                    |
+| ----------------- | ------ | ---------------------------------------------------------- |
+| `/youtube/search` | GET    | [YouTube search](/api-reference/search/get_youtube-search) |
+
+**Common parameters:**
+
+* `engine` — always `youtube`
+* `q` — search query (required)
+* `gl` — country code (`us`, `jp`, `cn`, etc.)
+* `hl` — language code (`en`, `ja`, `zh-CN`, etc.)
+* `sp` — pagination token
+
+## Get started
+
+1. Sign up at [aisa.one](https://aisa.one) (new accounts start with \$2 free credit).
+2. Generate an API key from the console.
+3. `export AISA_API_KEY="your-key"` and install the skill:
+   ```bash theme={null}
+   npm install -g @aisa-one/cli
+   aisa skills install youtube-serp
+   ```
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="YouTube Search endpoint" icon="youtube" href="/api-reference/search/get_youtube-search">
+    Full endpoint reference with interactive playground.
+  </Card>
+
+  <Card title="Multi-source Search" icon="magnifying-glass" href="/agent-skills/search">
+    Combine YouTube search with web, scholar, and Tavily.
+  </Card>
+
+  <Card title="Error Codes" icon="triangle-exclamation" href="/api-reference/errors">
+    Handling YouTube API-level errors.
+  </Card>
+</CardGroup>

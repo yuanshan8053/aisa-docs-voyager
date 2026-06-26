@@ -1,0 +1,354 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Live Claude LLM Responses
+
+> Live Claude LLM Responses endpoint allows you to retrieve structured responses from a specific Claude model, based on the input parameters.
+
+
+
+## OpenAPI
+
+````yaml openapi/dataforseo.json POST /dataforseo/ai_optimization/claude/llm_responses/live
+openapi: 3.0.3
+info:
+  title: DataForSEO API
+  version: 1.0.0
+  description: DataForSEO API endpoints exposed through the AIsa unified gateway.
+servers:
+  - url: https://api.aisa.one/apis/v1
+security:
+  - BearerAuth: []
+paths:
+  /dataforseo/ai_optimization/claude/llm_responses/live:
+    post:
+      summary: Live Claude LLM Responses
+      description: >-
+        Live Claude LLM Responses endpoint allows you to retrieve structured
+        responses from a specific Claude model, based on the input parameters.
+      operationId: post_dataforseo_ai_optimization_claude_llm_responses_live
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_prompt:
+                  type: string
+                  description: >-
+                    prompt for the AI model required field the question or task
+                    you want to send to the AI model; you can specify up to 500
+                    characters in the user_prompt field
+                model_name:
+                  type: string
+                  description: >-
+                    name of the AI model required field model_nameconsists of
+                    the actual model name and version name; if the basic model
+                    name is specified, its latest version will be set by
+                    default; for example, if claude-opus-4-0 is specified, the
+                    claude-opus-4-20250514 will be set as model_name
+                    automatically; you can receive the list of available LLM
+                    models by making a separate request to the
+                    https://api.dataforseo.com/v3/ai_optimization/claude/llm_responses/models
+                max_output_tokens:
+                  type: integer
+                  description: >-
+                    maximum number of tokens in the AI response optional field
+                    minimum value: 1; maximum value: 4096; default value: 2048;
+                    Note: if web_search is set to true or the reasoning model is
+                    specified in the request, the output token count may exceed
+                    the specified max_output_tokens limit Note #2: if
+                    use_reasoning is set to true, the minimum value for
+                    max_output_tokens is 1025
+                temperature:
+                  type: number
+                  description: >-
+                    randomness of the AI response optional field higher values
+                    make output more diverse; lower values make output more
+                    focused; minimum value: 0 maximum value: 1 default value:
+                    0.7Note: temperature cannot be used together with top_p in
+                    the same request
+                top_p:
+                  type: number
+                  description: >-
+                    diversity of the AI response optional field controls
+                    diversity of the response by limiting token selection;
+                    minimum value: 0 maximum value: 1 default value: nullNote:
+                    top_p cannot be used together with temperature in the same
+                    request
+                web_search:
+                  type: boolean
+                  description: >-
+                    enable web search for current information optional field
+                    when enabled, the AI model can access and cite current web
+                    information; Note: refer to the Models endpoint for a list
+                    of models that support web_search; default value: false; The
+                    cost of the parameter can be calculated on the Pricing page
+                force_web_search:
+                  type: boolean
+                  description: >-
+                    force AI agent to use web search optional field to enable
+                    this parameter, web_search must also be enabled; when
+                    enabled, the AI model is forced to access and cite current
+                    web information; default value: false; Note: even if the
+                    parameter is set to true, there is no guarantee web sources
+                    will be cited in the response
+                web_search_country_iso_code:
+                  type: string
+                  description: >-
+                    ISO country code of the location optional field possible
+                    values:
+                    'AR','AT','AU','BE','BR','CA','CH','CL','CN','DE','DK','ES','FI','FR','GB','HK','ID','IN','IT','JP','KR','MX','MY','NL','NO','NZ','PH','PL','PT','RU','SA','SE','TR','TW','US','ZA'
+                web_search_city:
+                  type: string
+                  description: >-
+                    city name of the location optional field Note: specify
+                    web_search_country_iso_code to use this parameter
+                system_message:
+                  type: string
+                  description: >-
+                    instructions for the AI behaviour optional field defines the
+                    AI's role, tone, or specific behavior; you can specify up to
+                    500 characters in the system_message field
+                message_chain:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    conversation history optional field array of message objects
+                    representing previous conversation turns; each object must
+                    contain role and message parameters: role string with either
+                    user or ai role; message string with message content (max
+                    500 characters); you can specify the maximum of 10 message
+                    objects in the array; example: "message_chain":
+                    [{"role":"user","message":"Hello, what’s
+                    up?"},{"role":"ai","message":"Hello! I’m doing well, thank
+                    you. How can I assist you today?"}]
+                use_reasoning:
+                  type: boolean
+                  description: >-
+                    enable reasoning for the AI model optional field when
+                    enabled, the model will perform reasoning before generating
+                    a response refer to the Models endpoint for a list of models
+                    that support reasoning default value: false Note: if set to
+                    true, the minimum value for max_output_tokens is 1025 Note
+                    #2: if set to true, force_web_search must be set to false
+                    Note #3: if set to true, the temperature and top_p cannot be
+                    used
+                tag:
+                  type: string
+                  description: >-
+                    user-defined task identifier optional field the character
+                    limit is 255 you can use this parameter to identify the task
+                    and match it with the result you will find the specified tag
+                    value in the data object of the response
+              required:
+                - user_prompt
+                - model_name
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: the current version of the API
+                  status_code:
+                    type: integer
+                    description: >-
+                      general status code you can find the full list of the
+                      response codes here Note: we strongly recommend designing
+                      a necessary system for handling related exceptional or
+                      error conditions
+                  status_message:
+                    type: string
+                    description: >-
+                      general informational message you can find the full list
+                      of general informational messages here
+                  time:
+                    type: string
+                    description: execution time, seconds
+                  cost:
+                    type: number
+                    description: total tasks cost, USD
+                  tasks_count:
+                    type: integer
+                    description: the number of tasks in the tasks array
+                  tasks_error:
+                    type: integer
+                    description: >-
+                      the number of tasks in the tasks array returned with an
+                      error
+                  tasks:
+                    type: array
+                    items:
+                      type: string
+                    description: array of tasks
+                  tasks.id:
+                    type: string
+                    description: >-
+                      task identifier unique task identifier in our system in
+                      the UUID format
+                  tasks.status_code:
+                    type: integer
+                    description: >-
+                      status code of the task generated by DataForSEO; can be
+                      within the following range: 10000-60000 you can find the
+                      full list of the response codes here
+                  tasks.status_message:
+                    type: string
+                    description: >-
+                      informational message of the task you can find the full
+                      list of general informational messages here
+                  tasks.time:
+                    type: string
+                    description: execution time, seconds
+                  tasks.cost:
+                    type: number
+                    description: >-
+                      cost of the task, USD includes the base task price plus
+                      the money_spent value
+                  tasks.result_count:
+                    type: integer
+                    description: number of elements in the result array
+                  tasks.path:
+                    type: array
+                    items:
+                      type: string
+                    description: URL path
+                  tasks.data:
+                    type: object
+                    description: >-
+                      contains the same parameters that you specified in the
+                      POST request
+                  tasks.result:
+                    type: array
+                    items:
+                      type: string
+                    description: array of results
+                  tasks.result.model_name:
+                    type: string
+                    description: name of the AI model used
+                  tasks.result.input_tokens:
+                    type: integer
+                    description: >-
+                      number of tokens in the input total count of tokens
+                      processed
+                  tasks.result.output_tokens:
+                    type: integer
+                    description: >-
+                      number of tokens in the output total count of tokens
+                      generated in the AI response
+                  tasks.result.reasoning_tokens:
+                    type: integer
+                    description: >-
+                      number of reasoning tokens total count of tokens used to
+                      generate reasoning content
+                  tasks.result.web_search:
+                    type: boolean
+                    description: indicates if web search was used
+                  tasks.result.money_spent:
+                    type: number
+                    description: >-
+                      cost of AI tokens, USD the price charged by the
+                      third-party AI model provider for according to its Pricing
+                  tasks.result.datetime:
+                    type: string
+                    description: >-
+                      date and time when the result was received in the UTC
+                      format: “yyyy-mm-dd hh-mm-ss +00:00” example: 2019-11-15
+                      12:57:46 +00:00
+                  tasks.result.items:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      array of response items contains structured AI response
+                      data
+                  tasks.result.items.reasoning:
+                    type: object
+                    description: element in the response
+                  tasks.result.items.reasoning.type:
+                    type: string
+                    description: >-
+                      type of the element = 'reasoning' Note: this element is
+                      supported only in reasoning models and is not guaranteed
+                      to be returned
+                  tasks.result.items.reasoning.sections:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      reasoning chain sections array of objects containing the
+                      reasoning chain sections generated by the LLM
+                  tasks.result.items.reasoning.sections.type:
+                    type: string
+                    description: type of element='summary_text'
+                  tasks.result.items.reasoning.sections.text:
+                    type: string
+                    description: >-
+                      text of the reasoning chain section text of the reasoning
+                      chain section summarizing the model's thought process
+                  tasks.result.items.message:
+                    type: object
+                    description: element in the response
+                  tasks.result.items.message.type:
+                    type: string
+                    description: type of the element = 'message'
+                  tasks.result.items.message.sections:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      array of content sections contains different parts of the
+                      AI response
+                  tasks.result.items.message.sections.type:
+                    type: string
+                    description: type of element='text'
+                  tasks.result.items.message.sections.text:
+                    type: string
+                    description: AI-generated text content
+                  tasks.result.items.message.sections.annotations:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      array of references used to generate the response equals
+                      null if the web_search parameter is not set to true Note:
+                      annotations may return empty even when web_search is true,
+                      as the AI will attempt to retrieve web information but may
+                      not find relevant results
+                  tasks.result.items.message.sections.annotations.title:
+                    type: string
+                    description: the domain name or title of the quoted source
+                  tasks.result.items.message.sections.annotations.url:
+                    type: string
+                    description: URL of the quoted source
+                  tasks.result.fan_out_queries:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      array of fan-out queries contains related search queries
+                      derived from the main query to provide a more
+                      comprehensive response
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+````

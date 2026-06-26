@@ -1,0 +1,82 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# AIsa vs. OpenRouter - The Best Alternative for AI Agents
+
+OpenRouter is a popular platform for accessing multiple large language models through a single API. However, as AI applications evolve from passive chatbots to autonomous agents, developers need more than just a text-generation router.
+
+AIsa is built specifically as the infrastructure layer for the agentic economy. While we share the core functionality of an LLM gateway, AIsa goes significantly further by integrating data APIs, agent skills, and a native machine-to-machine payment layer.
+
+## Feature Comparison
+
+The table below outlines the key differences between AIsa and OpenRouter for AI agent development.
+
+| Feature                                 | AIsa                                                                                                | OpenRouter                                   |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **LLM Inference Pricing**               | Provider rates; **up to \~30% cheaper** on select non-Anthropic models                              | Pass-through (same as direct provider rates) |
+| **Supported AI Models**                 | Live GPT, Claude, Gemini, Grok, DeepSeek, Qwen, Kimi, MiniMax, GLM, Seed, Seedream, and Wan catalog | 100+                                         |
+| **OpenAI API Compatibility**            | Yes                                                                                                 | Yes                                          |
+| **Data APIs (Search, Social, Finance)** | **100+ built-in endpoints**                                                                         | None (LLM inference only)                    |
+| **Agent Skills Marketplace**            | **Yes**                                                                                             | Not supported                                |
+
+## Why Choose AIsa?
+
+### 1. The Complete Agent Infrastructure Stack
+
+Agents need to think, act, and transact. OpenRouter only provides the "thinking" layer (LLMs). AIsa provides the complete stack:
+
+* **Think:** Live LLM and media model catalog including `gpt-5.5`, `claude-opus-4-8`, `gemini-3.5-flash`, `grok-4.3`, `qwen3.7-max`, `deepseek-v4-flash`, and `MiniMax-M3`
+* **Act:** 100+ non-LLM data APIs (Twitter, Tavily Search, Polymarket, Financial Data)
+* **Transact:** Native stablecoin micropayments for autonomous agents
+
+### 2. Lower Inference Costs on Select Models
+
+For many non-Anthropic models, AIsa negotiates volume discounts with the upstream provider and passes the savings through. Anthropic models (Claude family) are priced at provider rates — no AIsa-applied discount — but still benefit from the unified billing, routing, and fallback layer.
+
+The table below shows current AIsa public prices for representative routes (USD per 1M input / output tokens unless noted). OpenRouter pricing changes independently, so use its live dashboard for a final side-by-side comparison.
+
+| Model               | Current AIsa pricing | Notes                                     |
+| ------------------- | -------------------: | ----------------------------------------- |
+| `deepseek-v4-flash` |    $0.0980 / $0.1960 | Very low-cost text and coding route       |
+| `qwen-flash`        |    $0.0225 / $0.1800 | Low-cost high-volume multimodal route     |
+| `kimi-k2.5`         |    $0.4018 / $2.1077 | Kimi vision/video/coding route            |
+| `MiniMax-M3`        |    $0.2100 / $0.8400 | 1M-context MiniMax route                  |
+| `claude-opus-4-8`   |   $5.0000 / $25.0000 | Anthropic route at provider-style pricing |
+
+See [AI Model Pricing](/guides/pricing/ai-model-pricing-llm-inference) for the full AIsa catalog.
+
+### 3. Built-in Agentic Payments
+
+AIsa is the first unified API to natively support the Machine Payment Protocol (MPP) and x402 standards. This allows your agents to autonomously pay for the exact compute, data, and services they consume using a single funded wallet, eliminating the need for complex subscription management.
+
+### 4. Seamless MCP Integration
+
+AIsa provides a fully integrated Model Context Protocol (MCP) server. This allows developers to instantly connect AIsa's 100+ data APIs directly into modern AI development environments like Cursor and Windsurf, streamlining the creation of context-aware applications.
+
+## Migration Guide: Switching from OpenRouter
+
+Switching from OpenRouter to AIsa takes less than a minute. Because both platforms are fully compatible with the OpenAI API specification, you do not need to rewrite your application logic.
+
+Simply update your `base_url` and authenticate with your AIsa API key:
+
+```python theme={null}
+from openai import OpenAI
+
+# 1. Change the base_url to AIsa
+# 2. Swap your OpenRouter key for an AIsa key
+client = OpenAI(
+    base_url="https://api.aisa.one/v1",
+    api_key="sk-aisa-..." 
+)
+
+# Your existing code works without modification
+response = client.chat.completions.create(
+    model="gpt-5-mini",
+    messages=[
+        {"role": "user", "content": "Hello, world!"}
+    ]
+)
+```
+
+To get started, create an account and generate an [API Key](/guides/dashboard/overview). New users receive a **\$2 free credit** to test the platform.

@@ -1,0 +1,51 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Kimi API - Access Moonshot AI Models via AIsa
+
+> Current AIsa guide to Moonshot Kimi model IDs, context windows, capabilities, endpoints, and prices, including kimi-k2-thinking, kimi-k2.5, and kimi-k2.6.
+
+AIsa gives you OpenAI-compatible access to Moonshot AI's Kimi models under one AIsa key. Kimi routes are useful for agentic coding, long-context text, document vision, visual coding, and video understanding.
+
+All current Kimi models use `POST /v1/chat/completions`.
+
+## Supported Kimi models
+
+| Model ID           | Context | Capabilities                | Input / 1M | Output / 1M | Best for                                                 |
+| ------------------ | ------: | --------------------------- | ---------: | ----------: | -------------------------------------------------------- |
+| `kimi-k2-thinking` | 256,000 | Coding, Text                |   \$0.4018 |    \$1.6058 | Reasoning and agentic coding                             |
+| `kimi-k2.5`        | 262,144 | Coding, Text, Video, Vision |   \$0.4018 |    \$2.1077 | Visual coding, document vision, long-video understanding |
+| `kimi-k2.6`        | 128,000 | Text                        |   \$0.6257 |    \$2.5992 | General Kimi reasoning and long-context text             |
+
+## Quickstart
+
+```python theme={null}
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_AISA_API_KEY", base_url="https://api.aisa.one/v1")
+
+response = client.chat.completions.create(
+    model="kimi-k2.5",
+    messages=[{"role": "user", "content": "Analyze this UI screenshot and suggest implementation changes."}]
+)
+print(response.choices[0].message.content)
+```
+
+## Common choices
+
+| Need                                       | Use                |
+| ------------------------------------------ | ------------------ |
+| Agentic reasoning and coding               | `kimi-k2-thinking` |
+| Vision, visual coding, documents, or video | `kimi-k2.5`        |
+| General Kimi text reasoning                | `kimi-k2.6`        |
+
+## Data privacy
+
+AIsa has an enterprise agreement with Moonshot AI covering Kimi requests. For organization-specific compliance requirements, [contact us](mailto:developer@aisa.one).
+
+## Next
+
+* [All Chinese AI models](/guides/chinese-llms)
+* [DeepSeek models](/guides/chinese-llms/deepseek)
+* [AI model pricing](/guides/pricing/ai-model-pricing-llm-inference)

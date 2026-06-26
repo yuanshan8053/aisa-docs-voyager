@@ -1,0 +1,70 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# ByteDance Models API - Access Seed and Seedream via AIsa
+
+> Current AIsa guide to ByteDance Seed and Seedream model IDs, context windows, capabilities, endpoints, and prices, including Seed 1.x, Seed 2.0, Seedream 4.5, and Seedream 5.0 routes through BytePlus.
+
+AIsa routes ByteDance Seed and Seedream models through BytePlus, ByteDance's official international enterprise platform. Use one AIsa API key for Seed text/vision/video/coding models and Seedream image models.
+
+All current ByteDance entries in the AIsa catalog use `POST /v1/chat/completions`. Seedream models are billed per request.
+
+## Supported ByteDance models
+
+| Model ID                | Context | Capabilities                |                           Price | Best for                          |
+| ----------------------- | ------: | --------------------------- | ------------------------------: | --------------------------------- |
+| `seed-1-6-250915`       | 262,144 | Text, Video, Vision         | $0.2250 in / $0.9000 out per 1M | Stable general Seed route         |
+| `seed-1-6-flash-250715` | 262,144 | Text, Video, Vision         | $0.0675 in / $0.2700 out per 1M | Fast, low-cost throughput         |
+| `seed-1-8-251228`       | 262,144 | Coding, Text, Video, Vision | $0.2250 in / $1.8000 out per 1M | Stronger agentic and coding tasks |
+| `seed-2-0-mini-260215`  | 262,144 | Coding, Text, Video, Vision | $0.1000 in / $0.4000 out per 1M | Low-cost Seed 2.0 route           |
+| `seed-2-0-lite-260228`  | 262,144 | Coding, Text, Video, Vision | $0.2500 in / $2.0000 out per 1M | Balanced Seed 2.0 route           |
+| `seed-2-0-pro-260328`   | 262,144 | Coding, Text, Video, Vision | $0.5000 in / $3.0000 out per 1M | Strongest Seed 2.0 route          |
+| `seedream-4-5-251128`   |     N/A | Image, Vision               |                 \$0.036/request | Image generation and editing      |
+| `seedream-5-0-260128`   | 262,144 | Image, Vision               |                 \$0.035/request | Newer Seedream image route        |
+
+The date suffix in each model string is a release/version stamp in `YYMMDD` format, useful when pinning a production route.
+
+## Quickstart
+
+```python theme={null}
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_AISA_API_KEY", base_url="https://api.aisa.one/v1")
+
+response = client.chat.completions.create(
+    model="seed-2-0-pro-260328",
+    messages=[{"role": "user", "content": "Analyze this product requirements document and identify implementation risks."}]
+)
+print(response.choices[0].message.content)
+```
+
+## Image route example
+
+```python theme={null}
+response = client.chat.completions.create(
+    model="seedream-5-0-260128",
+    messages=[
+        {"role": "user", "content": "Create a clean product image of a glass water bottle on a white marble surface."}
+    ]
+)
+```
+
+## Common choices
+
+| Need                             | Use                                               |
+| -------------------------------- | ------------------------------------------------- |
+| Lowest-cost Seed route           | `seed-1-6-flash-250715` or `seed-2-0-mini-260215` |
+| Strongest Seed text/coding route | `seed-2-0-pro-260328`                             |
+| Stable Seed 1.x route            | `seed-1-6-250915`                                 |
+| Image generation/editing         | `seedream-5-0-260128` or `seedream-4-5-251128`    |
+
+## Data privacy
+
+ByteDance Seed and Seedream requests are routed through BytePlus enterprise infrastructure. For compliance and data residency requirements, [contact us](mailto:developer@aisa.one).
+
+## Next
+
+* [All Chinese AI models](/guides/chinese-llms)
+* [Qwen and Wan models](/guides/chinese-llms/qwen)
+* [All supported AIsa models](/guides/models)

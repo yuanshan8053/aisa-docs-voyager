@@ -1,0 +1,237 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Advanced Search
+
+> Advanced Search
+
+
+
+## OpenAPI
+
+````yaml openapi/twitter-tweet-batch_02.json GET /twitter/tweet/advanced_search
+openapi: 3.0.3
+info:
+  title: Twitter API Aggregated Documentation
+  version: 1.0.0
+  description: >-
+    This OpenAPI specification aggregates multiple Twitter API endpoints into a
+    single document.
+servers:
+  - url: https://api.aisa.one/apis/v1
+security:
+  - bearerAuth: []
+paths:
+  /twitter/tweet/advanced_search:
+    get:
+      tags:
+        - >-
+          https://docs.twitterapi.io/api-reference/endpoint/tweet_advanced_search
+      summary: Advanced Search
+      description: Advanced search for tweets.
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The query to search for.
+        - name: queryType
+          in: query
+          required: true
+          schema:
+            type: string
+            enum:
+              - Latest
+              - Top
+            default: Latest
+          description: The query type to search for.
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+          description: The cursor to paginate through the results. First page is empty.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdvancedSearchResponse'
+components:
+  schemas:
+    AdvancedSearchResponse:
+      type: object
+      properties:
+        tweets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tweet'
+        has_next_page:
+          type: boolean
+        next_cursor:
+          type: string
+    Tweet:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+        url:
+          type: string
+        text:
+          type: string
+        source:
+          type: string
+        retweetCount:
+          type: integer
+        replyCount:
+          type: integer
+        likeCount:
+          type: integer
+        quoteCount:
+          type: integer
+        viewCount:
+          type: integer
+        createdAt:
+          type: string
+        lang:
+          type: string
+        bookmarkCount:
+          type: integer
+        isReply:
+          type: boolean
+        inReplyToId:
+          type: string
+        conversationId:
+          type: string
+        displayTextRange:
+          type: array
+          items:
+            type: integer
+        inReplyToUserId:
+          type: string
+        inReplyToUsername:
+          type: string
+        author:
+          $ref: '#/components/schemas/User'
+        entities:
+          $ref: '#/components/schemas/Entities'
+        quoted_tweet:
+          type: string
+        retweeted_tweet:
+          type: string
+        isLimitedReply:
+          type: boolean
+    User:
+      type: object
+      properties:
+        type:
+          type: string
+        userName:
+          type: string
+        url:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        isBlueVerified:
+          type: boolean
+        verifiedType:
+          type: string
+        profilePicture:
+          type: string
+        coverPicture:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        followers:
+          type: integer
+        following:
+          type: integer
+        canDm:
+          type: boolean
+        createdAt:
+          type: string
+        favouritesCount:
+          type: integer
+        hasCustomTimelines:
+          type: boolean
+        isTranslator:
+          type: boolean
+        mediaCount:
+          type: integer
+        statusesCount:
+          type: integer
+        withheldInCountries:
+          type: array
+          items:
+            type: string
+        possiblySensitive:
+          type: boolean
+        pinnedTweetIds:
+          type: array
+          items:
+            type: string
+        isAutomated:
+          type: boolean
+        automatedBy:
+          type: string
+        unavailable:
+          type: boolean
+        message:
+          type: string
+        unavailableReason:
+          type: string
+    Entities:
+      type: object
+      properties:
+        hashtags:
+          type: array
+          items:
+            type: object
+            properties:
+              indices:
+                type: array
+                items:
+                  type: integer
+              text:
+                type: string
+        urls:
+          type: array
+          items:
+            type: object
+            properties:
+              display_url:
+                type: string
+              expanded_url:
+                type: string
+              indices:
+                type: array
+                items:
+                  type: integer
+              url:
+                type: string
+        user_mentions:
+          type: array
+          items:
+            type: object
+            properties:
+              id_str:
+                type: string
+              name:
+                type: string
+              screen_name:
+                type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+````

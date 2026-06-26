@@ -8,5 +8,3 @@ venv/
 # live regenerated reports (a committed sample lives at reports/sample-audit.*)
 reports/audit.json
 reports/audit.md
-# local doc mirror — regenerable anytime via tools/docs_mirror.py
-docs-mirror/

@@ -1,0 +1,137 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# AI Model Pricing - Current AIsa LLM and Media Model Rates
+
+> Current AIsa Model Gateway pricing for llms.txt: per-1M-token input, output, cache-read, cache-write, and per-request media prices for OpenAI, Anthropic Claude, Google Gemini, xAI Grok, DeepSeek, Qwen, Kimi, MiniMax, GLM, Seed, Seedream, and Wan models.
+
+This page lists current public AIsa Model Gateway prices from the live `https://console.aisa.one/api/model_pricing` feed refreshed on June 4, 2026. For model capabilities, context windows, and endpoint mappings, see the [supported model catalog](/guides/models).
+
+All token prices are in USD per 1 million tokens. Per-request models are billed per generated asset or call. Workspace-level pricing rules can change the final amount shown in Usage Logs.
+
+## Billing formula
+
+`Total Cost = (input_tokens / 1,000,000 * input_price) + (output_tokens / 1,000,000 * output_price)`
+
+Cache read and cache write prices apply only when the upstream route reports those billing buckets.
+
+## OpenAI
+
+| Model ID              | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| --------------------- | ---------: | ----------: | --------------: | ---------------: |
+| `gpt-5`               |   \$1.2500 |   \$10.0000 |        \$0.1250 |                - |
+| `gpt-5-mini`          |   \$0.1500 |    \$1.2000 |        \$0.0150 |                - |
+| `gpt-5.2`             |   \$1.7500 |   \$14.0000 |        \$1.7500 |                - |
+| `gpt-5.2-chat-latest` |   \$1.7500 |   \$14.0000 |        \$1.7500 |                - |
+| `gpt-5.3-codex`       |   \$1.7500 |   \$14.0000 |        \$1.7500 |                - |
+| `gpt-5.4`             |   \$2.5000 |   \$15.0000 |        \$2.5000 |                - |
+| `gpt-5.5`             |   \$5.0000 |   \$40.0000 |        \$5.0000 |                - |
+| `gpt-image-2`         |   \$8.0000 |   \$30.0000 |               - |         \$2.0000 |
+
+## Anthropic
+
+| Model ID                     | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| ---------------------------- | ---------: | ----------: | --------------: | ---------------: |
+| `claude-haiku-4-5-20251001`  |   \$1.0000 |    \$5.0000 |        \$0.1000 |         \$2.0000 |
+| `claude-opus-4-1-20250805`   |  \$15.0000 |   \$75.0000 |        \$1.5000 |        \$30.0000 |
+| `claude-opus-4-5-20251101`   |   \$5.0000 |   \$25.0000 |        \$0.5000 |        \$10.0000 |
+| `claude-opus-4-6`            |   \$5.0000 |   \$25.0000 |        \$0.5000 |        \$10.0000 |
+| `claude-opus-4-7`            |   \$5.0000 |   \$25.0000 |        \$0.5000 |        \$10.0000 |
+| `claude-opus-4-8`            |   \$5.0000 |   \$25.0000 |        \$0.5000 |        \$10.0000 |
+| `claude-sonnet-4-5-20250929` |   \$3.0000 |   \$15.0000 |        \$0.3000 |         \$6.0000 |
+
+## Google Gemini
+
+| Model ID               | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| ---------------------- | ---------: | ----------: | --------------: | ---------------: |
+| `gemini-3-pro-preview` |   \$2.0000 |   \$12.0000 |               - |                - |
+| `gemini-3.5-flash`     |   \$1.5000 |    \$9.0000 |        \$0.1500 |                - |
+
+## xAI
+
+| Model ID                       | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| ------------------------------ | ---------: | ----------: | --------------: | ---------------: |
+| `grok-4.20-0309-non-reasoning` |   \$1.2500 |    \$2.5000 |               - |                - |
+| `grok-4.20-0309-reasoning`     |   \$1.2500 |    \$2.5000 |               - |                - |
+| `grok-4.3`                     |   \$1.2500 |    \$2.5000 |               - |                - |
+| `grok-build-0.1`               |   \$1.0000 |    \$2.0000 |               - |                - |
+
+## DeepSeek
+
+| Model ID            | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| ------------------- | ---------: | ----------: | --------------: | ---------------: |
+| `deepseek-r1`       |   \$0.4018 |    \$1.6058 |        \$0.4018 |                - |
+| `deepseek-v3`       |   \$0.2009 |    \$0.8029 |        \$0.2009 |                - |
+| `deepseek-v3.1`     |   \$0.4018 |    \$1.2047 |        \$0.4018 |                - |
+| `deepseek-v3.2`     |   \$0.2009 |    \$0.3017 |        \$0.2009 |                - |
+| `deepseek-v4-flash` |   \$0.0980 |    \$0.1960 |        \$0.0020 |                - |
+| `deepseek-v4-pro`   |   \$0.3045 |    \$0.6090 |        \$0.0025 |                - |
+
+## Alibaba
+
+| Model ID                         | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| -------------------------------- | ---------: | ----------: | --------------: | ---------------: |
+| `qwen-flash`                     |   \$0.0225 |    \$0.1800 |        \$0.0225 |                - |
+| `qwen-mt-flash`                  |   \$0.0720 |    \$0.2205 |        \$0.0720 |                - |
+| `qwen-mt-lite`                   |   \$0.0840 |    \$0.2520 |        \$0.0840 |                - |
+| `qwen-plus-2025-12-01`           |   \$0.2800 |    \$0.8400 |        \$0.2800 |                - |
+| `qwen3-coder-480b-a35b-instruct` |   \$1.0500 |    \$5.2500 |        \$1.0500 |                - |
+| `qwen3-coder-flash`              |   \$0.2100 |    \$1.0500 |        \$0.2100 |                - |
+| `qwen3-coder-plus`               |   \$0.7000 |    \$3.5000 |        \$0.7000 |                - |
+| `qwen3-max`                      |   \$0.7200 |    \$3.6000 |        \$0.7200 |                - |
+| `qwen3-vl-flash`                 |   \$0.0350 |    \$0.2800 |        \$0.0350 |                - |
+| `qwen3-vl-flash-2025-10-15`      |   \$0.0350 |    \$0.2800 |        \$0.0350 |                - |
+| `qwen3-vl-plus`                  |   \$0.1400 |    \$1.1200 |        \$0.1400 |                - |
+| `qwen3.6-plus`                   |   \$0.2760 |    \$1.6510 |        \$0.2760 |                - |
+| `qwen3.6-plus-2026-04-02`        |   \$0.2760 |    \$1.6510 |        \$0.2760 |                - |
+| `qwen3.7-max`                    |   \$1.1550 |    \$3.4657 |        \$0.1155 |         \$1.4441 |
+
+| Model ID           |             Price | Endpoint(s)                 |
+| ------------------ | ----------------: | --------------------------- |
+| `wan2.7-image`     | \$0.030 / request | `POST /v1/chat/completions` |
+| `wan2.7-image-pro` | \$0.075 / request | `POST /v1/chat/completions` |
+
+## Moonshot
+
+| Model ID           | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| ------------------ | ---------: | ----------: | --------------: | ---------------: |
+| `kimi-k2-thinking` |   \$0.4018 |    \$1.6058 |        \$0.4018 |                - |
+| `kimi-k2.5`        |   \$0.4018 |    \$2.1077 |        \$0.4018 |                - |
+| `kimi-k2.6`        |   \$0.6257 |    \$2.5992 |        \$0.6257 |                - |
+
+## MiniMax
+
+| Model ID       | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| -------------- | ---------: | ----------: | --------------: | ---------------: |
+| `MiniMax-M2.5` |   \$0.2100 |    \$0.8400 |        \$0.2100 |                - |
+| `MiniMax-M3`   |   \$0.2100 |    \$0.8400 |        \$0.0500 |                - |
+
+## Zhipu GLM
+
+| Model ID | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| -------- | ---------: | ----------: | --------------: | ---------------: |
+| `glm-5`  |   \$0.4011 |    \$1.8060 |        \$0.4011 |                - |
+
+## ByteDance
+
+| Model ID                | Input / 1M | Output / 1M | Cache read / 1M | Cache write / 1M |
+| ----------------------- | ---------: | ----------: | --------------: | ---------------: |
+| `seed-1-6-250915`       |   \$0.2250 |    \$0.9000 |        \$0.2250 |                - |
+| `seed-1-6-flash-250715` |   \$0.0675 |    \$0.2700 |        \$0.0675 |                - |
+| `seed-1-8-251228`       |   \$0.2250 |    \$1.8000 |        \$0.2250 |                - |
+| `seed-2-0-lite-260228`  |   \$0.2500 |    \$2.0000 |        \$0.2500 |                - |
+| `seed-2-0-mini-260215`  |   \$0.1000 |    \$0.4000 |        \$0.1000 |                - |
+| `seed-2-0-pro-260328`   |   \$0.5000 |    \$3.0000 |        \$0.5000 |                - |
+
+| Model ID              |             Price | Endpoint(s)                 |
+| --------------------- | ----------------: | --------------------------- |
+| `seedream-4-5-251128` | \$0.036 / request | `POST /v1/chat/completions` |
+| `seedream-5-0-260128` | \$0.035 / request | `POST /v1/chat/completions` |
+
+## Important notes
+
+* Use [aisa.one/models](https://aisa.one/models) for the latest live availability and pricing before production changes.
+* Token models are billed on input and output usage.
+* Media models such as image-generation routes are billed per request in the live pricing feed.
+* The final billed amount for each call is visible in the AIsa Usage Logs page.

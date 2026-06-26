@@ -1,0 +1,264 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Use AIsa in OpenClaw
+
+> Use AIsa as OpenClaw's LLM provider, then connect AIsa resource capabilities with one prompt.
+
+This guide has two parts:
+
+1. Configure AIsa as OpenClaw's LLM provider.
+2. Paste one prompt into OpenClaw so it can connect AIsa resource capabilities.
+
+## 1. Use AIsa as the LLM provider
+
+If you want full control over OpenClaw's model configuration - custom model lists, fallback chains, auth profiles stored in your system keychain, or per-channel routing - edit `openclaw.json` directly.
+
+### Step 1: Get your AIsa API key
+
+<Steps>
+  <Step title="Log in to the dashboard">
+    [console.aisa.one](https://console.aisa.one/)
+  </Step>
+
+  <Step title="Navigate to API Keys">
+    [console.aisa.one/console/token](https://console.aisa.one/console/token)
+  </Step>
+
+  <Step title="Create a new key">
+    Give it a label like `openclaw-local`. Copy the value (starts with `sk-aisa-`) immediately - it's shown only once.
+  </Step>
+</Steps>
+
+### Step 2: Set your API key
+
+Add the key to `~/.openclaw/openclaw.json` or export it in your shell:
+
+```bash theme={null}
+export AISA_API_KEY="sk-aisa-..."
+```
+
+<Tip>
+  Prefer an environment variable over hardcoding the key in `openclaw.json`. See [Authentication](/guides/authentication) for rotation and storage best practices.
+</Tip>
+
+### Step 3: Configure the AIsa provider
+
+Add this block to your `~/.openclaw/openclaw.json`:
+
+```json theme={null}
+{
+  "env": {
+    "AISA_API_KEY": "sk-aisa-..."
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "aisa": {
+        "baseUrl": "https://api.aisa.one/v1",
+        "apiKey": "${AISA_API_KEY}",
+        "api": "openai-completions",
+        "models": [
+          { "id": "gpt-5-mini", "name": "GPT-5 Mini" },
+          { "id": "kimi-k2.5", "name": "Kimi K2.5" },
+          { "id": "claude-opus-4-8", "name": "Claude Opus 4.8" },
+          { "id": "gemini-3.5-flash", "name": "Gemini 3.5 Flash" },
+          { "id": "deepseek-v4-flash", "name": "DeepSeek V4 Flash" },
+          { "id": "qwen3.7-max", "name": "Qwen3.7 Max" },
+          { "id": "MiniMax-M3", "name": "MiniMax M3" },
+          { "id": "glm-5", "name": "GLM 5" }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "aisa/kimi-k2.5"
+      },
+      "models": {
+        "aisa/kimi-k2.5": {}
+      }
+    }
+  }
+}
+```
+
+OpenClaw now knows about the `aisa` provider. Reference any model with the `aisa/<model-id>` format.
+
+### Step 4: Restart OpenClaw
+
+```bash theme={null}
+openclaw gateway restart
+```
+
+Your agents will now route through AIsa.
+
+## 2. Connect AIsa resource capabilities
+
+After OpenClaw is using AIsa as its LLM provider, start an OpenClaw session and paste this prompt:
+
+```txt theme={null}
+Run curl -sL https://aisa.one/docs/llms.txt and follow the returned instructions to connect AIsa capabilities.
+```
+
+OpenClaw will fetch AIsa's agent-facing instructions and guide you through the remaining setup for AIsa capabilities.
+
+After that, OpenClaw can use both AIsa models and AIsa resource capabilities.
+
+Try:
+
+```txt theme={null}
+Use AIsa capabilities to search the web and summarize the latest information about OpenClaw.
+```
+
+### Video walkthrough
+
+<iframe width="100%" height="480" src="https://www.youtube.com/embed/mlSivxqRPTI" title="OpenClaw + AIsa manual setup" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen />
+
+## LLM model format
+
+Always use `aisa/<model-id>` - e.g., `aisa/kimi-k2.5`, `aisa/gpt-5`, `aisa/claude-opus-4-8`. Add any supported model to the `models` array in your provider config; the full list is in the [model catalog](/guides/models).
+
+## Advanced configuration
+
+### Fallback chains
+
+If the primary model fails (upstream outage, rate limit), OpenClaw can automatically retry with a fallback model:
+
+```json theme={null}
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "aisa/kimi-k2.5",
+        "fallbacks": ["aisa/gpt-5-mini"]
+      },
+      "models": {
+        "aisa/kimi-k2.5": {},
+        "aisa/gpt-5-mini": {}
+      }
+    }
+  }
+}
+```
+
+### Auth profiles (keychain storage)
+
+Keep your API key out of `openclaw.json` by storing it in your system keychain:
+
+<Steps>
+  <Step title="Declare an auth profile">
+    ```json theme={null}
+    {
+      "auth": {
+        "profiles": {
+          "aisa:default": {
+            "provider": "aisa",
+            "mode": "api_key"
+          }
+        }
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Store the key via OpenClaw CLI">
+    ```bash theme={null}
+    openclaw auth set aisa:default --key "$AISA_API_KEY"
+    ```
+  </Step>
+
+  <Step title="Reference the profile in your provider config">
+    ```json theme={null}
+    "providers": {
+      "aisa": {
+        "apiKey": "auth:aisa:default",
+        "baseUrl": "https://api.aisa.one/v1",
+        "api": "openai-completions"
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+### Per-channel models
+
+Run a different model on each messaging platform:
+
+```json theme={null}
+{
+  "telegram": {
+    "agents": {
+      "defaults": {
+        "model": { "primary": "aisa/kimi-k2.5" }
+      }
+    }
+  },
+  "discord": {
+    "agents": {
+      "defaults": {
+        "model": { "primary": "aisa/claude-opus-4-8" }
+      }
+    }
+  }
+}
+```
+
+## Monitoring usage
+
+Track your spend and per-request detail in the [AIsa dashboard](https://console.aisa.one). See [Usage Logs](/guides/dashboard/usage-logs) for what's available.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="'No API key found for provider aisa'">
+    **Fix:**
+
+    1. Confirm `AISA_API_KEY` is set: `echo $AISA_API_KEY`
+    2. Verify `openclaw.json` references `${AISA_API_KEY}` (not a literal string).
+    3. Restart OpenClaw so it re-reads the env.
+    4. As a last resort, hardcode the key to verify the rest of the config works, then move it back to env.
+  </Accordion>
+
+  <Accordion title="Authentication errors (401 / 403)">
+    **Fix:**
+
+    1. Confirm the key is valid in the [dashboard](https://console.aisa.one).
+    2. Ensure `baseUrl` is exactly `https://api.aisa.one/v1` (no trailing slash issues).
+    3. See [Authentication](/guides/authentication) for rotation guidance.
+  </Accordion>
+
+  <Accordion title="Model not working">
+    **Fix:**
+
+    1. Double-check the model ID against the [catalog](/guides/models).
+    2. Make sure the model is listed in `models.providers.aisa.models`.
+    3. Reference it as `aisa/<model-id>`.
+  </Accordion>
+
+  <Accordion title="OpenClaw does not know AIsa capabilities">
+    **Fix:** Paste this prompt into an OpenClaw session:
+
+    ```txt theme={null}
+    Run curl -sL https://aisa.one/docs/llms.txt and follow the returned instructions to connect AIsa capabilities.
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Related
+
+<CardGroup cols={3}>
+  <Card title="Authentication" icon="key" href="/guides/authentication">
+    API key lifecycle, storage, and best practices.
+  </Card>
+
+  <Card title="Model Catalog" icon="list" href="/guides/models">
+    Current model IDs, context windows, endpoints, capabilities, and billing notes.
+  </Card>
+
+  <Card title="OpenClaw docs" icon="arrow-up-right-from-square" href="https://docs.openclaw.ai/">
+    Official OpenClaw documentation.
+  </Card>
+</CardGroup>

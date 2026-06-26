@@ -1,0 +1,48 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# GLM API - Access Zhipu AI glm-5 via AIsa
+
+> Current AIsa guide to Zhipu GLM model access, including the exact lowercase model ID glm-5, context window, endpoint, capabilities, and prices.
+
+AIsa gives you OpenAI-compatible access to Zhipu AI's GLM family. The current AIsa catalog exposes the exact model ID `glm-5`; use lowercase in API calls.
+
+`glm-5` uses `POST /v1/chat/completions`.
+
+## Supported GLM models
+
+| Model ID | Context | Capabilities | Input / 1M | Output / 1M | Best for                                                |
+| -------- | ------: | ------------ | ---------: | ----------: | ------------------------------------------------------- |
+| `glm-5`  | 128,000 | Coding, Text |   \$0.4011 |    \$1.8060 | Chinese-language reasoning, bilingual documents, coding |
+
+## Quickstart
+
+```python theme={null}
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_AISA_API_KEY", base_url="https://api.aisa.one/v1")
+
+response = client.chat.completions.create(
+    model="glm-5",
+    messages=[{"role": "user", "content": "Analyze the competitive dynamics of China's cloud computing market."}]
+)
+print(response.choices[0].message.content)
+```
+
+## Use `glm-5` when you need
+
+* Chinese-language reasoning and long-form analysis
+* Chinese-English bilingual document processing
+* Coding help in Chinese development contexts
+* A model family distinct from Alibaba, ByteDance, MiniMax, and Moonshot
+
+## Data privacy
+
+GLM requests through AIsa are covered by AIsa's enterprise agreement with Zhipu AI. Customer data is not used for model training. For compliance requirements, [contact us](mailto:developer@aisa.one).
+
+## Next
+
+* [All Chinese AI models](/guides/chinese-llms)
+* [MiniMax models](/guides/chinese-llms/minimax)
+* [All supported AIsa models](/guides/models)

@@ -1,0 +1,42 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Frequently Asked Questions - AIsa Unified API
+
+This page answers common questions about the AIsa unified model gateway, compatibility, pricing, and infrastructure.
+
+## How does AIsa compare to OpenRouter or LiteLLM?
+
+While AIsa shares the core functionality of an LLM router (aggregating multiple models behind a single API), AIsa goes significantly further by integrating 100+ non-LLM data APIs (Twitter, Financial, Search), an MCP server, and native stablecoin micropayments for autonomous agents.
+
+AIsa is specifically built as the infrastructure layer for the agentic economy, where agents not only need to think (LLMs) but also act (data APIs) and transact (Machine-to-Machine Payments).
+
+## Do I need to change my existing OpenAI code?
+
+No. AIsa is fully API-compatible with the OpenAI specification.
+
+If you are using the official OpenAI Python or TypeScript SDKs, you only need to change your `base_url` to `https://api.aisa.one/v1` and authenticate using an [AIsa API Key](/guides/dashboard/overview). All standard parameters like `temperature`, `top_p`, and streaming responses work exactly as expected.
+
+## How is pricing calculated?
+
+AIsa uses a unified usage-based billing system with no subscription fees.
+
+* **LLM inference** is billed per-token based on the underlying provider's cost.
+* **Data APIs** (like Search, Financial, or Twitter endpoints) are billed on a flat per-call basis.
+
+All usage is deducted from your single, centralized account balance. See the [Pricing Overview](/guides/pricing) for detailed token and per-call costs.
+
+## How do AIsa's LLM prices compare to OpenRouter?
+
+For many non-Anthropic models, AIsa prices LLM inference **up to \~30% below** the direct provider rates listed on OpenRouter. Anthropic models (Claude family) are priced at provider rates. See the full side-by-side breakdown in [AIsa vs. OpenRouter](/guides/compare/openrouter).
+
+## What models are available on AIsa?
+
+AIsa provides a single gateway for the live model catalog. Current families include OpenAI GPT, Anthropic Claude, Google Gemini, xAI Grok, DeepSeek, Alibaba Qwen and Wan, Moonshot Kimi, MiniMax, Zhipu GLM, and ByteDance Seed and Seedream.
+
+For a complete and up-to-date list of exact model IDs, context windows, endpoints, capabilities, and billing notes, visit the [supported model catalog](/guides/models) and [AI Model Pricing](/guides/pricing/ai-model-pricing-llm-inference) documentation.
+
+## How do I get started?
+
+Proceed to the [Getting Started Guide](/guides/getting-started-with-aisa) to create an account, generate an API key, and make your first unified API call using your free \$2 signup credit.

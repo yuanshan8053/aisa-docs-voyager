@@ -1,0 +1,68 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Security & Data Privacy – AIsa Unified LLM API
+
+AIsa provides unified APIs across multiple AI and data providers, and is designed to minimize data persistence while enabling secure access to upstream services.
+
+## Data Processing Model
+
+AIsa processes API requests in real time to fulfill user requests.
+
+* Requests are handled synchronously to route calls to the appropriate upstream provider
+* Responses are returned directly to the client
+* AIsa does not use user data for training or analytics
+
+## Prompt and Output Retention
+
+AIsa follows a **no-storage policy** for request content.
+
+* **Prompts are not stored**
+* **API responses and outputs are not stored**
+* Request payloads are processed transiently and discarded after the request completes
+
+This applies across all supported APIs, including AI models, embeddings, video, social platforms, web search, scholar, and finance integrations.
+
+## Logging and Metadata
+
+AIsa may retain **limited operational metadata** required to operate and protect the platform, such as:
+
+* Request timestamps
+* API key identifiers
+* Rate-limiting counters
+* Error and status information
+
+This metadata:
+
+* Does **not** include prompts, inputs, or generated outputs
+* Is not used for model training or content analysis
+
+## API Authentication
+
+All AIsa APIs require authentication.
+
+* Access is controlled using **API keys**
+* Each request must include a valid API key
+* Requests without valid authentication are rejected
+
+Users are responsible for keeping API keys secure and rotating them as needed.
+
+## Transport Security
+
+AIsa APIs are accessed over secure network connections.
+
+* API endpoints are served over HTTPS
+* Secure transport is required for all requests and responses
+
+Specific protocol versions and cryptographic configurations are managed at the infrastructure level and are not exposed publicly.
+
+## Third-Party Providers
+
+AIsa integrates with multiple upstream providers to deliver unified access through a single API.
+
+* Requests are forwarded only as necessary to fulfill the API call
+* AIsa does not persist the request content before or after forwarding
+* Data handling by upstream providers is governed by their respective terms and policies
+
+Users should review the policies of underlying providers when required by their use case.

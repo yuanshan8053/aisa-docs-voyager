@@ -1,0 +1,265 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Get List Tweet Timeline
+
+> Get timeline tweets from a Twitter list, paginated with up to 20 tweets per page.
+
+
+
+## OpenAPI
+
+````yaml openapi/twitter-list.json GET /twitter/list/tweets_timeline
+openapi: 3.0.3
+info:
+  title: Twitter API Aggregated Documentation
+  version: 1.0.0
+  description: >-
+    This OpenAPI specification aggregates multiple Twitter API endpoints for
+    list followers and list members.
+servers:
+  - url: https://api.aisa.one/apis/v1
+security:
+  - BearerAuth: []
+paths:
+  /twitter/list/tweets_timeline:
+    get:
+      tags:
+        - https://docs.twitterapi.io/api-reference/endpoint/list_timeline
+      summary: Get List Tweet Timeline
+      description: >-
+        Get timeline tweets from a list. Each page returns up to 20 tweets. Use
+        cursor for pagination.
+      parameters:
+        - name: listId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The list ID to get tweets from. e.g. 1846987139428634858
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >-
+            Cursor for paginating through results. Leave empty for the first
+            page.
+      responses:
+        '200':
+          description: List tweet timeline response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListTweetsTimelineResponse'
+components:
+  schemas:
+    ListTweetsTimelineResponse:
+      type: object
+      properties:
+        tweets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tweet'
+          description: Array of tweets from the list
+        has_next_page:
+          type: boolean
+          description: Indicates if there are more results available
+        next_cursor:
+          type: string
+          description: Cursor for fetching the next page of results
+        status:
+          type: string
+          enum:
+            - success
+            - error
+          example: success
+          description: Status of the request
+        msg:
+          type: string
+          description: Message of the request, error message if status is error
+    Tweet:
+      type: object
+      properties:
+        type:
+          type: string
+        id:
+          type: string
+          description: The ID of the tweet
+        url:
+          type: string
+          description: The URL of the tweet
+        text:
+          type: string
+          description: The text of the tweet
+        source:
+          type: string
+          description: The source client of the tweet
+        retweetCount:
+          type: integer
+        replyCount:
+          type: integer
+        likeCount:
+          type: integer
+        quoteCount:
+          type: integer
+        viewCount:
+          type: integer
+        createdAt:
+          type: string
+          description: The date and time the tweet was created
+        lang:
+          type: string
+          description: The language of the tweet
+        bookmarkCount:
+          type: integer
+        isReply:
+          type: boolean
+        inReplyToId:
+          type: string
+        conversationId:
+          type: string
+        inReplyToUserId:
+          type: string
+        inReplyToUsername:
+          type: string
+        author:
+          $ref: '#/components/schemas/TwitterUser'
+    TwitterUser:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the user
+        userName:
+          type: string
+          description: Username of the user
+        url:
+          type: string
+          description: URL of the user's profile
+        id:
+          type: string
+          description: ID of the user
+        name:
+          type: string
+          description: Name of the user
+        isBlueVerified:
+          type: boolean
+          description: Indicates if the user is blue verified
+        verifiedType:
+          type: string
+          description: Type of verification
+        profilePicture:
+          type: string
+          description: URL of the profile picture
+        coverPicture:
+          type: string
+          description: URL of the cover picture
+        description:
+          type: string
+          description: Description of the user
+        location:
+          type: string
+          description: Location of the user
+        followers:
+          type: integer
+          description: Number of followers
+        following:
+          type: integer
+          description: Number of followings
+        canDm:
+          type: boolean
+          description: Indicates if the user can be direct messaged
+        createdAt:
+          type: string
+          description: Account creation date
+        favouritesCount:
+          type: integer
+          description: Number of favorites
+        hasCustomTimelines:
+          type: boolean
+          description: Indicates if the user has custom timelines
+        isTranslator:
+          type: boolean
+          description: Indicates if the user is a translator
+        mediaCount:
+          type: integer
+          description: Number of media items
+        statusesCount:
+          type: integer
+          description: Number of statuses
+        withheldInCountries:
+          type: array
+          items:
+            type: string
+          description: List of countries where the user is withheld
+        possiblySensitive:
+          type: boolean
+          description: Indicates if the user has sensitive content
+        pinnedTweetIds:
+          type: array
+          items:
+            type: string
+          description: List of pinned tweet IDs
+        isAutomated:
+          type: boolean
+          description: Indicates if the account is automated
+        automatedBy:
+          type: string
+          description: Indicates who automated the account
+        unavailable:
+          type: boolean
+          description: Indicates if the account is unavailable
+        message:
+          type: string
+          description: Message about the account
+        unavailableReason:
+          type: string
+          description: Reason for unavailability
+        profile_bio:
+          type: object
+          properties:
+            description:
+              type: string
+              description: Bio description
+            entities:
+              type: object
+              properties:
+                description:
+                  type: object
+                  properties:
+                    urls:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/TwitterUrl'
+                url:
+                  type: object
+                  properties:
+                    urls:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/TwitterUrl'
+    TwitterUrl:
+      type: object
+      properties:
+        display_url:
+          type: string
+          description: Display URL
+        expanded_url:
+          type: string
+          description: Expanded URL
+        indices:
+          type: array
+          items:
+            type: integer
+          description: Indices of the URL
+        url:
+          type: string
+          description: URL
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+````

@@ -1,0 +1,697 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Live Google Hotel Info Advanced
+
+> Google Hotel Info will provide you with structured data available for a specific hotel entity on the [Google Hotels](http://www.
+
+
+
+## OpenAPI
+
+````yaml openapi/dataforseo.json POST /dataforseo/business_data/google/hotel_info/live/advanced
+openapi: 3.0.3
+info:
+  title: DataForSEO API
+  version: 1.0.0
+  description: DataForSEO API endpoints exposed through the AIsa unified gateway.
+servers:
+  - url: https://api.aisa.one/apis/v1
+security:
+  - BearerAuth: []
+paths:
+  /dataforseo/business_data/google/hotel_info/live/advanced:
+    post:
+      summary: Live Google Hotel Info Advanced
+      description: >-
+        Google Hotel Info will provide you with structured data available for a
+        specific hotel entity on the [Google
+        Hotels](http://www.google.com/travel/hotels) platform: such as service
+        description, location details, rating, amenities, reviews, images,
+        prices, and more.
+      operationId: post_dataforseo_business_data_google_hotel_info_live_advanced
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hotel_identifier:
+                  type: string
+                  description: >-
+                    *unique hotel identifier* **required field** unique
+                    identifier of a hotel entity in Google search; you can
+                    obtain the value by making a request to Advanced [Google
+                    SERP
+                    API](https://docs.dataforseo.com/v3/serp/google/organic/overview.md)
+                    (enclosed in the `hotels` element of the response), or the
+                    [Hotel Searches
+                    endpoint](https://docs.dataforseo.com/v3/business_data/google/hotel_searches/task_post.md)
+                    of Business Data API example:
+                    `ChYIq6SB--i6p6cpGgovbS8wN2s5ODZfEAE`
+                location_name:
+                  type: string
+                  description: >-
+                    *full name of search engine location* **required field if
+                    you don’t specify `location_code` or `location_coordinate`**
+                    **if you use this field, you don’t need to specify
+                    `location_code` or `location_coordinate`** you can receive
+                    the list of available locations with `location_name` by
+                    making a separate request to
+                    `https://api.dataforseo.com/v3/business_data/google/locations`
+                    example: `London,England,United Kingdom`
+                location_code:
+                  type: integer
+                  description: >-
+                    *search engine location code* **required field if you don’t
+                    specify `location_name` or `location_coordinate`** **if you
+                    use this field, you don’t need to specify `location_name` or
+                    `location_coordinate`** you can receive the list of
+                    available locations with `location_code` by making a
+                    separate request to the
+                    `https://api.dataforseo.com/v3/business_data/google/locations`
+                    example: `2840`
+                location_coordinate:
+                  type: string
+                  description: >-
+                    *GPS coordinates of a location* **required field if you
+                    don’t specify `location_name` or `location_code`** **if you
+                    use this field, you don’t need to specify `location_name` or
+                    `location_code`** `location_coordinate` parameter should be
+                    specified in the *“latitude, longitude”* format the maximum
+                    number of decimal digits for *“latitude”* and *“longitude”*:
+                    7 **Note**: if the coordinates are used to set a location,
+                    the search will occur in the nearest settlement; example:
+                    `53.476225,-2.243572`
+                language_name:
+                  type: string
+                  description: >-
+                    *full name of search engine language* **required field if
+                    you don’t specify `language_code`** **if you use this field,
+                    you don’t need to specify `language_code`** you can receive
+                    the list of available languages with `language_name` by
+                    making a separate request to
+                    `https://api.dataforseo.com/v3/business_data/google/languages`
+                    example: `English`
+                language_code:
+                  type: string
+                  description: >-
+                    *search engine language code* **required field if you don’t
+                    specify `language_name`** **if you use this field, you don’t
+                    need to specify `language_name`** you can receive the list
+                    of available languages with their `language_code` by making
+                    a separate request to
+                    `https://api.dataforseo.com/v3/business_data/google/languages`
+                    example: `en`
+                check_in:
+                  type: string
+                  description: >-
+                    *check-in date* optional field if you don’t specify this
+                    field, tomorrow’s date will be used by default; the value
+                    must not be earlier than today’s date date format:
+                    `"yyyy-mm-dd"` example: `"2019-01-15"`
+                check_out:
+                  type: string
+                  description: >-
+                    *check-out date* optional field if you don’t specify this
+                    field, our system will apply the date of two days from now
+                    by default; **Note:** the value cannot be less than or equal
+                    to `check_in`; the range between `check_in` and `check_out`
+                    values cannot exceed 30 days date format: `"yyyy-mm-dd"`
+                    example: `"2019-01-15"`
+                currency:
+                  type: string
+                  description: '*currency* optional field example: `"USD"`'
+                adults:
+                  type: integer
+                  description: >-
+                    *number of adults* optional field if you don’t specify this
+                    field, two adults will be used by default example: `1`
+                children:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    *number and age of children* optional field if you don’t
+                    specify this field, no children will be included in the
+                    search; set the following value if you want to include one
+                    14-years-old child: `[14]` set the following value if you
+                    want to include one 13-years-old child and one 8-years-old
+                    child: `[13,8]`
+                load_prices_by_dates:
+                  type: boolean
+                  description: >-
+                    *load hotel stay prices by dates* optional field if you
+                    specify this parameter with `true`, the response will
+                    include the `prices_by_dates` array with hotel stay prices
+                    divided by dates if you use this parameter, you will be
+                    charged **double the base price for a request**
+                prices_start_date:
+                  type: string
+                  description: >-
+                    *start date to load prices by dates* optional field to use
+                    this parameter, you must specify `load_prices_by_dates` with
+                    `true` if this parameter is not specified, the start date is
+                    set to `check_in` date date format: `yyyy-mm-dd` example:
+                    `2025-05-20`
+                prices_end_date:
+                  type: string
+                  description: >-
+                    *end date to load prices by dates* optional field to use
+                    this parameter, you must specify `load_prices_by_dates` with
+                    `true` if this parameter is not specified, you will get
+                    prices by date for the month date format: `yyyy-mm-dd`
+                    example: `2025-05-21`
+                prices_date_range:
+                  type: string
+                  description: >-
+                    *predefined period for retrieving daily price data* optional
+                    field to use this parameter, you must specify
+                    `load_prices_by_dates` with `true` if the `prices_start_date
+                    `is not specified, the start date is set to `check_in` date
+                    possible values: `month`, `three_months`, `six_months`,
+                    `year` default value: `month`
+                tag:
+                  type: string
+                  description: >-
+                    *user-defined task identifier* optional field *the character
+                    limit is 255* you can use this parameter to identify the
+                    task and match it with the result you will find the
+                    specified `tag` value in the `data` object of the response
+              required:
+                - hotel_identifier
+                - location_name
+                - location_code
+                - location_coordinate
+                - language_name
+                - language_code
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: '*the current version of the API*'
+                  version.status_code:
+                    type: integer
+                    description: >-
+                      *general status code* you can find the full list of the
+                      response codes
+                      [here](https://docs.dataforseo.com/v3/appendix/errors.md)
+                      **Note:** we strongly recommend designing a necessary
+                      system for handling related exceptional or error
+                      conditions
+                  version.status_message:
+                    type: string
+                    description: >-
+                      *general informational message* you can find the full list
+                      of general informational messages
+                      [here](https://docs.dataforseo.com/v3/appendix/errors.md)
+                  version.time:
+                    type: string
+                    description: '*execution time, seconds*'
+                  version.cost:
+                    type: number
+                    description: '*total *tasks* cost, USD*'
+                  version.tasks_count:
+                    type: integer
+                    description: '*the number of tasks in the **`tasks`** array*'
+                  version.tasks_error:
+                    type: integer
+                    description: >-
+                      *the number of tasks in the **`tasks`** array that were
+                      returned an error*
+                  tasks:
+                    type: array
+                    items:
+                      type: string
+                    description: '*array of tasks*'
+                  tasks.id:
+                    type: string
+                    description: >-
+                      *task identifier* **unique task identifier in our system
+                      in the
+                      [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
+                      format**
+                  tasks.status_code:
+                    type: integer
+                    description: >-
+                      *status code of the task* generated by DataForSEO; can be
+                      within the following range: 10000-60000 you can find the
+                      full list of the response codes
+                      [here](https://docs.dataforseo.com/v3/appendix/errors.md)
+                  tasks.status_message:
+                    type: string
+                    description: >-
+                      *informational message of the task* you can find the full
+                      list of general informational messages
+                      [here](https://docs.dataforseo.com/v3/appendix/errors.md)
+                  tasks.time:
+                    type: string
+                    description: '*execution time, seconds*'
+                  tasks.cost:
+                    type: number
+                    description: '*cost of the task, USD*'
+                  tasks.result_count:
+                    type: integer
+                    description: '*number of elements in the `result` array*'
+                  tasks.path:
+                    type: array
+                    items:
+                      type: string
+                    description: '*URL path*'
+                  tasks.data:
+                    type: object
+                    description: >-
+                      *contains the same parameters that you specified in the
+                      POST request*
+                  result:
+                    type: array
+                    items:
+                      type: string
+                    description: '*array of results*'
+                  result.hotel_identifier:
+                    type: string
+                    description: >-
+                      *identifier received in a POST array* this field will
+                      contain the `hotel_identifier` parameter specified when
+                      setting a task; example: `CgoI-KWyzenM_MV3EAE`
+                  result.location_code:
+                    type: integer
+                    description: '*location code in a POST array*'
+                  result.language_code:
+                    type: string
+                    description: '*language code in a POST array*'
+                  result.check_url:
+                    type: string
+                    description: >-
+                      *direct URL to search engine results* you can use it to
+                      make sure that we provided accurate results
+                  result.datetime:
+                    type: string
+                    description: >-
+                      *date and time when the result was received* in the UTC
+                      format: “yyyy-mm-dd hh-mm-ss +00:00” example: `2019-11-15
+                      12:57:46 +00:00`
+                  result.title:
+                    type: string
+                    description: '*title of the price offer*'
+                  result.stars:
+                    type: integer
+                    description: >-
+                      *hotel class rating* class rating that ranges between 1-5
+                      stars and displayed after review ratings in hotel summary
+                  result.stars_description:
+                    type: string
+                    description: >-
+                      *hotel class rating* class rating that ranges between 1-5
+                      stars and displayed after review ratings in the hotel
+                      summary
+                  result.address:
+                    type: string
+                    description: '*hotel address* physical address of the hotel'
+                  result.phone:
+                    type: string
+                    description: '*hotel phone number* contact phone number of the hotel'
+                  result.about:
+                    type: object
+                    description: '*information about the hotel*'
+                  result.description:
+                    type: string
+                    description: >-
+                      *description of the hotel* the description of the hotel
+                      entity for which the results are collected
+                  result.sub_descriptions:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      *additional description of the hotel* details about the
+                      hotel provided in addition to the description
+                  result.check_in_time:
+                    type: object
+                    description: >-
+                      *hotel check-in time* check-in time indicated in the hotel
+                      listing
+                  result.hour:
+                    type: integer
+                    description: '*check-out hour*'
+                  result.minute:
+                    type: integer
+                    description: '*check-out minute*'
+                  result.check_out_time:
+                    type: object
+                    description: >-
+                      *hotel check-out time* check-out time indicated in the
+                      hotel listing
+                  result.full_address:
+                    type: string
+                    description: >-
+                      *full address of the hotel* address of the hotel indicated
+                      in the standardised format
+                  result.domain:
+                    type: string
+                    description: >-
+                      *third-party domain* domain of the third-party website
+                      page with pricing information
+                  result.url:
+                    type: string
+                    description: >-
+                      *url of the price offer* URL to the page of the website
+                      where price offer appears
+                  result.amenities:
+                    type: array
+                    items:
+                      type: string
+                    description: '*hotel amenities* information about hotel amenities'
+                  result.category:
+                    type: string
+                    description: '*standardised category of the ammenity*'
+                  result.category_label:
+                    type: string
+                    description: '*label of the category*'
+                  result.items:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      *array of items* array containing pricing details from
+                      third-party websites; possible item types:
+                      `hotel_info_price`
+                  result.amenity:
+                    type: string
+                    description: '*standardised amenity name*'
+                  result.amenity_label:
+                    type: string
+                    description: '*displayed amenity name*'
+                  result.hint:
+                    type: string
+                    description: '*standardised details about the amenity*'
+                  result.hint_label:
+                    type: string
+                    description: '*displayed details about the amenity*'
+                  result.is_available:
+                    type: boolean
+                    description: >-
+                      *indicates whether the `amenity` is available in the
+                      hotel*
+                  result.popular_amenities:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      *hotel amenities* information about hotel amenities
+                      labelled as “popular”
+                  result.location:
+                    type: object
+                    description: >-
+                      *information about the hotel location* information about
+                      the location where the hotel is located
+                  result.neighborhood:
+                    type: string
+                    description: '*name of the neighborhood where the hotel is located*'
+                  result.neighborhood_description:
+                    type: string
+                    description: >-
+                      *description of the neighborhood where the hotel is
+                      located*
+                  result.maps_url:
+                    type: string
+                    description: '*url to the location of the hotel in google maps*'
+                  result.overall_score:
+                    type: number
+                    description: >-
+                      *overall score of the hotel location* indicates the
+                      overall score of the hotel’s location in the range from 1
+                      to 5; calculated based on data from the hotel’s proximity
+                      to nearby things to do and restaurants, transportation,
+                      and airports; note that the criteria are not weighted
+                      equally in the overall score
+                  result.score_by_categories:
+                    type: object
+                    description: >-
+                      *category scores of the hotel location* the scores of the
+                      hotel’s location tied to the categories that indicate the
+                      proximity to nearby things to do, restaurants,
+                      transportation, and airports;
+                  result.overall:
+                    type: number
+                    description: >-
+                      *overall score of the hotel location* indicates the
+                      overall score of the hotel’s location in the range from 1
+                      to 5; calculated based on data from the hotel’s proximity
+                      to nearby things to do and restaurants, transportation,
+                      and airports; note that the criteria are not weighted
+                      equally in the overall score
+                  result.things_to_do:
+                    type: number
+                    description: >-
+                      *score relative to nearby things to do* indicates the
+                      score of the hotel’s location in the range from 1 to 5;
+                      calculated based on data from the hotel’s proximity to
+                      nearby things to do
+                  result.restaurants:
+                    type: number
+                    description: >-
+                      *score relative to nearby restaurants* indicates the score
+                      of the hotel’s location in the range from 1 to 5;
+                      calculated based on data from the hotel’s proximity to
+                      nearby restaurants
+                  result.transit:
+                    type: number
+                    description: >-
+                      *score relative to nearby transit options* indicates the
+                      score of the hotel’s location in the range from 1 to 5;
+                      calculated based on data from the hotel’s proximity to
+                      nearby transit options
+                  result.airport_access:
+                    type: number
+                    description: >-
+                      *score relative to nearby airports* indicates the score of
+                      the hotel’s location in the range from 1 to 5; calculated
+                      based on data from the hotel’s proximity to nearby
+                      airports
+                  result.latitude:
+                    type: number
+                    description: >-
+                      *hotel latitude* latitude coordinates of the hotel’s
+                      location example: `39.4806397`
+                  result.longitude:
+                    type: number
+                    description: >-
+                      *hotel longitude* latitude coordinates of the hotel’s
+                      location example: `-106.0512973`
+                  result.location_chain:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      *elements of the location chain* additional parameters of
+                      each element of the location chain
+                  result.card_id:
+                    type: string
+                    description: '*card identifier*'
+                  result.feature_id:
+                    type: string
+                    description: >-
+                      *feature identifier* learn more about the identifier in
+                      [this help center
+                      article](https://dataforseo.com/help-center/what-is-cid-place-id-feature-id)
+                  result.cid:
+                    type: string
+                    description: >-
+                      *client id* learn more about the identifier in [this help
+                      center
+                      article](https://dataforseo.com/help-center/what-is-cid-place-id-feature-id)
+                  result.reviews:
+                    type: object
+                    description: >-
+                      *hotel reviews by criteria* information about reviews of
+                      the hotel entity
+                  result.value:
+                    type: number
+                    description: >-
+                      *rating value* value of the rating enclosed in the review
+                      possible values: `CustomMax` – value in the range from 1
+                      to 10 `Max5` – value in the range from 1 to 5
+                  result.votes_count:
+                    type: integer
+                    description: '*votes count* the number of votes enclosed in the review'
+                  result.mentions:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      *hotel mentions* information about hotel reviews by
+                      criteria
+                  result.positive_score:
+                    type: number
+                    description: '*positive score by criterion*'
+                  result.positive_count:
+                    type: integer
+                    description: '*count of positive reviews by criterion*'
+                  result.negative_count:
+                    type: integer
+                    description: '*count of negative reviews by criterion*'
+                  result.total_count:
+                    type: integer
+                    description: '*count of all reviews by criterion*'
+                  result.visible_by_default:
+                    type: boolean
+                    description: >-
+                      *element is visible by default* indicates whether the
+                      review element is visible by default
+                  result.rating_distribution:
+                    type: object
+                    description: >-
+                      *rating distribution by votes* the distribution of votes
+                      across the rating in the range from 1 to 5
+                  result.5:
+                    type: integer
+                    description: '*votes for the 5-points rating*'
+                  result.4:
+                    type: integer
+                    description: '*votes for the 4-points rating*'
+                  result.3:
+                    type: integer
+                    description: '*votes for the 3-points rating*'
+                  result.2:
+                    type: integer
+                    description: '*votes for the 2-points rating*'
+                  result.1:
+                    type: integer
+                    description: '*votes for the 1-point rating*'
+                  result.other_sites_reviews:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      *reviews on third-party sites* reviews from third-paty
+                      sites
+                  result.review_text:
+                    type: string
+                    description: '*review text* text of the review'
+                  result.rating:
+                    type: object
+                    description: >-
+                      *rating in the review* information about the rating
+                      enclosed in the review on a third-party site
+                  result.rating_type:
+                    type: string
+                    description: >-
+                      *rating type* the type of rating enclosed in the review
+                      possible values: `CustomMax`, `Max5`
+                  result.rating_max:
+                    type: integer
+                    description: >-
+                      *maximal value of the rating* the maximal value for the
+                      `rating_type`
+                  result.overview_images:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      *images displayed in the hotel overview* array containing
+                      URLs to images displayed in the hotel overview
+                  result.prices:
+                    type: object
+                    description: >-
+                      *pricing details of the hotel entity* contains information
+                      about the hotel’s prices
+                  result.price:
+                    type: integer
+                    description: >-
+                      *price per night* the price per night for staying at the
+                      hotel on a specific date
+                  result.price_without_discount:
+                    type: integer
+                    description: >-
+                      *price without discount* the price of the stay in the
+                      hotel per night, with no discount applied
+                  result.currency:
+                    type: string
+                    description: '*price currency* example: `USD`'
+                  result.discount_text:
+                    type: string
+                    description: '*text of the discount*'
+                  result.check_in:
+                    type: string
+                    description: >-
+                      *check-in date and tine* in the UTC format: “yyyy-mm-dd
+                      hh-mm-ss +00:00” example: `2019-11-15 12:57:46 +00:00`
+                  result.check_out:
+                    type: string
+                    description: >-
+                      *check-out date and tine* in the UTC format: “yyyy-mm-dd
+                      hh-mm-ss +00:00” example: `2019-11-15 12:57:46 +00:00`
+                  result.visitors:
+                    type: integer
+                    description: '*number of visitors*'
+                  result.type:
+                    type: string
+                    description: '*type = **‘hotel\_info\_price\_offer’***'
+                  result.is_paid:
+                    type: boolean
+                    description: >-
+                      *indicates a paid booking link* if `true`, related
+                      `hotel_info_price` item is a hotel ad if `false`, related
+                      `hotel_info_price` item is a free booking link
+                  result.free_cancellation_until:
+                    type: string
+                    description: >-
+                      *date until free cancellation is available* in the UTC
+                      format: “yyyy-mm-dd hh-mm-ss +00:00” equals `null` if free
+                      cancellation is not available for the selected dates
+                  result.offers:
+                    type: array
+                    items:
+                      type: string
+                    description: '*featured price offers*'
+                  result.max_visitors:
+                    type: integer
+                    description: >-
+                      *the maximal number of visitors* the maximum number of
+                      visitors for which the price offer is valid
+                  result.offer_images:
+                    type: array
+                    items:
+                      type: string
+                    description: >-
+                      *price offer images* URLs of the images featured in the
+                      price offer
+                  result.prices_by_dates:
+                    type: array
+                    items:
+                      type: string
+                    description: '*array of objects with hotel stay prices by dates*'
+                  result.check_in_date:
+                    type: string
+                    description: >-
+                      *check-in date* in the UTC format: “yyyy-mm-dd hh-mm-ss
+                      +00:00” example: `2025-05-20 12:00:00 +00:00`
+                  result.check_out_date:
+                    type: string
+                    description: >-
+                      *check-out date* in the UTC format: “yyyy-mm-dd hh-mm-ss
+                      +00:00” example: `2025-05-21 12:00:00 +00:00`
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+````

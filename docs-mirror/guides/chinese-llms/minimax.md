@@ -1,0 +1,51 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# MiniMax API - Access MiniMax Models via AIsa
+
+> Current AIsa guide to MiniMax model IDs, context windows, capabilities, endpoints, and prices, including MiniMax-M2.5 and MiniMax-M3.
+
+AIsa gives you access to MiniMax models with a single OpenAI-compatible API key. The current catalog includes `MiniMax-M2.5` for cost-efficient text/coding and `MiniMax-M3` for 1M-token context with vision/video capability tags.
+
+`MiniMax-M2.5` uses `POST /v1/chat/completions`. `MiniMax-M3` exposes `POST /v1/messages`, `POST /v1/chat/completions`, and `POST /v1/responses`.
+
+## Supported MiniMax models
+
+| Model ID       |   Context | Capabilities                | Input / 1M | Output / 1M | Best for                                     |
+| -------------- | --------: | --------------------------- | ---------: | ----------: | -------------------------------------------- |
+| `MiniMax-M2.5` |   262,144 | Coding, Text                |   \$0.2100 |    \$0.8400 | Cost-efficient long-document text and coding |
+| `MiniMax-M3`   | 1,000,000 | Coding, Text, Video, Vision |   \$0.2100 |    \$0.8400 | 1M-context reasoning with vision/video tags  |
+
+## Quickstart
+
+```python theme={null}
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_AISA_API_KEY", base_url="https://api.aisa.one/v1")
+
+response = client.chat.completions.create(
+    model="MiniMax-M3",
+    messages=[{"role": "user", "content": "Summarize this long research packet and extract action items."}]
+)
+print(response.choices[0].message.content)
+```
+
+## Common choices
+
+| Need                                                  | Use            |
+| ----------------------------------------------------- | -------------- |
+| Cost-efficient text and coding                        | `MiniMax-M2.5` |
+| 1M-token context                                      | `MiniMax-M3`   |
+| Anthropic Messages or OpenAI Responses endpoint style | `MiniMax-M3`   |
+| Vision or video-capability tags                       | `MiniMax-M3`   |
+
+## Data privacy
+
+MiniMax requests through AIsa are covered by AIsa's enterprise agreement with MiniMax. Customer data is not used for model training. For compliance requirements, [contact us](mailto:developer@aisa.one).
+
+## Next
+
+* [All Chinese AI models](/guides/chinese-llms)
+* [Kimi models](/guides/chinese-llms/kimi)
+* [GLM models](/guides/chinese-llms/glm)

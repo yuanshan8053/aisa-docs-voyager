@@ -1,0 +1,55 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# DeepSeek API - Access DeepSeek Models via AIsa
+
+> Current AIsa guide to DeepSeek model IDs, context windows, endpoints, and prices, including deepseek-r1, deepseek-v3, deepseek-v3.1, deepseek-v3.2, deepseek-v4-flash, and deepseek-v4-pro.
+
+AIsa gives you OpenAI-compatible access to the current DeepSeek model family with one API key, unified billing, usage logs, and gateway routing.
+
+`deepseek-v4-pro` exposes `POST /v1/messages`, `POST /v1/chat/completions`, and `POST /v1/responses`. Other DeepSeek routes in the current catalog use `POST /v1/chat/completions`.
+
+## Supported DeepSeek models
+
+| Model ID            | Context | Capabilities | Input / 1M | Output / 1M | Best for                                              |
+| ------------------- | ------: | ------------ | ---------: | ----------: | ----------------------------------------------------- |
+| `deepseek-r1`       | 262,144 | Coding, Text |   \$0.4018 |    \$1.6058 | Reasoning-heavy tasks                                 |
+| `deepseek-v3`       | 262,144 | Coding, Text |   \$0.2009 |    \$0.8029 | Low-cost general and coding work                      |
+| `deepseek-v3.1`     | 262,144 | Coding, Text |   \$0.4018 |    \$1.2047 | Balanced reasoning and coding                         |
+| `deepseek-v3.2`     | 128,000 | Coding, Text |   \$0.2009 |    \$0.3017 | Very low-cost general use                             |
+| `deepseek-v4-flash` | 262,144 | Coding, Text |   \$0.0980 |    \$0.1960 | Lowest-cost high-throughput DeepSeek route            |
+| `deepseek-v4-pro`   | 262,144 | Coding, Text |   \$0.3045 |    \$0.6090 | Stronger DeepSeek route with multiple endpoint styles |
+
+## Quickstart
+
+```python theme={null}
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_AISA_API_KEY", base_url="https://api.aisa.one/v1")
+
+response = client.chat.completions.create(
+    model="deepseek-v4-flash",
+    messages=[{"role": "user", "content": "Review this pull request for security and correctness."}]
+)
+print(response.choices[0].message.content)
+```
+
+## Common choices
+
+| Need                                         | Use                 |
+| -------------------------------------------- | ------------------- |
+| Cheapest DeepSeek text/coding                | `deepseek-v4-flash` |
+| General current DeepSeek route               | `deepseek-v3.2`     |
+| Reasoning-focused route                      | `deepseek-r1`       |
+| Messages or Responses endpoint compatibility | `deepseek-v4-pro`   |
+
+## Data privacy
+
+AIsa routes DeepSeek requests through an enterprise-backed aggregation path. Customer data is not used for model training under AIsa's enterprise agreements. For compliance details, [contact us](mailto:developer@aisa.one).
+
+## Next
+
+* [All Chinese AI models](/guides/chinese-llms)
+* [Qwen models](/guides/chinese-llms/qwen)
+* [AI model pricing](/guides/pricing/ai-model-pricing-llm-inference)

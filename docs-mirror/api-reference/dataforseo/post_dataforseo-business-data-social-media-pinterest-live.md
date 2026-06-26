@@ -1,0 +1,178 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://aisa.one/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Live Social Media Pinterest Tasks
+
+> Social Media Pinterest API will provide you with data on pins made from the specified URLs.
+
+
+
+## OpenAPI
+
+````yaml openapi/dataforseo.json POST /dataforseo/business_data/social_media/pinterest/live
+openapi: 3.0.3
+info:
+  title: DataForSEO API
+  version: 1.0.0
+  description: DataForSEO API endpoints exposed through the AIsa unified gateway.
+servers:
+  - url: https://api.aisa.one/apis/v1
+security:
+  - BearerAuth: []
+paths:
+  /dataforseo/business_data/social_media/pinterest/live:
+    post:
+      summary: Live Social Media Pinterest Tasks
+      description: >-
+        Social Media Pinterest API will provide you with data on pins made from
+        the specified URLs. [Pins on
+        Pinterest](https://help.pinterest.com/en/business/article/build-a-pin)
+        correspond to content saves. For each specified page URL, you will get
+        the number of content saves to Pinterest made using the [Pinterest Save
+        Button](https://developers.pinterest.com/docs/widgets/save/?) placed on
+        that page.
+      operationId: post_dataforseo_business_data_social_media_pinterest_live
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                targets:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    *target URLs* **required field** target page should be
+                    specified with its absolute URL (including http:// or
+                    https://) example: `https://dataforseo.com/`**Note:** you
+                    can specify 10 targets maximum. You will be charged per
+                    earch URL you specify in this array
+                tag:
+                  type: string
+                  description: >-
+                    *user-defined task identifier* optional field *the character
+                    limit is 255* you can use this parameter to identify the
+                    task and match it with the result you will find the
+                    specified `tag` value in the `data` object of the response
+              required:
+                - targets
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: '*the current version of the API*'
+                  version.status_code:
+                    type: integer
+                    description: >-
+                      *general status code* you can find the full list of the
+                      response codes
+                      [here](https://docs.dataforseo.com/v3/appendix/errors.md)
+                      **Note:** we strongly recommend designing a necessary
+                      system for handling related exceptional or error
+                      conditions
+                  version.status_message:
+                    type: string
+                    description: >-
+                      *general informational message* you can find the full list
+                      of general informational messages
+                      [here](https://docs.dataforseo.com/v3/appendix/errors.md)
+                  version.time:
+                    type: string
+                    description: '*execution time, seconds*'
+                  version.cost:
+                    type: number
+                    description: '*total tasks cost, USD*'
+                  version.tasks_count:
+                    type: integer
+                    description: '*the number of tasks in the **`tasks`**array*'
+                  version.tasks_error:
+                    type: integer
+                    description: >-
+                      *the number of tasks in the **`tasks`** array returned
+                      with an error*
+                  tasks:
+                    type: array
+                    items:
+                      type: string
+                    description: '*array of tasks*'
+                  tasks.id:
+                    type: string
+                    description: >-
+                      *unique task identifier in our system* in the [Universally
+                      unique identifier
+                      (UUID)](https://en.wikipedia.org/wiki/Universally_unique_identifier)
+                      format
+                  tasks.status_code:
+                    type: integer
+                    description: >-
+                      *status code of the task* generated by DataForSEO; can be
+                      within the following range: 10000-60000
+                  tasks.status_message:
+                    type: string
+                    description: '*informational message of the task*'
+                  tasks.time:
+                    type: string
+                    description: '*execution time, seconds*'
+                  tasks.cost:
+                    type: number
+                    description: '*cost of the task, USD*'
+                  tasks.result_count:
+                    type: integer
+                    description: '*number of elements in the `result` array*'
+                  tasks.path:
+                    type: array
+                    items:
+                      type: string
+                    description: '*URL path*'
+                  tasks.data:
+                    type: object
+                    description: >-
+                      *contains the same parameters that you specified in the
+                      POST request*
+                  result:
+                    type: array
+                    items:
+                      type: string
+                    description: '*array of results*'
+                  result.type:
+                    type: string
+                    description: '*type of element = **‘social\_media\_pinterest\_item’***'
+                  result.page_url:
+                    type: string
+                    description: >-
+                      *URL of the page the data is provided for* corresponding
+                      URL you specified in the `targets` array when setting a
+                      task
+                  result.pins_count:
+                    type: integer
+                    description: >-
+                      *number of pins for the related `page_url`* [pins on
+                      Pinterest](https://help.pinterest.com/en/business/article/build-a-pin)
+                      correspond to content saves; this field shows the number
+                      of content saves made from the related `page_url` using
+                      the [Pinterest Save
+                      Button](https://developers.pinterest.com/docs/widgets/save/?)
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '429':
+          description: Rate limit exceeded
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+````
