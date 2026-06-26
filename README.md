@@ -2,7 +2,7 @@
 
 > **Foresight** — 在人类发现之前,先看见文档与现实的漂移。
 
-[![Doc Reality Check](https://github.com/AIsa-team/aisa-docs-voyager/actions/workflows/doc-reality-check.yml/badge.svg)](https://github.com/AIsa-team/aisa-docs-voyager/actions/workflows/doc-reality-check.yml)
+[![Doc Reality Check](https://github.com/yuanshan8053/aisa-docs-voyager/actions/workflows/doc-reality-check.yml/badge.svg)](https://github.com/yuanshan8053/aisa-docs-voyager/actions/workflows/doc-reality-check.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 

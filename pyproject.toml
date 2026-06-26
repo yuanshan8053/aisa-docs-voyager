@@ -13,7 +13,7 @@ dependencies = []
 aisa-docs-voyager = "aisa_doc_auditor.auditor:main"
 
 [project.urls]
-Homepage = "https://github.com/AIsa-team/aisa-docs-voyager"
+Homepage = "https://github.com/yuanshan8053/aisa-docs-voyager"
 
 [build-system]
 requires = ["setuptools>=68"]
