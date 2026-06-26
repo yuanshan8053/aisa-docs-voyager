@@ -111,3 +111,8 @@
 - **决策**：按负责人本轮要求，把此前 D-017 排除的 Plant Store 示例档 `openapi`（title="OpenAPI Plant Store"，2 path / 3 op）补回站点，使英文站与中文站各覆盖 **31 份 spec**（与源 `ws-v2/` 全量一致），不再排除任何档。
 - **理由**：D-017 当初排除样例档是延续阶段一/二「疑似遗留样例」的审计判断（A.5.4）；本轮负责人明确「希望部署所有 31 个 spec」，用户指令为最高优先级，故撤回该排除。补档走与其余 30 份完全一致的确定性管线——投影器 `project_spec.py` 投影（ops=3 / fields=7 / error_tables=3）+ `check_projection.py` 三闸 en/zh 均 exit 0，无任何特例处理。
 - **影响**：新增 `ws-site/{en,zh}/openapi.json` 两份投影档 + `build_index.py` 自动重建两入口（每站 31 source，`openapi` 入侧边栏）。全量闸门复跑 **62/62 全绿**。GitHub Pages 重新部署成功（commit `6056d86`），线上 `en/zh/openapi.json` 与两入口均 HTTP 200。报告 `reports/scalar-api-site-2026-06-26.md` §5 决断一（样例档去留）据此更新为「按负责人要求纳入」。
+
+### D-019 · 撤回 D-018：站点只部署 30 份 AIsa 真实 spec，剔除玩具示例 openapi(Plant Store)
+- **决策**：撤回 D-018，站点恢复为 **30 份 AIsa 真实 spec**，移除 `openapi`（"OpenAPI Plant Store"，OpenAPI 官方卖植物玩具示例，与 AIsa 网关无关）。最终口径与 `baselines/FACTS.zh-CN.md` 的「31→30 spec」一致：源 `ws-v2/` 31 份含 1 份玩具，AIsa 真实 spec 恰为 30 份。
+- **理由**：D-018 把「部署所有 spec」误解为「凑齐 31 份」从而补进玩具；负责人本轮澄清真实意图是「部署 AIsa 所有 spec，而非玩具示例」。AIsa 真实 spec 全集本就是 30 份，故移除玩具即满足「全部 AIsa spec」。这印证 D-017 当初排除样例档的判断是对的——D-018 是一次基于数字误读的临时往返，D-019 回到正确口径。
+- **影响**：删 `ws-site/{en,zh}/openapi.json`，`build_index.py` 重建两入口（每站 30 source）。全量闸门复跑 **60/60 全绿**。GitHub Pages 重新部署成功（commit `bbb4f9d`）：线上 `en/openapi.json` 返回 404（玩具已下线）、`en/openai-chat.json` 等 AIsa 档与两入口均 200。报告 `reports/scalar-api-site-2026-06-26.md` §0 元信息与 §5 决断一据此回正为「30 份 AIsa 真实 spec，剔除玩具」。
