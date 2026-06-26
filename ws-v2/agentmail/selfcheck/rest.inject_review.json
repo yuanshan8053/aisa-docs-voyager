@@ -1,0 +1,1180 @@
+{
+  "stats": {
+    "operations": 13,
+    "fields": 260,
+    "protected_skipped": 0,
+    "unresolved": 234
+  },
+  "entries": [
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..draft_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..client_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..cc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..bcc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..html",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..in_reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..references",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..send_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..send_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..entry",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..organization_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..reason",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..direction",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..list_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..entry_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads/{thread_id}.get.responses.200..read_only",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.inbox_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.thread_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.labels",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.received_timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.sent_timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.senders",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.recipients",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.subject",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.preview",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.attachments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.attachments.attachment_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.attachments.filename",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.attachments.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.attachments.content_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.attachments.content_disposition",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.attachments.content_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.last_message_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.message_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.updated_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..threads.created_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.inbox_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.draft_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.labels",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.cc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.bcc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.subject",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.preview",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.attachments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.attachments.attachment_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.attachments.filename",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.attachments.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.attachments.content_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.attachments.content_disposition",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.attachments.content_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.in_reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.send_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.send_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.200..drafts.updated_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.404..name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}.get.responses.404..message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.inbox_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.draft_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.labels",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.cc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.bcc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.subject",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.preview",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.attachments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.attachments.attachment_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.attachments.filename",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.attachments.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.attachments.content_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.attachments.content_disposition",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.attachments.content_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.in_reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.send_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.send_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..drafts.updated_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries.entry",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries.organization_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries.reason",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries.direction",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries.list_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries.entry_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries.created_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/threads.get.responses.200..entries.read_only",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..inbox_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..thread_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..draft_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..client_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..labels",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..cc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..bcc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..subject",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..preview",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..html",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..in_reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..references",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..send_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..send_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..attachments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..attachments.attachment_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..attachments.filename",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..attachments.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..attachments.content_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..attachments.content_disposition",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..attachments.content_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.inbox_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.thread_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.message_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.labels",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.from",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.cc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.bcc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.subject",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.preview",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.html",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.extracted_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.extracted_html",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.attachments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.attachments.attachment_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.attachments.filename",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.attachments.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.attachments.content_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.attachments.content_disposition",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.attachments.content_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.in_reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.references",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.headers",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.updated_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..messages.created_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..last_message_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..message_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..received_timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..sent_timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..senders",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..recipients",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/lists/{direction}/{type}/{entry}.get.responses.200..updated_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.inbox_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.thread_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.labels",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.received_timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.sent_timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.senders",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.recipients",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.subject",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.preview",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.attachments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.attachments.attachment_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.attachments.filename",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.attachments.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.attachments.content_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.attachments.content_disposition",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.attachments.content_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.last_message_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.message_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.updated_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..threads.created_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries.entry",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries.organization_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries.reason",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries.direction",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries.list_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries.entry_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries.created_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts.get.responses.200..entries.read_only",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..thread_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.inbox_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.thread_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.message_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.labels",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.from",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.cc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.bcc",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.subject",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.preview",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.html",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.extracted_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.extracted_html",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.attachments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.attachments.attachment_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.attachments.filename",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.attachments.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.attachments.content_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.attachments.content_disposition",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.attachments.content_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.in_reply_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.references",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.headers",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.updated_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..messages.created_at",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..last_message_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..message_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..received_timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..sent_timestamp",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..senders",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..recipients",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..entry",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..organization_id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..reason",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..direction",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..list_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..entry_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./agentmail/drafts/{draft_id}.get.responses.200..read_only",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    }
+  ]
+}

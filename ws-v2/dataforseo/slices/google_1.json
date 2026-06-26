@@ -1,0 +1,5213 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "DataForSEO API",
+    "version": "1.0.0",
+    "description": "DataForSEO API endpoints exposed through the AIsa unified gateway."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/dataforseo/serp/google/organic/task_get/regular/{id}": {
+      "get": {
+        "summary": "Get Google Organic SERP Results by id",
+        "description": "Get Google Organic SERP Results by id. Retrieve regular task results for a posted task within 30 days at no extra charge.",
+        "operationId": "get_dataforseo_serp_google_organic_task_get_regular_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "API version"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Task cost in USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "Number of tasks returned"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "Number of tasks returned with an error"
+                    },
+                    "tasks": {
+                      "type": "string",
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].result": {
+                      "type": "string",
+                      "description": "Result array for the task"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/organic/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Organic SERP Advanced Results by id",
+        "description": "Get Google Organic SERP Advanced Results by id. Retrieve advanced task results for a posted task within 30 days at no extra charge.",
+        "operationId": "get_dataforseo_serp_google_organic_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "API version"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Task cost in USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "Number of tasks returned"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "Number of tasks returned with an error"
+                    },
+                    "tasks": {
+                      "type": "string",
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].result": {
+                      "type": "string",
+                      "description": "Advanced result array for the task"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/organic/tasks_ready": {
+      "get": {
+        "summary": "Get Organic SERP Completed Tasks",
+        "description": "Get Organic SERP Completed Tasks. Returns a list of completed standard tasks ready for retrieval.",
+        "operationId": "get_dataforseo_serp_google_organic_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "API version"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Request cost in USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "Number of tasks returned"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "Number of tasks returned with an error"
+                    },
+                    "tasks": {
+                      "type": "string",
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].result": {
+                      "type": "string",
+                      "description": "Completed task list"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Completed task identifier"
+                    },
+                    "tasks[].result[].endpoint_regular": {
+                      "type": "string",
+                      "description": "Regular results endpoint"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "Advanced results endpoint"
+                    },
+                    "tasks[].result[].endpoint_html": {
+                      "type": "string",
+                      "description": "HTML results endpoint"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/organic/live/html": {
+      "post": {
+        "summary": "Live Google Organic SERP HTML",
+        "description": "Live Google Organic SERP HTML. Returns raw HTML immediately. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_organic_live_html",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "API version"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Request cost in USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "Number of tasks returned"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "Number of tasks returned with an error"
+                    },
+                    "tasks": {
+                      "type": "string",
+                      "description": "Array of live task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].result": {
+                      "type": "string",
+                      "description": "Result array containing HTML pages"
+                    },
+                    "tasks[].result[].items": {
+                      "type": "string",
+                      "description": "HTML page items"
+                    },
+                    "tasks[].result[].items[].html": {
+                      "type": "string",
+                      "description": "Raw HTML page content"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "Direct URL of the search query"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "location_coordinate": {
+                    "type": "string",
+                    "description": "GPS coordinates of a location"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "device": {
+                    "type": "string",
+                    "description": "Device type: desktop or mobile"
+                  },
+                  "os": {
+                    "type": "string",
+                    "description": "Device operating system"
+                  },
+                  "se_domain": {
+                    "type": "string",
+                    "description": "Custom search engine domain"
+                  },
+                  "depth": {
+                    "type": "integer",
+                    "description": "Parsing depth, default 100, max 700"
+                  },
+                  "max_crawl_pages": {
+                    "type": "integer",
+                    "description": "Page crawl limit, max 100"
+                  },
+                  "search_param": {
+                    "type": "string",
+                    "description": "Additional parameters of the search query"
+                  },
+                  "load_async_ai_overview": {
+                    "type": "boolean",
+                    "description": "Load asynchronous AI overview"
+                  },
+                  "expand_ai_overview": {
+                    "type": "boolean",
+                    "description": "Expand AI overview item"
+                  },
+                  "tag": {
+                    "type": "string",
+                    "description": "User-defined task identifier"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ai_mode/languages": {
+      "get": {
+        "summary": "List of Google AI Mode Languages for SERP",
+        "description": "You will receive the list of languages by calling this API. Your account will not be charged for using this API.",
+        "operationId": "get_dataforseo_serp_google_ai_mode_languages",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of available languages"
+                    },
+                    "tasks[].result[].language_name": {
+                      "type": "string",
+                      "description": "Language name"
+                    },
+                    "tasks[].result[].language_code": {
+                      "type": "string",
+                      "description": "Language code"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ai_mode/tasks_ready": {
+      "get": {
+        "summary": "Get Ai Mode SERP Completed Tasks",
+        "description": "Returns the list of completed tasks that have not been collected yet. If postback_url was specified, tasks appear here only when delivery to your server failed. You can make up to 20 API calls per minute and get up to 1000 tasks completed within the previous three days per call.",
+        "operationId": "get_dataforseo_serp_google_ai_mode_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier in UUID format"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].path": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "URL path"
+                    },
+                    "tasks[].data": {
+                      "type": "object",
+                      "description": "Contains the parameters passed in the request URL"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].se": {
+                      "type": "string",
+                      "description": "Search engine specified when setting the task"
+                    },
+                    "tasks[].result[].se_type": {
+                      "type": "string",
+                      "description": "Type of search engine"
+                    },
+                    "tasks[].result[].date_posted": {
+                      "type": "string",
+                      "description": "Date when the task was posted in UTC format"
+                    },
+                    "tasks[].result[].tag": {
+                      "type": "string",
+                      "description": "User-defined task identifier"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting SERP Advanced results"
+                    },
+                    "tasks[].result[].endpoint_html": {
+                      "type": "string",
+                      "description": "URL for collecting SERP HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ai_mode/task_get/html/{id}": {
+      "get": {
+        "summary": "Get Google Ai Mode HTML Results by id",
+        "description": "Retrieve Google AI Mode HTML results by task id. The task-get HTML endpoint is referenced from the AI Mode catalog and completed-task endpoint list; path placeholder normalized from $id to {id}.",
+        "operationId": "get_dataforseo_serp_google_ai_mode_task_get_html_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].path": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "URL path"
+                    },
+                    "tasks[].data": {
+                      "type": "object",
+                      "description": "Contains the same parameters specified in the POST request"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ai_mode/live/html": {
+      "post": {
+        "summary": "Live Google Ai Mode SERP HTML",
+        "description": "Returns raw HTML of Google AI Mode SERP results in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_ai_mode_live_html",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].path": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "URL path"
+                    },
+                    "tasks[].data": {
+                      "type": "object",
+                      "description": "Contains the same parameters specified in the POST request"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    },
+                    "tasks[].result[].keyword": {
+                      "type": "string",
+                      "description": "Keyword received in the POST array"
+                    },
+                    "tasks[].result[].type": {
+                      "type": "string",
+                      "description": "Search engine type in the POST array"
+                    },
+                    "tasks[].result[].se_domain": {
+                      "type": "string",
+                      "description": "Search engine domain in the POST array"
+                    },
+                    "tasks[].result[].location_code": {
+                      "type": "integer",
+                      "description": "Location code in the POST array"
+                    },
+                    "tasks[].result[].language_code": {
+                      "type": "string",
+                      "description": "Language code in the POST array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Keyword; you can specify up to 700 characters"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location; required if location_code or location_coordinate is not specified"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code; required if location_name or location_coordinate is not specified"
+                  },
+                  "location_coordinate": {
+                    "type": "string",
+                    "description": "GPS coordinates of a location; required if location_name or location_code is not specified"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language; required if language_code is not specified"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code; required if language_name is not specified"
+                  },
+                  "device": {
+                    "type": "string",
+                    "description": "Device type: desktop or mobile"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/maps/tasks_ready": {
+      "get": {
+        "summary": "Get Maps SERP Completed Tasks",
+        "description": "Get Maps SERP Completed Tasks. Returns a list of completed tasks that have not been collected yet. Up to 1000 tasks completed within the previous 3 days can be returned per call.",
+        "operationId": "get_dataforseo_serp_google_maps_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].se": {
+                      "type": "string",
+                      "description": "Search engine specified when setting the task"
+                    },
+                    "tasks[].result[].se_type": {
+                      "type": "string",
+                      "description": "Type of search engine"
+                    },
+                    "tasks[].result[].date_posted": {
+                      "type": "string",
+                      "description": "Date when the task was posted in UTC format"
+                    },
+                    "tasks[].result[].tag": {
+                      "type": "string",
+                      "description": "User-defined task identifier"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting SERP Advanced results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/maps/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Maps SERP Advanced Results by id",
+        "description": "Get Google Maps SERP Advanced Results by id. Results can be retrieved by task id within the retention window after posting the task.",
+        "operationId": "get_dataforseo_serp_google_maps_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].data": {
+                      "type": "object",
+                      "description": "Contains the same parameters specified in the POST request"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advanced SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/local_finder/tasks_ready": {
+      "get": {
+        "summary": "Get Local Finder SERP Completed Tasks",
+        "description": "Get Local Finder SERP Completed Tasks. Returns a list of completed tasks that have not been collected yet. Up to 1000 tasks completed within the previous 3 days can be returned per call.",
+        "operationId": "get_dataforseo_serp_google_local_finder_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].se": {
+                      "type": "string",
+                      "description": "Search engine specified when setting the task"
+                    },
+                    "tasks[].result[].se_type": {
+                      "type": "string",
+                      "description": "Type of search engine"
+                    },
+                    "tasks[].result[].date_posted": {
+                      "type": "string",
+                      "description": "Date when the task was posted in UTC format"
+                    },
+                    "tasks[].result[].tag": {
+                      "type": "string",
+                      "description": "User-defined task identifier"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting SERP Advanced results"
+                    },
+                    "tasks[].result[].endpoint_html": {
+                      "type": "string",
+                      "description": "URL for collecting SERP HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/local_finder/task_get/html/{id}": {
+      "get": {
+        "summary": "Get Google Local Finder HTML Results by id",
+        "description": "Get Google Local Finder HTML Results by id. Returns HTML results for a previously posted task.",
+        "operationId": "get_dataforseo_serp_google_local_finder_task_get_html_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/local_finder/live/html": {
+      "post": {
+        "summary": "Live Google Local Finder SERP HTML",
+        "description": "Live Google Local Finder SERP HTML. Returns raw HTML of Google Local Finder SERP results in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_local_finder_live_html",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Keyword to search for"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_coordinate": {
+                    "type": "string",
+                    "description": "GPS coordinates of a location"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/news/tasks_ready": {
+      "get": {
+        "summary": "Get News SERP Completed Tasks",
+        "description": "Get News SERP Completed Tasks. Returns a list of completed tasks that have not been collected yet. Up to 1000 tasks completed within the previous 3 days can be returned per call.",
+        "operationId": "get_dataforseo_serp_google_news_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].se": {
+                      "type": "string",
+                      "description": "Search engine specified when setting the task"
+                    },
+                    "tasks[].result[].se_type": {
+                      "type": "string",
+                      "description": "Type of search engine"
+                    },
+                    "tasks[].result[].date_posted": {
+                      "type": "string",
+                      "description": "Date when the task was posted in UTC format"
+                    },
+                    "tasks[].result[].tag": {
+                      "type": "string",
+                      "description": "User-defined task identifier"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting SERP Advanced results"
+                    },
+                    "tasks[].result[].endpoint_html": {
+                      "type": "string",
+                      "description": "URL for collecting SERP HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/news/task_get/html/{id}": {
+      "get": {
+        "summary": "Get Google News HTML Results by id",
+        "description": "Get Google News HTML Results by id. Returns HTML results for a previously posted task.",
+        "operationId": "get_dataforseo_serp_google_news_task_get_html_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/news/live/html": {
+      "post": {
+        "summary": "Live Google News SERP HTML",
+        "description": "Live Google News SERP HTML. Returns raw HTML of Google News SERP results in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_news_live_html",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Keyword to search for"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_coordinate": {
+                    "type": "string",
+                    "description": "GPS coordinates of a location"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/events/locations": {
+      "get": {
+        "summary": "List of Google Events Locations for SERP API",
+        "description": "List of Google Events Locations for SERP API. Returns the list of supported locations for Google Events SERP. Your account is not charged for using this endpoint.",
+        "operationId": "get_dataforseo_serp_google_events_locations",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of available locations"
+                    },
+                    "tasks[].result[].location_code": {
+                      "type": "integer",
+                      "description": "Location code"
+                    },
+                    "tasks[].result[].location_name": {
+                      "type": "string",
+                      "description": "Location name"
+                    },
+                    "tasks[].result[].location_code_parent": {
+                      "type": "integer",
+                      "description": "Parent location code"
+                    },
+                    "tasks[].result[].country_iso_code": {
+                      "type": "string",
+                      "description": "Country ISO code"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/events/task_post": {
+      "post": {
+        "summary": "Setting Google Events SERP Tasks",
+        "description": "Setting Google Events SERP Tasks. Your account is charged only for setting a task. You can send up to 100 tasks per POST call and retrieve completed results later by task id or via postback/pingback.",
+        "operationId": "post_dataforseo_serp_google_events_task_post",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier in UUID format"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Keyword to search for"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_coordinate": {
+                    "type": "string",
+                    "description": "GPS coordinates of a location"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "description": "Task priority"
+                  },
+                  "postback_url": {
+                    "type": "string",
+                    "description": "URL for sending task results"
+                  },
+                  "pingback_url": {
+                    "type": "string",
+                    "description": "Notification URL of a completed task"
+                  },
+                  "postback_data": {
+                    "type": "string",
+                    "description": "Postback datatype"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/images/task_post": {
+      "post": {
+        "summary": "Setting Google Images SERP Tasks",
+        "description": "Setting Google Images SERP Tasks. Your account is charged only for setting a task. You can send up to 100 tasks per POST call and retrieve completed results later by task id or via postback/pingback.",
+        "operationId": "post_dataforseo_serp_google_images_task_post",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier in UUID format"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Keyword to search for"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_coordinate": {
+                    "type": "string",
+                    "description": "GPS coordinates of a location"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "device": {
+                    "type": "string",
+                    "description": "Device type: desktop or mobile"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "description": "Task priority"
+                  },
+                  "postback_url": {
+                    "type": "string",
+                    "description": "URL for sending task results"
+                  },
+                  "pingback_url": {
+                    "type": "string",
+                    "description": "Notification URL of a completed task"
+                  },
+                  "postback_data": {
+                    "type": "string",
+                    "description": "Postback datatype; possible values include regular, advanced, html"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/images/task_get/html/{id}": {
+      "get": {
+        "summary": "Get Google Images HTML Results by id",
+        "description": "Get Google Images HTML Results by id. Returns HTML results for a previously posted task.",
+        "operationId": "get_dataforseo_serp_google_images_task_get_html_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/images/live/advanced": {
+      "post": {
+        "summary": "Live Google Images SERP",
+        "description": "Live Google Images SERP. Returns Google Images SERP results in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_images_live_advanced",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of live SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Keyword to search for"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_coordinate": {
+                    "type": "string",
+                    "description": "GPS coordinates of a location"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "device": {
+                    "type": "string",
+                    "description": "Device type: desktop or mobile"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/search_by_image/tasks_ready": {
+      "get": {
+        "summary": "Get Search By Image SERP Completed Tasks",
+        "description": "Get Search By Image SERP Completed Tasks. Returns a list of completed tasks that have not been collected yet. Up to 1000 tasks completed within the previous 3 days can be returned per call.",
+        "operationId": "get_dataforseo_serp_google_search_by_image_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].se": {
+                      "type": "string",
+                      "description": "Search engine specified when setting the task"
+                    },
+                    "tasks[].result[].se_type": {
+                      "type": "string",
+                      "description": "Type of search engine"
+                    },
+                    "tasks[].result[].date_posted": {
+                      "type": "string",
+                      "description": "Date when the task was posted in UTC format"
+                    },
+                    "tasks[].result[].tag": {
+                      "type": "string",
+                      "description": "User-defined task identifier"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting SERP Advanced results"
+                    },
+                    "tasks[].result[].endpoint_html": {
+                      "type": "string",
+                      "description": "URL for collecting SERP HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/search_by_image/task_get/html/{id}": {
+      "get": {
+        "summary": "Get Google Search By Image HTML Results by id",
+        "description": "Get Google Search By Image HTML Results by id. Returns HTML results for a previously posted task.",
+        "operationId": "get_dataforseo_serp_google_search_by_image_task_get_html_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/jobs/locations": {
+      "get": {
+        "summary": "List of Google Jobs Locations for SERP API",
+        "description": "List of Google Jobs Locations for SERP API. Returns the list of supported locations for Google Jobs SERP. Your account is not charged for using this endpoint.",
+        "operationId": "get_dataforseo_serp_google_jobs_locations",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of available locations"
+                    },
+                    "tasks[].result[].location_code": {
+                      "type": "integer",
+                      "description": "Location code"
+                    },
+                    "tasks[].result[].location_name": {
+                      "type": "string",
+                      "description": "Location name"
+                    },
+                    "tasks[].result[].location_code_parent": {
+                      "type": "integer",
+                      "description": "Parent location code"
+                    },
+                    "tasks[].result[].country_iso_code": {
+                      "type": "string",
+                      "description": "Country ISO code"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/jobs/tasks_ready": {
+      "get": {
+        "summary": "Get Jobs SERP Completed Tasks",
+        "description": "Get Jobs SERP Completed Tasks. Returns a list of completed tasks that have not been collected yet. Up to 1000 tasks completed within the previous 3 days can be returned per call.",
+        "operationId": "get_dataforseo_serp_google_jobs_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].se": {
+                      "type": "string",
+                      "description": "Search engine specified when setting the task"
+                    },
+                    "tasks[].result[].se_type": {
+                      "type": "string",
+                      "description": "Type of search engine"
+                    },
+                    "tasks[].result[].date_posted": {
+                      "type": "string",
+                      "description": "Date when the task was posted in UTC format"
+                    },
+                    "tasks[].result[].tag": {
+                      "type": "string",
+                      "description": "User-defined task identifier"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting SERP Advanced results"
+                    },
+                    "tasks[].result[].endpoint_html": {
+                      "type": "string",
+                      "description": "URL for collecting SERP HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/jobs/task_get/html/{id}": {
+      "get": {
+        "summary": "Get Google Jobs HTML Results by id",
+        "description": "Get Google Jobs HTML Results by id. Returns HTML results for a previously posted task.",
+        "operationId": "get_dataforseo_serp_google_jobs_task_get_html_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of HTML results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/autocomplete/tasks_ready": {
+      "get": {
+        "summary": "Get Autocomplete SERP Completed Tasks",
+        "description": "Get Autocomplete SERP Completed Tasks. Returns completed Google Autocomplete tasks that have not been collected yet.",
+        "operationId": "get_dataforseo_serp_google_autocomplete_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting advanced results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/autocomplete/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Autocomplete Advanced Results by id",
+        "description": "Get Google Autocomplete Advanced Results by id. You can retrieve completed task results by task id within the retention period.",
+        "operationId": "get_dataforseo_serp_google_autocomplete_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].data": {
+                      "type": "object",
+                      "description": "Contains the same parameters specified in the POST request"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advanced SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/dataset_search/tasks_ready": {
+      "get": {
+        "summary": "Get Dataset Search SERP Completed Tasks",
+        "description": "Get Dataset Search SERP Completed Tasks. Returns completed Google Dataset Search tasks that have not been collected yet.",
+        "operationId": "get_dataforseo_serp_google_dataset_search_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting advanced results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/dataset_search/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Dataset Search Advanced Results by id",
+        "description": "Get Google Dataset Search Advanced Results by id. You can retrieve completed task results by task id within the retention period.",
+        "operationId": "get_dataforseo_serp_google_dataset_search_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].data": {
+                      "type": "object",
+                      "description": "Contains the same parameters specified in the POST request"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advanced SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/dataset_info/tasks_ready": {
+      "get": {
+        "summary": "Get Dataset Info SERP Completed Tasks",
+        "description": "Get Dataset Info SERP Completed Tasks. Returns completed Google Dataset Info tasks that have not been collected yet.",
+        "operationId": "get_dataforseo_serp_google_dataset_info_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting advanced results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/dataset_info/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Dataset Info Advanced Results by id",
+        "description": "Get Google Dataset Info Advanced Results by id. You can retrieve completed task results by task id within the retention period.",
+        "operationId": "get_dataforseo_serp_google_dataset_info_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].data": {
+                      "type": "object",
+                      "description": "Contains the same parameters specified in the POST request"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advanced SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ads_advertisers/tasks_ready": {
+      "get": {
+        "summary": "Get Ads Advertisers SERP Completed Tasks",
+        "description": "Get Ads Advertisers SERP Completed Tasks. Returns completed Google Ads Advertisers tasks that have not been collected yet.",
+        "operationId": "get_dataforseo_serp_google_ads_advertisers_tasks_ready",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of completed task references"
+                    },
+                    "tasks[].result[].id": {
+                      "type": "string",
+                      "description": "Task identifier of the completed task"
+                    },
+                    "tasks[].result[].endpoint_advanced": {
+                      "type": "string",
+                      "description": "URL for collecting advanced results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ads_advertisers/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Ads Advertisers Advanced Results by id",
+        "description": "Get Google Ads Advertisers Advanced Results by id. You can retrieve completed task results by task id within the retention period.",
+        "operationId": "get_dataforseo_serp_google_ads_advertisers_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advanced SERP results"
+                    },
+                    "tasks[].result[].items": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advertisers or domains returned in SERP"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ads_advertisers/live/advanced": {
+      "post": {
+        "summary": "Live Google Ads Advertisers Advanced",
+        "description": "Live Google Ads Advertisers Advanced. Returns advertiser information from Google Ads in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_ads_advertisers_live_advanced",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of live SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Keyword to search advertisers for"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ads_search/locations": {
+      "get": {
+        "summary": "List of Google Ads Search Locations for SERP API",
+        "description": "List of Google Ads Search Locations for SERP API. Returns supported locations. Your account is not charged for using this API.",
+        "operationId": "get_dataforseo_serp_google_ads_search_locations",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of available locations"
+                    },
+                    "tasks[].result[].location_code": {
+                      "type": "integer",
+                      "description": "Location code"
+                    },
+                    "tasks[].result[].location_name": {
+                      "type": "string",
+                      "description": "Location name"
+                    },
+                    "tasks[].result[].country_iso_code": {
+                      "type": "string",
+                      "description": "Country ISO code"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/ads_search/task_post": {
+      "post": {
+        "summary": "Setting Google Ads Search SERP Tasks",
+        "description": "Setting Google Ads Search SERP Tasks. Returns ads run by advertisers on Google Ads. Historical data is available from 2018-05-31. Your account is charged only for setting a task.",
+        "operationId": "post_dataforseo_serp_google_ads_search_task_post",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier in UUID format"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "advertiser_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Advertiser identifiers; required if target is not specified"
+                  },
+                  "target": {
+                    "type": "string",
+                    "description": "Domain name associated with an advertiser account; required if advertiser_ids is not specified"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "location_coordinate": {
+                    "type": "string",
+                    "description": "GPS coordinates of a location"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "description": "Task priority"
+                  },
+                  "postback_url": {
+                    "type": "string",
+                    "description": "URL for sending task results"
+                  },
+                  "pingback_url": {
+                    "type": "string",
+                    "description": "Notification URL of a completed task"
+                  },
+                  "postback_data": {
+                    "type": "string",
+                    "description": "Postback datatype; only advanced is supported"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_explore/task_post": {
+      "post": {
+        "summary": "Setting Google Finance Explore SERP Tasks",
+        "description": "Setting Google Finance Explore SERP Tasks. Provides real-time data from the Explore tab of Google Finance for the specified location and language.",
+        "operationId": "post_dataforseo_serp_google_finance_explore_task_post",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier in UUID format"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "device": {
+                    "type": "string",
+                    "description": "Device type; possible value: desktop"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "description": "Task priority"
+                  },
+                  "postback_url": {
+                    "type": "string",
+                    "description": "URL for sending task results"
+                  },
+                  "pingback_url": {
+                    "type": "string",
+                    "description": "Notification URL of a completed task"
+                  },
+                  "postback_data": {
+                    "type": "string",
+                    "description": "Postback datatype; possible values: advanced, html"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_explore/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Finance Explore Advanced Results by id",
+        "description": "Get Google Finance Explore Advanced Results by id. You can retrieve completed task results by task id within the retention period.",
+        "operationId": "get_dataforseo_serp_google_finance_explore_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advanced SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_explore/live/advanced": {
+      "post": {
+        "summary": "Live Google Finance Explore Advanced",
+        "description": "Live Google Finance Explore Advanced. Returns Google Finance Explore results in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_finance_explore_live_advanced",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of live SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "device": {
+                    "type": "string",
+                    "description": "Device type; possible value: desktop"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_markets/task_post": {
+      "post": {
+        "summary": "Setting Google Finance Markets SERP Tasks",
+        "description": "Setting Google Finance Markets SERP Tasks. Provides real-time data from the Markets tab of Google Finance for the specified location, language, and market type.",
+        "operationId": "post_dataforseo_serp_google_finance_markets_task_post",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier in UUID format"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "market_type": {
+                    "type": "string",
+                    "description": "Market type for the Markets tab"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "description": "Task priority"
+                  },
+                  "postback_url": {
+                    "type": "string",
+                    "description": "URL for sending task results"
+                  },
+                  "pingback_url": {
+                    "type": "string",
+                    "description": "Notification URL of a completed task"
+                  },
+                  "postback_data": {
+                    "type": "string",
+                    "description": "Postback datatype; possible values: advanced, html"
+                  }
+                },
+                "required": [
+                  "market_type"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_markets/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Finance Markets Advanced Results by id",
+        "description": "Get Google Finance Markets Advanced Results by id. You can retrieve completed task results by task id within the retention period.",
+        "operationId": "get_dataforseo_serp_google_finance_markets_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advanced SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_markets/live/advanced": {
+      "post": {
+        "summary": "Live Google Finance Markets Advanced",
+        "description": "Live Google Finance Markets Advanced. Returns Google Finance Markets results in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_finance_markets_live_advanced",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of live SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "market_type": {
+                    "type": "string",
+                    "description": "Market type for the Markets tab"
+                  }
+                },
+                "required": [
+                  "market_type"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_quote/task_post": {
+      "post": {
+        "summary": "Setting Google Finance Quote SERP Tasks",
+        "description": "Setting Google Finance Quote SERP Tasks. Provides real-time data from the Quote tab of Google Finance for the specified ticker, location, and language.",
+        "operationId": "post_dataforseo_serp_google_finance_quote_task_post",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier in UUID format"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Ticker or stock symbol"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "os": {
+                    "type": "string",
+                    "description": "Device operating system"
+                  },
+                  "window": {
+                    "type": "string",
+                    "description": "Time window for the quote graph, such as 1D, 5D, 1M, 6M, YTD, 1Y, 5Y, or MAX"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "description": "Task priority"
+                  },
+                  "postback_url": {
+                    "type": "string",
+                    "description": "URL for sending task results"
+                  },
+                  "pingback_url": {
+                    "type": "string",
+                    "description": "Notification URL of a completed task"
+                  },
+                  "postback_data": {
+                    "type": "string",
+                    "description": "Postback datatype; possible values: advanced, html"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_quote/task_get/advanced/{id}": {
+      "get": {
+        "summary": "Get Google Finance Quote Advanced Results by id",
+        "description": "Get Google Finance Quote Advanced Results by id. You can retrieve completed task results by task id within the retention period.",
+        "operationId": "get_dataforseo_serp_google_finance_quote_task_get_advanced_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task identifier in UUID format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of advanced SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_quote/live/advanced": {
+      "post": {
+        "summary": "Live Google Finance Quote Advanced",
+        "description": "Live Google Finance Quote Advanced. Returns Google Finance Quote results in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_finance_quote_live_advanced",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of live SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Ticker or stock symbol"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "os": {
+                    "type": "string",
+                    "description": "Device operating system"
+                  },
+                  "window": {
+                    "type": "string",
+                    "description": "Time window for the quote graph"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_ticker_search/task_post": {
+      "post": {
+        "summary": "Setting Google Finance Ticker Search Tasks",
+        "description": "Setting Google Finance Ticker Search Tasks. Allows searching for financial instruments available on Google Finance by company or instrument name.",
+        "operationId": "post_dataforseo_serp_google_finance_ticker_search_task_post",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks_count": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array"
+                    },
+                    "tasks_error": {
+                      "type": "integer",
+                      "description": "The number of tasks in the tasks array returned with an error"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of task objects"
+                    },
+                    "tasks[].id": {
+                      "type": "string",
+                      "description": "Task identifier in UUID format"
+                    },
+                    "tasks[].status_code": {
+                      "type": "integer",
+                      "description": "Task status code"
+                    },
+                    "tasks[].status_message": {
+                      "type": "string",
+                      "description": "Task status message"
+                    },
+                    "tasks[].cost": {
+                      "type": "number",
+                      "description": "Cost of the task, USD"
+                    },
+                    "tasks[].result_count": {
+                      "type": "integer",
+                      "description": "Number of elements in the result array"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Company or financial instrument name"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  },
+                  "priority": {
+                    "type": "integer",
+                    "description": "Task priority"
+                  },
+                  "postback_url": {
+                    "type": "string",
+                    "description": "URL for sending task results"
+                  },
+                  "pingback_url": {
+                    "type": "string",
+                    "description": "Notification URL of a completed task"
+                  },
+                  "postback_data": {
+                    "type": "string",
+                    "description": "Postback datatype; possible value: advanced"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dataforseo/serp/google/finance_ticker_search/live/advanced": {
+      "post": {
+        "summary": "Live Google Finance Ticker Search Advanced",
+        "description": "Live Google Finance Ticker Search Advanced. Returns Google Finance Ticker Search results in real time. Each Live SERP API call can contain only one task.",
+        "operationId": "post_dataforseo_serp_google_finance_ticker_search_live_advanced",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string",
+                      "description": "The current version of the API"
+                    },
+                    "status_code": {
+                      "type": "integer",
+                      "description": "General status code"
+                    },
+                    "status_message": {
+                      "type": "string",
+                      "description": "General informational message"
+                    },
+                    "time": {
+                      "type": "string",
+                      "description": "Execution time, seconds"
+                    },
+                    "cost": {
+                      "type": "number",
+                      "description": "Total tasks cost, USD"
+                    },
+                    "tasks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of tasks"
+                    },
+                    "tasks[].result": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Array of live SERP results"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "keyword": {
+                    "type": "string",
+                    "description": "Company or financial instrument name"
+                  },
+                  "location_name": {
+                    "type": "string",
+                    "description": "Full name of search engine location"
+                  },
+                  "location_code": {
+                    "type": "integer",
+                    "description": "Search engine location code"
+                  },
+                  "language_name": {
+                    "type": "string",
+                    "description": "Full name of search engine language"
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Search engine language code"
+                  }
+                },
+                "required": [
+                  "keyword"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

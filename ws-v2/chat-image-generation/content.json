@@ -1,0 +1,128 @@
+{
+  "operations": {
+    "generateImageViaChat": {
+      "heading_zh": "通过对话补全生成图像 generateImageViaChat",
+      "desc_en": "Generate images with the Wan 2.7 image models through the standard chat-completions endpoint. Send the prompt as typed parts inside the last user message, optionally with a reference image for image-to-image; generated images come back as image parts in the assistant message.",
+      "description_zh": "借助标准的对话补全端点,用 Wan 2.7 系列图像模型生成图像。将提示词以带类型的片段放入最后一条用户消息中,可选附参考图以做图生图;生成结果以图像片段形式回填在助手消息里。",
+      "resp_section_intro": "成功时以一条对话补全返回结果,每张生成图像对应一个 choice,图像内容位于助手消息的 content 片段中。",
+      "errors": [
+        {"code": "400", "message_zh": "请求无效。最常见原因是把 `content` 写成了字符串而非片段数组,会返回 `Input should be a valid list: messages[*].content`。"},
+        {"code": "401", "message_zh": "AIsa API Key 缺失或无效。"},
+        {"code": "429", "message_zh": "触发限流。"},
+        {"code": "500", "message_zh": "服务内部错误。"},
+        {"code": "502", "message_zh": "上游服务商不可达。"}
+      ],
+      "errors_source": "spec 已声明 400/401/429/500/502(仅描述,无错误体结构)"
+    }
+  },
+  "fields": {
+    "generateImageViaChat": {
+      "request": {
+        "model": {
+          "desc_en": "Which image model to run. The two variants trade off quality against price, with the pro variant offering higher fidelity at a higher per-image cost.",
+          "title_zh": "本次使用的图像模型。两个变体在画质与价格之间权衡,pro 变体以更高的单图成本换取更高的保真度。"
+        },
+        "messages": {
+          "desc_en": "The conversation sent to the model. Put the image prompt in the last user message; each message carries a role and a content array of typed parts.",
+          "title_zh": "发送给模型的对话。把图像提示词放进最后一条用户消息;每条消息带有角色,以及一个由带类型片段组成的 content 数组。"
+        },
+        "messages.role": {
+          "desc_en": "Who authored the message, distinguishing system guidance, user input, and prior assistant output.",
+          "title_zh": "该消息的作者身份,用于区分系统引导、用户输入与助手既往输出。"
+        },
+        "messages.content": {
+          "desc_en": "The typed parts making up one message. It must be an array of parts, not a plain string; for image generation include at least one text part holding the prompt, and add an image part for image-to-image.",
+          "title_zh": "构成一条消息的带类型片段。它必须是片段数组而非纯字符串;做图像生成时至少包含一个携带提示词的文本片段,做图生图时再加入图像片段。"
+        },
+        "messages.content.type": {
+          "desc_en": "What kind of part this is: a text segment carrying the prompt, or an image-URL part supplying a reference image for image-to-image.",
+          "title_zh": "该片段的类别:承载提示词的文本片段,或为图生图提供参考图的图像 URL 片段。"
+        },
+        "messages.content.text": {
+          "desc_en": "The prompt text, used for a text-type part.",
+          "title_zh": "提示词文本,用于文本类型的片段。"
+        },
+        "messages.content.image_url": {
+          "desc_en": "A reference image for image-to-image generation, supplied for an image-URL part.",
+          "title_zh": "用于图生图的参考图,在图像 URL 类型片段中提供。"
+        },
+        "messages.content.image_url.url": {
+          "desc_en": "Location of the reference image.",
+          "title_zh": "参考图的地址。"
+        },
+        "n": {
+          "desc_en": "How many candidate images to generate in one call. Each image is billed separately, so request fewer to save cost.",
+          "title_zh": "单次调用生成的候选图像数量。每张图单独计费,需要省成本时请减少数量。"
+        }
+      },
+      "response": {
+        "200": {
+          "id": {
+            "desc_en": "Unique identifier of this generation response.",
+            "title_zh": "本次生成响应的唯一标识。"
+          },
+          "object": {
+            "desc_en": "Object type of the payload, mirroring the chat-completions response shape.",
+            "title_zh": "载荷的对象类型,沿用对话补全的响应结构。"
+          },
+          "created": {
+            "desc_en": "When the response was produced.",
+            "title_zh": "该响应的生成时间。"
+          },
+          "model": {
+            "desc_en": "The image model that actually served the request.",
+            "title_zh": "实际处理本次请求的图像模型。"
+          },
+          "choices": {
+            "desc_en": "The generated results, one entry per image.",
+            "title_zh": "生成结果,每张图像对应一个条目。"
+          },
+          "choices.index": {
+            "desc_en": "Position of this result within the choices list.",
+            "title_zh": "该结果在 choices 列表中的位置。"
+          },
+          "choices.finish_reason": {
+            "desc_en": "Why generation for this result stopped.",
+            "title_zh": "该结果停止生成的原因。"
+          },
+          "choices.message": {
+            "desc_en": "The assistant message that holds the generated image.",
+            "title_zh": "承载生成图像的助手消息。"
+          },
+          "choices.message.role": {
+            "desc_en": "Author role of the generated message, always the assistant.",
+            "title_zh": "生成消息的作者角色,固定为助手。"
+          },
+          "choices.message.content": {
+            "desc_en": "The message's parts; for this endpoint each part wraps one generated image.",
+            "title_zh": "该消息的片段;在本接口中每个片段包裹一张生成图像。"
+          },
+          "choices.message.content.type": {
+            "desc_en": "Part kind, marking the part as a generated image.",
+            "title_zh": "片段类别,标记该片段为生成图像。"
+          },
+          "choices.message.content.image": {
+            "desc_en": "The generated image itself, delivered either as a short-lived URL or as base64 data depending on account configuration.",
+            "title_zh": "生成的图像本身,依据账号配置以短时有效的 URL 或 base64 数据形式给出。"
+          },
+          "usage": {
+            "desc_en": "Token accounting for the request.",
+            "title_zh": "本次请求的 token 计量。"
+          },
+          "usage.prompt_tokens": {
+            "desc_en": "Tokens consumed by the input prompt.",
+            "title_zh": "输入提示词消耗的 token 数。"
+          },
+          "usage.completion_tokens": {
+            "desc_en": "Tokens attributed to the generated output.",
+            "title_zh": "归于生成输出的 token 数。"
+          },
+          "usage.total_tokens": {
+            "desc_en": "Combined input and output token count.",
+            "title_zh": "输入与输出合计的 token 数。"
+          }
+        }
+      }
+    }
+  }
+}

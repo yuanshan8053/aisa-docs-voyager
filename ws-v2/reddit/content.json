@@ -1,0 +1,136 @@
+{
+  "operations": {
+    "get_reddit-search": {
+      "heading_zh": "全站搜索 get_reddit-search",
+      "desc_en": "Search across all of Reddit for posts matching a query, with sorting, time-window filtering, and token-based pagination. Read-only.",
+      "description_zh": "在整个 Reddit 范围内检索匹配查询词的帖子,支持排序、时间窗口筛选与基于令牌的翻页。只读接口。",
+      "errors_source": "spec 仅声明 200,无错误码定义"
+    },
+    "get_reddit-subreddit": {
+      "heading_zh": "获取板块帖子 get_reddit-subreddit",
+      "desc_en": "List posts from a single subreddit, with sorting, time-window filtering, and token-based pagination. Read-only.",
+      "description_zh": "列出某个子版块(subreddit)内的帖子,支持排序、时间窗口筛选与基于令牌的翻页。只读接口。",
+      "errors_source": "spec 仅声明 200,无错误码定义"
+    },
+    "get_reddit-subreddit-details": {
+      "heading_zh": "获取板块详情 get_reddit-subreddit-details",
+      "desc_en": "Retrieve metadata about a single subreddit, looked up by its name or URL. Read-only.",
+      "description_zh": "按名称或 URL 查询单个子版块的元信息。只读接口。",
+      "errors_source": "spec 仅声明 200,无错误码定义"
+    },
+    "get_reddit-subreddit-search": {
+      "heading_zh": "板块内搜索 get_reddit-subreddit-search",
+      "desc_en": "Search within one subreddit for matching posts, comments, and media, with sorting, time-window filtering, and cursor-based pagination. Read-only.",
+      "description_zh": "在指定子版块内检索匹配的帖子、评论与媒体,支持排序、时间窗口筛选与基于游标的翻页。只读接口。",
+      "errors_source": "spec 仅声明 200,无错误码定义"
+    },
+    "get_reddit-post-comments": {
+      "heading_zh": "获取帖子评论 get_reddit-post-comments",
+      "desc_en": "Fetch a post together with its comment tree, identified by the post URL, with cursor-based pagination for loading more comments and replies. Read-only.",
+      "description_zh": "按帖子 URL 获取该帖及其评论树,支持以游标翻页加载更多评论与回复。只读接口。",
+      "errors_source": "spec 仅声明 200,无错误码定义"
+    }
+  },
+  "fields": {
+    "get_reddit-search": {
+      "parameters": {
+        "query": {
+          "desc_en": "The search phrase used to match posts across Reddit.",
+          "title_zh": "用于在全站匹配帖子的搜索短语。"
+        },
+        "sort": {
+          "desc_en": "Ordering of the matched posts: `relevance` by best match to the query, `new` by most recent, `top` by highest score, and `comment_count` by most-discussed.",
+          "title_zh": "命中帖子的排序方式:`relevance` 按与查询词的匹配度,`new` 按发布时间从新到旧,`top` 按得分从高到低,`comment_count` 按评论数从多到少。"
+        },
+        "timeframe": {
+          "desc_en": "Restricts results to posts created within a time window, from all time down to the last day. Most meaningful when combined with score- or comment-based sorting.",
+          "title_zh": "将结果限定在某个时间窗口内创建的帖子,范围从全部时间到最近一天。与按得分或评论数排序搭配时最有意义。"
+        },
+        "after": {
+          "desc_en": "Pagination token for the next page; take it from the `after` field of a previous response. Omit it to start from the first page.",
+          "title_zh": "翻页令牌,用于取下一页;取自上一次响应的 `after` 字段。留空则从第一页开始。"
+        },
+        "trim": {
+          "desc_en": "When enabled, returns a lighter response with fewer per-post fields, reducing payload size.",
+          "title_zh": "开启后返回更精简的响应,削减每条帖子的字段,降低载荷体积。"
+        }
+      }
+    },
+    "get_reddit-subreddit": {
+      "parameters": {
+        "subreddit": {
+          "desc_en": "Name of the subreddit to list posts from.",
+          "title_zh": "要列出帖子的子版块名称。"
+        },
+        "timeframe": {
+          "desc_en": "Restricts listed posts to those created within a time window, from all time down to the last day. Most meaningful with score-based sorting.",
+          "title_zh": "将列出的帖子限定在某个时间窗口内创建的,范围从全部时间到最近一天。与按得分排序搭配时最有意义。"
+        },
+        "sort": {
+          "desc_en": "Ordering of the listed posts: `best` by Reddit's blended ranking, `hot` by current trending activity, `new` by most recent, `top` by highest score, and `rising` by posts gaining traction quickly.",
+          "title_zh": "列出帖子的排序方式:`best` 按 Reddit 综合排名,`hot` 按当前热度,`new` 按发布时间从新到旧,`top` 按得分从高到低,`rising` 按正在快速升温的帖子。"
+        },
+        "after": {
+          "desc_en": "Pagination token for the next page; take it from the `after` field of a previous response. Omit it to start from the first page.",
+          "title_zh": "翻页令牌,用于取下一页;取自上一次响应的 `after` 字段。留空则从第一页开始。"
+        },
+        "trim": {
+          "desc_en": "When enabled, returns a lighter response with fewer per-post fields, reducing payload size.",
+          "title_zh": "开启后返回更精简的响应,削减每条帖子的字段,降低载荷体积。"
+        }
+      }
+    },
+    "get_reddit-subreddit-details": {
+      "parameters": {
+        "subreddit": {
+          "desc_en": "Name of the subreddit to look up. The name is case-sensitive, so it must match the community's exact casing.",
+          "title_zh": "要查询的子版块名称。该名称区分大小写,须与社区的精确写法一致。"
+        },
+        "url": {
+          "desc_en": "Full URL of the subreddit, usable as an alternative to looking it up by name.",
+          "title_zh": "子版块的完整 URL,可作为按名称查询之外的另一种定位方式。"
+        }
+      }
+    },
+    "get_reddit-subreddit-search": {
+      "parameters": {
+        "subreddit": {
+          "desc_en": "Name of the subreddit to search within. Pass the bare community name, not an `r/`-prefixed name or a full URL.",
+          "title_zh": "要在其中搜索的子版块名称。传入纯社区名,不要带 `r/` 前缀,也不要传完整 URL。"
+        },
+        "query": {
+          "desc_en": "Search phrase used to match content inside the subreddit.",
+          "title_zh": "用于在该子版块内匹配内容的搜索短语。"
+        },
+        "sort": {
+          "desc_en": "Ordering of results. The applicable values differ by content kind: posts and media support relevance, hot, top, new, and comment-count ordering, while comments support relevance, top, and new.",
+          "title_zh": "结果的排序方式。可用取值随内容类型而异:帖子与媒体支持按相关性、热度、得分、时间及评论数排序,评论支持按相关性、得分与时间排序。"
+        },
+        "timeframe": {
+          "desc_en": "Restricts results to content created within a time window, from all time down to the last hour.",
+          "title_zh": "将结果限定在某个时间窗口内创建的内容,范围从全部时间到最近一小时。"
+        },
+        "cursor": {
+          "desc_en": "Cursor for the next page of results; take it from the `cursor` field of a previous response. Omit it to start from the first page.",
+          "title_zh": "用于取下一页结果的游标;取自上一次响应的 `cursor` 字段。留空则从第一页开始。"
+        }
+      }
+    },
+    "get_reddit-post-comments": {
+      "parameters": {
+        "url": {
+          "desc_en": "URL of the Reddit post whose comments and details you want to fetch.",
+          "title_zh": "要获取评论与详情的 Reddit 帖子 URL。"
+        },
+        "cursor": {
+          "desc_en": "Cursor for loading more comments or replies; take it from a previous response. Omit it to load the first batch.",
+          "title_zh": "用于加载更多评论或回复的游标;取自上一次响应。留空则加载首批。"
+        },
+        "trim": {
+          "desc_en": "When enabled, returns a lighter response with fewer fields, reducing payload size.",
+          "title_zh": "开启后返回更精简的响应,削减字段,降低载荷体积。"
+        }
+      }
+    }
+  }
+}

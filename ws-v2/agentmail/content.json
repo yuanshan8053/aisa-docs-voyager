@@ -1,0 +1,1832 @@
+{
+  "operations": {
+    "get": {
+      "heading_zh": "获取资源 get",
+      "desc_en": "Retrieve a single AgentMail resource by its path identifiers. The exact resource returned depends on the route: an inbox, a draft, a message, a thread, or a single allow/block list entry. The full object (including bodies, attachments and timestamps) is returned, so this is the canonical way to fetch the complete state of one item after listing.",
+      "description_zh": "按路径标识获取单个 AgentMail 资源。返回对象的类型取决于路由：收件箱、草稿、消息、会话或单条 allow/block 名单条目。返回完整对象（含正文、附件与时间戳），是在列表查询后获取某一项完整状态的标准方式。"
+    },
+    "update": {
+      "heading_zh": "更新资源 update",
+      "desc_en": "Partially update an existing resource identified by its path. Only the fields present in the request body are changed; omitted fields keep their current values. Applies to inboxes, drafts, messages (label changes) and threads (label changes); the response shape mirrors the resource being updated.",
+      "description_zh": "按路径标识对已有资源做部分更新。仅修改请求体中出现的字段，未提供的字段保持原值。适用于收件箱、草稿、消息（改标签）与会话（改标签）；响应结构与被更新资源对应。"
+    },
+    "delete": {
+      "heading_zh": "删除资源 delete",
+      "desc_en": "Delete a resource identified by its path (inbox, draft, message, thread, or list entry). Returns an empty success response with no body. For threads, deletion moves the thread to trash unless the `permanent` query flag forces hard deletion.",
+      "description_zh": "按路径删除资源（收件箱、草稿、消息、会话或名单条目）。成功时返回空响应、无响应体。对会话而言，默认移入回收站，除非通过 `permanent` 查询参数强制彻底删除。"
+    },
+    "reply-all": {
+      "heading_zh": "回复全部 reply-all",
+      "desc_en": "Send a reply to all participants of a message (original sender plus all To/Cc recipients), quoting and threading onto the original. Recipients are derived automatically from the source message, so you only supply the new body, optional attachments and headers.",
+      "description_zh": "向某条消息的全部参与者（原发件人及全部 To/Cc 收件人）发送回复，自动引用并接续到原会话。收件人由源消息自动推导，因此只需提供新正文、可选附件与头部。"
+    },
+    "send": {
+      "heading_zh": "发送消息 send",
+      "desc_en": "Send an email message. Two routes share this operation: composing and sending a brand-new message from the inbox, or sending a previously saved draft by its `draft_id`. The response returns the resulting message and thread identifiers.",
+      "description_zh": "发送邮件消息。两个路由共用此操作：从收件箱新建并发送全新消息，或按 `draft_id` 发送此前保存的草稿。响应返回生成的消息与会话标识。"
+    },
+    "list": {
+      "heading_zh": "列出资源 list",
+      "desc_en": "List a collection of resources within an inbox (threads, messages, drafts, events, list entries) or all inboxes. Results are paginated via `limit` + `page_token` and returned newest-first by default. Use the various `include_*` flags to widen the result set to spam/blocked/trash items.",
+      "description_zh": "列出收件箱内的某类资源（会话、消息、草稿、事件、名单条目）或全部收件箱。通过 `limit` + `page_token` 分页，默认按时间倒序返回。可用各 `include_*` 开关把垃圾邮件/被拦截/回收站项纳入结果。"
+    },
+    "create": {
+      "heading_zh": "创建资源 create",
+      "desc_en": "Create a new resource: an inbox, a draft, or an allow/block list entry, depending on the route. The created object is returned in full, including server-assigned identifiers and timestamps.",
+      "description_zh": "创建新资源：按路由创建收件箱、草稿或 allow/block 名单条目。返回创建后的完整对象，含服务端分配的标识与时间戳。"
+    },
+    "query": {
+      "heading_zh": "查询指标 query",
+      "desc_en": "Query aggregated activity metrics for an inbox over a time window, optionally bucketed by period and filtered by event type. Useful for dashboards and monitoring inbox throughput.",
+      "description_zh": "在给定时间窗内查询某收件箱的聚合活动指标，可按周期分桶并按事件类型筛选。适用于看板与收件箱吞吐监控。"
+    },
+    "forward": {
+      "heading_zh": "转发消息 forward",
+      "desc_en": "Forward an existing message to new recipients, preserving the original content and attachments. You supply the destination addresses and any additional body; the original message is referenced by its path `message_id`.",
+      "description_zh": "将已有消息转发给新收件人，保留原始内容与附件。你提供目标地址及附加正文，原消息通过路径中的 `message_id` 引用。"
+    },
+    "get-raw": {
+      "heading_zh": "获取原始邮件 get-raw",
+      "desc_en": "Get a download link for the raw RFC 822 / MIME source of a message. The response is metadata plus a short-lived presigned URL pointing to the full raw bytes in object storage.",
+      "description_zh": "获取某消息原始 RFC 822 / MIME 源的下载链接。响应包含元数据及一个指向对象存储中完整原始字节的短时效预签名 URL。"
+    },
+    "get-attachment": {
+      "heading_zh": "获取附件 get-attachment",
+      "desc_en": "Get a single attachment's metadata and a download URL. The attachment can be addressed through its parent message, thread, or draft; all three routes return the same attachment payload.",
+      "description_zh": "获取单个附件的元数据与下载 URL。附件可经其所属消息、会话或草稿寻址，三种路由返回相同的附件结构。"
+    },
+    "reply": {
+      "heading_zh": "回复消息 reply",
+      "desc_en": "Reply to a message, threading onto the original conversation. By default the reply goes to the original sender; set the request's `reply_all` flag to include all original recipients instead.",
+      "description_zh": "回复某条消息并接续到原会话。默认仅回复原发件人；将请求中的 `reply_all` 置为真则改为回复全部原收件人。"
+    }
+  },
+  "fields": {
+    "get": {
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox that owns the resource. Obtain it from create (POST /agentmail/inboxes) or list (GET /agentmail/inboxes).",
+          "title_zh": "拥有该资源的收件箱标识。可经 create (POST /agentmail/inboxes) 或 list (GET /agentmail/inboxes) 获取。"
+        },
+        "draft_id": {
+          "desc_en": "Identifier of the draft to retrieve, as returned when the draft was created.",
+          "title_zh": "要获取的草稿标识，由创建草稿时返回。"
+        },
+        "thread_id": {
+          "desc_en": "Identifier of the thread to retrieve. Returned by the threads list and present on every message.",
+          "title_zh": "要获取的会话标识。由会话列表返回，也出现在每条消息上。"
+        },
+        "message_id": {
+          "desc_en": "Identifier of the message to retrieve, as returned by the messages list.",
+          "title_zh": "要获取的消息标识，由消息列表返回。"
+        },
+        "direction": {
+          "desc_en": "Which traffic direction the list entry governs: `send` filters outbound, `receive` filters inbound, `reply` filters replies.",
+          "title_zh": "名单条目作用的流量方向：`send` 管出站，`receive` 管入站，`reply` 管回复。"
+        },
+        "type": {
+          "desc_en": "Whether the entry belongs to the allow list or the block list.",
+          "title_zh": "条目属于 allow（放行）名单还是 block（拦截）名单。"
+        },
+        "entry": {
+          "desc_en": "The email address or domain that identifies the list entry to fetch.",
+          "title_zh": "标识要获取的名单条目的邮箱地址或域名。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox. Send as `Bearer <api_key>`; keep it secret and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌。以 `Bearer <api_key>` 形式发送；务必保密，切勿明文记录。"
+        }
+      },
+      "response": {
+        "404": {
+          "name": {
+            "desc_en": "Machine-readable name of the error, identifying the failure category (e.g. resource not found).",
+            "title_zh": "机器可读的错误名，标识失败类别（如资源不存在）。"
+          },
+          "message": {
+            "desc_en": "Human-readable explanation of what went wrong.",
+            "title_zh": "对错误原因的可读说明。"
+          }
+        },
+        "200": {
+          "inbox_id": {
+            "desc_en": "Identifier of the inbox that contains this thread.",
+            "title_zh": "包含该会话的收件箱标识。"
+          },
+          "thread_id": {
+            "desc_en": "Unique identifier of the thread, used to fetch, update or delete it.",
+            "title_zh": "会话的唯一标识，用于获取、更新或删除会话。"
+          },
+          "labels": {
+            "desc_en": "Labels currently applied to the thread, including system labels and any custom labels.",
+            "title_zh": "当前应用于该会话的标签，含系统标签与自定义标签。"
+          },
+          "timestamp": {
+            "desc_en": "Time of the most recent activity (last sent or received message) in the thread; use it to sort threads by recency.",
+            "title_zh": "会话中最近一次活动（最后发送或接收消息）的时间，可据此按新鲜度排序。"
+          },
+          "received_timestamp": {
+            "desc_en": "Time the thread last received an inbound message; null if it has never received one.",
+            "title_zh": "会话最后一次收到入站消息的时间；从未收到则为空。"
+          },
+          "sent_timestamp": {
+            "desc_en": "Time the thread last sent an outbound message; null if nothing has been sent.",
+            "title_zh": "会话最后一次发出出站消息的时间；从未发送则为空。"
+          },
+          "senders": {
+            "desc_en": "Distinct sender addresses that have appeared in the thread.",
+            "title_zh": "在会话中出现过的不同发件人地址。"
+          },
+          "recipients": {
+            "desc_en": "Distinct recipient addresses that have appeared in the thread.",
+            "title_zh": "在会话中出现过的不同收件人地址。"
+          },
+          "subject": {
+            "desc_en": "Subject line of the thread, typically taken from its first message.",
+            "title_zh": "会话主题，通常取自首条消息。"
+          },
+          "preview": {
+            "desc_en": "Short plain-text snippet of the latest message, for showing a thread summary without loading full bodies.",
+            "title_zh": "最新消息的简短纯文本片段，便于在不加载完整正文时展示会话摘要。"
+          },
+          "attachments": {
+            "desc_en": "All attachments accumulated across the thread's messages.",
+            "title_zh": "会话内各消息累计的全部附件。"
+          },
+          "attachments.attachment_id": {
+            "desc_en": "Identifier of the attachment; pass it to get-attachment to obtain a download URL.",
+            "title_zh": "附件标识；传给 get-attachment 可获取下载 URL。"
+          },
+          "attachments.filename": {
+            "desc_en": "Original filename of the attachment.",
+            "title_zh": "附件的原始文件名。"
+          },
+          "attachments.size": {
+            "desc_en": "Size of the attachment in bytes.",
+            "title_zh": "附件大小，单位字节。"
+          },
+          "attachments.content_type": {
+            "desc_en": "MIME content type of the attachment (e.g. application/pdf).",
+            "title_zh": "附件的 MIME 内容类型（如 application/pdf）。"
+          },
+          "attachments.content_disposition": {
+            "desc_en": "How the attachment is meant to be presented: `inline` renders within the message body, `attachment` is a downloadable file.",
+            "title_zh": "附件呈现方式：`inline` 在正文内联渲染，`attachment` 为可下载文件。"
+          },
+          "attachments.content_id": {
+            "desc_en": "Content-ID used to reference an inline attachment from the HTML body (cid: links).",
+            "title_zh": "Content-ID，用于在 HTML 正文中引用内联附件（cid: 链接）。"
+          },
+          "last_message_id": {
+            "desc_en": "Identifier of the most recent message in the thread.",
+            "title_zh": "会话中最新消息的标识。"
+          },
+          "message_count": {
+            "desc_en": "Number of messages currently in the thread.",
+            "title_zh": "会话当前包含的消息数。"
+          },
+          "size": {
+            "desc_en": "Total size of the thread in bytes.",
+            "title_zh": "会话总大小，单位字节。"
+          },
+          "updated_at": {
+            "desc_en": "Time the thread record was last updated.",
+            "title_zh": "会话记录最后更新时间。"
+          },
+          "created_at": {
+            "desc_en": "Time the thread was created.",
+            "title_zh": "会话创建时间。"
+          },
+          "messages": {
+            "desc_en": "Full messages in the thread, ordered oldest-first by timestamp.",
+            "title_zh": "会话内的完整消息列表，按 timestamp 升序（最早在前）排列。"
+          },
+          "messages.inbox_id": {
+            "desc_en": "Identifier of the inbox that owns the message.",
+            "title_zh": "拥有该消息的收件箱标识。"
+          },
+          "messages.thread_id": {
+            "desc_en": "Identifier of the thread this message belongs to.",
+            "title_zh": "该消息所属会话的标识。"
+          },
+          "messages.message_id": {
+            "desc_en": "Unique identifier of the message.",
+            "title_zh": "消息的唯一标识。"
+          },
+          "messages.labels": {
+            "desc_en": "Labels applied to this message.",
+            "title_zh": "应用于该消息的标签。"
+          },
+          "messages.timestamp": {
+            "desc_en": "Time the message was sent or drafted.",
+            "title_zh": "消息发送或起草的时间。"
+          },
+          "messages.from": {
+            "desc_en": "Sender address of the message.",
+            "title_zh": "消息的发件人地址。"
+          },
+          "messages.reply_to": {
+            "desc_en": "Addresses replies should be directed to, when different from the sender.",
+            "title_zh": "回复应发往的地址（当与发件人不同时）。"
+          },
+          "messages.to": {
+            "desc_en": "Primary recipient addresses of the message.",
+            "title_zh": "消息的主要收件人地址。"
+          },
+          "messages.cc": {
+            "desc_en": "Carbon-copy recipient addresses.",
+            "title_zh": "抄送（CC）收件人地址。"
+          },
+          "messages.bcc": {
+            "desc_en": "Blind carbon-copy recipient addresses.",
+            "title_zh": "密送（BCC）收件人地址。"
+          },
+          "messages.subject": {
+            "desc_en": "Subject line of the message.",
+            "title_zh": "消息主题。"
+          },
+          "messages.preview": {
+            "desc_en": "Short plain-text snippet of the message body.",
+            "title_zh": "消息正文的简短纯文本片段。"
+          },
+          "messages.text": {
+            "desc_en": "Plain-text body of the message.",
+            "title_zh": "消息的纯文本正文。"
+          },
+          "messages.html": {
+            "desc_en": "HTML body of the message.",
+            "title_zh": "消息的 HTML 正文。"
+          },
+          "messages.extracted_text": {
+            "desc_en": "Just the newly written plain text, with quoted/replied history stripped out.",
+            "title_zh": "仅新撰写的纯文本，已剔除引用/回复的历史内容。"
+          },
+          "messages.extracted_html": {
+            "desc_en": "Just the newly written HTML, with quoted/replied history stripped out.",
+            "title_zh": "仅新撰写的 HTML，已剔除引用/回复的历史内容。"
+          },
+          "messages.attachments": {
+            "desc_en": "Attachments carried by this message.",
+            "title_zh": "该消息携带的附件。"
+          },
+          "messages.attachments.attachment_id": {
+            "desc_en": "Identifier of the attachment; pass it to get-attachment to download.",
+            "title_zh": "附件标识；传给 get-attachment 可下载。"
+          },
+          "messages.attachments.filename": {
+            "desc_en": "Original filename of the attachment.",
+            "title_zh": "附件原始文件名。"
+          },
+          "messages.attachments.size": {
+            "desc_en": "Size of the attachment in bytes.",
+            "title_zh": "附件大小，单位字节。"
+          },
+          "messages.attachments.content_type": {
+            "desc_en": "MIME content type of the attachment.",
+            "title_zh": "附件的 MIME 内容类型。"
+          },
+          "messages.attachments.content_disposition": {
+            "desc_en": "`inline` renders within the body; `attachment` is a downloadable file.",
+            "title_zh": "`inline` 在正文内联渲染；`attachment` 为可下载文件。"
+          },
+          "messages.attachments.content_id": {
+            "desc_en": "Content-ID for referencing an inline attachment from HTML (cid: links).",
+            "title_zh": "Content-ID，用于从 HTML 引用内联附件（cid: 链接）。"
+          },
+          "messages.in_reply_to": {
+            "desc_en": "Identifier of the message this one is replying to, if any.",
+            "title_zh": "该消息所回复的消息标识（如有）。"
+          },
+          "messages.references": {
+            "desc_en": "Identifiers of earlier messages in the thread, forming the reply chain.",
+            "title_zh": "会话中较早消息的标识，构成回复链。"
+          },
+          "messages.headers": {
+            "desc_en": "Raw email headers of the message as key/value pairs.",
+            "title_zh": "消息的原始邮件头，以键值对形式给出。"
+          },
+          "messages.size": {
+            "desc_en": "Size of the message in bytes.",
+            "title_zh": "消息大小，单位字节。"
+          },
+          "messages.updated_at": {
+            "desc_en": "Time the message was last updated.",
+            "title_zh": "消息最后更新时间。"
+          },
+          "messages.created_at": {
+            "desc_en": "Time the message was created.",
+            "title_zh": "消息创建时间。"
+          },
+          "draft_id": {
+            "desc_en": "ID of the draft, usable as the path parameter for draft operations.",
+            "title_zh": "草稿 ID，可用作草稿相关操作的路径参数。"
+          },
+          "client_id": {
+            "desc_en": "Caller-supplied client ID echoed back, useful for correlating the draft with your own records.",
+            "title_zh": "回显的调用方自定义 client ID，便于将草稿与你自己的记录关联。"
+          },
+          "reply_to": {
+            "desc_en": "Reply-To addresses recipients should reply to instead of the From address.",
+            "title_zh": "回复目标地址，收件人应回复到此处而非 From 地址。"
+          },
+          "to": {
+            "desc_en": "Primary recipient addresses.",
+            "title_zh": "主要收件人地址。"
+          },
+          "cc": {
+            "desc_en": "CC (carbon copy) recipient addresses.",
+            "title_zh": "抄送（CC）收件人地址。"
+          },
+          "bcc": {
+            "desc_en": "BCC (blind carbon copy) recipient addresses, not visible to other recipients.",
+            "title_zh": "密送（BCC）收件人地址，其他收件人不可见。"
+          },
+          "text": {
+            "desc_en": "Plain-text body.",
+            "title_zh": "纯文本正文。"
+          },
+          "html": {
+            "desc_en": "HTML body.",
+            "title_zh": "HTML 正文。"
+          },
+          "in_reply_to": {
+            "desc_en": "ID of the message this draft/thread is replying to, if any.",
+            "title_zh": "本草稿/对话所回复的目标消息 ID（如有）。"
+          },
+          "references": {
+            "desc_en": "IDs of earlier messages in the thread, forming the reply chain.",
+            "title_zh": "对话中较早消息的 ID 列表，构成回复链。"
+          },
+          "send_status": {
+            "desc_en": "Scheduled-send state of the draft: `scheduled` (queued for `send_at`), `sending`, or `failed`. Absent for drafts with no scheduled send.",
+            "title_zh": "草稿的定时发送状态：`scheduled`（已排期到 `send_at`）、`sending`、`failed`。未设定时发送的草稿无此字段。"
+          },
+          "send_at": {
+            "desc_en": "When the draft is scheduled to be sent.",
+            "title_zh": "草稿计划发送的时间。"
+          },
+          "entry": {
+            "desc_en": "The email address or domain of the list entry.",
+            "title_zh": "名单条目的邮箱地址或域名。"
+          },
+          "organization_id": {
+            "desc_en": "ID of the organization the list entry belongs to.",
+            "title_zh": "名单条目所属的组织 ID。"
+          },
+          "reason": {
+            "desc_en": "Free-text reason recorded when the entry was added.",
+            "title_zh": "添加该条目时记录的自由文本原因。"
+          },
+          "direction": {
+            "desc_en": "Traffic direction the entry governs: `send`, `receive`, or `reply`.",
+            "title_zh": "条目作用的流量方向：`send`、`receive` 或 `reply`。"
+          },
+          "list_type": {
+            "desc_en": "Whether this is an `allow` or `block` list entry.",
+            "title_zh": "该条目属于 `allow` 还是 `block` 名单。"
+          },
+          "entry_type": {
+            "desc_en": "Whether the entry matches a single `email` address or an entire `domain`.",
+            "title_zh": "条目匹配单个 `email` 地址还是整个 `domain`。"
+          },
+          "read_only": {
+            "desc_en": "When true, the entry is system-managed and cannot be deleted through the API.",
+            "title_zh": "为 true 时，条目由系统管理，不能通过 API 删除。"
+          }
+        }
+      }
+    },
+    "update": {
+      "request": {
+        "reply_to": {
+          "desc_en": "Replacement reply-to addresses for the draft.",
+          "title_zh": "草稿的回复至（reply-to）地址，替换原值。"
+        },
+        "to": {
+          "desc_en": "Replacement primary recipient addresses for the draft.",
+          "title_zh": "草稿的主要收件人地址，替换原值。"
+        },
+        "cc": {
+          "desc_en": "Replacement carbon-copy addresses for the draft.",
+          "title_zh": "草稿的抄送（CC）地址，替换原值。"
+        },
+        "bcc": {
+          "desc_en": "Replacement blind carbon-copy addresses for the draft.",
+          "title_zh": "草稿的密送（BCC）地址，替换原值。"
+        },
+        "subject": {
+          "desc_en": "New subject line for the draft.",
+          "title_zh": "草稿的新主题。"
+        },
+        "text": {
+          "desc_en": "New plain-text body for the draft.",
+          "title_zh": "草稿的新纯文本正文。"
+        },
+        "html": {
+          "desc_en": "New HTML body for the draft.",
+          "title_zh": "草稿的新 HTML 正文。"
+        },
+        "send_at": {
+          "desc_en": "New scheduled send time for the draft; set it to schedule delayed delivery.",
+          "title_zh": "草稿新的计划发送时间；设置后即可定时延迟发送。"
+        },
+        "display_name": {
+          "desc_en": "New display name shown on outgoing mail from the inbox.",
+          "title_zh": "收件箱发件时展示的新显示名。"
+        },
+        "metadata": {
+          "desc_en": "Key/value pairs merged into the inbox's existing metadata; include only the keys you want to change.",
+          "title_zh": "合并进收件箱现有元数据的键值对；仅需包含想修改的键。"
+        },
+        "add_labels": {
+          "desc_en": "Labels to attach. For threads, system labels are not allowed.",
+          "title_zh": "要添加的标签。会话不允许使用系统标签。"
+        },
+        "remove_labels": {
+          "desc_en": "Labels to detach. For threads, system labels are not allowed and removal takes priority over additions of the same label.",
+          "title_zh": "要移除的标签。会话不允许系统标签，且同名标签的移除优先于添加。"
+        }
+      },
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox that owns the resource being updated.",
+          "title_zh": "被更新资源所属的收件箱标识。"
+        },
+        "draft_id": {
+          "desc_en": "Identifier of the draft to update.",
+          "title_zh": "要更新的草稿标识。"
+        },
+        "thread_id": {
+          "desc_en": "Identifier of the thread to update.",
+          "title_zh": "要更新的会话标识。"
+        },
+        "message_id": {
+          "desc_en": "Identifier of the message to update.",
+          "title_zh": "要更新的消息标识。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "message_id": {
+            "desc_en": "Identifier of the updated message.",
+            "title_zh": "被更新消息的标识。"
+          },
+          "labels": {
+            "desc_en": "The message's labels after the update is applied.",
+            "title_zh": "更新生效后该消息的标签。"
+          },
+          "thread_id": {
+            "desc_en": "Identifier of the updated thread.",
+            "title_zh": "被更新会话的标识。"
+          }
+        },
+        "400": {
+          "name": {
+            "desc_en": "Machine-readable error name identifying the validation failure.",
+            "title_zh": "标识本次校验失败的机器可读错误名。"
+          },
+          "errors": {
+            "desc_en": "Details of the validation problems with the request.",
+            "title_zh": "请求校验问题的明细。"
+          }
+        },
+        "404": {
+          "name": {
+            "desc_en": "Machine-readable error name identifying the failure.",
+            "title_zh": "标识此次失败的机器可读错误名。"
+          },
+          "message": {
+            "desc_en": "Human-readable description of the error.",
+            "title_zh": "面向人类的错误描述。"
+          }
+        },
+        "422": {
+          "name": {
+            "desc_en": "Machine-readable error name. Returned for example when the thread has 100 or more messages.",
+            "title_zh": "机器可读错误名。例如当对话消息数达 100 条及以上时返回。"
+          },
+          "message": {
+            "desc_en": "Human-readable description of why the update was rejected.",
+            "title_zh": "面向人类的更新被拒原因描述。"
+          }
+        }
+      }
+    },
+    "delete": {
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox that owns the resource being deleted.",
+          "title_zh": "被删除资源所属的收件箱标识。"
+        },
+        "draft_id": {
+          "desc_en": "Identifier of the draft to delete.",
+          "title_zh": "要删除的草稿标识。"
+        },
+        "thread_id": {
+          "desc_en": "Identifier of the thread to delete.",
+          "title_zh": "要删除的会话标识。"
+        },
+        "message_id": {
+          "desc_en": "Identifier of the message to delete.",
+          "title_zh": "要删除的消息标识。"
+        },
+        "direction": {
+          "desc_en": "Traffic direction of the list entry to delete: `send`, `receive`, or `reply`.",
+          "title_zh": "要删除的名单条目的流量方向：`send`、`receive` 或 `reply`。"
+        },
+        "type": {
+          "desc_en": "Whether the entry to delete is on the allow list or block list.",
+          "title_zh": "要删除的条目位于 allow 名单还是 block 名单。"
+        },
+        "entry": {
+          "desc_en": "The email address or domain identifying the list entry to delete.",
+          "title_zh": "标识要删除的名单条目的邮箱地址或域名。"
+        },
+        "permanent": {
+          "desc_en": "When true, hard-delete the thread immediately instead of moving it to trash.",
+          "title_zh": "为真时立即彻底删除会话，而非移入回收站。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "404": {
+          "name": {
+            "desc_en": "Machine-readable error name identifying the failure.",
+            "title_zh": "标识此次失败的机器可读错误名。"
+          },
+          "message": {
+            "desc_en": "Human-readable description of the error.",
+            "title_zh": "面向人类的错误描述。"
+          }
+        }
+      }
+    },
+    "list": {
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox whose resources are being listed. Omit only on the route that lists all inboxes.",
+          "title_zh": "被列举资源所属的收件箱标识。仅在列出全部收件箱的路由上可不传。"
+        },
+        "limit": {
+          "desc_en": "Maximum number of items to return in one page.",
+          "title_zh": "单页返回的最大条目数。"
+        },
+        "page_token": {
+          "desc_en": "Opaque cursor for the next page; pass back the `next_page_token` from the previous response to continue.",
+          "title_zh": "下一页的不透明游标；把上次响应的 `next_page_token` 回传即可翻页。"
+        },
+        "labels": {
+          "desc_en": "Restrict results to items carrying all of the given labels.",
+          "title_zh": "仅返回带有全部所给标签的条目。"
+        },
+        "before": {
+          "desc_en": "Return only items dated before this time, for time-window filtering.",
+          "title_zh": "仅返回此时间之前的条目，用于时间窗筛选。"
+        },
+        "after": {
+          "desc_en": "Return only items dated after this time, for time-window filtering.",
+          "title_zh": "仅返回此时间之后的条目，用于时间窗筛选。"
+        },
+        "ascending": {
+          "desc_en": "When true, return results oldest-first instead of the default newest-first.",
+          "title_zh": "为真时按最早在前返回，覆盖默认的最新在前。"
+        },
+        "include_spam": {
+          "desc_en": "When true, include items classified as spam in the results.",
+          "title_zh": "为真时把判定为垃圾邮件的条目纳入结果。"
+        },
+        "include_blocked": {
+          "desc_en": "When true, include items from blocked senders in the results.",
+          "title_zh": "为真时把来自被拦截发件人的条目纳入结果。"
+        },
+        "include_unauthenticated": {
+          "desc_en": "When true, include items that failed sender authentication (e.g. SPF/DKIM/DMARC).",
+          "title_zh": "为真时把未通过发件人认证（如 SPF/DKIM/DMARC）的条目纳入结果。"
+        },
+        "include_trash": {
+          "desc_en": "When true, include items currently in trash.",
+          "title_zh": "为真时把当前在回收站中的条目纳入结果。"
+        },
+        "direction": {
+          "desc_en": "When listing list entries, restrict to this traffic direction: `send`, `receive`, or `reply`.",
+          "title_zh": "列举名单条目时，限定此流量方向：`send`、`receive` 或 `reply`。"
+        },
+        "type": {
+          "desc_en": "When listing list entries, restrict to the allow list or block list.",
+          "title_zh": "列举名单条目时，限定 allow 名单或 block 名单。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "count": {
+            "desc_en": "Number of items returned in this page.",
+            "title_zh": "本页返回的条目数。"
+          },
+          "limit": {
+            "desc_en": "The page-size limit that was applied to this response.",
+            "title_zh": "本响应实际应用的分页大小上限。"
+          },
+          "next_page_token": {
+            "desc_en": "Cursor for the next page; pass it back as `page_token`. Absent or null when there are no more pages.",
+            "title_zh": "下一页游标；作为 `page_token` 回传。无更多页时缺省或为空。"
+          },
+          "drafts": {
+            "desc_en": "The page of drafts, ordered by `updated_at` descending.",
+            "title_zh": "本页草稿，按 `updated_at` 倒序排列。"
+          },
+          "drafts.inbox_id": {
+            "desc_en": "Identifier of the inbox that owns the draft.",
+            "title_zh": "拥有该草稿的收件箱标识。"
+          },
+          "drafts.draft_id": {
+            "desc_en": "Unique identifier of the draft.",
+            "title_zh": "草稿的唯一标识。"
+          },
+          "drafts.labels": {
+            "desc_en": "Labels applied to the draft.",
+            "title_zh": "应用于该草稿的标签。"
+          },
+          "drafts.to": {
+            "desc_en": "Primary recipient addresses of the draft.",
+            "title_zh": "草稿的主要收件人地址。"
+          },
+          "drafts.cc": {
+            "desc_en": "Carbon-copy recipient addresses of the draft.",
+            "title_zh": "草稿的抄送（CC）收件人地址。"
+          },
+          "drafts.bcc": {
+            "desc_en": "Blind carbon-copy recipient addresses of the draft.",
+            "title_zh": "草稿的密送（BCC）收件人地址。"
+          },
+          "drafts.subject": {
+            "desc_en": "Subject line of the draft.",
+            "title_zh": "草稿主题。"
+          },
+          "drafts.preview": {
+            "desc_en": "Short plain-text snippet of the draft body.",
+            "title_zh": "草稿正文的简短纯文本片段。"
+          },
+          "drafts.attachments": {
+            "desc_en": "Attachments included in the draft.",
+            "title_zh": "草稿中包含的附件。"
+          },
+          "drafts.attachments.attachment_id": {
+            "desc_en": "Identifier of the attachment.",
+            "title_zh": "附件标识。"
+          },
+          "drafts.attachments.filename": {
+            "desc_en": "Original filename of the attachment.",
+            "title_zh": "附件原始文件名。"
+          },
+          "drafts.attachments.size": {
+            "desc_en": "Size of the attachment in bytes.",
+            "title_zh": "附件大小，单位字节。"
+          },
+          "drafts.attachments.content_type": {
+            "desc_en": "MIME content type of the attachment.",
+            "title_zh": "附件的 MIME 内容类型。"
+          },
+          "drafts.attachments.content_disposition": {
+            "desc_en": "`inline` renders within the body; `attachment` is a downloadable file.",
+            "title_zh": "`inline` 在正文内联渲染；`attachment` 为可下载文件。"
+          },
+          "drafts.attachments.content_id": {
+            "desc_en": "Content-ID for referencing an inline attachment from HTML.",
+            "title_zh": "Content-ID，用于从 HTML 引用内联附件。"
+          },
+          "drafts.in_reply_to": {
+            "desc_en": "Identifier of the message this draft replies to, if any.",
+            "title_zh": "该草稿所回复的消息标识（如有）。"
+          },
+          "drafts.send_status": {
+            "desc_en": "Schedule status of the draft: `scheduled` is queued for a future send, `sending` is in progress, `failed` means the scheduled send did not complete.",
+            "title_zh": "草稿的定时发送状态：`scheduled` 已排队待发，`sending` 发送中，`failed` 定时发送未完成。"
+          },
+          "drafts.send_at": {
+            "desc_en": "Scheduled send time of the draft.",
+            "title_zh": "草稿的计划发送时间。"
+          },
+          "drafts.updated_at": {
+            "desc_en": "Time the draft was last updated.",
+            "title_zh": "草稿最后更新时间。"
+          },
+          "inboxes": {
+            "desc_en": "The page of inboxes, ordered by `created_at` descending.",
+            "title_zh": "本页收件箱，按 `created_at` 倒序排列。"
+          },
+          "inboxes.pod_id": {
+            "desc_en": "Identifier of the pod the inbox belongs to.",
+            "title_zh": "收件箱所属 pod 的标识。"
+          },
+          "inboxes.inbox_id": {
+            "desc_en": "Unique identifier of the inbox.",
+            "title_zh": "收件箱的唯一标识。"
+          },
+          "inboxes.email": {
+            "desc_en": "Full email address of the inbox.",
+            "title_zh": "收件箱的完整邮箱地址。"
+          },
+          "inboxes.display_name": {
+            "desc_en": "Display name shown on mail sent from the inbox.",
+            "title_zh": "收件箱发件时展示的显示名。"
+          },
+          "inboxes.client_id": {
+            "desc_en": "Caller-supplied identifier for the inbox, used for idempotency and your own correlation.",
+            "title_zh": "调用方自定义的收件箱标识，用于幂等与自有关联。"
+          },
+          "inboxes.metadata": {
+            "desc_en": "Custom key/value metadata attached to the inbox.",
+            "title_zh": "附加在收件箱上的自定义键值元数据。"
+          },
+          "inboxes.updated_at": {
+            "desc_en": "Time the inbox was last updated.",
+            "title_zh": "收件箱最后更新时间。"
+          },
+          "inboxes.created_at": {
+            "desc_en": "Time the inbox was created.",
+            "title_zh": "收件箱创建时间。"
+          },
+          "messages": {
+            "desc_en": "The page of messages, ordered by `timestamp` descending.",
+            "title_zh": "本页消息，按 `timestamp` 倒序排列。"
+          },
+          "messages.inbox_id": {
+            "desc_en": "Identifier of the inbox that owns the message.",
+            "title_zh": "拥有该消息的收件箱标识。"
+          },
+          "messages.thread_id": {
+            "desc_en": "Identifier of the thread the message belongs to.",
+            "title_zh": "该消息所属会话的标识。"
+          },
+          "messages.message_id": {
+            "desc_en": "Unique identifier of the message.",
+            "title_zh": "消息的唯一标识。"
+          },
+          "messages.labels": {
+            "desc_en": "Labels applied to the message.",
+            "title_zh": "应用于该消息的标签。"
+          },
+          "messages.timestamp": {
+            "desc_en": "Time the message was sent or drafted.",
+            "title_zh": "消息发送或起草的时间。"
+          },
+          "messages.from": {
+            "desc_en": "Sender address of the message.",
+            "title_zh": "消息的发件人地址。"
+          },
+          "messages.to": {
+            "desc_en": "Primary recipient addresses of the message.",
+            "title_zh": "消息的主要收件人地址。"
+          },
+          "messages.cc": {
+            "desc_en": "Carbon-copy recipient addresses.",
+            "title_zh": "抄送（CC）收件人地址。"
+          },
+          "messages.bcc": {
+            "desc_en": "Blind carbon-copy recipient addresses.",
+            "title_zh": "密送（BCC）收件人地址。"
+          },
+          "messages.subject": {
+            "desc_en": "Subject line of the message.",
+            "title_zh": "消息主题。"
+          },
+          "messages.preview": {
+            "desc_en": "Short plain-text snippet of the message body.",
+            "title_zh": "消息正文的简短纯文本片段。"
+          },
+          "messages.attachments": {
+            "desc_en": "Attachments carried by the message.",
+            "title_zh": "消息携带的附件。"
+          },
+          "messages.attachments.attachment_id": {
+            "desc_en": "Identifier of the attachment.",
+            "title_zh": "附件标识。"
+          },
+          "messages.attachments.filename": {
+            "desc_en": "Original filename of the attachment.",
+            "title_zh": "附件原始文件名。"
+          },
+          "messages.attachments.size": {
+            "desc_en": "Size of the attachment in bytes.",
+            "title_zh": "附件大小，单位字节。"
+          },
+          "messages.attachments.content_type": {
+            "desc_en": "MIME content type of the attachment.",
+            "title_zh": "附件的 MIME 内容类型。"
+          },
+          "messages.attachments.content_disposition": {
+            "desc_en": "`inline` renders within the body; `attachment` is a downloadable file.",
+            "title_zh": "`inline` 在正文内联渲染；`attachment` 为可下载文件。"
+          },
+          "messages.attachments.content_id": {
+            "desc_en": "Content-ID for referencing an inline attachment from HTML.",
+            "title_zh": "Content-ID，用于从 HTML 引用内联附件。"
+          },
+          "messages.in_reply_to": {
+            "desc_en": "Identifier of the message this one replies to, if any.",
+            "title_zh": "该消息所回复的消息标识（如有）。"
+          },
+          "messages.references": {
+            "desc_en": "Identifiers of earlier messages in the thread, forming the reply chain.",
+            "title_zh": "会话中较早消息的标识，构成回复链。"
+          },
+          "messages.headers": {
+            "desc_en": "Raw email headers of the message as key/value pairs.",
+            "title_zh": "消息的原始邮件头，以键值对形式给出。"
+          },
+          "messages.size": {
+            "desc_en": "Size of the message in bytes.",
+            "title_zh": "消息大小，单位字节。"
+          },
+          "messages.updated_at": {
+            "desc_en": "Time the message was last updated.",
+            "title_zh": "消息最后更新时间。"
+          },
+          "messages.created_at": {
+            "desc_en": "Time the message was created.",
+            "title_zh": "消息创建时间。"
+          },
+          "threads": {
+            "desc_en": "The page of threads, ordered by `timestamp` descending.",
+            "title_zh": "本页会话，按 `timestamp` 倒序排列。"
+          },
+          "threads.inbox_id": {
+            "desc_en": "Identifier of the inbox that contains the thread.",
+            "title_zh": "包含该会话的收件箱标识。"
+          },
+          "threads.thread_id": {
+            "desc_en": "Unique identifier of the thread.",
+            "title_zh": "会话的唯一标识。"
+          },
+          "threads.labels": {
+            "desc_en": "Labels applied to the thread.",
+            "title_zh": "应用于该会话的标签。"
+          },
+          "threads.timestamp": {
+            "desc_en": "Time of the latest activity in the thread.",
+            "title_zh": "会话最近一次活动的时间。"
+          },
+          "threads.received_timestamp": {
+            "desc_en": "Time the thread last received an inbound message.",
+            "title_zh": "会话最后一次收到入站消息的时间。"
+          },
+          "threads.sent_timestamp": {
+            "desc_en": "Time the thread last sent an outbound message.",
+            "title_zh": "会话最后一次发出出站消息的时间。"
+          },
+          "threads.senders": {
+            "desc_en": "Distinct sender addresses in the thread.",
+            "title_zh": "会话中出现过的不同发件人地址。"
+          },
+          "threads.recipients": {
+            "desc_en": "Distinct recipient addresses in the thread.",
+            "title_zh": "会话中出现过的不同收件人地址。"
+          },
+          "threads.subject": {
+            "desc_en": "Subject line of the thread.",
+            "title_zh": "会话主题。"
+          },
+          "threads.preview": {
+            "desc_en": "Short plain-text snippet of the latest message in the thread.",
+            "title_zh": "会话最新消息的简短纯文本片段。"
+          },
+          "threads.attachments": {
+            "desc_en": "Attachments accumulated across the thread.",
+            "title_zh": "会话累计的附件。"
+          },
+          "threads.attachments.attachment_id": {
+            "desc_en": "Identifier of the attachment.",
+            "title_zh": "附件标识。"
+          },
+          "threads.attachments.filename": {
+            "desc_en": "Original filename of the attachment.",
+            "title_zh": "附件原始文件名。"
+          },
+          "threads.attachments.size": {
+            "desc_en": "Size of the attachment in bytes.",
+            "title_zh": "附件大小，单位字节。"
+          },
+          "threads.attachments.content_type": {
+            "desc_en": "MIME content type of the attachment.",
+            "title_zh": "附件的 MIME 内容类型。"
+          },
+          "threads.attachments.content_disposition": {
+            "desc_en": "`inline` renders within the body; `attachment` is a downloadable file.",
+            "title_zh": "`inline` 在正文内联渲染；`attachment` 为可下载文件。"
+          },
+          "threads.attachments.content_id": {
+            "desc_en": "Content-ID for referencing an inline attachment from HTML.",
+            "title_zh": "Content-ID，用于从 HTML 引用内联附件。"
+          },
+          "threads.last_message_id": {
+            "desc_en": "Identifier of the most recent message in the thread.",
+            "title_zh": "会话中最新消息的标识。"
+          },
+          "threads.message_count": {
+            "desc_en": "Number of messages in the thread.",
+            "title_zh": "会话包含的消息数。"
+          },
+          "threads.size": {
+            "desc_en": "Total size of the thread in bytes.",
+            "title_zh": "会话总大小，单位字节。"
+          },
+          "threads.updated_at": {
+            "desc_en": "Time the thread was last updated.",
+            "title_zh": "会话最后更新时间。"
+          },
+          "threads.created_at": {
+            "desc_en": "Time the thread was created.",
+            "title_zh": "会话创建时间。"
+          },
+          "entries": {
+            "desc_en": "The page of list entries, ordered by entry value ascending.",
+            "title_zh": "本页名单条目，按条目值升序排列。"
+          },
+          "entries.entry": {
+            "desc_en": "The email address or domain captured by this list entry.",
+            "title_zh": "该名单条目所覆盖的邮箱地址或域名。"
+          },
+          "entries.organization_id": {
+            "desc_en": "Identifier of the organization that owns the entry.",
+            "title_zh": "拥有该条目的组织标识。"
+          },
+          "entries.reason": {
+            "desc_en": "Free-text reason recorded when the entry was added.",
+            "title_zh": "添加条目时记录的文字理由。"
+          },
+          "entries.direction": {
+            "desc_en": "Traffic direction the entry governs: `send`, `receive`, or `reply`.",
+            "title_zh": "条目作用的流量方向：`send`、`receive` 或 `reply`。"
+          },
+          "entries.list_type": {
+            "desc_en": "Whether the entry is on the `allow` list or the `block` list.",
+            "title_zh": "条目位于 `allow` 放行名单还是 `block` 拦截名单。"
+          },
+          "entries.entry_type": {
+            "desc_en": "Whether `entry` is a single `email` address or a whole `domain`.",
+            "title_zh": "`entry` 是单个 `email` 地址还是整个 `domain` 域名。"
+          },
+          "entries.created_at": {
+            "desc_en": "Time the entry was created.",
+            "title_zh": "条目创建时间。"
+          },
+          "entries.read_only": {
+            "desc_en": "When true, the entry is managed by the platform and cannot be deleted via the API.",
+            "title_zh": "为真时该条目由平台管理，无法通过 API 删除。"
+          },
+          "entries.pod_id": {
+            "desc_en": "Identifier of the pod the entry belongs to.",
+            "title_zh": "条目所属 pod 的标识。"
+          },
+          "entries.inbox_id": {
+            "desc_en": "Identifier of the inbox the entry is scoped to, when it is inbox-specific rather than pod-wide.",
+            "title_zh": "条目所限定的收件箱标识（当条目针对单个收件箱而非整个 pod 时）。"
+          },
+          "events": {
+            "desc_en": "The page of inbox events, ordered by `event_id` descending.",
+            "title_zh": "本页收件箱事件，按 `event_id` 倒序排列。"
+          },
+          "events.organization_id": {
+            "desc_en": "Identifier of the organization that owns the event.",
+            "title_zh": "拥有该事件的组织标识。"
+          },
+          "events.pod_id": {
+            "desc_en": "Identifier of the pod the event belongs to.",
+            "title_zh": "事件所属 pod 的标识。"
+          },
+          "events.inbox_id": {
+            "desc_en": "Identifier of the inbox the event occurred in.",
+            "title_zh": "事件发生所在的收件箱标识。"
+          },
+          "events.event_id": {
+            "desc_en": "Unique identifier of the event; also drives the descending sort order.",
+            "title_zh": "事件的唯一标识，同时决定倒序排序。"
+          },
+          "events.event_type": {
+            "desc_en": "What happened: `label.added` when a label was attached, `label.removed` when one was detached.",
+            "title_zh": "发生了什么：`label.added` 表示加上了标签，`label.removed` 表示移除了标签。"
+          },
+          "events.message_id": {
+            "desc_en": "Identifier of the message the event relates to.",
+            "title_zh": "该事件关联的消息标识。"
+          },
+          "events.label": {
+            "desc_en": "The label that was added or removed.",
+            "title_zh": "被添加或移除的标签。"
+          },
+          "events.event_at": {
+            "desc_en": "Time the event actually occurred.",
+            "title_zh": "事件实际发生的时间。"
+          },
+          "events.created_at": {
+            "desc_en": "Time the event record was written.",
+            "title_zh": "事件记录写入的时间。"
+          }
+        },
+        "404": {
+          "name": {
+            "desc_en": "Machine-readable error name identifying the failure.",
+            "title_zh": "标识此次失败的机器可读错误名。"
+          },
+          "message": {
+            "desc_en": "Human-readable description of the error.",
+            "title_zh": "面向人类的错误描述。"
+          }
+        }
+      }
+    },
+    "create": {
+      "request": {
+        "labels": {
+          "desc_en": "Labels to apply to the new draft.",
+          "title_zh": "为新草稿应用的标签。"
+        },
+        "reply_to": {
+          "desc_en": "Reply-to addresses for the draft, when replies should go somewhere other than the sender.",
+          "title_zh": "草稿的回复至地址（当回复应发往非发件人处时）。"
+        },
+        "to": {
+          "desc_en": "Primary recipient addresses for the draft.",
+          "title_zh": "草稿的主要收件人地址。"
+        },
+        "cc": {
+          "desc_en": "Carbon-copy recipient addresses for the draft.",
+          "title_zh": "草稿的抄送（CC）收件人地址。"
+        },
+        "bcc": {
+          "desc_en": "Blind carbon-copy recipient addresses for the draft.",
+          "title_zh": "草稿的密送（BCC）收件人地址。"
+        },
+        "subject": {
+          "desc_en": "Subject line for the draft.",
+          "title_zh": "草稿主题。"
+        },
+        "text": {
+          "desc_en": "Plain-text body of the draft.",
+          "title_zh": "草稿的纯文本正文。"
+        },
+        "html": {
+          "desc_en": "HTML body of the draft.",
+          "title_zh": "草稿的 HTML 正文。"
+        },
+        "attachments": {
+          "desc_en": "Files to attach to the draft; provide each either inline as base64 `content` or as a fetchable `url`.",
+          "title_zh": "随草稿附带的文件；每个附件以 base64 `content` 内联提供，或以可拉取的 `url` 提供。"
+        },
+        "attachments.filename": {
+          "desc_en": "Filename to give the attachment.",
+          "title_zh": "为附件指定的文件名。"
+        },
+        "attachments.content_type": {
+          "desc_en": "MIME content type of the attachment.",
+          "title_zh": "附件的 MIME 内容类型。"
+        },
+        "attachments.content_disposition": {
+          "desc_en": "`inline` to render the attachment within the body, `attachment` to offer it as a download.",
+          "title_zh": "`inline` 在正文内联渲染附件，`attachment` 作为下载提供。"
+        },
+        "attachments.content_id": {
+          "desc_en": "Content-ID used to reference an inline attachment from the HTML body.",
+          "title_zh": "Content-ID，用于在 HTML 正文中引用内联附件。"
+        },
+        "attachments.content": {
+          "desc_en": "The attachment bytes, base64-encoded. Use this or `url`, not both.",
+          "title_zh": "附件字节内容，base64 编码。与 `url` 二选一。"
+        },
+        "attachments.url": {
+          "desc_en": "A URL the service fetches the attachment from. Use this or `content`, not both.",
+          "title_zh": "服务据以拉取附件的 URL。与 `content` 二选一。"
+        },
+        "in_reply_to": {
+          "desc_en": "Identifier of a message this draft replies to, to keep it in the same thread.",
+          "title_zh": "该草稿所回复的消息标识，用于保持同一会话。"
+        },
+        "send_at": {
+          "desc_en": "Time to schedule the draft for delayed sending.",
+          "title_zh": "为草稿安排的定时延迟发送时间。"
+        },
+        "client_id": {
+          "desc_en": "Caller-supplied identifier for idempotency and your own correlation of the created resource.",
+          "title_zh": "调用方自定义标识，用于幂等及对所创建资源的自有关联。"
+        },
+        "username": {
+          "desc_en": "Local part of the new inbox's address; a random value is generated when omitted.",
+          "title_zh": "新收件箱地址的用户名部分；不传时随机生成。"
+        },
+        "domain": {
+          "desc_en": "Domain for the new inbox's address; must be a verified domain, otherwise the platform default is used.",
+          "title_zh": "新收件箱地址的域名；必须是已验证域名，否则使用平台默认域名。"
+        },
+        "display_name": {
+          "desc_en": "Display name shown on mail sent from the new inbox.",
+          "title_zh": "新收件箱发件时展示的显示名。"
+        },
+        "metadata": {
+          "desc_en": "Custom key/value metadata to attach to the new inbox.",
+          "title_zh": "附加在新收件箱上的自定义键值元数据。"
+        },
+        "entry": {
+          "desc_en": "The email address or domain to add to the allow/block list.",
+          "title_zh": "要加入 allow/block 名单的邮箱地址或域名。"
+        },
+        "reason": {
+          "desc_en": "Free-text reason recorded with the list entry.",
+          "title_zh": "随名单条目记录的文字理由。"
+        }
+      },
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox under which the resource is created (drafts and list entries). Omit on the route that creates a top-level inbox.",
+          "title_zh": "在其下创建资源的收件箱标识（草稿与名单条目）。创建顶层收件箱的路由可不传。"
+        },
+        "direction": {
+          "desc_en": "When creating a list entry, the traffic direction it should govern: `send`, `receive`, or `reply`.",
+          "title_zh": "创建名单条目时，其作用的流量方向：`send`、`receive` 或 `reply`。"
+        },
+        "type": {
+          "desc_en": "When creating a list entry, whether it goes on the allow list or block list.",
+          "title_zh": "创建名单条目时，加入 allow 名单还是 block 名单。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "inbox_id": {
+            "desc_en": "Identifier of the inbox the created resource belongs to.",
+            "title_zh": "所创建资源所属的收件箱标识。"
+          },
+          "draft_id": {
+            "desc_en": "Unique identifier of the created draft.",
+            "title_zh": "所创建草稿的唯一标识。"
+          },
+          "client_id": {
+            "desc_en": "Caller-supplied identifier echoed back on the created resource.",
+            "title_zh": "回显在所创建资源上的调用方自定义标识。"
+          },
+          "labels": {
+            "desc_en": "Labels applied to the created draft.",
+            "title_zh": "应用于所创建草稿的标签。"
+          },
+          "reply_to": {
+            "desc_en": "Reply-to addresses of the draft.",
+            "title_zh": "草稿的回复至地址。"
+          },
+          "to": {
+            "desc_en": "Primary recipient addresses of the draft.",
+            "title_zh": "草稿的主要收件人地址。"
+          },
+          "cc": {
+            "desc_en": "Carbon-copy recipient addresses of the draft.",
+            "title_zh": "草稿的抄送（CC）收件人地址。"
+          },
+          "bcc": {
+            "desc_en": "Blind carbon-copy recipient addresses of the draft.",
+            "title_zh": "草稿的密送（BCC）收件人地址。"
+          },
+          "subject": {
+            "desc_en": "Subject line of the draft.",
+            "title_zh": "草稿主题。"
+          },
+          "preview": {
+            "desc_en": "Short plain-text snippet of the draft body.",
+            "title_zh": "草稿正文的简短纯文本片段。"
+          },
+          "text": {
+            "desc_en": "Plain-text body of the draft.",
+            "title_zh": "草稿的纯文本正文。"
+          },
+          "html": {
+            "desc_en": "HTML body of the draft.",
+            "title_zh": "草稿的 HTML 正文。"
+          },
+          "attachments": {
+            "desc_en": "Attachments stored on the draft.",
+            "title_zh": "草稿上保存的附件。"
+          },
+          "attachments.attachment_id": {
+            "desc_en": "Identifier of the attachment; pass it to get-attachment to download.",
+            "title_zh": "附件标识；传给 get-attachment 可下载。"
+          },
+          "attachments.filename": {
+            "desc_en": "Original filename of the attachment.",
+            "title_zh": "附件原始文件名。"
+          },
+          "attachments.size": {
+            "desc_en": "Size of the attachment in bytes.",
+            "title_zh": "附件大小，单位字节。"
+          },
+          "attachments.content_type": {
+            "desc_en": "MIME content type of the attachment.",
+            "title_zh": "附件的 MIME 内容类型。"
+          },
+          "attachments.content_disposition": {
+            "desc_en": "`inline` renders within the body; `attachment` is a downloadable file.",
+            "title_zh": "`inline` 在正文内联渲染；`attachment` 为可下载文件。"
+          },
+          "attachments.content_id": {
+            "desc_en": "Content-ID for referencing an inline attachment from HTML.",
+            "title_zh": "Content-ID，用于从 HTML 引用内联附件。"
+          },
+          "in_reply_to": {
+            "desc_en": "Identifier of the message this draft replies to, if any.",
+            "title_zh": "该草稿所回复的消息标识（如有）。"
+          },
+          "references": {
+            "desc_en": "Identifiers of earlier messages in the thread.",
+            "title_zh": "会话中较早消息的标识。"
+          },
+          "send_status": {
+            "desc_en": "Schedule status: `scheduled` queued for future send, `sending` in progress, `failed` send did not complete.",
+            "title_zh": "定时状态：`scheduled` 已排队待发，`sending` 发送中，`failed` 发送未完成。"
+          },
+          "send_at": {
+            "desc_en": "Scheduled send time of the draft.",
+            "title_zh": "草稿的计划发送时间。"
+          },
+          "updated_at": {
+            "desc_en": "Time the draft was last updated.",
+            "title_zh": "草稿最后更新时间。"
+          },
+          "created_at": {
+            "desc_en": "Time the resource was created.",
+            "title_zh": "资源创建时间。"
+          },
+          "pod_id": {
+            "desc_en": "Identifier of the pod the resource belongs to.",
+            "title_zh": "资源所属 pod 的标识。"
+          },
+          "email": {
+            "desc_en": "Full email address of the created inbox.",
+            "title_zh": "所创建收件箱的完整邮箱地址。"
+          },
+          "display_name": {
+            "desc_en": "Display name of the created inbox.",
+            "title_zh": "所创建收件箱的显示名。"
+          },
+          "metadata": {
+            "desc_en": "Custom metadata attached to the created inbox.",
+            "title_zh": "附加在所创建收件箱上的自定义元数据。"
+          },
+          "entry": {
+            "desc_en": "The email address or domain captured by the created list entry.",
+            "title_zh": "所创建名单条目覆盖的邮箱地址或域名。"
+          },
+          "organization_id": {
+            "desc_en": "Identifier of the organization that owns the list entry.",
+            "title_zh": "拥有该名单条目的组织标识。"
+          },
+          "reason": {
+            "desc_en": "Reason recorded when the list entry was created.",
+            "title_zh": "创建名单条目时记录的理由。"
+          },
+          "direction": {
+            "desc_en": "Traffic direction the list entry governs: `send`, `receive`, or `reply`.",
+            "title_zh": "名单条目作用的流量方向：`send`、`receive` 或 `reply`。"
+          },
+          "list_type": {
+            "desc_en": "Whether the entry is on the `allow` or `block` list.",
+            "title_zh": "条目位于 `allow` 还是 `block` 名单。"
+          },
+          "entry_type": {
+            "desc_en": "Whether `entry` is an `email` address or a `domain`.",
+            "title_zh": "`entry` 是 `email` 地址还是 `domain` 域名。"
+          },
+          "read_only": {
+            "desc_en": "When true, the entry is platform-managed and cannot be deleted via the API.",
+            "title_zh": "为真时条目由平台管理，无法通过 API 删除。"
+          }
+        },
+        "400": {
+          "name": {
+            "desc_en": "Machine-readable error name identifying the validation failure.",
+            "title_zh": "标识本次校验失败的机器可读错误名。"
+          },
+          "errors": {
+            "desc_en": "Details of the validation problems with the request.",
+            "title_zh": "请求校验问题的明细。"
+          }
+        }
+      }
+    },
+    "send": {
+      "request": {
+        "labels": {
+          "desc_en": "Labels to apply to the sent message.",
+          "title_zh": "为所发送消息应用的标签。"
+        },
+        "reply_to": {
+          "desc_en": "Reply-to addresses for the message.",
+          "title_zh": "消息的回复至地址。"
+        },
+        "to": {
+          "desc_en": "Primary recipient addresses of the message.",
+          "title_zh": "消息的主要收件人地址。"
+        },
+        "cc": {
+          "desc_en": "Carbon-copy recipient addresses.",
+          "title_zh": "抄送（CC）收件人地址。"
+        },
+        "bcc": {
+          "desc_en": "Blind carbon-copy recipient addresses.",
+          "title_zh": "密送（BCC）收件人地址。"
+        },
+        "subject": {
+          "desc_en": "Subject line of the message.",
+          "title_zh": "消息主题。"
+        },
+        "text": {
+          "desc_en": "Plain-text body of the message.",
+          "title_zh": "消息的纯文本正文。"
+        },
+        "html": {
+          "desc_en": "HTML body of the message.",
+          "title_zh": "消息的 HTML 正文。"
+        },
+        "attachments": {
+          "desc_en": "Files to attach; provide each either inline as base64 `content` or as a fetchable `url`.",
+          "title_zh": "随消息附带的文件；每个以 base64 `content` 内联提供或以可拉取 `url` 提供。"
+        },
+        "attachments.filename": {
+          "desc_en": "Filename to give the attachment.",
+          "title_zh": "为附件指定的文件名。"
+        },
+        "attachments.content_type": {
+          "desc_en": "MIME content type of the attachment.",
+          "title_zh": "附件的 MIME 内容类型。"
+        },
+        "attachments.content_disposition": {
+          "desc_en": "`inline` to render within the body, `attachment` to offer as a download.",
+          "title_zh": "`inline` 在正文内联渲染，`attachment` 作为下载提供。"
+        },
+        "attachments.content_id": {
+          "desc_en": "Content-ID used to reference an inline attachment from the HTML body.",
+          "title_zh": "Content-ID，用于在 HTML 正文中引用内联附件。"
+        },
+        "attachments.content": {
+          "desc_en": "The attachment bytes, base64-encoded. Use this or `url`, not both.",
+          "title_zh": "附件字节内容，base64 编码。与 `url` 二选一。"
+        },
+        "attachments.url": {
+          "desc_en": "A URL the service fetches the attachment from. Use this or `content`, not both.",
+          "title_zh": "服务据以拉取附件的 URL。与 `content` 二选一。"
+        },
+        "headers": {
+          "desc_en": "Additional raw email headers to set on the outgoing message.",
+          "title_zh": "为出站消息设置的额外原始邮件头。"
+        }
+      },
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox sending the message.",
+          "title_zh": "发送消息的收件箱标识。"
+        },
+        "draft_id": {
+          "desc_en": "Identifier of the draft to send, on the route that sends a saved draft.",
+          "title_zh": "要发送的草稿标识（用于发送已保存草稿的路由）。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "message_id": {
+            "desc_en": "Identifier of the message that was created and sent.",
+            "title_zh": "已创建并发送的消息标识。"
+          },
+          "thread_id": {
+            "desc_en": "Identifier of the thread the sent message landed in.",
+            "title_zh": "所发送消息落入的会话标识。"
+          }
+        }
+      }
+    },
+    "reply": {
+      "request": {
+        "labels": {
+          "desc_en": "Labels to apply to the reply message.",
+          "title_zh": "为回复消息应用的标签。"
+        },
+        "reply_to": {
+          "desc_en": "Reply-to addresses for the reply message.",
+          "title_zh": "回复消息的回复至地址。"
+        },
+        "to": {
+          "desc_en": "Override the recipient addresses for the reply, instead of deriving them from the original message.",
+          "title_zh": "覆盖回复的收件人地址，而非从原消息推导。"
+        },
+        "cc": {
+          "desc_en": "Override the carbon-copy addresses for the reply.",
+          "title_zh": "覆盖回复的抄送（CC）地址。"
+        },
+        "bcc": {
+          "desc_en": "Override the blind carbon-copy addresses for the reply.",
+          "title_zh": "覆盖回复的密送（BCC）地址。"
+        },
+        "reply_all": {
+          "desc_en": "When true, address the reply to all original recipients (To/Cc) instead of only the original sender.",
+          "title_zh": "为真时把回复发给全部原收件人（To/Cc），而非仅原发件人。"
+        },
+        "text": {
+          "desc_en": "Plain-text body of the reply.",
+          "title_zh": "回复的纯文本正文。"
+        },
+        "html": {
+          "desc_en": "HTML body of the reply.",
+          "title_zh": "回复的 HTML 正文。"
+        },
+        "attachments": {
+          "desc_en": "Files to attach to the reply; provide each as base64 `content` or a fetchable `url`.",
+          "title_zh": "随回复附带的文件；每个以 base64 `content` 或可拉取 `url` 提供。"
+        },
+        "attachments.filename": {
+          "desc_en": "Filename to give the attachment.",
+          "title_zh": "为附件指定的文件名。"
+        },
+        "attachments.content_type": {
+          "desc_en": "MIME content type of the attachment.",
+          "title_zh": "附件的 MIME 内容类型。"
+        },
+        "attachments.content_disposition": {
+          "desc_en": "`inline` to render within the body, `attachment` to offer as a download.",
+          "title_zh": "`inline` 在正文内联渲染，`attachment` 作为下载提供。"
+        },
+        "attachments.content_id": {
+          "desc_en": "Content-ID used to reference an inline attachment from the HTML body.",
+          "title_zh": "Content-ID，用于在 HTML 正文中引用内联附件。"
+        },
+        "attachments.content": {
+          "desc_en": "The attachment bytes, base64-encoded. Use this or `url`, not both.",
+          "title_zh": "附件字节内容，base64 编码。与 `url` 二选一。"
+        },
+        "attachments.url": {
+          "desc_en": "A URL the service fetches the attachment from. Use this or `content`, not both.",
+          "title_zh": "服务据以拉取附件的 URL。与 `content` 二选一。"
+        },
+        "headers": {
+          "desc_en": "Additional raw email headers to set on the reply.",
+          "title_zh": "为回复设置的额外原始邮件头。"
+        }
+      },
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox sending the reply.",
+          "title_zh": "发送回复的收件箱标识。"
+        },
+        "message_id": {
+          "desc_en": "Identifier of the message being replied to.",
+          "title_zh": "被回复的消息标识。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "message_id": {
+            "desc_en": "Identifier of the reply message that was sent.",
+            "title_zh": "已发送的回复消息标识。"
+          },
+          "thread_id": {
+            "desc_en": "Identifier of the thread the reply was added to.",
+            "title_zh": "回复加入的会话标识。"
+          }
+        }
+      }
+    },
+    "reply-all": {
+      "request": {
+        "labels": {
+          "desc_en": "Labels to apply to the reply-all message.",
+          "title_zh": "为回复全部消息应用的标签。"
+        },
+        "reply_to": {
+          "desc_en": "Reply-to addresses for the reply-all message.",
+          "title_zh": "回复全部消息的回复至地址。"
+        },
+        "text": {
+          "desc_en": "Plain-text body of the reply-all.",
+          "title_zh": "回复全部的纯文本正文。"
+        },
+        "html": {
+          "desc_en": "HTML body of the reply-all.",
+          "title_zh": "回复全部的 HTML 正文。"
+        },
+        "attachments": {
+          "desc_en": "Files to attach; provide each as base64 `content` or a fetchable `url`.",
+          "title_zh": "随消息附带的文件；每个以 base64 `content` 或可拉取 `url` 提供。"
+        },
+        "attachments.filename": {
+          "desc_en": "Filename to give the attachment.",
+          "title_zh": "为附件指定的文件名。"
+        },
+        "attachments.content_type": {
+          "desc_en": "MIME content type of the attachment.",
+          "title_zh": "附件的 MIME 内容类型。"
+        },
+        "attachments.content_disposition": {
+          "desc_en": "`inline` to render within the body, `attachment` to offer as a download.",
+          "title_zh": "`inline` 在正文内联渲染，`attachment` 作为下载提供。"
+        },
+        "attachments.content_id": {
+          "desc_en": "Content-ID used to reference an inline attachment from the HTML body.",
+          "title_zh": "Content-ID，用于在 HTML 正文中引用内联附件。"
+        },
+        "attachments.content": {
+          "desc_en": "The attachment bytes, base64-encoded. Use this or `url`, not both.",
+          "title_zh": "附件字节内容，base64 编码。与 `url` 二选一。"
+        },
+        "attachments.url": {
+          "desc_en": "A URL the service fetches the attachment from. Use this or `content`, not both.",
+          "title_zh": "服务据以拉取附件的 URL。与 `content` 二选一。"
+        },
+        "headers": {
+          "desc_en": "Additional raw email headers to set on the reply-all message.",
+          "title_zh": "为回复全部消息设置的额外原始邮件头。"
+        }
+      },
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox sending the reply-all.",
+          "title_zh": "发送回复全部的收件箱标识。"
+        },
+        "message_id": {
+          "desc_en": "Identifier of the message being replied to; its recipients become the reply-all audience.",
+          "title_zh": "被回复的消息标识，其收件人即回复全部的对象。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "message_id": {
+            "desc_en": "Identifier of the reply-all message that was sent.",
+            "title_zh": "已发送的回复全部消息标识。"
+          },
+          "thread_id": {
+            "desc_en": "Identifier of the thread the message was added to.",
+            "title_zh": "消息加入的会话标识。"
+          }
+        }
+      }
+    },
+    "forward": {
+      "request": {
+        "labels": {
+          "desc_en": "Labels to apply to the forwarded message.",
+          "title_zh": "为转发消息应用的标签。"
+        },
+        "reply_to": {
+          "desc_en": "Reply-to addresses for the forwarded message.",
+          "title_zh": "转发消息的回复至地址。"
+        },
+        "to": {
+          "desc_en": "Recipients to forward the message to.",
+          "title_zh": "转发消息的目标收件人。"
+        },
+        "cc": {
+          "desc_en": "Carbon-copy recipients of the forward.",
+          "title_zh": "转发的抄送（CC）收件人。"
+        },
+        "bcc": {
+          "desc_en": "Blind carbon-copy recipients of the forward.",
+          "title_zh": "转发的密送（BCC）收件人。"
+        },
+        "subject": {
+          "desc_en": "Subject line of the forwarded message.",
+          "title_zh": "转发消息的主题。"
+        },
+        "text": {
+          "desc_en": "Additional plain-text body to prepend to the forward.",
+          "title_zh": "转发时附加在前的纯文本正文。"
+        },
+        "html": {
+          "desc_en": "Additional HTML body to prepend to the forward.",
+          "title_zh": "转发时附加在前的 HTML 正文。"
+        },
+        "attachments": {
+          "desc_en": "Extra files to attach to the forward; provide each as base64 `content` or a fetchable `url`.",
+          "title_zh": "转发时附带的额外文件；每个以 base64 `content` 或可拉取 `url` 提供。"
+        },
+        "attachments.filename": {
+          "desc_en": "Filename to give the attachment.",
+          "title_zh": "为附件指定的文件名。"
+        },
+        "attachments.content_type": {
+          "desc_en": "MIME content type of the attachment.",
+          "title_zh": "附件的 MIME 内容类型。"
+        },
+        "attachments.content_disposition": {
+          "desc_en": "`inline` to render within the body, `attachment` to offer as a download.",
+          "title_zh": "`inline` 在正文内联渲染，`attachment` 作为下载提供。"
+        },
+        "attachments.content_id": {
+          "desc_en": "Content-ID used to reference an inline attachment from the HTML body.",
+          "title_zh": "Content-ID，用于在 HTML 正文中引用内联附件。"
+        },
+        "attachments.content": {
+          "desc_en": "The attachment bytes, base64-encoded. Use this or `url`, not both.",
+          "title_zh": "附件字节内容，base64 编码。与 `url` 二选一。"
+        },
+        "attachments.url": {
+          "desc_en": "A URL the service fetches the attachment from. Use this or `content`, not both.",
+          "title_zh": "服务据以拉取附件的 URL。与 `content` 二选一。"
+        },
+        "headers": {
+          "desc_en": "Additional raw email headers to set on the forwarded message.",
+          "title_zh": "为转发消息设置的额外原始邮件头。"
+        }
+      },
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox forwarding the message.",
+          "title_zh": "转发消息的收件箱标识。"
+        },
+        "message_id": {
+          "desc_en": "Identifier of the message to forward.",
+          "title_zh": "要转发的消息标识。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      }
+    },
+    "get-raw": {
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox that owns the message.",
+          "title_zh": "拥有该消息的收件箱标识。"
+        },
+        "message_id": {
+          "desc_en": "Identifier of the message whose raw source is requested.",
+          "title_zh": "请求原始源的消息标识。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "message_id": {
+            "desc_en": "Identifier of the message the raw source belongs to.",
+            "title_zh": "原始源所属的消息标识。"
+          },
+          "size": {
+            "desc_en": "Size of the raw message in bytes.",
+            "title_zh": "原始邮件大小，单位字节。"
+          },
+          "download_url": {
+            "desc_en": "Presigned URL to download the raw RFC 822 source from object storage; it is short-lived and expires at `expires_at`.",
+            "title_zh": "从对象存储下载原始 RFC 822 源的预签名 URL；时效短，于 `expires_at` 过期。"
+          },
+          "expires_at": {
+            "desc_en": "Time after which the download URL stops working.",
+            "title_zh": "下载 URL 失效的时间。"
+          }
+        }
+      }
+    },
+    "get-attachment": {
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox that owns the attachment.",
+          "title_zh": "拥有该附件的收件箱标识。"
+        },
+        "message_id": {
+          "desc_en": "Identifier of the message the attachment belongs to, when addressing it via a message.",
+          "title_zh": "经消息寻址时，附件所属的消息标识。"
+        },
+        "thread_id": {
+          "desc_en": "Identifier of the thread the attachment belongs to, when addressing it via a thread.",
+          "title_zh": "经会话寻址时，附件所属的会话标识。"
+        },
+        "draft_id": {
+          "desc_en": "Identifier of the draft the attachment belongs to, when addressing it via a draft.",
+          "title_zh": "经草稿寻址时，附件所属的草稿标识。"
+        },
+        "attachment_id": {
+          "desc_en": "Identifier of the attachment to fetch, as found on the parent message/thread/draft.",
+          "title_zh": "要获取的附件标识，取自其所属消息/会话/草稿。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "attachment_id": {
+            "desc_en": "Identifier of the attachment.",
+            "title_zh": "附件标识。"
+          },
+          "filename": {
+            "desc_en": "Original filename of the attachment.",
+            "title_zh": "附件原始文件名。"
+          },
+          "size": {
+            "desc_en": "Size of the attachment in bytes.",
+            "title_zh": "附件大小，单位字节。"
+          },
+          "content_type": {
+            "desc_en": "MIME content type of the attachment.",
+            "title_zh": "附件的 MIME 内容类型。"
+          },
+          "content_disposition": {
+            "desc_en": "`inline` if the attachment is meant to render within the body, `attachment` if it is a standalone download.",
+            "title_zh": "`inline` 表示应在正文内联渲染，`attachment` 表示为独立下载。"
+          },
+          "content_id": {
+            "desc_en": "Content-ID for referencing an inline attachment from HTML.",
+            "title_zh": "Content-ID，用于从 HTML 引用内联附件。"
+          },
+          "download_url": {
+            "desc_en": "Presigned URL to download the attachment bytes; short-lived, expiring at `expires_at`.",
+            "title_zh": "下载附件字节的预签名 URL；时效短，于 `expires_at` 过期。"
+          },
+          "expires_at": {
+            "desc_en": "Time after which the download URL stops working.",
+            "title_zh": "下载 URL 失效的时间。"
+          }
+        },
+        "404": {
+          "name": {
+            "desc_en": "Machine-readable error name identifying the failure.",
+            "title_zh": "标识此次失败的机器可读错误名。"
+          },
+          "message": {
+            "desc_en": "Human-readable description of the error.",
+            "title_zh": "面向人类的错误描述。"
+          }
+        }
+      }
+    },
+    "query": {
+      "parameters": {
+        "inbox_id": {
+          "desc_en": "Identifier of the inbox whose metrics are queried.",
+          "title_zh": "被查询指标的收件箱标识。"
+        },
+        "event_types": {
+          "desc_en": "Restrict the metrics to these event types only.",
+          "title_zh": "仅按这些事件类型统计指标。"
+        },
+        "start": {
+          "desc_en": "Start of the time window to aggregate over.",
+          "title_zh": "聚合统计的时间窗起点。"
+        },
+        "end": {
+          "desc_en": "End of the time window to aggregate over.",
+          "title_zh": "聚合统计的时间窗终点。"
+        },
+        "period": {
+          "desc_en": "Bucket size used to group metrics within the window (e.g. by day or hour).",
+          "title_zh": "窗口内对指标分桶的粒度（如按天或按小时）。"
+        },
+        "limit": {
+          "desc_en": "Maximum number of metric buckets to return.",
+          "title_zh": "返回的指标分桶数上限。"
+        },
+        "descending": {
+          "desc_en": "When true, return buckets newest-first.",
+          "title_zh": "为真时按最新在前返回分桶。"
+        },
+        "Authorization": {
+          "desc_en": "Bearer token granting access to the inbox; send as `Bearer <api_key>` and never log it in clear text.",
+          "title_zh": "授予收件箱访问权限的 Bearer 令牌；以 `Bearer <api_key>` 发送，切勿明文记录。"
+        }
+      },
+      "response": {
+        "400": {
+          "name": {
+            "desc_en": "Machine-readable name of the validation error.",
+            "title_zh": "机器可读的校验错误名。"
+          },
+          "errors": {
+            "desc_en": "Per-field validation problems describing which inputs were rejected and why.",
+            "title_zh": "逐字段的校验问题，说明哪些输入被拒及原因。"
+          }
+        }
+      }
+    }
+  }
+}

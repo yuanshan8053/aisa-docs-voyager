@@ -1,56 +1,70 @@
-# 阶段三 · OpenAPI 内容加强
+# 阶段三 · OpenAPI 内容加强（v2 · LLM 推理双字段加强）
 
-**阶段目标**：用 `api-doc-agent` 技能，把 AIsa 的 OpenAPI spec 加强成专业、好懂、人话的参考内容——产出**独立的增强版参考页**，并实现**把增强内容回写原 spec**的能力（经 `x-doc` 命名空间只增不改，杜绝双源漂移）。先用最小单接口 spec 试点。
+**阶段目标**：用本地改造版技能 `aisa-doc-enhance`，由 **LLM 推理逐参数**把 AIsa 的 OpenAPI spec 加强成专业、好懂、人话的参考内容。产出**双字段加强**（加强英文 `desc_en` + 中文本地化 `title_zh`）并以 `x-doc` 命名空间只增不改地回写原 spec，配套**三栏对照表**让「改了什么、改好还是改坏」一眼可查。
 
-**为什么这样定**（见 D-002）：线上渲染后的 API 参考正文是 OpenAPI spec 内联，不是手写 Markdown，独立交付物本就是 `openapi/*.json`。所以本阶段不产「直出 md」，而是产增强 spec + 独立增强参考页，并把增强内容沉淀回 spec 的 `x-doc` 字段，让源头变好。
+**为什么 v2 推翻 v1**（见 D-012）：v1 试点用原 `api-doc-agent` 重型三引擎链路，交付物是渲染后的 md，而 `direct`（火山）渲染器按 `Action`/`Version` 信封模板生成、**不渲染** AIsa 真实 REST 参数——加强价值在最终产物里隐形，产品负责人无法确认改动是否更好。v2 砍掉渲染器/spectral/引擎依赖，**只吸收写作内核（一句方法论）**，由 LLM 逐字段加强，并用三栏对照表（源英文→加强英文→中文）直接呈现每个字段的改动。
 
 ---
 
 ## 输入边界
 
-- **输入 spec**：源仓库 `~/files/aisa-team-docs/openapi/*.json`（31 个）。
-- **试点对象**（单接口、字节最小，便于快速验收）：`openai-chat.json`（POST /chat/completions，1 op，4.2KB）、`youte-search.json`（GET /youtube/search，1 op，3.6KB）。验收通过再扩到多接口 spec。
-- **内容必须由 agent 撰写**：`api-doc-agent` 的 `doc_engine.py` 是不调 LLM 的确定性内核，只做装配；字段/接口的中文说明、用法、坑必须由接手 agent 站在 API 使用者视角亲自写进 `content.json`，再注入。空 content 只会产出空壳。
+- **输入 spec**：源仓库 `~/files/aisa-team-docs/openapi/*.json`（31 个，共 667 个 operation、约 16.5k 个 schema 字段，其中 92% 自带英文 `description` 可作为加强基准）。
+- **规模分层**（先小后大，逐档验收）：
+  - **试点档（1 op）**：`youte-search.json`（GET，5 query 参数 + 内联响应）、`openai-chat.json`（POST，深层内联请求体 + oneOf）。
+  - **中档（≤10 op）**：如 `perplexity-openapi.json`（具名 `$ref`）、`twitter-*`、`reddit.json`、`coingecko.json`。
+  - **大档（数十～数百 op）**：`apollo.json`(54)、`agentmail.json`(46)、`dataforseo.json`(445) —— 子 agent 分片并发撰写，主 agent 汇总核验。
+- **内容必须由 LLM 逐字段撰写**：注入器是确定性的，只做装配；`desc_en`/`title_zh` 必须由接手 agent 站在使用者视角按 `METHODOLOGY.md` 亲自写进 `content.json`。**严禁脚本批量套模板**——机械直译等于没写。
 
-## 依赖准备
+## 本地改造版技能（派遣 agent 只读此处）
 
-- 安装 spectral（真 lint 才得 green，否则闸门 skipped、verdict 降级 yellow）：`npm i -g @stoplight/spectral-cli@6.16.0`（需 node/npm，按 `<software_installation>` 装到 `$HOME`）。装不上则记录降级状态，不阻塞试点。
+`~/files/aisa-docs-voyager/skill-local/aisa-doc-enhance/`，已就绪、已自测通过：
+- `SKILL.md` — 工作流与铁律。
+- `METHODOLOGY.md` — 唯一写作内核（从原 skill 蒸馏，去平台化/去引擎化）。
+- `tools/inject_xdoc.py` — 双字段 x-doc 加性注入器（standalone，纯 python3）。
+- `tools/check_native_preserved.py` — 原生保全闸门。
+- `tools/make_review.py` — 三栏对照表 + 完整性闸门。
 
-## 验收产物（缺一不可）
+**不读** `/data/plugins/.../api-doc-agent`，不装 spectral，不依赖任何包外引擎。
 
-1. 试点的 `content.json`（agent 撰写的增强内容）。
-2. 试点的 `enhanced.yaml` / 增强 spec（含 `x-doc` 命名空间，原生字段不复制）。
-3. 试点的独立增强参考页（技能产出的 doc 产物）。
-4. **回写验证**：证明增强内容能回写进原 spec 的 `x-doc` 而不破坏原生结构（`source=human` 受保护、AI 不静默覆盖），并附回写前后 diff。
-5. `reports/openapi-enhance-pilot-<日期>.md` — 试点小结：做了什么、x-doc 加强了哪些字段、回写如何保证不漂移、闸门状态（green/yellow 及原因）。
-6. 回写 `project/STATE.md`、`project/DECISIONS.md`（若有新决策）。
+## 验收产物（每个 spec，缺一不可）
+
+1. `content.json` — LLM 逐字段撰写的双字段增强内容。
+2. `enhanced.json` — 含 `x-doc` 的增强 spec，原生零改动。
+3. `review_table.md` — 三栏对照表（源英文 → 加强英文 → 中文），逐字段可判好坏。
+4. `inject_review.json` — 注入审计（源保护跳过 / dotpath 未命中）。
+5. `reports/openapi-enhance-v2-<日期>.md` — 小结：加强了哪些接口/字段、双字段如何对账、两道闸门状态、与 v1 的差异与改进。
+6. 回写 `project/STATE.md`、`project/DECISIONS.md`。
 
 ## 验收标准
 
-- 增强内容真正提升可用性（字段说明、用法、错误码、边界条件），不是机械转换。
-- 回写只走 `x-doc`「只增不改」，原生 `paths/$ref/类型/枚举/必选` 不被复制或篡改，无双源漂移。
-- 报告遵循 `WRITING-STANDARD.zh-CN.md`。
+- **真正提升可用性**：补全字段用途、取值业务含义、依赖、坑、错误码；不是机械翻译、不注水。
+- **双字段语义一致**：`desc_en` 与 `title_zh` 说同一件事。
+- **完整性闸门 exit 0**：每个对外字段都齐备 `desc_en` + `title_zh`（缺漏即非零）。
+- **原生保全闸门 exit 0**：原生 `paths/$ref/类型/枚举/必选/description` 零改动，无双源漂移。
+- **可查可判**：`review_table.md` 让审阅者逐字段确认「改了什么、改好还是改坏」。
 
 ---
 
 ## 自包含委派提示词（复制给新 session agent）
 
-> 你接手 AIsa 文档质量工程的「阶段三：OpenAPI 内容加强」。你之前没有本项目上下文，请严格按下文执行。
+> 你接手 AIsa 文档质量工程的「阶段三 v2：OpenAPI 内容加强」。你之前没有本项目上下文，请严格按下文执行。
 >
-> **背景**：AIsa 是 OpenAI 兼容的 AI 能力网关，文档源仓库 `AIsa-team/docs` 里有 31 个 OpenAPI spec（`openapi/*.json`）。线上 API 参考页的正文是由这些 spec 渲染内联生成的，不是手写 md。我们要把 spec 加强成专业好懂的参考内容：产出独立增强参考页，并把增强内容回写进原 spec（只增不改），让源头变好。结果交产品负责人。
+> **背景**：AIsa 是 OpenAI 兼容的 AI 能力网关，文档源仓库 `AIsa-team/docs`（本地工作副本 `~/files/aisa-team-docs`）里有 31 个 OpenAPI spec（`openapi/*.json`）。线上 API 参考页正文由这些 spec 渲染内联生成，不是手写 md。目标：由你（LLM 推理）站在 API 使用者视角，把每个字段/参数加强成专业好懂的内容，产出**双字段**——加强英文 `desc_en` + 中文本地化 `title_zh`——并以 `x-doc` 只增不改地写进 spec。结果交产品负责人。**上一版（v1）失败的教训：用了重型渲染链路，最终 md 被火山 Action/Version 信封模板覆盖，看不清真实参数的加强；本版砍掉渲染，用三栏对照表直接呈现改动。**
 >
-> **第一步 · 读权威信息源**：依次读 `~/files/aisa-docs-voyager/project/CHARTER.md`、`project/STATE.md`、`project/DECISIONS.md`、`project/baselines/FACTS.zh-CN.md`、`~/files/aisa-docs-voyager/WRITING-STANDARD.zh-CN.md`。特别注意决策 D-002：本阶段不产「直出 md」，产增强 spec + 独立增强页 + 回写能力。
+> **第一步 · 读权威信息源**：依次读 `~/files/aisa-docs-voyager/project/CHARTER.md`、`project/STATE.md`、`project/DECISIONS.md`（特别是 D-012）、`project/baselines/FACTS.zh-CN.md`、`~/files/aisa-docs-voyager/WRITING-STANDARD.zh-CN.md`。
 >
-> **第二步 · 装依赖**：尝试安装 spectral（`npm i -g @stoplight/spectral-cli@6.16.0`，装到 $HOME）。装不上就记录降级（verdict 会是 yellow），不阻塞。
+> **第二步 · 读本地技能（只读这里，不读 /data/plugins）**：`~/files/aisa-docs-voyager/skill-local/aisa-doc-enhance/`。先读 `SKILL.md`，再**精读 `METHODOLOGY.md`**（写作内核，双字段模型 + 自适应深度 + 两条边界 + 不捏造转批注）。工具在 `tools/`，纯 python3、无外部依赖。
 >
-> **第三步 · 读技能方法论**：`api-doc-agent` 技能在 `/data/plugins/custom/skills/api-doc-agent/`。务必读它的 `SKILL.md` 和 `doc-engine/SKILL.md` + `doc-engine/core/`，掌握 x-doc 撰写方法论与 6 条红线（平台中立 / 只增不改 / 不复制原生元数据 / 不捏造 / AI 不覆盖人工 / 中文 H1 归 heading_zh）。
+> **第三步 · 试点（先 1 个接口跑通全链）**：选 `~/files/aisa-team-docs/openapi/youte-search.json`。
+>   1. 逐字段按 `METHODOLOGY.md` 撰写 `content.json`（格式见 `tools/inject_xdoc.py` 顶部 docstring：`operations{}` 接口级 + `fields{}` 用 dotpath 寻址）。每个对外字段产 `desc_en` **和** `title_zh`，二者语义一致；简单字段一句话、复杂才展开；拿不准转 `annotation`；绝不复制原生元数据、绝不机械套模板。
+>   2. 注入：`python3 tools/inject_xdoc.py --spec <spec> --content content.json --out enhanced.json --review-out inject_review.json --doc-version 2.0.0`
+>   3. 原生保全闸门（须 exit 0）：`python3 tools/check_native_preserved.py <spec> enhanced.json`
+>   4. 三栏对照 + 完整性闸门（须 exit 0）：`python3 tools/make_review.py --spec enhanced.json --out review_table --require both`
+>   5. 打开 `review_table.md` 自查：每个字段「源英文 → 加强英文 → 中文」是否都改得更好、无注水、无原生元数据复制。
+>   再用 `openai-chat.json`（深层内联 + oneOf）跑一遍，确认对深层嵌套也成立。
 >
-> **第四步 · 试点**：选 `~/files/aisa-team-docs/openapi/openai-chat.json`（POST /chat/completions，单接口）做试点。
->   1. 站在 API 使用者视角，为该接口的每个字段/参数撰写中文增强内容（干什么、怎么用、有什么坑、错误码、边界），写进 `content.json`。这是本阶段的灵魂，不可跳过、不可机械转换、不可捏造。
->   2. 用技能的确定性管线把 content 注入，产出 `enhanced.yaml`（含 x-doc）和独立增强参考页。
->   3. **验证回写**：把增强内容回写进原 spec 的 `x-doc` 命名空间，确认原生结构（paths/$ref/类型/枚举/必选）零改动、source=human 受保护、AI 不静默覆盖。生成回写前后 diff 留证。
->   4. 用 `youte-search.json` 再跑一遍，确认流程可复用。
+> **第四步 · 推广**：按 输入边界 的规模分层，从中档到大档逐 spec 跑同一四步。大档（`apollo`/`agentmail`/`dataforseo`）按接口切分派遣子 agent 并发撰写 `content.json`，主 agent 汇总后逐接口核验（抽查注水/留空/批注/双字段一致），再统一跑两道闸门。如实汇报每批：`接口数 / 已写字段数 / 转批注数 / 跳过数及原因`，不得谎报。
 >
-> **第五步 · 产出报告 + 回写**：写 `reports/openapi-enhance-pilot-<今天日期>.md`，遵循 `WRITING-STANDARD.zh-CN.md`（2.5 维叙事：先讲清「增强 + 回写」整体价值、再拆解做了哪几类加强、后下钻一个字段从「机器结构」到「人话说明」的对比）。更新 `project/STATE.md`，新决策追加 `project/DECISIONS.md`。
+> **第五步 · 报告 + 回写**：写 `reports/openapi-enhance-v2-<今天日期>.md`（遵循 `WRITING-STANDARD.zh-CN.md` 2.5 维叙事：先讲清双字段加强 + 可对账的整体价值、再拆解做了哪几类加强、后下钻一个字段从「源英文 → 加强英文 → 中文」三态对比）。更新 `project/STATE.md`，新决策追加 `project/DECISIONS.md`。
 >
-> **约束**：不换仓库、不提 PR、不撤销凭证、不直连 LLM Gateway、不在沙箱启网络监听、PAT/base-token 永不明文打印、占位符 `[ph_..._ph]` 逐字节保留。x-doc 只增不改、绝不捏造。完成后用一句话汇报验收产物清单。
+> **约束**：不换仓库、不提 PR、不撤销凭证、不直连 LLM Gateway、不在沙箱启网络监听、PAT 永不明文打印、占位符 `[ph_..._ph]` 逐字节保留。x-doc 只增不改、绝不捏造、绝不脚本套模板。完成后用一句话汇报验收产物清单。

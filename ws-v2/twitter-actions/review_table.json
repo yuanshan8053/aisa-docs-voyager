@@ -1,0 +1,348 @@
+{
+  "sections": [
+    {
+      "operation": "authTwitterUser",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Start the OAuth flow that links a user's X/Twitter account to the AIsa API key on the request. Call this once per source user. AIsa returns an authorization URL — the user opens it in a browser, approves the requested scopes, and X redirects back to AIsa's fixed callback. AIsa stores the resulting session against your API key, and every subsequent Twitter write call (e.g., `POST /twitter/follow_twitter`) uses that session automatically.\n\nThe returned `auth_url` is short-lived; generate a fresh one every time the user needs to (re-)link.",
+          "desc_en": "Start the OAuth flow that links a user's X/Twitter account to your AIsa API key, returning an authorization URL for the user to approve. Once linked, AIsa reuses that session automatically for every subsequent Twitter write call.",
+          "title_zh": "发起 OAuth 流程，把用户的 X/Twitter 账号关联到你的 AIsa API Key，返回供用户授权的链接。关联完成后，AIsa 会在后续每次 Twitter 写操作中自动复用该会话。"
+        },
+        {
+          "path": "req.scopes",
+          "src_en": "Optional list of X OAuth 2.0 scopes to request. Defaults to the set required by AIsa's Twitter write endpoints: `follows.write`, `tweet.read`, `users.read`, `tweet.write`, `like.write`, `dm.read`, `dm.write`.",
+          "desc_en": "X OAuth 2.0 scopes to request for the link; omit to use the default set covering all of AIsa's Twitter write endpoints.",
+          "title_zh": "本次关联要申请的 X OAuth 2.0 权限范围；省略则使用覆盖 AIsa 全部 Twitter 写接口的默认集合。"
+        },
+        {
+          "path": "resp.200.auth_url",
+          "src_en": "Short-lived X OAuth authorization URL. Open it in a browser so the source user can approve the requested scopes.",
+          "desc_en": "Short-lived X authorization URL; open it in a browser so the source user can approve the requested scopes. Generate a fresh one each time a (re-)link is needed.",
+          "title_zh": "有效期短的 X 授权链接；在浏览器打开它，让来源用户批准所申请的权限。每次需要（重新）关联都应重新生成。"
+        },
+        {
+          "path": "resp.200.state",
+          "src_en": "Opaque CSRF state token that AIsa will validate when X redirects back to its callback. Store it client-side if you need to correlate the flow.",
+          "desc_en": "Opaque CSRF token AIsa validates when X redirects back; store it client-side if you need to correlate the flow.",
+          "title_zh": "用于防 CSRF 的不透明令牌，X 回跳时 AIsa 会校验它；若需关联本次流程可在客户端保存。"
+        },
+        {
+          "path": "resp.200.expires_at",
+          "src_en": "When the `auth_url` expires. Request a new one if the user hasn't completed the flow before this time.",
+          "desc_en": "When the authorization URL stops working; request a new one if the user hasn't finished authorizing by then.",
+          "title_zh": "授权链接失效的时间；用户若未在此前完成授权需重新申请。"
+        }
+      ]
+    },
+    {
+      "operation": "unlikeTwitter",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Remove the source user's like from a tweet. Mirrors the [official X v2 `DELETE /2/users/{id}/likes/{tweet_id}` endpoint](https://docs.x.com/x-api/users/unlike-post), routed through the AIsa gateway. Uses POST (not DELETE) for consistency with the other AIsa Twitter write actions.\n\n**Authentication.** Requires an OAuth session for the source user, attached to your AIsa API key. Link the account once via `POST /apis/v1/twitter/auth_twitter`.\n\n**Scopes.** The underlying X session must hold `like.write`, `tweet.read`, and `users.read`.\n\nUnliking a tweet the source user has not liked is a no-op and still returns `200` with `liked: false`.",
+          "desc_en": "Remove the authenticated source user's like from a tweet. Unliking a tweet that was never liked is a no-op and still succeeds.",
+          "title_zh": "移除已授权来源用户对某条推文的点赞。对本就未点赞的推文取消点赞是空操作，仍会成功。"
+        },
+        {
+          "path": "req.tweet_id",
+          "src_en": "Numeric ID of the tweet to unlike. Must match X's regex `^[0-9]{1,19}$`.",
+          "desc_en": "Identifier of the tweet to unlike.",
+          "title_zh": "要取消点赞的推文标识。"
+        },
+        {
+          "path": "resp.200.data",
+          "src_en": "",
+          "desc_en": "Container for the resulting like state.",
+          "title_zh": "点赞结果状态的容器。"
+        },
+        {
+          "path": "resp.200.data.liked",
+          "src_en": "`false` once the like has been removed.",
+          "desc_en": "Whether the source user currently likes the tweet; `false` confirms the like was removed.",
+          "title_zh": "来源用户当前是否仍点赞该推文；为 false 表示点赞已移除。"
+        }
+      ]
+    },
+    {
+      "operation": "likeTwitter",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Like a tweet on behalf of the authenticated source user. Mirrors the [official X v2 `POST /2/users/{id}/likes` endpoint](https://docs.x.com/x-api/users/like-post), routed through the AIsa gateway.\n\n**Authentication.** Requires an OAuth session for the source user, attached to your AIsa API key. Link the account once via `POST /apis/v1/twitter/auth_twitter`.\n\n**Scopes.** The underlying X session must hold `like.write`, `tweet.read`, and `users.read`.\n\nLiking a tweet already liked is a no-op and still returns `200` with `liked: true`.",
+          "desc_en": "Like a tweet on behalf of the authenticated source user. Liking an already-liked tweet is a no-op and still succeeds.",
+          "title_zh": "代表已授权来源用户点赞某条推文。对已点赞的推文再次点赞是空操作，仍会成功。"
+        },
+        {
+          "path": "req.tweet_id",
+          "src_en": "Numeric ID of the tweet to like. Must match X's regex `^[0-9]{1,19}$`.",
+          "desc_en": "Identifier of the tweet to like.",
+          "title_zh": "要点赞的推文标识。"
+        },
+        {
+          "path": "resp.200.data",
+          "src_en": "",
+          "desc_en": "Container for the resulting like state.",
+          "title_zh": "点赞结果状态的容器。"
+        },
+        {
+          "path": "resp.200.data.liked",
+          "src_en": "`true` once the source user has liked the target tweet.",
+          "desc_en": "Whether the source user currently likes the tweet; `true` confirms the like is in place.",
+          "title_zh": "来源用户当前是否点赞该推文；为 true 表示已点赞。"
+        }
+      ]
+    },
+    {
+      "operation": "postTwitter",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Publish a new tweet on behalf of the authenticated source user, or edit an existing tweet. Mirrors the [official X v2 `POST /2/tweets` endpoint](https://docs.x.com/x-api/posts/create-post), routed through the AIsa gateway.\n\n**Authentication.** Requires an OAuth session for the source user, attached to your AIsa API key. Link the account once via `POST /apis/v1/twitter/auth_twitter`.\n\n**Scopes.** The underlying X session must hold `tweet.read`, `tweet.write`, and `users.read`.\n\n**Mutually exclusive fields.** `media`, `poll`, `quote_tweet_id`, and `card_uri` cannot be combined in the same request. At most one of them may be set.",
+          "desc_en": "Publish a new tweet on behalf of the authenticated source user, or edit an existing one. At most one of `media`, `poll`, `quote_tweet_id`, and `card_uri` may be set in a single request.",
+          "title_zh": "代表已授权来源用户发布新推文，或编辑已有推文。media、poll、quote_tweet_id、card_uri 在同一次请求中至多只能设置其一。"
+        },
+        {
+          "path": "req.text",
+          "src_en": "The content of the tweet. Optional when posting media, a poll, or a quote tweet; required otherwise.",
+          "desc_en": "Body text of the tweet; optional when posting media, a poll, or a quote, otherwise required.",
+          "title_zh": "推文正文；发布媒体、投票或引用时可省略，否则必填。"
+        },
+        {
+          "path": "req.reply",
+          "src_en": "Post as a reply to another tweet.",
+          "desc_en": "Settings that turn this tweet into a reply to another tweet.",
+          "title_zh": "把本推文设为对另一条推文回复的相关设置。"
+        },
+        {
+          "path": "req.reply.in_reply_to_tweet_id",
+          "src_en": "Tweet ID being replied to.",
+          "desc_en": "Identifier of the tweet being replied to.",
+          "title_zh": "被回复推文的标识。"
+        },
+        {
+          "path": "req.reply.auto_populate_reply_metadata",
+          "src_en": "Auto-populate reply @-mentions from the original tweet.",
+          "desc_en": "Whether to automatically @-mention the participants of the original tweet in the reply.",
+          "title_zh": "是否在回复中自动 @ 原推文的参与者。"
+        },
+        {
+          "path": "req.reply.exclude_reply_user_ids",
+          "src_en": "User IDs to exclude from reply auto-mentions (max 10).",
+          "desc_en": "User IDs to leave out of the auto-generated reply mentions.",
+          "title_zh": "从自动生成的回复 @ 名单中排除的用户 ID。"
+        },
+        {
+          "path": "req.quote_tweet_id",
+          "src_en": "Tweet ID to quote. Mutually exclusive with `media`, `poll`, and `card_uri`.",
+          "desc_en": "Identifier of the tweet to quote; mutually exclusive with `media`, `poll`, and `card_uri`.",
+          "title_zh": "要引用的推文标识；与 media、poll、card_uri 互斥。"
+        },
+        {
+          "path": "req.media",
+          "src_en": "Attach media. Mutually exclusive with `poll`, `quote_tweet_id`, and `card_uri`.",
+          "desc_en": "Attaches uploaded media to the tweet; mutually exclusive with `poll`, `quote_tweet_id`, and `card_uri`.",
+          "title_zh": "为推文附加上传的媒体；与 poll、quote_tweet_id、card_uri 互斥。"
+        },
+        {
+          "path": "req.media.media_ids",
+          "src_en": "1–4 media IDs from the X media-upload API.",
+          "desc_en": "Identifiers of media to attach, obtained beforehand from X's media-upload API.",
+          "title_zh": "要附加的媒体标识，需事先通过 X 的媒体上传接口获取。"
+        },
+        {
+          "path": "req.media.tagged_user_ids",
+          "src_en": "User IDs tagged in the media (max 10).",
+          "desc_en": "User IDs to tag in the attached media.",
+          "title_zh": "在所附媒体中标记的用户 ID。"
+        },
+        {
+          "path": "req.poll",
+          "src_en": "Attach a poll. Mutually exclusive with `media`, `quote_tweet_id`, and `card_uri`.",
+          "desc_en": "Attaches a poll to the tweet; mutually exclusive with `media`, `quote_tweet_id`, and `card_uri`.",
+          "title_zh": "为推文附加投票；与 media、quote_tweet_id、card_uri 互斥。"
+        },
+        {
+          "path": "req.poll.options",
+          "src_en": "2–4 poll choices, each 1–25 characters.",
+          "desc_en": "The poll's choices.",
+          "title_zh": "投票的选项。"
+        },
+        {
+          "path": "req.poll.duration_minutes",
+          "src_en": "Poll duration in minutes (5–10080, i.e. up to 7 days).",
+          "desc_en": "How long the poll stays open, in minutes.",
+          "title_zh": "投票开放的时长，单位为分钟。"
+        },
+        {
+          "path": "req.poll.reply_settings",
+          "src_en": "",
+          "desc_en": "Restricts who may reply to the tweet that carries this poll.",
+          "title_zh": "限制谁可以回复这条带投票的推文。"
+        },
+        {
+          "path": "req.card_uri",
+          "src_en": "Card URI. Mutually exclusive with `media`, `poll`, `quote_tweet_id`, and `direct_message_deep_link`.",
+          "desc_en": "URI of a card to attach; mutually exclusive with `media`, `poll`, `quote_tweet_id`, and `direct_message_deep_link`.",
+          "title_zh": "要附加的卡片 URI；与 media、poll、quote_tweet_id、direct_message_deep_link 互斥。"
+        },
+        {
+          "path": "req.direct_message_deep_link",
+          "src_en": "Deep link that takes the conversation into a private DM.",
+          "desc_en": "Deep link that routes the conversation into a private direct message.",
+          "title_zh": "将对话引导进入私信的深度链接。"
+        },
+        {
+          "path": "req.geo",
+          "src_en": "Attach a place to the tweet.",
+          "desc_en": "Attaches a place to the tweet.",
+          "title_zh": "为推文附加地点。"
+        },
+        {
+          "path": "req.geo.place_id",
+          "src_en": "X place ID.",
+          "desc_en": "Identifier of the X place to attach.",
+          "title_zh": "要附加的 X 地点标识。"
+        },
+        {
+          "path": "req.reply_settings",
+          "src_en": "Who is allowed to reply.",
+          "desc_en": "Restricts who is allowed to reply to the tweet.",
+          "title_zh": "限制谁可以回复该推文。"
+        },
+        {
+          "path": "req.for_super_followers_only",
+          "src_en": "Only visible to super followers.",
+          "desc_en": "Whether to make the tweet visible only to super followers.",
+          "title_zh": "是否让该推文仅对超级粉丝可见。"
+        },
+        {
+          "path": "req.nullcast",
+          "src_en": "Nullcast (promoted-only) tweet — not shown in the public timeline or to followers.",
+          "desc_en": "Whether to post as a nullcast (promoted-only) tweet that does not appear in the public timeline or to followers.",
+          "title_zh": "是否发布为 nullcast（仅推广）推文，不出现在公开时间线或粉丝处。"
+        },
+        {
+          "path": "req.paid_partnership",
+          "src_en": "Marks the tweet as a paid partnership.",
+          "desc_en": "Whether to mark the tweet as a paid partnership.",
+          "title_zh": "是否将该推文标记为付费合作。"
+        },
+        {
+          "path": "req.made_with_ai",
+          "src_en": "Flags the tweet as containing AI-generated media.",
+          "desc_en": "Whether to flag the tweet as containing AI-generated media.",
+          "title_zh": "是否标记该推文含 AI 生成的媒体。"
+        },
+        {
+          "path": "req.community_id",
+          "src_en": "Post into the specified community.",
+          "desc_en": "Identifier of the community to post into.",
+          "title_zh": "要发布到的社区标识。"
+        },
+        {
+          "path": "req.share_with_followers",
+          "src_en": "Also share the community post with your followers.",
+          "desc_en": "Whether to also surface the community post to your followers.",
+          "title_zh": "是否同时把社区帖子展示给你的粉丝。"
+        },
+        {
+          "path": "req.edit_options",
+          "src_en": "Edit an existing tweet instead of creating a new one (subject to X's edit window).",
+          "desc_en": "Switches the call to edit an existing tweet rather than create a new one, subject to X's edit window.",
+          "title_zh": "将本次调用切换为编辑已有推文而非新建，受 X 的编辑时限约束。"
+        },
+        {
+          "path": "req.edit_options.previous_post_id",
+          "src_en": "Tweet ID to edit.",
+          "desc_en": "Identifier of the existing tweet to edit.",
+          "title_zh": "要编辑的已有推文标识。"
+        },
+        {
+          "path": "resp.201.data",
+          "src_en": "",
+          "desc_en": "Container for the created or edited tweet.",
+          "title_zh": "已创建或已编辑推文的容器。"
+        },
+        {
+          "path": "resp.201.data.id",
+          "src_en": "ID of the newly created or edited tweet.",
+          "desc_en": "Identifier of the resulting tweet.",
+          "title_zh": "生成推文的标识。"
+        },
+        {
+          "path": "resp.201.data.text",
+          "src_en": "Final text of the tweet as stored by X.",
+          "desc_en": "Final text of the tweet as stored by X.",
+          "title_zh": "X 实际保存的推文最终文本。"
+        }
+      ]
+    },
+    {
+      "operation": "unfollowTwitterUser",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Make the authenticated source user unfollow the given target user on X/Twitter. Mirrors the [official X v2 `DELETE /2/users/{source_user_id}/following/{target_user_id}` endpoint](https://docs.x.com/x-api/users/unfollow-user), routed through the AIsa gateway. Uses POST (not DELETE) for consistency with the other AIsa Twitter write actions.\n\n**Authentication.** Requires an OAuth session for the source user, attached to your AIsa API key. Link the account once via `POST /apis/v1/twitter/auth_twitter`.\n\n**Scopes.** The underlying X session must hold `follows.write`, `tweet.read`, and `users.read`.\n\nUnfollowing a user you don't currently follow is a no-op and still returns `200` with `following: false`.",
+          "desc_en": "Make the authenticated source user unfollow a target user on X/Twitter. Unfollowing someone not currently followed is a no-op and still succeeds.",
+          "title_zh": "让已授权来源用户取消关注 X/Twitter 上的目标用户。取消关注本就未关注的用户是空操作，仍会成功。"
+        },
+        {
+          "path": "req.target_user_id",
+          "src_en": "Numeric ID of the X/Twitter user to unfollow. Must match the X regex `^[0-9]{1,19}$`.",
+          "desc_en": "Identifier of the X/Twitter user to unfollow.",
+          "title_zh": "要取消关注的 X/Twitter 用户标识。"
+        },
+        {
+          "path": "resp.200.data",
+          "src_en": "",
+          "desc_en": "Container for the resulting follow state.",
+          "title_zh": "关注结果状态的容器。"
+        },
+        {
+          "path": "resp.200.data.following",
+          "src_en": "`false` once the source user no longer follows the target user.",
+          "desc_en": "Whether the source user still follows the target; `false` confirms the unfollow.",
+          "title_zh": "来源用户是否仍关注目标用户；为 false 表示已取消关注。"
+        }
+      ]
+    },
+    {
+      "operation": "followTwitterUser",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Make the authenticated source user follow the given target user on X/Twitter. Mirrors the [official X v2 `POST /2/users/{id}/following` endpoint](https://docs.x.com/x-api/users/follow-user), routed through the AIsa gateway.\n\n**Authentication.** This is a write action that requires an OAuth session for the source user, attached to your AIsa API key. Link your X account once by calling `POST /apis/v1/twitter/auth_twitter` — AIsa then uses that session automatically for every write request sent with your key.\n\n**Scopes.** The underlying X session must hold `follows.write`, `tweet.read`, and `users.read`.",
+          "desc_en": "Make the authenticated source user follow a target user on X/Twitter. Following a protected account yields a pending follow request awaiting approval.",
+          "title_zh": "让已授权来源用户关注 X/Twitter 上的目标用户。关注受保护账号时会产生待对方批准的关注请求。"
+        },
+        {
+          "path": "req.target_user_id",
+          "src_en": "Numeric ID of the X/Twitter user to follow. Must match the X regex `^[0-9]{1,19}$`.",
+          "desc_en": "Identifier of the X/Twitter user to follow.",
+          "title_zh": "要关注的 X/Twitter 用户标识。"
+        },
+        {
+          "path": "resp.200.data",
+          "src_en": "",
+          "desc_en": "Container for the resulting follow state.",
+          "title_zh": "关注结果状态的容器。"
+        },
+        {
+          "path": "resp.200.data.following",
+          "src_en": "`true` when the source user now follows the target user.",
+          "desc_en": "Whether the source user now follows the target user.",
+          "title_zh": "来源用户当前是否已关注目标用户。"
+        },
+        {
+          "path": "resp.200.data.pending_follow",
+          "src_en": "`true` when a follow request has been sent to a protected account and is awaiting approval.",
+          "desc_en": "Whether a follow request was sent to a protected account and is awaiting the target's approval.",
+          "title_zh": "是否已向受保护账号发出关注请求并等待对方批准。"
+        }
+      ]
+    }
+  ],
+  "total": 46,
+  "missing": []
+}

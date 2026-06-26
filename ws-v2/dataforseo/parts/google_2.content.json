@@ -1,0 +1,3772 @@
+{
+  "operations": {
+    "post_dataforseo_serp_google_organic_task_post": {
+      "heading_zh": "提交 Google 自然搜索 SERP 任务 post_dataforseo_serp_google_organic_task_post",
+      "desc_en": "Queue a Google Organic SERP task for a keyword/location/language; you are charged only for posting, and up to 100 tasks can be sent per call. The response returns a task id used to collect the SERP later via the matching task_get endpoint or via postback/pingback.",
+      "description_zh": "为给定 keyword/地区/语言提交一个 Google 自然搜索（Organic）SERP 任务；仅按提交计费，单次调用最多 100 个任务。响应返回 task id，稍后通过对应的 task_get 端点或 postback/pingback 收取 SERP。"
+    },
+    "get_dataforseo_serp_google_organic_task_get_html_id": {
+      "heading_zh": "按 id 获取 Google 自然搜索 HTML 结果 get_dataforseo_serp_google_organic_task_get_html_id",
+      "desc_en": "Retrieve the raw HTML of a previously posted Google Organic SERP task by its id; available within 30 days of posting at no extra charge.",
+      "description_zh": "按 task id 取回此前提交的 Google 自然搜索 SERP 任务的原始 HTML；提交后 30 天内可免费获取。"
+    },
+    "post_dataforseo_serp_google_organic_live_regular": {
+      "heading_zh": "实时获取 Google 自然搜索 SERP（常规） post_dataforseo_serp_google_organic_live_regular",
+      "desc_en": "Return Google Organic SERP results in the regular (lightweight) format immediately in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "以常规（轻量）格式即时返回 Google 自然搜索 SERP 结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "post_dataforseo_serp_google_organic_live_advanced": {
+      "heading_zh": "实时获取 Google 自然搜索 SERP（高级） post_dataforseo_serp_google_organic_live_advanced",
+      "desc_en": "Return Google Organic SERP results in the advanced (full element-level) format immediately in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "以高级（完整元素级）格式即时返回 Google 自然搜索 SERP 结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "post_dataforseo_serp_google_ai_mode_task_post": {
+      "heading_zh": "提交 Google AI Mode SERP 任务 post_dataforseo_serp_google_ai_mode_task_post",
+      "desc_en": "Queue a Google AI Mode SERP task, returning search results from Google Search's AI Mode feature; up to 100 tasks per call. Collect the completed task later by id or via postback/pingback.",
+      "description_zh": "提交一个 Google AI Mode SERP 任务，返回 Google 搜索 AI Mode 功能的搜索结果；单次最多 100 个任务。稍后按 id 或通过 postback/pingback 收取已完成任务。"
+    },
+    "get_dataforseo_serp_google_ai_mode_task_get_advanced_id": {
+      "heading_zh": "按 id 获取 Google AI Mode SERP 高级结果 get_dataforseo_serp_google_ai_mode_task_get_advanced_id",
+      "desc_en": "Retrieve advanced Google AI Mode SERP results by task id; available within 30 days of posting at no extra charge beyond the task fee.",
+      "description_zh": "按 task id 取回 Google AI Mode SERP 的高级结果；提交后 30 天内除任务费外不再额外收费。"
+    },
+    "post_dataforseo_serp_google_ai_mode_live_advanced": {
+      "heading_zh": "实时获取 Google AI Mode SERP（高级） post_dataforseo_serp_google_ai_mode_live_advanced",
+      "desc_en": "Return advanced Google AI Mode SERP results in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "以高级格式即时返回 Google AI Mode SERP 结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "post_dataforseo_serp_google_maps_task_post": {
+      "heading_zh": "提交 Google 地图 SERP 任务 post_dataforseo_serp_google_maps_task_post",
+      "desc_en": "Queue a Google Maps SERP task for a keyword/location; charged only for posting, up to 100 tasks per call, with results collected later by id or via postback/pingback.",
+      "description_zh": "为给定 keyword/地区提交一个 Google 地图 SERP 任务；仅按提交计费，单次最多 100 个任务，结果稍后按 id 或通过 postback/pingback 收取。"
+    },
+    "post_dataforseo_serp_google_maps_live_advanced": {
+      "heading_zh": "实时获取 Google 地图 SERP post_dataforseo_serp_google_maps_live_advanced",
+      "desc_en": "Return Google Maps SERP results in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google 地图 SERP 结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "post_dataforseo_serp_google_local_finder_task_post": {
+      "heading_zh": "提交 Google Local Finder SERP 任务 post_dataforseo_serp_google_local_finder_task_post",
+      "desc_en": "Queue a Google Local Finder SERP task for a keyword/location; charged only for posting, up to 100 tasks per call, with results collected later by id or via postback/pingback.",
+      "description_zh": "为给定 keyword/地区提交一个 Google Local Finder SERP 任务；仅按提交计费，单次最多 100 个任务，结果稍后按 id 或通过 postback/pingback 收取。"
+    },
+    "get_dataforseo_serp_google_local_finder_task_get_advanced_id": {
+      "heading_zh": "按 id 获取 Google Local Finder SERP 高级结果 get_dataforseo_serp_google_local_finder_task_get_advanced_id",
+      "desc_en": "Retrieve advanced Google Local Finder SERP results by task id within the retention window after the task was posted.",
+      "description_zh": "在任务提交后的留存期内，按 task id 取回 Google Local Finder SERP 的高级结果。"
+    },
+    "post_dataforseo_serp_google_local_finder_live_advanced": {
+      "heading_zh": "实时获取 Google Local Finder SERP post_dataforseo_serp_google_local_finder_live_advanced",
+      "desc_en": "Return Google Local Finder SERP results in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google Local Finder SERP 结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "post_dataforseo_serp_google_news_task_post": {
+      "heading_zh": "提交 Google 新闻 SERP 任务 post_dataforseo_serp_google_news_task_post",
+      "desc_en": "Queue a Google News SERP task for a keyword/location; charged only for posting, up to 100 tasks per call, with results collected later by id or via postback/pingback.",
+      "description_zh": "为给定 keyword/地区提交一个 Google 新闻 SERP 任务；仅按提交计费，单次最多 100 个任务，结果稍后按 id 或通过 postback/pingback 收取。"
+    },
+    "get_dataforseo_serp_google_news_task_get_advanced_id": {
+      "heading_zh": "按 id 获取 Google 新闻 SERP 高级结果 get_dataforseo_serp_google_news_task_get_advanced_id",
+      "desc_en": "Retrieve advanced Google News SERP results by task id within the retention window after the task was posted.",
+      "description_zh": "在任务提交后的留存期内，按 task id 取回 Google 新闻 SERP 的高级结果。"
+    },
+    "post_dataforseo_serp_google_news_live_advanced": {
+      "heading_zh": "实时获取 Google 新闻 SERP post_dataforseo_serp_google_news_live_advanced",
+      "desc_en": "Return Google News SERP results in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google 新闻 SERP 结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "get_dataforseo_serp_google_events_tasks_ready": {
+      "heading_zh": "列出可收取的 Google 活动 SERP 任务 get_dataforseo_serp_google_events_tasks_ready",
+      "desc_en": "List completed Google Events SERP tasks that have not yet been collected; up to 1000 tasks completed within the previous 3 days are returned per call, each with the endpoint to fetch its results.",
+      "description_zh": "列出已完成但尚未收取的 Google 活动（Events）SERP 任务；单次最多返回近 3 天内完成的 1000 个任务，每项附带取结果的端点。"
+    },
+    "get_dataforseo_serp_google_events_task_get_advanced_id": {
+      "heading_zh": "按 id 获取 Google 活动 SERP 高级结果 get_dataforseo_serp_google_events_task_get_advanced_id",
+      "desc_en": "Retrieve advanced Google Events SERP results by task id within the retention window after the task was posted.",
+      "description_zh": "在任务提交后的留存期内，按 task id 取回 Google 活动 SERP 的高级结果。"
+    },
+    "post_dataforseo_serp_google_events_live_advanced": {
+      "heading_zh": "实时获取 Google 活动 SERP（高级） post_dataforseo_serp_google_events_live_advanced",
+      "desc_en": "Return Google Events SERP results in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google 活动 SERP 结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "get_dataforseo_serp_google_images_tasks_ready": {
+      "heading_zh": "列出可收取的 Google 图片 SERP 任务 get_dataforseo_serp_google_images_tasks_ready",
+      "desc_en": "List completed Google Images SERP tasks that have not yet been collected; up to 1000 tasks completed within the previous 3 days are returned per call, each with the endpoints to fetch its regular and HTML results.",
+      "description_zh": "列出已完成但尚未收取的 Google 图片 SERP 任务；单次最多返回近 3 天内完成的 1000 个任务，每项附带取常规结果与 HTML 结果的端点。"
+    },
+    "get_dataforseo_serp_google_images_task_get_regular_id": {
+      "heading_zh": "按 id 获取 Google 图片 SERP 结果 get_dataforseo_serp_google_images_task_get_regular_id",
+      "desc_en": "Retrieve regular-format Google Images SERP results for a previously posted task by its id.",
+      "description_zh": "按 task id 取回此前提交任务的 Google 图片 SERP 常规格式结果。"
+    },
+    "post_dataforseo_serp_google_images_live_html": {
+      "heading_zh": "实时获取 Google 图片 SERP HTML post_dataforseo_serp_google_images_live_html",
+      "desc_en": "Return the raw HTML of Google Images SERP results in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google 图片 SERP 结果的原始 HTML，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "post_dataforseo_serp_google_search_by_image_task_post": {
+      "heading_zh": "提交 Google 以图搜图 SERP 任务 post_dataforseo_serp_google_search_by_image_task_post",
+      "desc_en": "Queue a Google Search-by-Image SERP task using a publicly accessible image URL as the query; charged only for posting, up to 100 tasks per call, with results collected later by id or via postback/pingback.",
+      "description_zh": "以一个可公开访问的图片 URL 作为查询，提交一个 Google 以图搜图（Search by Image）SERP 任务；仅按提交计费，单次最多 100 个任务，结果稍后按 id 或通过 postback/pingback 收取。"
+    },
+    "get_dataforseo_serp_google_search_by_image_task_get_advanced_id": {
+      "heading_zh": "按 id 获取 Google 以图搜图 SERP 高级结果 get_dataforseo_serp_google_search_by_image_task_get_advanced_id",
+      "desc_en": "Retrieve advanced Google Search-by-Image SERP results by task id within the retention window after the task was posted.",
+      "description_zh": "在任务提交后的留存期内，按 task id 取回 Google 以图搜图 SERP 的高级结果。"
+    },
+    "post_dataforseo_serp_google_jobs_task_post": {
+      "heading_zh": "提交 Google 招聘 SERP 任务 post_dataforseo_serp_google_jobs_task_post",
+      "desc_en": "Queue a Google Jobs SERP task for a keyword/location; charged only for posting, up to 100 tasks per call, with results collected later by id or via postback/pingback.",
+      "description_zh": "为给定 keyword/地区提交一个 Google 招聘（Jobs）SERP 任务；仅按提交计费，单次最多 100 个任务，结果稍后按 id 或通过 postback/pingback 收取。"
+    },
+    "get_dataforseo_serp_google_jobs_task_get_advanced_id": {
+      "heading_zh": "按 id 获取 Google 招聘 SERP 高级结果 get_dataforseo_serp_google_jobs_task_get_advanced_id",
+      "desc_en": "Retrieve advanced Google Jobs SERP results by task id within the retention window after the task was posted.",
+      "description_zh": "在任务提交后的留存期内，按 task id 取回 Google 招聘 SERP 的高级结果。"
+    },
+    "post_dataforseo_serp_google_autocomplete_task_post": {
+      "heading_zh": "提交 Google 自动补全任务 post_dataforseo_serp_google_autocomplete_task_post",
+      "desc_en": "Queue a Google Autocomplete task that returns search suggestions for a keyword, cursor position, and search client; charged only for posting.",
+      "description_zh": "提交一个 Google 自动补全（Autocomplete）任务，返回给定 keyword、光标位置与搜索客户端下的搜索建议；仅按提交计费。"
+    },
+    "post_dataforseo_serp_google_autocomplete_live_advanced": {
+      "heading_zh": "实时获取 Google 自动补全（高级） post_dataforseo_serp_google_autocomplete_live_advanced",
+      "desc_en": "Return Google Autocomplete suggestions in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google 自动补全建议，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "post_dataforseo_serp_google_dataset_search_task_post": {
+      "heading_zh": "提交 Google 数据集搜索任务 post_dataforseo_serp_google_dataset_search_task_post",
+      "desc_en": "Queue a Google Dataset Search task that returns datasets matching the keyword; charged only for posting.",
+      "description_zh": "提交一个 Google 数据集搜索（Dataset Search）任务，返回与 keyword 匹配的数据集；仅按提交计费。"
+    },
+    "post_dataforseo_serp_google_dataset_search_live_advanced": {
+      "heading_zh": "实时获取 Google 数据集搜索（高级） post_dataforseo_serp_google_dataset_search_live_advanced",
+      "desc_en": "Return Google Dataset Search results in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google 数据集搜索结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "post_dataforseo_serp_google_dataset_info_task_post": {
+      "heading_zh": "提交 Google 数据集信息任务 post_dataforseo_serp_google_dataset_info_task_post",
+      "desc_en": "Queue a Google Dataset Info task that returns detailed metadata about a specific dataset; charged only for posting.",
+      "description_zh": "提交一个 Google 数据集信息（Dataset Info）任务，返回某个数据集的详细元数据；仅按提交计费。"
+    },
+    "post_dataforseo_serp_google_dataset_info_live_advanced": {
+      "heading_zh": "实时获取 Google 数据集信息（高级） post_dataforseo_serp_google_dataset_info_live_advanced",
+      "desc_en": "Return Google Dataset Info results in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google 数据集信息结果，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "get_dataforseo_serp_google_ads_advertisers_locations": {
+      "heading_zh": "列出 Google Ads Advertisers 支持地区 get_dataforseo_serp_google_ads_advertisers_locations",
+      "desc_en": "Return the list of locations supported by the Google Ads Advertisers SERP API; this endpoint is free to call.",
+      "description_zh": "返回 Google Ads Advertisers SERP API 支持的地区列表；该端点免费调用。"
+    },
+    "post_dataforseo_serp_google_ads_advertisers_task_post": {
+      "heading_zh": "提交 Google Ads Advertisers 任务 post_dataforseo_serp_google_ads_advertisers_task_post",
+      "desc_en": "Queue a Google Ads Advertisers task that returns advertiser information from the Ads Transparency platform for a keyword and location; charged only for posting.",
+      "description_zh": "提交一个 Google Ads Advertisers 任务，返回 Ads Transparency 平台上某 keyword 与地区下的广告主信息；仅按提交计费。"
+    },
+    "get_dataforseo_serp_google_ads_search_tasks_ready": {
+      "heading_zh": "列出可收取的 Google Ads Search 任务 get_dataforseo_serp_google_ads_search_tasks_ready",
+      "desc_en": "List completed Google Ads Search tasks that have not yet been collected, each with the endpoint to fetch its advanced results.",
+      "description_zh": "列出已完成但尚未收取的 Google Ads Search 任务，每项附带取高级结果的端点。"
+    },
+    "get_dataforseo_serp_google_ads_search_task_get_advanced_id": {
+      "heading_zh": "按 id 获取 Google Ads Search 高级结果 get_dataforseo_serp_google_ads_search_task_get_advanced_id",
+      "desc_en": "Retrieve advanced Google Ads Search results by task id within the retention period after the task was posted.",
+      "description_zh": "在任务提交后的留存期内，按 task id 取回 Google Ads Search 的高级结果。"
+    },
+    "post_dataforseo_serp_google_ads_search_live_advanced": {
+      "heading_zh": "实时获取 Google Ads Search（高级） post_dataforseo_serp_google_ads_search_live_advanced",
+      "desc_en": "Return Google Ads Search data in real time in the same response; identify the advertiser by advertiser_ids or by target domain. Each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google Ads Search 数据，结果在同一响应中给出；通过 advertiser_ids 或 target 域名指定广告主。每次 Live SERP 调用仅含一个任务。"
+    },
+    "get_dataforseo_serp_google_finance_explore_tasks_ready": {
+      "heading_zh": "列出可收取的 Finance Explore 任务 get_dataforseo_serp_google_finance_explore_tasks_ready",
+      "desc_en": "List completed Google Finance Explore tasks that have not yet been collected, each with the endpoints to fetch its advanced and HTML results.",
+      "description_zh": "列出已完成但尚未收取的 Google Finance Explore 任务，每项附带取高级结果与 HTML 结果的端点。"
+    },
+    "get_dataforseo_serp_google_finance_explore_task_get_html_id": {
+      "heading_zh": "按 id 获取 Finance Explore HTML 结果 get_dataforseo_serp_google_finance_explore_task_get_html_id",
+      "desc_en": "Retrieve the HTML results of a previously posted Google Finance Explore task by its id.",
+      "description_zh": "按 task id 取回此前提交的 Google Finance Explore 任务的 HTML 结果。"
+    },
+    "post_dataforseo_serp_google_finance_explore_live_html": {
+      "heading_zh": "实时获取 Finance Explore SERP HTML post_dataforseo_serp_google_finance_explore_live_html",
+      "desc_en": "Return the raw HTML of the Google Finance Explore tab in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google Finance Explore 标签页的原始 HTML，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "get_dataforseo_serp_google_finance_markets_tasks_ready": {
+      "heading_zh": "列出可收取的 Finance Markets 任务 get_dataforseo_serp_google_finance_markets_tasks_ready",
+      "desc_en": "List completed Google Finance Markets tasks that have not yet been collected, each with the endpoints to fetch its advanced and HTML results.",
+      "description_zh": "列出已完成但尚未收取的 Google Finance Markets 任务，每项附带取高级结果与 HTML 结果的端点。"
+    },
+    "get_dataforseo_serp_google_finance_markets_task_get_html_id": {
+      "heading_zh": "按 id 获取 Finance Markets HTML 结果 get_dataforseo_serp_google_finance_markets_task_get_html_id",
+      "desc_en": "Retrieve the HTML results of a previously posted Google Finance Markets task by its id.",
+      "description_zh": "按 task id 取回此前提交的 Google Finance Markets 任务的 HTML 结果。"
+    },
+    "post_dataforseo_serp_google_finance_markets_live_html": {
+      "heading_zh": "实时获取 Finance Markets SERP HTML post_dataforseo_serp_google_finance_markets_live_html",
+      "desc_en": "Return the raw HTML of the Google Finance Markets tab in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回 Google Finance Markets 标签页的原始 HTML，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "get_dataforseo_serp_google_finance_quote_tasks_ready": {
+      "heading_zh": "列出可收取的 Finance Quote 任务 get_dataforseo_serp_google_finance_quote_tasks_ready",
+      "desc_en": "List completed Google Finance Quote tasks that have not yet been collected, each with the endpoints to fetch its advanced and HTML results.",
+      "description_zh": "列出已完成但尚未收取的 Google Finance Quote 任务，每项附带取高级结果与 HTML 结果的端点。"
+    },
+    "get_dataforseo_serp_google_finance_quote_task_get_html_id": {
+      "heading_zh": "按 id 获取 Finance Quote HTML 结果 get_dataforseo_serp_google_finance_quote_task_get_html_id",
+      "desc_en": "Retrieve the HTML results of a previously posted Google Finance Quote task by its id.",
+      "description_zh": "按 task id 取回此前提交的 Google Finance Quote 任务的 HTML 结果。"
+    },
+    "post_dataforseo_serp_google_finance_quote_live_html": {
+      "heading_zh": "实时获取 Finance Quote SERP HTML post_dataforseo_serp_google_finance_quote_live_html",
+      "desc_en": "Return the raw HTML of the Google Finance Quote tab for a ticker symbol in real time in the same response; each Live SERP call carries exactly one task.",
+      "description_zh": "即时返回某股票代码在 Google Finance Quote 标签页的原始 HTML，结果在同一响应中给出；每次 Live SERP 调用仅含一个任务。"
+    },
+    "get_dataforseo_serp_google_finance_ticker_search_tasks_ready": {
+      "heading_zh": "列出可收取的 Finance Ticker Search 任务 get_dataforseo_serp_google_finance_ticker_search_tasks_ready",
+      "desc_en": "List completed Google Finance Ticker Search tasks that have not yet been collected, each with the endpoint to fetch its advanced results.",
+      "description_zh": "列出已完成但尚未收取的 Google Finance Ticker Search 任务，每项附带取高级结果的端点。"
+    },
+    "get_dataforseo_serp_google_finance_ticker_search_task_get_advanced_id": {
+      "heading_zh": "按 id 获取 Finance Ticker Search 结果 get_dataforseo_serp_google_finance_ticker_search_task_get_advanced_id",
+      "desc_en": "Retrieve advanced Google Finance Ticker Search results for a previously posted task by its id.",
+      "description_zh": "按 task id 取回此前提交任务的 Google Finance Ticker Search 高级结果。"
+    }
+  },
+  "fields": {
+    "post_dataforseo_serp_google_organic_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "depth": {
+          "desc_en": "Number of SERP results to parse; deeper values cost more crawl pages and increase task price.",
+          "title_zh": "要解析的 SERP 结果数量；取值越深消耗的抓取页数越多，任务价格也越高。"
+        },
+        "max_crawl_pages": {
+          "desc_en": "Upper bound on the number of SERP pages to crawl for this task.",
+          "title_zh": "本任务抓取的 SERP 页面数上限。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        },
+        "os": {
+          "desc_en": "Operating system to emulate for the chosen device, refining the user-agent presented to Google.",
+          "title_zh": "为所选设备模拟的操作系统，用于细化向 Google 呈现的 user-agent。"
+        },
+        "group_organic_results": {
+          "desc_en": "When enabled, related organic results are merged and reported as grouped organic entries instead of separate items.",
+          "title_zh": "启用后，相关的自然结果会被合并归组为分组自然条目，而非分散的独立条目。"
+        },
+        "calculate_rectangles": {
+          "desc_en": "When enabled, pixel-coordinate rankings (rectangles) are computed for elements in the advanced SERP, useful for visual position analysis.",
+          "title_zh": "启用后，会为高级 SERP 中的元素计算像素坐标排名（矩形框），便于做可视化位置分析。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        },
+        "tag": {
+          "desc_en": "Your own identifier echoed back with the task, useful for correlating results with your records.",
+          "title_zh": "随任务回显的你方自定义标识，便于将结果与你方记录关联。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_organic_task_get_html_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].items": {
+            "desc_en": "Array of SERP elements parsed for this result.",
+            "title_zh": "本结果解析出的 SERP 元素数组。"
+          },
+          "tasks[].result[].items[].html": {
+            "desc_en": "Raw HTML content of this element.",
+            "title_zh": "该元素的原始 HTML 内容。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_organic_live_regular": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        },
+        "os": {
+          "desc_en": "Operating system to emulate for the chosen device, refining the user-agent presented to Google.",
+          "title_zh": "为所选设备模拟的操作系统，用于细化向 Google 呈现的 user-agent。"
+        },
+        "depth": {
+          "desc_en": "Number of SERP results to parse; deeper values cost more crawl pages and increase task price.",
+          "title_zh": "要解析的 SERP 结果数量；取值越深消耗的抓取页数越多，任务价格也越高。"
+        },
+        "max_crawl_pages": {
+          "desc_en": "Upper bound on the number of SERP pages to crawl for this task.",
+          "title_zh": "本任务抓取的 SERP 页面数上限。"
+        },
+        "tag": {
+          "desc_en": "Your own identifier echoed back with the task, useful for correlating results with your records.",
+          "title_zh": "随任务回显的你方自定义标识，便于将结果与你方记录关联。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_organic_live_advanced": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        },
+        "os": {
+          "desc_en": "Operating system to emulate for the chosen device, refining the user-agent presented to Google.",
+          "title_zh": "为所选设备模拟的操作系统，用于细化向 Google 呈现的 user-agent。"
+        },
+        "depth": {
+          "desc_en": "Number of SERP results to parse; deeper values cost more crawl pages and increase task price.",
+          "title_zh": "要解析的 SERP 结果数量；取值越深消耗的抓取页数越多，任务价格也越高。"
+        },
+        "max_crawl_pages": {
+          "desc_en": "Upper bound on the number of SERP pages to crawl for this task.",
+          "title_zh": "本任务抓取的 SERP 页面数上限。"
+        },
+        "calculate_rectangles": {
+          "desc_en": "When enabled, pixel-coordinate rankings (rectangles) are computed for elements in the advanced SERP, useful for visual position analysis.",
+          "title_zh": "启用后，会为高级 SERP 中的元素计算像素坐标排名（矩形框），便于做可视化位置分析。"
+        },
+        "tag": {
+          "desc_en": "Your own identifier echoed back with the task, useful for correlating results with your records.",
+          "title_zh": "随任务回显的你方自定义标识，便于将结果与你方记录关联。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_ai_mode_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_ai_mode_task_get_advanced_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].time": {
+            "desc_en": "Server-side execution time spent on this task, in seconds.",
+            "title_zh": "该任务的服务端执行耗时，单位秒。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          },
+          "tasks[].path": {
+            "desc_en": "Endpoint path segments called to create this task; echoes the request routing.",
+            "title_zh": "创建该任务时调用的端点路径分段，回显请求路由。"
+          },
+          "tasks[].data": {
+            "desc_en": "Echo of the request parameters used to create this task, for traceability.",
+            "title_zh": "回显创建该任务所用的请求参数，便于追溯。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].keyword": {
+            "desc_en": "Keyword echoed from the POST request that this result corresponds to.",
+            "title_zh": "对应本结果、回显自 POST 请求的关键词。"
+          },
+          "tasks[].result[].type": {
+            "desc_en": "Search type of this result block, echoed from the request.",
+            "title_zh": "本结果块的搜索类型，回显自请求。"
+          },
+          "tasks[].result[].check_url": {
+            "desc_en": "Direct Google URL reproducing this SERP with the same refinement parameters; open it to verify the result.",
+            "title_zh": "可复现本 SERP 且带相同细化参数的 Google 直达 URL；打开可核对结果。"
+          },
+          "tasks[].result[].item_types": {
+            "desc_en": "List of element types present in this SERP (e.g. organic, ai_overview), useful to know what `items` contains.",
+            "title_zh": "本 SERP 中出现的元素类型列表（如 organic、ai_overview），可据此了解 `items` 的内容。"
+          },
+          "tasks[].result[].se_results_count": {
+            "desc_en": "Total number of results Google reports for the query.",
+            "title_zh": "Google 为该查询报告的结果总数。"
+          },
+          "tasks[].result[].items_count": {
+            "desc_en": "Number of elements returned in this result's `items` array.",
+            "title_zh": "本结果 `items` 数组中返回的元素数量。"
+          },
+          "tasks[].result[].items": {
+            "desc_en": "Array of SERP elements parsed for this result.",
+            "title_zh": "本结果解析出的 SERP 元素数组。"
+          },
+          "tasks[].result[].items[].type": {
+            "desc_en": "Type of this SERP element (e.g. `ai_overview`), determining its other fields.",
+            "title_zh": "该 SERP 元素的类型（如 `ai_overview`），决定其其余字段。"
+          },
+          "tasks[].result[].items[].markdown": {
+            "desc_en": "Content of this element rendered as Markdown.",
+            "title_zh": "该元素以 Markdown 渲染的内容。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_ai_mode_live_advanced": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        },
+        "calculate_rectangles": {
+          "desc_en": "When enabled, pixel-coordinate rankings (rectangles) are computed for elements in the advanced SERP, useful for visual position analysis.",
+          "title_zh": "启用后，会为高级 SERP 中的元素计算像素坐标排名（矩形框），便于做可视化位置分析。"
+        },
+        "browser_screen_width": {
+          "desc_en": "Custom browser viewport width, in pixels, used when rendering the SERP for rectangle calculations.",
+          "title_zh": "渲染 SERP 以计算矩形框时使用的自定义浏览器视口宽度，单位像素。"
+        },
+        "browser_screen_height": {
+          "desc_en": "Custom browser viewport height, in pixels, used when rendering the SERP for rectangle calculations.",
+          "title_zh": "渲染 SERP 以计算矩形框时使用的自定义浏览器视口高度，单位像素。"
+        },
+        "browser_screen_resolution_ratio": {
+          "desc_en": "Device pixel ratio applied to the rendering viewport when computing rectangles.",
+          "title_zh": "计算矩形框时应用于渲染视口的设备像素比。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].keyword": {
+            "desc_en": "Keyword echoed from the POST request that this result corresponds to.",
+            "title_zh": "对应本结果、回显自 POST 请求的关键词。"
+          },
+          "tasks[].result[].type": {
+            "desc_en": "Search type of this result block, echoed from the request.",
+            "title_zh": "本结果块的搜索类型，回显自请求。"
+          },
+          "tasks[].result[].se_domain": {
+            "desc_en": "Search-engine domain used for this result (e.g. `google.com`).",
+            "title_zh": "本结果使用的搜索引擎域名（如 `google.com`）。"
+          },
+          "tasks[].result[].location_code": {
+            "desc_en": "Location code applied to this result, echoed from the request.",
+            "title_zh": "应用于本结果的地区代码，回显自请求。"
+          },
+          "tasks[].result[].language_code": {
+            "desc_en": "Language code applied to this result, echoed from the request.",
+            "title_zh": "应用于本结果的语言代码，回显自请求。"
+          },
+          "tasks[].result[].check_url": {
+            "desc_en": "Direct Google URL reproducing this SERP with the same refinement parameters; open it to verify the result.",
+            "title_zh": "可复现本 SERP 且带相同细化参数的 Google 直达 URL；打开可核对结果。"
+          },
+          "tasks[].result[].item_types": {
+            "desc_en": "List of element types present in this SERP (e.g. organic, ai_overview), useful to know what `items` contains.",
+            "title_zh": "本 SERP 中出现的元素类型列表（如 organic、ai_overview），可据此了解 `items` 的内容。"
+          },
+          "tasks[].result[].items_count": {
+            "desc_en": "Number of elements returned in this result's `items` array.",
+            "title_zh": "本结果 `items` 数组中返回的元素数量。"
+          },
+          "tasks[].result[].items": {
+            "desc_en": "Array of SERP elements parsed for this result.",
+            "title_zh": "本结果解析出的 SERP 元素数组。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_maps_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "depth": {
+          "desc_en": "Number of SERP results to parse; deeper values cost more crawl pages and increase task price.",
+          "title_zh": "要解析的 SERP 结果数量；取值越深消耗的抓取页数越多，任务价格也越高。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_maps_live_advanced": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "depth": {
+          "desc_en": "Number of SERP results to parse; deeper values cost more crawl pages and increase task price.",
+          "title_zh": "要解析的 SERP 结果数量；取值越深消耗的抓取页数越多，任务价格也越高。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_local_finder_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "depth": {
+          "desc_en": "Number of SERP results to parse; deeper values cost more crawl pages and increase task price.",
+          "title_zh": "要解析的 SERP 结果数量；取值越深消耗的抓取页数越多，任务价格也越高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_local_finder_task_get_advanced_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          },
+          "tasks[].data": {
+            "desc_en": "Echo of the request parameters used to create this task, for traceability.",
+            "title_zh": "回显创建该任务所用的请求参数，便于追溯。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_local_finder_live_advanced": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "min_rating": {
+          "desc_en": "Lower bound on the place rating; results with a rating below this value are filtered out.",
+          "title_zh": "地点评分的下限；评分低于该值的结果会被过滤掉。"
+        },
+        "time_filter": {
+          "desc_en": "Restricts results to a time window (e.g. open-now / specific hours); narrows the local results returned.",
+          "title_zh": "将结果限定在某时间窗口（如当前营业/特定时段），收窄返回的本地结果。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_news_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "depth": {
+          "desc_en": "Number of SERP results to parse; deeper values cost more crawl pages and increase task price.",
+          "title_zh": "要解析的 SERP 结果数量；取值越深消耗的抓取页数越多，任务价格也越高。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_news_task_get_advanced_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          },
+          "tasks[].data": {
+            "desc_en": "Echo of the request parameters used to create this task, for traceability.",
+            "title_zh": "回显创建该任务所用的请求参数，便于追溯。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_news_live_advanced": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "depth": {
+          "desc_en": "Number of SERP results to parse; deeper values cost more crawl pages and increase task price.",
+          "title_zh": "要解析的 SERP 结果数量；取值越深消耗的抓取页数越多，任务价格也越高。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_events_tasks_ready": {
+      "parameters": {},
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].id": {
+            "desc_en": "Task id of the completed task, ready to be collected.",
+            "title_zh": "已完成、可收取任务的 task id。"
+          },
+          "tasks[].result[].se": {
+            "desc_en": "Search engine specified when the task was posted.",
+            "title_zh": "提交任务时指定的搜索引擎。"
+          },
+          "tasks[].result[].se_type": {
+            "desc_en": "Type of search-engine SERP the task targets (e.g. organic, news).",
+            "title_zh": "任务所针对的搜索引擎 SERP 类型（如 organic、news）。"
+          },
+          "tasks[].result[].date_posted": {
+            "desc_en": "Timestamp when the task was posted, in UTC.",
+            "title_zh": "任务提交的时间戳，UTC 格式。"
+          },
+          "tasks[].result[].tag": {
+            "desc_en": "User-defined tag echoed for the completed task.",
+            "title_zh": "为已完成任务回显的用户自定义标签。"
+          },
+          "tasks[].result[].endpoint_advanced": {
+            "desc_en": "Relative URL to call to collect this task's advanced results.",
+            "title_zh": "用于收取该任务高级结果的相对 URL。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_events_task_get_advanced_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          },
+          "tasks[].data": {
+            "desc_en": "Echo of the request parameters used to create this task, for traceability.",
+            "title_zh": "回显创建该任务所用的请求参数，便于追溯。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_events_live_advanced": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_images_tasks_ready": {
+      "parameters": {},
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].id": {
+            "desc_en": "Task id of the completed task, ready to be collected.",
+            "title_zh": "已完成、可收取任务的 task id。"
+          },
+          "tasks[].result[].se": {
+            "desc_en": "Search engine specified when the task was posted.",
+            "title_zh": "提交任务时指定的搜索引擎。"
+          },
+          "tasks[].result[].se_type": {
+            "desc_en": "Type of search-engine SERP the task targets (e.g. organic, news).",
+            "title_zh": "任务所针对的搜索引擎 SERP 类型（如 organic、news）。"
+          },
+          "tasks[].result[].date_posted": {
+            "desc_en": "Timestamp when the task was posted, in UTC.",
+            "title_zh": "任务提交的时间戳，UTC 格式。"
+          },
+          "tasks[].result[].tag": {
+            "desc_en": "User-defined tag echoed for the completed task.",
+            "title_zh": "为已完成任务回显的用户自定义标签。"
+          },
+          "tasks[].result[].endpoint_regular": {
+            "desc_en": "Relative URL to call to collect this task's regular results.",
+            "title_zh": "用于收取该任务常规结果的相对 URL。"
+          },
+          "tasks[].result[].endpoint_html": {
+            "desc_en": "Relative URL to call to collect this task's HTML results.",
+            "title_zh": "用于收取该任务 HTML 结果的相对 URL。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_images_task_get_regular_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_images_live_html": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_search_by_image_task_post": {
+      "parameters": {},
+      "request": {
+        "image_url": {
+          "desc_en": "Publicly accessible URL of the image to search with; Google returns results based on this image.",
+          "title_zh": "用于搜索的可公开访问图片 URL；Google 基于该图片返回结果。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_search_by_image_task_get_advanced_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          },
+          "tasks[].data": {
+            "desc_en": "Echo of the request parameters used to create this task, for traceability.",
+            "title_zh": "回显创建该任务所用的请求参数，便于追溯。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_jobs_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term to query. URL-encode it; the SERP is built around this query.",
+          "title_zh": "要查询的搜索词。需做 URL 编码；SERP 围绕该查询词构建。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_jobs_task_get_advanced_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          },
+          "tasks[].data": {
+            "desc_en": "Echo of the request parameters used to create this task, for traceability.",
+            "title_zh": "回显创建该任务所用的请求参数，便于追溯。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_autocomplete_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Seed term to fetch autocomplete suggestions for.",
+          "title_zh": "用于获取自动补全建议的种子词。"
+        },
+        "client": {
+          "desc_en": "Autocomplete source client to emulate, such as `chrome`, `chrome-omni`, `gws-wiz`, `safari`, `firefox`, `img`, or `youtube`; each client returns a different suggestion set.",
+          "title_zh": "要模拟的自动补全来源客户端，如 `chrome`、`chrome-omni`、`gws-wiz`、`safari`、`firefox`、`img` 或 `youtube`；不同客户端返回的建议集合不同。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_autocomplete_live_advanced": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Seed term to fetch autocomplete suggestions for.",
+          "title_zh": "用于获取自动补全建议的种子词。"
+        },
+        "client": {
+          "desc_en": "Autocomplete source client to emulate, such as `chrome`, `chrome-omni`, `gws-wiz`, `safari`, `firefox`, `img`, or `youtube`; each client returns a different suggestion set.",
+          "title_zh": "要模拟的自动补全来源客户端，如 `chrome`、`chrome-omni`、`gws-wiz`、`safari`、`firefox`、`img` 或 `youtube`；不同客户端返回的建议集合不同。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_dataset_search_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term used to find matching datasets.",
+          "title_zh": "用于查找匹配数据集的搜索词。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "os": {
+          "desc_en": "Operating system to emulate for the chosen device, refining the user-agent presented to Google.",
+          "title_zh": "为所选设备模拟的操作系统，用于细化向 Google 呈现的 user-agent。"
+        },
+        "last_updated": {
+          "desc_en": "Filter datasets by how recently they were updated, expressed as a relative window such as `1m`, `1y`, or `3y`.",
+          "title_zh": "按数据集的最近更新时间筛选，使用相对时间窗口表示，如 `1m`、`1y`、`3y`。"
+        },
+        "file_formats": {
+          "desc_en": "Filter datasets by file format, such as `other`, `archive`, `text`, `image`, `document`, or `tabular`.",
+          "title_zh": "按文件格式筛选数据集，如 `other`、`archive`、`text`、`image`、`document` 或 `tabular`。"
+        },
+        "usage_rights": {
+          "desc_en": "Filter datasets by usage rights, such as `commercial` or `noncommercial`.",
+          "title_zh": "按使用权限筛选数据集，如 `commercial` 或 `noncommercial`。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_dataset_search_live_advanced": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term used to find matching datasets.",
+          "title_zh": "用于查找匹配数据集的搜索词。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "os": {
+          "desc_en": "Operating system to emulate for the chosen device, refining the user-agent presented to Google.",
+          "title_zh": "为所选设备模拟的操作系统，用于细化向 Google 呈现的 user-agent。"
+        },
+        "last_updated": {
+          "desc_en": "Filter datasets by how recently they were updated, expressed as a relative window such as `1m`, `1y`, or `3y`.",
+          "title_zh": "按数据集的最近更新时间筛选，使用相对时间窗口表示，如 `1m`、`1y`、`3y`。"
+        },
+        "file_formats": {
+          "desc_en": "Filter datasets by file format, such as `other`, `archive`, `text`, `image`, `document`, or `tabular`.",
+          "title_zh": "按文件格式筛选数据集，如 `other`、`archive`、`text`、`image`、`document` 或 `tabular`。"
+        },
+        "usage_rights": {
+          "desc_en": "Filter datasets by usage rights, such as `commercial` or `noncommercial`.",
+          "title_zh": "按使用权限筛选数据集，如 `commercial` 或 `noncommercial`。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_dataset_info_task_post": {
+      "parameters": {},
+      "request": {
+        "dataset_id": {
+          "desc_en": "Identifier of the dataset to look up; find it in the dataset URL or in a Google Dataset Search result.",
+          "title_zh": "要查询的数据集标识；可在数据集 URL 或 Google 数据集搜索结果中找到。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_dataset_info_live_advanced": {
+      "parameters": {},
+      "request": {
+        "dataset_id": {
+          "desc_en": "Identifier of the dataset to look up; find it in the dataset URL or in a Google Dataset Search result.",
+          "title_zh": "要查询的数据集标识；可在数据集 URL 或 Google 数据集搜索结果中找到。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_ads_advertisers_locations": {
+      "parameters": {},
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].location_code": {
+            "desc_en": "Location code applied to this result, echoed from the request.",
+            "title_zh": "应用于本结果的地区代码，回显自请求。"
+          },
+          "tasks[].result[].location_name": {
+            "desc_en": "Human-readable name of the supported location.",
+            "title_zh": "受支持地区的可读名称。"
+          },
+          "tasks[].result[].country_iso_code": {
+            "desc_en": "ISO country code of the location.",
+            "title_zh": "该地区的 ISO 国家代码。"
+          },
+          "tasks[].result[].location_type": {
+            "desc_en": "Type/level of the location (e.g. country, region, city).",
+            "title_zh": "地区的类型/层级（如国家、地区、城市）。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_ads_advertisers_task_post": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Search term used to find matching advertisers.",
+          "title_zh": "用于查找匹配广告主的搜索词。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "priority": {
+          "desc_en": "Execution priority of the task; higher priority is processed sooner at a higher price.",
+          "title_zh": "任务的执行优先级；更高优先级处理更快、价格更高。"
+        },
+        "postback_url": {
+          "desc_en": "Your endpoint that DataForSEO calls with the completed task results once the task finishes.",
+          "title_zh": "任务完成后 DataForSEO 回调推送结果的你方接收端点。"
+        },
+        "pingback_url": {
+          "desc_en": "Your endpoint that DataForSEO pings to notify you that the task is complete, without sending the payload.",
+          "title_zh": "任务完成时 DataForSEO 通知你方的 ping 端点，仅通知不发送结果数据。"
+        },
+        "postback_data": {
+          "desc_en": "Result format delivered to `postback_url`; choose the variant (such as advanced or html) matching how you want results pushed.",
+          "title_zh": "推送到 `postback_url` 的结果格式；按你期望的推送方式选择对应变体（如 advanced 或 html）。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].cost": {
+            "desc_en": "Billed cost attributed to this task, in USD.",
+            "title_zh": "归属于该任务的计费金额，单位美元。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_ads_search_tasks_ready": {
+      "parameters": {},
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].id": {
+            "desc_en": "Task id of the completed task, ready to be collected.",
+            "title_zh": "已完成、可收取任务的 task id。"
+          },
+          "tasks[].result[].endpoint_advanced": {
+            "desc_en": "Relative URL to call to collect this task's advanced results.",
+            "title_zh": "用于收取该任务高级结果的相对 URL。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_ads_search_task_get_advanced_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_ads_search_live_advanced": {
+      "parameters": {},
+      "request": {
+        "advertiser_ids": {
+          "desc_en": "Advertiser identifiers whose ads to retrieve; required when `target` is not provided.",
+          "title_zh": "要检索其广告的广告主标识；未提供 `target` 时必填。"
+        },
+        "target": {
+          "desc_en": "Domain name associated with an advertiser account whose ads to retrieve; required when `advertiser_ids` is not provided.",
+          "title_zh": "与某广告主账户关联的域名，用于检索其广告；未提供 `advertiser_ids` 时必填。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "location_coordinate": {
+          "desc_en": "GPS coordinates of the target location, as `latitude,longitude`; used for fine-grained geo-targeting.",
+          "title_zh": "目标地点的 GPS 坐标，格式为 `纬度,经度`，用于更精细的地理定向。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_finance_explore_tasks_ready": {
+      "parameters": {},
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].id": {
+            "desc_en": "Task id of the completed task, ready to be collected.",
+            "title_zh": "已完成、可收取任务的 task id。"
+          },
+          "tasks[].result[].endpoint_advanced": {
+            "desc_en": "Relative URL to call to collect this task's advanced results.",
+            "title_zh": "用于收取该任务高级结果的相对 URL。"
+          },
+          "tasks[].result[].endpoint_html": {
+            "desc_en": "Relative URL to call to collect this task's HTML results.",
+            "title_zh": "用于收取该任务 HTML 结果的相对 URL。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_finance_explore_task_get_html_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_finance_explore_live_html": {
+      "parameters": {},
+      "request": {
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "device": {
+          "desc_en": "Device profile to emulate for the search, such as `desktop` or `mobile`; affects layout and result set.",
+          "title_zh": "搜索时模拟的设备类型，如 `desktop` 或 `mobile`，会影响版式与结果集合。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_finance_markets_tasks_ready": {
+      "parameters": {},
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].id": {
+            "desc_en": "Task id of the completed task, ready to be collected.",
+            "title_zh": "已完成、可收取任务的 task id。"
+          },
+          "tasks[].result[].endpoint_advanced": {
+            "desc_en": "Relative URL to call to collect this task's advanced results.",
+            "title_zh": "用于收取该任务高级结果的相对 URL。"
+          },
+          "tasks[].result[].endpoint_html": {
+            "desc_en": "Relative URL to call to collect this task's HTML results.",
+            "title_zh": "用于收取该任务 HTML 结果的相对 URL。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_finance_markets_task_get_html_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_finance_markets_live_html": {
+      "parameters": {},
+      "request": {
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "market_type": {
+          "desc_en": "Which Google Finance Markets section to load (e.g. indexes, most-active, gainers/losers), selecting the market view to scrape.",
+          "title_zh": "要加载的 Google Finance Markets 板块（如指数、最活跃、涨跌幅榜），用于选择要抓取的行情视图。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_finance_quote_tasks_ready": {
+      "parameters": {},
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].id": {
+            "desc_en": "Task id of the completed task, ready to be collected.",
+            "title_zh": "已完成、可收取任务的 task id。"
+          },
+          "tasks[].result[].endpoint_advanced": {
+            "desc_en": "Relative URL to call to collect this task's advanced results.",
+            "title_zh": "用于收取该任务高级结果的相对 URL。"
+          },
+          "tasks[].result[].endpoint_html": {
+            "desc_en": "Relative URL to call to collect this task's HTML results.",
+            "title_zh": "用于收取该任务 HTML 结果的相对 URL。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_finance_quote_task_get_html_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "post_dataforseo_serp_google_finance_quote_live_html": {
+      "parameters": {},
+      "request": {
+        "keyword": {
+          "desc_en": "Ticker or stock symbol to quote (e.g. `AAPL`); the SERP is built around this symbol.",
+          "title_zh": "要查询行情的股票代码（如 `AAPL`）；SERP 围绕该代码构建。"
+        },
+        "location_name": {
+          "desc_en": "Full text name of the search-engine location (e.g. `London,England,United Kingdom`); used to localize the SERP.",
+          "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`），用于本地化 SERP。"
+        },
+        "location_code": {
+          "desc_en": "Numeric code of the search-engine location; the code-based alternative to `location_name`, obtainable from the locations reference endpoint.",
+          "title_zh": "搜索引擎地区的数字代码，是 `location_name` 的代码型替代写法，可从地区参考端点获取。"
+        },
+        "language_name": {
+          "desc_en": "Full text name of the search-engine language (e.g. `English`); the SERP is returned in this language.",
+          "title_zh": "搜索引擎语言的完整名称（如 `English`），SERP 以该语言返回。"
+        },
+        "language_code": {
+          "desc_en": "Two-letter language code (e.g. `en`); the code-based alternative to `language_name`.",
+          "title_zh": "两位语言代码（如 `en`），是 `language_name` 的代码型替代写法。"
+        },
+        "os": {
+          "desc_en": "Operating system to emulate for the chosen device, refining the user-agent presented to Google.",
+          "title_zh": "为所选设备模拟的操作系统，用于细化向 Google 呈现的 user-agent。"
+        },
+        "window": {
+          "desc_en": "Time window of the price graph for the quote, controlling the historical range shown.",
+          "title_zh": "报价价格走势图的时间窗口，控制展示的历史区间。"
+        }
+      },
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_finance_ticker_search_tasks_ready": {
+      "parameters": {},
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          },
+          "tasks[].result[].id": {
+            "desc_en": "Task id of the completed task, ready to be collected.",
+            "title_zh": "已完成、可收取任务的 task id。"
+          },
+          "tasks[].result[].endpoint_advanced": {
+            "desc_en": "Relative URL to call to collect this task's advanced results.",
+            "title_zh": "用于收取该任务高级结果的相对 URL。"
+          }
+        }
+      }
+    },
+    "get_dataforseo_serp_google_finance_ticker_search_task_get_advanced_id": {
+      "parameters": {
+        "id": {
+          "desc_en": "UUID of the task whose results you want to fetch, as returned in `tasks[].id` when the task was posted.",
+          "title_zh": "要取结果的任务 UUID，即提交任务时 `tasks[].id` 返回的值。"
+        }
+      },
+      "request": {},
+      "response": {
+        "200": {
+          "version": {
+            "desc_en": "API version string that produced this response.",
+            "title_zh": "生成本响应的 API 版本号。"
+          },
+          "status_code": {
+            "desc_en": "Overall response status code; check it before reading the payload.",
+            "title_zh": "本次响应的总体状态码；读取数据前应先检查。"
+          },
+          "status_message": {
+            "desc_en": "Human-readable message accompanying the overall status code.",
+            "title_zh": "与总体状态码对应的可读说明文字。"
+          },
+          "time": {
+            "desc_en": "Server-side execution time of the request, in seconds.",
+            "title_zh": "本次请求的服务端执行耗时，单位秒。"
+          },
+          "cost": {
+            "desc_en": "Total billed cost of this response across all tasks, in USD.",
+            "title_zh": "本响应所有任务的合计计费金额，单位美元。"
+          },
+          "tasks_count": {
+            "desc_en": "Number of task entries contained in the `tasks` array.",
+            "title_zh": "`tasks` 数组中包含的任务条目数量。"
+          },
+          "tasks_error": {
+            "desc_en": "How many tasks finished with an error; if non-zero, inspect each task's own status fields.",
+            "title_zh": "以错误结束的任务数量；若不为 0，需逐个检查任务自身的状态字段。"
+          },
+          "tasks": {
+            "desc_en": "List of task objects; one entry per task in the request.",
+            "title_zh": "任务对象列表，请求中的每个任务对应一个条目。"
+          },
+          "tasks[].id": {
+            "desc_en": "UUID of this task; reuse it to fetch the task's results from the matching task_get endpoint.",
+            "title_zh": "该任务的 UUID；在对应 task_get 端点取该任务结果时复用。"
+          },
+          "tasks[].status_code": {
+            "desc_en": "Per-task status code; check it to tell whether this individual task succeeded.",
+            "title_zh": "单个任务的状态码，用于判断该任务是否成功。"
+          },
+          "tasks[].status_message": {
+            "desc_en": "Human-readable message for this task's status code.",
+            "title_zh": "该任务状态码对应的可读说明文字。"
+          },
+          "tasks[].result_count": {
+            "desc_en": "Number of entries in this task's `result` array.",
+            "title_zh": "该任务 `result` 数组中的条目数量。"
+          },
+          "tasks[].result": {
+            "desc_en": "Result payload for this task; the actual SERP data is nested inside.",
+            "title_zh": "该任务的结果载荷，实际的 SERP 数据嵌套于内。"
+          }
+        }
+      }
+    }
+  }
+}

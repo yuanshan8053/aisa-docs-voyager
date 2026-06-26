@@ -1,0 +1,1168 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API Aggregated Documentation",
+    "version": "1.0.0",
+    "description": "This OpenAPI specification aggregates multiple Twitter API endpoints into a single document."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "TweetThreadContextResponse": {
+        "type": "object",
+        "properties": {
+          "replies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tweet"
+            },
+            "x-doc": {
+              "desc_en": "Reply tweets making up the thread context, returned for this page.",
+              "title_zh": "本页返回的构成线程上下文的回复推文。",
+              "source": "ai",
+              "src_hash": "sha256:dec9ab7d0000",
+              "doc_version": "2.0.0"
+            }
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether more pages remain; if true, call again with next_cursor to fetch them.",
+              "title_zh": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Cursor to pass as the cursor parameter on the next call to fetch the following page.",
+              "title_zh": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "x-doc": {
+              "desc_en": "Outcome marker of the request: success when the thread was returned, error otherwise.",
+              "title_zh": "请求结果标记：成功返回线程为 success，否则为 error。",
+              "source": "ai",
+              "src_hash": "sha256:576998f7f1a9",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Human-readable message; carries the error detail when status is error.",
+              "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Object type tag identifying the entry as a tweet.",
+              "title_zh": "对象类型标记，标识该条目为推文。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "id": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Unique identifier of the tweet.",
+              "title_zh": "推文的唯一标识。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "url": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Web link to the tweet on X/Twitter.",
+              "title_zh": "推文在 X/Twitter 上的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "text": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Full text content of the tweet.",
+              "title_zh": "推文的完整正文内容。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "source": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Name of the client application used to post the tweet.",
+              "title_zh": "发布该推文所用的客户端应用名称。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "retweetCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of times the tweet has been retweeted.",
+              "title_zh": "推文被转发的次数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "replyCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of replies to the tweet.",
+              "title_zh": "推文收到的回复数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "likeCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of likes on the tweet.",
+              "title_zh": "推文获得的点赞数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "quoteCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of quote tweets referencing this tweet.",
+              "title_zh": "引用该推文的引用推文数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "viewCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of times the tweet has been viewed.",
+              "title_zh": "推文的浏览次数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Timestamp when the tweet was created.",
+              "title_zh": "推文的创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "lang": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Detected language of the tweet text, as a language code.",
+              "title_zh": "推文正文被识别出的语言，以语言代码表示。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of times the tweet has been bookmarked.",
+              "title_zh": "推文被收藏的次数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isReply": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the tweet is a reply to another tweet.",
+              "title_zh": "该推文是否为对另一条推文的回复。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "inReplyToId": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Identifier of the tweet this one directly replies to; present only when isReply is true.",
+              "title_zh": "该推文直接回复的目标推文标识；仅当 isReply 为真时存在。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "conversationId": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Identifier of the root tweet that started the conversation thread this tweet belongs to.",
+              "title_zh": "该推文所属对话线程的起始推文标识。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "displayTextRange": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "x-doc": {
+              "desc_en": "Start and end character offsets marking the displayable portion of the tweet text.",
+              "title_zh": "标记推文正文中可显示部分的起止字符位置。",
+              "source": "ai",
+              "src_hash": "sha256:935373eda591",
+              "doc_version": "2.0.0"
+            }
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Identifier of the user being replied to.",
+              "title_zh": "被回复用户的标识。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Username of the user being replied to.",
+              "title_zh": "被回复用户的用户名。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "author": {
+            "$ref": "#/components/schemas/User",
+            "x-doc": {
+              "desc_en": "Profile of the user who posted the tweet.",
+              "title_zh": "发布该推文的用户资料。",
+              "source": "ai",
+              "src_hash": "sha256:8d574c2d1bfd",
+              "doc_version": "2.0.0"
+            }
+          },
+          "entities": {
+            "$ref": "#/components/schemas/Entities",
+            "x-doc": {
+              "desc_en": "Structured entities parsed from the tweet text, such as hashtags, links, and user mentions.",
+              "title_zh": "从推文正文解析出的结构化实体，如话题标签、链接与用户提及。",
+              "source": "ai",
+              "src_hash": "sha256:62b2af7d4a9a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "quoted_tweet": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "The tweet quoted by this tweet, when it is a quote tweet.\n[⚠️Note:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]",
+              "title_zh": "当该推文为引用推文时，其所引用的推文。\n[⚠️批注:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "retweeted_tweet": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "The original tweet this tweet retweets, when it is a retweet.\n[⚠️Note:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]",
+              "title_zh": "当该推文为转发时，其所转发的原推文。\n[⚠️批注:源码将该字段声明为 string 类型，但其承载的具体内容（如完整推文对象或推文 ID）未声明，待研发确认。]",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isLimitedReply": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether replies to this tweet are restricted by the author's reply settings.",
+              "title_zh": "该推文的回复是否受作者的回复权限设置限制。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Object type tag identifying the entry as a user.",
+              "title_zh": "对象类型标记，标识该条目为用户。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "userName": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "The author's @handle, unique across X/Twitter and used in profile URLs.",
+              "title_zh": "作者的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "url": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Web link to the author's profile page.",
+              "title_zh": "作者资料页的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "id": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Unique identifier of the author.",
+              "title_zh": "作者的唯一标识。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "name": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "The author's display name shown on the profile.",
+              "title_zh": "作者在资料页展示的昵称。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isBlueVerified": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the author holds a paid X (Twitter) Blue verification.",
+              "title_zh": "作者是否拥有付费的 X（Twitter）Blue 认证。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "verifiedType": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "The author's verification category, such as a business or government account.",
+              "title_zh": "作者的认证类别，如企业或政府账号。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "profilePicture": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Web link to the author's avatar image.",
+              "title_zh": "作者头像图片的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "coverPicture": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Web link to the author's profile banner image.",
+              "title_zh": "作者资料页横幅图片的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "description": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "The author's profile bio text.",
+              "title_zh": "作者资料页的个人简介文字。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "location": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Free-text location the author lists on their profile.",
+              "title_zh": "作者在资料页填写的所在地（自由文本）。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "followers": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of accounts following the author.",
+              "title_zh": "关注作者的账号数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "following": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of accounts the author follows.",
+              "title_zh": "作者关注的账号数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "canDm": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the author currently accepts direct messages from the requester.",
+              "title_zh": "作者当前是否接受请求方的私信。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Timestamp when the author's account was created.",
+              "title_zh": "作者账号的创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "favouritesCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of tweets the author has liked.",
+              "title_zh": "作者点赞过的推文数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "hasCustomTimelines": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the author has created custom timelines.",
+              "title_zh": "作者是否创建过自定义时间线。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isTranslator": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the author participates in the Twitter translation program.",
+              "title_zh": "作者是否参与 Twitter 翻译计划。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "mediaCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of media items the author has posted.",
+              "title_zh": "作者发布过的媒体条目数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "statusesCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Total number of tweets the author has posted.",
+              "title_zh": "作者发布过的推文总数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "withheldInCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Country codes where the author's account is withheld for legal reasons.",
+              "title_zh": "因法律原因屏蔽作者账号的国家／地区代码列表。",
+              "source": "ai",
+              "src_hash": "sha256:cb839f650391",
+              "doc_version": "2.0.0"
+            }
+          },
+          "possiblySensitive": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the author's posts are flagged as potentially sensitive.",
+              "title_zh": "作者的内容是否被标记为可能含敏感信息。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "pinnedTweetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Identifiers of tweets the author has pinned to the top of their profile.",
+              "title_zh": "作者置顶在资料页顶部的推文标识列表。",
+              "source": "ai",
+              "src_hash": "sha256:cb839f650391",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isAutomated": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the account is labeled as an automated (bot) account.",
+              "title_zh": "该账号是否被标记为自动化（机器人）账号。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "automatedBy": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Username of the person or entity managing the automated account.",
+              "title_zh": "管理该自动化账号的个人或机构的用户名。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "unavailable": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the author's account is currently unavailable, for example suspended or deactivated.",
+              "title_zh": "作者账号当前是否不可用，例如被封禁或停用。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Explanatory message returned when the account is unavailable.",
+              "title_zh": "账号不可用时返回的说明信息。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "unavailableReason": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Reason code or text describing why the account is unavailable.",
+              "title_zh": "描述账号不可用原因的代码或文字。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "Entities": {
+        "type": "object",
+        "properties": {
+          "hashtags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "indices": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "x-doc": {
+                    "desc_en": "Start and end character offsets of the hashtag within the tweet text.",
+                    "title_zh": "该话题标签在推文正文中的起止字符位置。",
+                    "source": "ai",
+                    "src_hash": "sha256:935373eda591",
+                    "doc_version": "2.0.0"
+                  }
+                },
+                "text": {
+                  "type": "string",
+                  "x-doc": {
+                    "desc_en": "The hashtag word, without the leading # sign.",
+                    "title_zh": "话题标签的文字，不含开头的 # 号。",
+                    "source": "ai",
+                    "src_hash": "sha256:38a346cadbd3",
+                    "doc_version": "2.0.0"
+                  }
+                }
+              }
+            },
+            "x-doc": {
+              "desc_en": "Hashtags found in the tweet text.",
+              "title_zh": "推文正文中出现的话题标签。",
+              "source": "ai",
+              "src_hash": "sha256:e9ae57349c27",
+              "doc_version": "2.0.0"
+            }
+          },
+          "urls": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "display_url": {
+                  "type": "string",
+                  "x-doc": {
+                    "desc_en": "Shortened, human-readable form of the link as displayed in the tweet.",
+                    "title_zh": "推文中显示的链接的短化、易读形式。",
+                    "source": "ai",
+                    "src_hash": "sha256:38a346cadbd3",
+                    "doc_version": "2.0.0"
+                  }
+                },
+                "expanded_url": {
+                  "type": "string",
+                  "x-doc": {
+                    "desc_en": "Full destination URL the displayed link resolves to.",
+                    "title_zh": "显示链接最终指向的完整目标地址。",
+                    "source": "ai",
+                    "src_hash": "sha256:38a346cadbd3",
+                    "doc_version": "2.0.0"
+                  }
+                },
+                "indices": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "x-doc": {
+                    "desc_en": "Start and end character offsets of the link within the tweet text.",
+                    "title_zh": "该链接在推文正文中的起止字符位置。",
+                    "source": "ai",
+                    "src_hash": "sha256:935373eda591",
+                    "doc_version": "2.0.0"
+                  }
+                },
+                "url": {
+                  "type": "string",
+                  "x-doc": {
+                    "desc_en": "The t.co shortened URL as it literally appears in the tweet text.",
+                    "title_zh": "推文正文中实际出现的 t.co 短链接。",
+                    "source": "ai",
+                    "src_hash": "sha256:38a346cadbd3",
+                    "doc_version": "2.0.0"
+                  }
+                }
+              }
+            },
+            "x-doc": {
+              "desc_en": "Links found in the tweet text.",
+              "title_zh": "推文正文中出现的链接。",
+              "source": "ai",
+              "src_hash": "sha256:49ba4ea71b4a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "user_mentions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id_str": {
+                  "type": "string",
+                  "x-doc": {
+                    "desc_en": "Identifier of the mentioned user.",
+                    "title_zh": "被提及用户的标识。",
+                    "source": "ai",
+                    "src_hash": "sha256:38a346cadbd3",
+                    "doc_version": "2.0.0"
+                  }
+                },
+                "name": {
+                  "type": "string",
+                  "x-doc": {
+                    "desc_en": "Display name of the mentioned user.",
+                    "title_zh": "被提及用户的昵称。",
+                    "source": "ai",
+                    "src_hash": "sha256:38a346cadbd3",
+                    "doc_version": "2.0.0"
+                  }
+                },
+                "screen_name": {
+                  "type": "string",
+                  "x-doc": {
+                    "desc_en": "@handle of the mentioned user.",
+                    "title_zh": "被提及用户的 @ 用户名。",
+                    "source": "ai",
+                    "src_hash": "sha256:38a346cadbd3",
+                    "doc_version": "2.0.0"
+                  }
+                }
+              }
+            },
+            "x-doc": {
+              "desc_en": "Users mentioned in the tweet text.",
+              "title_zh": "推文正文中提及的用户。",
+              "source": "ai",
+              "src_hash": "sha256:cff5d32335f0",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "ArticleResponse": {
+        "type": "object",
+        "properties": {
+          "article": {
+            "$ref": "#/components/schemas/Article",
+            "x-doc": {
+              "desc_en": "The long-form Article content and metadata.",
+              "title_zh": "长文 Article 的内容与元数据。",
+              "source": "ai",
+              "src_hash": "sha256:e29c10c450f8",
+              "doc_version": "2.0.0"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "failed"
+            ],
+            "x-doc": {
+              "desc_en": "Outcome marker of the request: success when the article was returned, failed otherwise.",
+              "title_zh": "请求结果标记：成功返回文章为 success，否则为 failed。",
+              "source": "ai",
+              "src_hash": "sha256:4f88ad706186",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Human-readable message; carries the error detail on failure.",
+              "title_zh": "可读的提示信息；失败时承载错误详情。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "author": {
+            "$ref": "#/components/schemas/User",
+            "x-doc": {
+              "desc_en": "Profile of the user who wrote the article.",
+              "title_zh": "撰写该文章的用户资料。",
+              "source": "ai",
+              "src_hash": "sha256:8d574c2d1bfd",
+              "doc_version": "2.0.0"
+            }
+          },
+          "replyCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of replies to the article's tweet.",
+              "title_zh": "文章所在推文收到的回复数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "likeCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of likes on the article's tweet.",
+              "title_zh": "文章所在推文获得的点赞数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "quoteCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of quote tweets referencing the article's tweet.",
+              "title_zh": "引用文章所在推文的引用推文数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "viewCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of times the article's tweet has been viewed.",
+              "title_zh": "文章所在推文的浏览次数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Timestamp when the article was created.",
+              "title_zh": "文章的创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "title": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Title of the article.",
+              "title_zh": "文章的标题。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "preview_text": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Short preview excerpt of the article body.",
+              "title_zh": "文章正文的简短预览摘录。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "cover_media_img_url": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Web link to the article's cover image.",
+              "title_zh": "文章封面图片的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "contents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "x-doc": {
+                    "desc_en": "Text of a single article content block.",
+                    "title_zh": "单个文章内容块的文字。",
+                    "source": "ai",
+                    "src_hash": "sha256:38a346cadbd3",
+                    "doc_version": "2.0.0"
+                  }
+                }
+              }
+            },
+            "x-doc": {
+              "desc_en": "Ordered content blocks making up the article body.",
+              "title_zh": "构成文章正文的有序内容块。",
+              "source": "ai",
+              "src_hash": "sha256:d4474792a832",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "AdvancedSearchResponse": {
+        "type": "object",
+        "properties": {
+          "tweets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tweet"
+            },
+            "x-doc": {
+              "desc_en": "Tweets matching the search, returned for this page.",
+              "title_zh": "本页返回的匹配搜索条件的推文。",
+              "source": "ai",
+              "src_hash": "sha256:dec9ab7d0000",
+              "doc_version": "2.0.0"
+            }
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether more pages remain; if true, call again with next_cursor to fetch them.",
+              "title_zh": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Cursor to pass as the cursor parameter on the next call to fetch the following page.",
+              "title_zh": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/tweet/thread_context": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_tweet_thread_context"
+        ],
+        "summary": "Get Tweet Thread Context",
+        "description": "Get the thread context of a tweet.",
+        "parameters": [
+          {
+            "name": "tweetId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The tweet ID to get. Can be a reply tweet or an original tweet.",
+            "x-doc": {
+              "desc_en": "Identifier of the tweet whose thread context you want; may be an original tweet or a reply.",
+              "title_zh": "要获取其线程上下文的推文标识；可以是原推文或回复推文。",
+              "source": "ai",
+              "src_hash": "sha256:ff5bdd651239",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The cursor to paginate through the results. First page is empty.",
+            "x-doc": {
+              "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+              "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。",
+              "source": "ai",
+              "src_hash": "sha256:ff566619cc76",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TweetThreadContextResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "获取推文线程上下文 GET /twitter/tweet/thread_context",
+          "desc_en": "Retrieve the conversation thread surrounding a tweet, returning the replies that make up its context. Works whether the given tweet is an original tweet or itself a reply.",
+          "description_zh": "获取某条推文所在对话线程的上下文，返回构成该上下文的回复。无论传入的是原推文还是回复推文均可使用。",
+          "source": "ai",
+          "src_hash": "sha256:2c4be606c2ee",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/twitter/article": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_article"
+        ],
+        "summary": "Get Article",
+        "description": "Get article by tweet ID.",
+        "parameters": [
+          {
+            "name": "tweet_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The tweet ID of the article.",
+            "x-doc": {
+              "desc_en": "Identifier of the tweet that carries the Article you want.",
+              "title_zh": "承载所需 Article 的推文标识。",
+              "source": "ai",
+              "src_hash": "sha256:c7ce5ba9ecd5",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "获取文章 GET /twitter/article",
+          "desc_en": "Retrieve the long-form Article attached to a tweet, including its title, cover image, and body content blocks.",
+          "description_zh": "获取某条推文所附带的长文 Article，包含标题、封面图与正文内容块。",
+          "source": "ai",
+          "src_hash": "sha256:78d640586a0a",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/twitter/tweet/advanced_search": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/tweet_advanced_search"
+        ],
+        "summary": "Advanced Search",
+        "description": "Advanced search for tweets.",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The query to search for.",
+            "x-doc": {
+              "desc_en": "Search query string; supports advanced search operators to filter tweets.",
+              "title_zh": "搜索查询字符串，支持高级搜索运算符以筛选推文。",
+              "source": "ai",
+              "src_hash": "sha256:e3b48289b038",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "queryType",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Latest",
+                "Top"
+              ],
+              "default": "Latest"
+            },
+            "description": "The query type to search for.",
+            "x-doc": {
+              "desc_en": "Ranking mode of the results: Latest returns the most recent matches, Top returns the most relevant or popular ones.",
+              "title_zh": "结果的排序模式：Latest 返回最新匹配，Top 返回最相关或最热门的结果。",
+              "source": "ai",
+              "src_hash": "sha256:919f5eb0b000",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The cursor to paginate through the results. First page is empty.",
+            "x-doc": {
+              "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+              "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。",
+              "source": "ai",
+              "src_hash": "sha256:ff566619cc76",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdvancedSearchResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "推文高级搜索 GET /twitter/tweet/advanced_search",
+          "desc_en": "Search tweets using a query string, choosing between the most recent matches or the top-ranked ones, with cursor pagination.",
+          "description_zh": "使用查询字符串搜索推文，可在最新匹配与热门排序结果之间选择，并通过游标翻页。",
+          "source": "ai",
+          "src_hash": "sha256:49584ab9807e",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  }
+}

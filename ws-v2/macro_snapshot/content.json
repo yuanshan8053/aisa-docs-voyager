@@ -1,0 +1,105 @@
+{
+  "operations": {
+    "getInterestRatesHistorical": {
+      "heading_zh": "查询央行历史利率 getInterestRatesHistorical",
+      "desc_en": "Return the historical policy interest-rate series for a single central bank, optionally bounded to a date window. This is a read-only time-series query: omit the dates to get the full available history, or set a start and/or end to slice a range. Typical uses are charting rate trends and back-testing rate-sensitive models.",
+      "description_zh": "返回单个央行的历史政策利率序列,可选地限定日期区间。这是只读的时间序列查询:不传日期则取全部可得历史,或设定起止日期截取某段区间。典型场景为绘制利率走势、回测对利率敏感的模型。",
+      "resp_section_intro": "成功时返回该央行随时间变化的利率记录列表。",
+      "errors_source": "spec 已声明 400/401/402/404,错误体为 ErrorResponse(error + message)",
+      "errors": [
+        {"code": "400", "message_zh": "请求参数无效,例如漏传必填的 `bank` 或日期格式非法。"},
+        {"code": "401", "message_zh": "鉴权失败,Bearer API Key 缺失或无效。"},
+        {"code": "402", "message_zh": "该接口需要付费订阅,当前套餐无权访问,需升级套餐。"},
+        {"code": "404", "message_zh": "未找到指定的央行。"}
+      ]
+    },
+    "getInterestRatesSnapshot": {
+      "heading_zh": "查询央行实时利率 getInterestRatesSnapshot",
+      "desc_en": "Return the current policy interest rate for a single central bank — the latest point in its rate series, not the full history. Use it when you only need the rate in effect right now, e.g. for a live dashboard or a one-off lookup.",
+      "description_zh": "返回单个央行当前的政策利率 —— 即其利率序列的最新一点,而非完整历史。当你只需当下生效的利率时使用,例如实时看板或一次性查询。",
+      "resp_section_intro": "成功时返回该央行当前生效的利率记录。",
+      "errors_source": "spec 已声明 401/402/404(未声明 400),错误体为 ErrorResponse(error + message)",
+      "errors": [
+        {"code": "401", "message_zh": "鉴权失败,Bearer API Key 缺失或无效。"},
+        {"code": "402", "message_zh": "该接口需要付费订阅,当前套餐无权访问,需升级套餐。"},
+        {"code": "404", "message_zh": "未找到指定的央行。"}
+      ]
+    }
+  },
+  "fields": {
+    "getInterestRatesHistorical": {
+      "parameters": {
+        "bank": {
+          "desc_en": "Identifier of the central bank whose rate history to return, e.g. `FED` or `ECB`. The full list of accepted bank codes is available from the `/macro/interest-rates/banks` endpoint.",
+          "title_zh": "要查询利率历史的央行标识,如 `FED`、`ECB`。完整的可用央行代码可通过 `/macro/interest-rates/banks` 接口获取。"
+        },
+        "start_date": {
+          "desc_en": "Lower bound of the date window, in `YYYY-MM-DD`. Records on or after this date are returned. Omit it to start from the earliest available record.",
+          "title_zh": "日期区间的下界,格式 `YYYY-MM-DD`,返回该日期及之后的记录。留空则从最早的可得记录开始。"
+        },
+        "end_date": {
+          "desc_en": "Upper bound of the date window, in `YYYY-MM-DD`. Records on or before this date are returned. Omit it to run through the most recent record.",
+          "title_zh": "日期区间的上界,格式 `YYYY-MM-DD`,返回该日期及之前的记录。留空则一直取到最新记录。"
+        }
+      },
+      "response": {
+        "200": {
+          "interest_rates": {
+            "desc_en": "List of interest-rate records for the requested bank, one per observation date.",
+            "title_zh": "所查央行的利率记录列表,每个观测日期一条。"
+          },
+          "interest_rates.bank": {
+            "desc_en": "Code of the central bank this record belongs to, matching the `bank` you queried.",
+            "title_zh": "本条记录所属央行的代码,与查询的 `bank` 一致。"
+          },
+          "interest_rates.name": {
+            "desc_en": "Full human-readable name of the central bank.",
+            "title_zh": "央行的完整可读名称。"
+          },
+          "interest_rates.rate": {
+            "desc_en": "The bank's policy interest rate as of this record's date.",
+            "title_zh": "该记录日期对应的央行政策利率。",
+            "annotation": "源码未声明利率单位(百分数还是小数,如 5.25 还是 0.0525),待研发确认。"
+          },
+          "interest_rates.date": {
+            "desc_en": "Observation date this rate was in effect, in `YYYY-MM-DD`.",
+            "title_zh": "该利率生效的观测日期,格式 `YYYY-MM-DD`。"
+          }
+        }
+      }
+    },
+    "getInterestRatesSnapshot": {
+      "parameters": {
+        "bank": {
+          "desc_en": "Identifier of the central bank whose current rate to return, e.g. `FED`, `ECB`, `BOJ`. The full list of accepted bank codes is available from the `/macro/interest-rates/banks` endpoint.",
+          "title_zh": "要查询当前利率的央行标识,如 `FED`、`ECB`、`BOJ`。完整的可用央行代码可通过 `/macro/interest-rates/banks` 接口获取。"
+        }
+      },
+      "response": {
+        "200": {
+          "interest_rates": {
+            "desc_en": "The current rate record for the requested bank. Returned as a list for shape consistency with the historical endpoint, typically holding the single latest observation.",
+            "title_zh": "所查央行的当前利率记录。为与历史接口保持结构一致而以列表返回,通常只含最新一条观测。"
+          },
+          "interest_rates.bank": {
+            "desc_en": "Code of the central bank this record belongs to, matching the `bank` you queried.",
+            "title_zh": "本条记录所属央行的代码,与查询的 `bank` 一致。"
+          },
+          "interest_rates.name": {
+            "desc_en": "Full human-readable name of the central bank.",
+            "title_zh": "央行的完整可读名称。"
+          },
+          "interest_rates.rate": {
+            "desc_en": "The bank's policy interest rate currently in effect.",
+            "title_zh": "该央行当前生效的政策利率。",
+            "annotation": "源码未声明利率单位(百分数还是小数,如 5.25 还是 0.0525),待研发确认。"
+          },
+          "interest_rates.date": {
+            "desc_en": "Date this current rate took effect, in `YYYY-MM-DD`.",
+            "title_zh": "该当前利率的生效日期,格式 `YYYY-MM-DD`。"
+          }
+        }
+      }
+    }
+  }
+}

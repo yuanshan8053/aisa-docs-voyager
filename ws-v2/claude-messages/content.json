@@ -1,0 +1,183 @@
+{
+  "operations": {
+    "createMessage": {
+      "heading_zh": "创建消息 createMessage",
+      "desc_en": "Send a structured, multi-turn conversation to a Claude model and get its response. Compatible with the Anthropic Messages API; supports tool use, extended thinking, streaming, and fine-grained sampling controls.",
+      "description_zh": "向 Claude 模型发送结构化的多轮对话并获取应答。兼容 Anthropic Messages API,支持工具调用、扩展思考、流式输出与细粒度采样控制。",
+      "resp_section_intro": "成功时返回模型应答,含内容块、停止原因与 token 用量。",
+      "errors": [
+        {"code": "400", "message_zh": "请求参数无效。"},
+        {"code": "401", "message_zh": "API Key 缺失或无效。"},
+        {"code": "429", "message_zh": "触发限流。"},
+        {"code": "500", "message_zh": "服务内部错误。"}
+      ],
+      "errors_source": "spec 已声明 400/401/429/500(仅描述,无错误体结构)"
+    }
+  },
+  "fields": {
+    "createMessage": {
+      "request": {
+        "model": {
+          "desc_en": "Which Claude model to run.",
+          "title_zh": "本次调用使用的 Claude 模型。"
+        },
+        "max_tokens": {
+          "desc_en": "Upper bound on how many tokens the model may generate before it is forced to stop. The model can stop earlier on its own.",
+          "title_zh": "模型在被强制停止前最多可生成的 token 数。模型也可能提前自行停止。"
+        },
+        "messages": {
+          "desc_en": "The ordered conversation turns. Alternate user and assistant turns to supply prior context; the model continues from the last turn.",
+          "title_zh": "有序的对话轮次。以用户与助手轮次交替提供既往上下文,模型从最后一轮接续生成。"
+        },
+        "messages.role": {
+          "desc_en": "Who authored the turn, distinguishing user input from prior assistant output.",
+          "title_zh": "该轮的作者身份,用于区分用户输入与助手既往输出。"
+        },
+        "messages.content": {
+          "desc_en": "The turn's content, given either as plain text or as an array of structured content blocks (for example text plus images or tool results).",
+          "title_zh": "该轮的内容,可以是纯文本,也可以是一组结构化内容块(例如文本搭配图像或工具结果)。"
+        },
+        "system": {
+          "desc_en": "A top-level system prompt that frames the model's behavior across the whole conversation, given as text or as an array of text blocks.",
+          "title_zh": "顶层系统提示,用于框定模型在整段对话中的行为,可为文本或一组文本块。"
+        },
+        "temperature": {
+          "desc_en": "Controls output randomness; lower values make replies more focused and deterministic, higher values make them more varied. Tune either this or `top_p`, not both.",
+          "title_zh": "控制输出的随机性;取值越低应答越聚焦、越确定,越高则越多样。请在本参数与 `top_p` 之间二选一调节,不要同时调。"
+        },
+        "top_p": {
+          "desc_en": "Nucleus sampling: the model samples only from the most probable tokens whose cumulative probability reaches this threshold. Use as an alternative to `temperature`.",
+          "title_zh": "核采样:模型仅从累计概率达到该阈值的最高概率 token 中采样。作为 `temperature` 的替代方案使用。"
+        },
+        "top_k": {
+          "desc_en": "Limits sampling to the K most likely tokens at each step, removing long-tail low-probability options.",
+          "title_zh": "将每一步的采样限制在概率最高的 K 个 token 内,剔除长尾低概率选项。"
+        },
+        "stop_sequences": {
+          "desc_en": "Custom text sequences that, once produced, immediately halt generation.",
+          "title_zh": "自定义文本序列,一旦被生成即立刻停止本次生成。"
+        },
+        "stream": {
+          "desc_en": "Whether to stream the response incrementally over server-sent events instead of returning it all at once.",
+          "title_zh": "是否以服务器发送事件(SSE)增量流式返回应答,而非一次性返回全部内容。"
+        },
+        "tools": {
+          "desc_en": "The set of tools the model is allowed to call during the turn.",
+          "title_zh": "本轮允许模型调用的工具集合。"
+        },
+        "tools.name": {
+          "desc_en": "The tool's name, by which the model refers to it when calling.",
+          "title_zh": "工具名称,模型调用时以此引用该工具。"
+        },
+        "tools.description": {
+          "desc_en": "Explanation of what the tool does, which the model reads to decide when and how to call it.",
+          "title_zh": "对工具用途的说明,模型据此判断何时、如何调用。"
+        },
+        "tools.input_schema": {
+          "desc_en": "JSON Schema describing the arguments the tool accepts, used to validate and shape the model's tool calls.",
+          "title_zh": "描述工具入参的 JSON Schema,用于校验并规范模型的工具调用。"
+        },
+        "tools.type": {
+          "desc_en": "The kind of tool, distinguishing a custom-defined tool from other supported tool types.",
+          "title_zh": "工具类别,用于区分自定义工具与其他受支持的工具类型。"
+        },
+        "tool_choice": {
+          "desc_en": "Governs whether and how the model is allowed to invoke the supplied tools on this turn.",
+          "title_zh": "约束本轮模型是否以及如何调用所提供的工具。"
+        },
+        "tool_choice.type": {
+          "desc_en": "The tool-use strategy: let the model decide, require it to use some tool, force a specific named tool, or forbid tool use entirely.",
+          "title_zh": "工具使用策略:让模型自行决定、要求其必须使用某个工具、强制使用某个指定工具,或完全禁止使用工具。"
+        },
+        "tool_choice.name": {
+          "desc_en": "The specific tool to force, used when the strategy targets a single named tool.",
+          "title_zh": "要强制使用的具体工具,在策略指向单个指定工具时使用。"
+        },
+        "tool_choice.disable_parallel_tool_use": {
+          "desc_en": "When set, restricts the model to one tool call at a time instead of issuing several in parallel.",
+          "title_zh": "开启后,限制模型每次只发起一个工具调用,而非并行发起多个。"
+        },
+        "thinking": {
+          "desc_en": "Enables extended thinking, giving the model room to reason internally before answering complex problems.",
+          "title_zh": "启用扩展思考,让模型在应答复杂问题前进行更充分的内部推理。"
+        },
+        "thinking.type": {
+          "desc_en": "Switch that turns extended thinking on.",
+          "title_zh": "用于开启扩展思考的开关。"
+        },
+        "thinking.budget_tokens": {
+          "desc_en": "Token allowance set aside for the model's internal reasoning.",
+          "title_zh": "为模型内部推理预留的 token 额度。"
+        },
+        "thinking.display": {
+          "desc_en": "How the thinking trace is surfaced in the response: returned as a summary, or omitted from the output.",
+          "title_zh": "思考过程在响应中的呈现方式:以摘要形式返回,或从输出中略去。"
+        },
+        "metadata": {
+          "desc_en": "Optional request metadata used for tracking and analytics.",
+          "title_zh": "可选的请求元数据,用于追踪与分析。"
+        },
+        "metadata.user_id": {
+          "desc_en": "An opaque identifier for the end user driving the request; must not contain personally identifiable information.",
+          "title_zh": "标识发起请求的终端用户的不透明 ID,不得包含个人可识别信息。"
+        },
+        "service_tier": {
+          "desc_en": "Selects the service tier for the request, trading off automatic capacity selection against pinning to standard capacity only.",
+          "title_zh": "为请求选择服务层级,在自动选择容量与仅锁定标准容量之间权衡。"
+        }
+      },
+      "response": {
+        "200": {
+          "id": {
+            "desc_en": "Unique identifier of the generated message.",
+            "title_zh": "生成消息的唯一标识。"
+          },
+          "type": {
+            "desc_en": "Object type of the payload.",
+            "title_zh": "载荷的对象类型。"
+          },
+          "role": {
+            "desc_en": "Author role of the response, the assistant.",
+            "title_zh": "应答的作者角色,即助手。"
+          },
+          "content": {
+            "desc_en": "The response body as a sequence of content blocks, which may include text, tool-use requests, or thinking output.",
+            "title_zh": "以一系列内容块组成的应答正文,可能包含文本、工具调用请求或思考输出。"
+          },
+          "model": {
+            "desc_en": "The model that produced the response.",
+            "title_zh": "产生该应答的模型。"
+          },
+          "stop_reason": {
+            "desc_en": "Why generation ended: a natural end of turn, hitting a stop sequence, reaching the token cap, or pausing to call a tool.",
+            "title_zh": "生成结束的原因:自然结束本轮、命中停止序列、达到 token 上限,或为调用工具而暂停。"
+          },
+          "stop_sequence": {
+            "desc_en": "The specific stop sequence that triggered the stop, when generation ended for that reason.",
+            "title_zh": "当因停止序列而结束时,触发停止的那个具体序列。"
+          },
+          "usage": {
+            "desc_en": "Token accounting for the request, including prompt-cache reads and writes.",
+            "title_zh": "本次请求的 token 计量,含提示缓存的读取与写入。"
+          },
+          "usage.input_tokens": {
+            "desc_en": "Tokens consumed by the input.",
+            "title_zh": "输入消耗的 token 数。"
+          },
+          "usage.output_tokens": {
+            "desc_en": "Tokens produced in the output.",
+            "title_zh": "输出生成的 token 数。"
+          },
+          "usage.cache_creation_input_tokens": {
+            "desc_en": "Input tokens used to write new entries into the prompt cache.",
+            "title_zh": "用于向提示缓存写入新条目的输入 token 数。"
+          },
+          "usage.cache_read_input_tokens": {
+            "desc_en": "Input tokens served from the prompt cache rather than recomputed.",
+            "title_zh": "从提示缓存命中读取、而非重新计算的输入 token 数。"
+          }
+        }
+      }
+    }
+  }
+}

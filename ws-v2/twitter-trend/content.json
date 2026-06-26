@@ -1,0 +1,93 @@
+{
+  "operations": {
+    "GET /twitter/trends": {
+      "heading_zh": "获取趋势榜 GET /twitter/trends",
+      "desc_en": "Return the list of trending topics for a given location, identified by its WOEID.",
+      "description_zh": "返回指定地点（以 WOEID 标识）的热门趋势列表。"
+    },
+    "GET /twitter/spaces/detail": {
+      "heading_zh": "获取 Space 详情 GET /twitter/spaces/detail",
+      "desc_en": "Return the full details of a single Twitter Space, including its settings, audience stats, and creator profile.",
+      "description_zh": "返回单个 Twitter Space 的完整详情，包括设置、听众统计与创建者资料。"
+    }
+  },
+  "fields": {
+    "GET /twitter/trends": {
+      "parameters": {
+        "woeid": {"desc_en": "The WOEID (Where On Earth ID) identifying the location whose trends you want.", "title_zh": "标识目标地点的 WOEID（Where On Earth ID），用于取该地的趋势。"},
+        "count": {"desc_en": "How many trends to return.", "title_zh": "返回趋势的数量。"}
+      },
+      "response": {
+        "200": {
+          "trends": {"desc_en": "The list of trending topics for the requested location.", "title_zh": "所请求地点的热门趋势列表。"},
+          "trends.name": {"desc_en": "Display name of the trend.", "title_zh": "趋势的显示名称。"},
+          "trends.target": {"desc_en": "The search target this trend resolves to.", "title_zh": "该趋势对应的搜索目标。"},
+          "trends.target.query": {"desc_en": "The search query string that opens this trend's results.", "title_zh": "打开该趋势结果所用的搜索查询字符串。"},
+          "trends.rank": {"desc_en": "Position of the trend in the list, where a smaller number ranks higher.", "title_zh": "趋势在榜单中的名次，数字越小排名越靠前。"},
+          "trends.meta_description": {"desc_en": "Supplementary descriptive text for the trend, such as associated post volume or context.", "title_zh": "趋势的补充描述文本，如相关讨论量或背景信息。"},
+          "status": {"desc_en": "Whether the request succeeded or errored.", "title_zh": "请求是成功还是出错。"},
+          "msg": {"desc_en": "Accompanying message, typically the error detail when the request did not succeed.", "title_zh": "附带消息，通常是请求未成功时的错误详情。"}
+        }
+      }
+    },
+    "GET /twitter/spaces/detail": {
+      "parameters": {
+        "space_id": {"desc_en": "Identifier of the Twitter Space to look up.", "title_zh": "要查询的 Twitter Space 标识。"}
+      },
+      "response": {
+        "200": {
+          "data": {"desc_en": "The Space's detail payload.", "title_zh": "Space 的详情数据。"},
+          "data.id": {"desc_en": "Identifier of the Space.", "title_zh": "Space 的标识。"},
+          "data.title": {"desc_en": "Title of the Space.", "title_zh": "Space 的标题。"},
+          "data.state": {"desc_en": "Current lifecycle state of the Space, such as whether it is scheduled, live, or ended.", "title_zh": "Space 当前的生命周期状态，如已排期、直播中或已结束。"},
+          "data.created_at": {"desc_en": "When the Space was created.", "title_zh": "Space 的创建时间。"},
+          "data.scheduled_start": {"desc_en": "When the Space is scheduled to start.", "title_zh": "Space 计划开始的时间。"},
+          "data.updated_at": {"desc_en": "When the Space's record was last updated.", "title_zh": "Space 记录最近一次更新的时间。"},
+          "data.media_key": {"desc_en": "Media key referencing the Space's audio stream.", "title_zh": "指向该 Space 音频流的媒体键。"},
+          "data.is_subscribed": {"desc_en": "Whether the requesting user is subscribed to the Space.", "title_zh": "发起请求的用户是否已订阅该 Space。"},
+          "data.settings": {"desc_en": "The Space's configuration settings.", "title_zh": "Space 的配置项。"},
+          "data.settings.conversation_controls": {"desc_en": "Coded value indicating who is permitted to participate in the conversation.", "title_zh": "表示谁可参与对话的编码值。", "annotation": "源码未声明该整数各取值的含义，待研发确认。"},
+          "data.settings.disallow_join": {"desc_en": "Whether new participants are blocked from joining the Space.", "title_zh": "是否禁止新参与者加入该 Space。"},
+          "data.settings.is_employee_only": {"desc_en": "Whether the Space is restricted to employees only.", "title_zh": "该 Space 是否仅限员工。"},
+          "data.settings.is_locked": {"desc_en": "Whether the Space is locked.", "title_zh": "该 Space 是否已锁定。"},
+          "data.settings.is_muted": {"desc_en": "Whether the Space is muted for the requesting user.", "title_zh": "该 Space 对发起请求的用户是否已静音。"},
+          "data.settings.is_space_available_for_clipping": {"desc_en": "Whether clips may be created from the Space.", "title_zh": "是否允许从该 Space 制作剪辑。"},
+          "data.settings.is_space_available_for_replay": {"desc_en": "Whether a replay of the Space is available.", "title_zh": "该 Space 是否提供回放。"},
+          "data.settings.no_incognito": {"desc_en": "Whether anonymous (incognito) listening is disallowed.", "title_zh": "是否禁止匿名（隐身）收听。"},
+          "data.settings.narrow_cast_space_type": {"desc_en": "Coded value indicating the Space's narrowcast type.", "title_zh": "表示该 Space 定向广播类型的编码值。", "annotation": "源码未声明该整数各取值的含义，待研发确认。"},
+          "data.settings.max_guest_sessions": {"desc_en": "Maximum number of concurrent guest speaker sessions allowed.", "title_zh": "允许的并发嘉宾发言会话数上限。"},
+          "data.settings.max_admin_capacity": {"desc_en": "Maximum number of admins the Space can have.", "title_zh": "该 Space 可拥有的管理员数量上限。"},
+          "data.stats": {"desc_en": "Audience statistics for the Space.", "title_zh": "Space 的听众统计。"},
+          "data.stats.total_replay_watched": {"desc_en": "Total number of replay views.", "title_zh": "回放观看的总次数。"},
+          "data.stats.total_live_listeners": {"desc_en": "Total number of live listeners.", "title_zh": "实时收听的总人数。"},
+          "data.stats.total_participants": {"desc_en": "Total number of participants across the Space.", "title_zh": "该 Space 的参与者总人数。"},
+          "data.creator": {"desc_en": "Profile of the user who created the Space.", "title_zh": "创建该 Space 的用户资料。"},
+          "data.creator.id": {"desc_en": "Identifier of the creator.", "title_zh": "创建者的标识。"},
+          "data.creator.name": {"desc_en": "Display name of the creator.", "title_zh": "创建者的显示名称。"},
+          "data.creator.userName": {"desc_en": "Handle (@username) of the creator.", "title_zh": "创建者的用户名（@username）。"},
+          "data.creator.location": {"desc_en": "Location listed on the creator's profile.", "title_zh": "创建者资料中填写的所在地。"},
+          "data.creator.url": {"desc_en": "Website URL listed on the creator's profile.", "title_zh": "创建者资料中填写的网站链接。"},
+          "data.creator.description": {"desc_en": "Bio text on the creator's profile.", "title_zh": "创建者资料中的简介文本。"},
+          "data.creator.protected": {"desc_en": "Whether the creator's account is protected (private).", "title_zh": "创建者账号是否受保护（私密）。"},
+          "data.creator.isVerified": {"desc_en": "Whether the creator's account is verified.", "title_zh": "创建者账号是否已认证。"},
+          "data.creator.isBlueVerified": {"desc_en": "Whether the creator holds a Twitter Blue verification.", "title_zh": "创建者是否拥有 Twitter Blue 认证。"},
+          "data.creator.verifiedType": {"desc_en": "The kind of verification the creator's account holds.", "title_zh": "创建者账号所持认证的类型。"},
+          "data.creator.followers": {"desc_en": "Number of accounts following the creator.", "title_zh": "关注该创建者的账号数。"},
+          "data.creator.following": {"desc_en": "Number of accounts the creator follows.", "title_zh": "该创建者关注的账号数。"},
+          "data.creator.favouritesCount": {"desc_en": "Number of tweets the creator has liked.", "title_zh": "该创建者点赞过的推文数。"},
+          "data.creator.statusesCount": {"desc_en": "Number of tweets the creator has posted.", "title_zh": "该创建者发布的推文数。"},
+          "data.creator.mediaCount": {"desc_en": "Number of media items the creator has posted.", "title_zh": "该创建者发布的媒体条目数。"},
+          "data.creator.createdAt": {"desc_en": "When the creator's account was created.", "title_zh": "创建者账号的注册时间。"},
+          "data.creator.coverPicture": {"desc_en": "URL of the creator's profile cover image.", "title_zh": "创建者资料封面图的链接。"},
+          "data.creator.profilePicture": {"desc_en": "URL of the creator's profile avatar.", "title_zh": "创建者头像的链接。"},
+          "data.creator.canDm": {"desc_en": "Whether the requesting user can send the creator a direct message.", "title_zh": "发起请求的用户是否可以向该创建者发送私信。"},
+          "data.creator.affiliatesHighlightedLabel": {"desc_en": "Highlighted affiliation label shown on the creator's profile.", "title_zh": "创建者资料上展示的关联机构高亮标签。"},
+          "data.creator.isAutomated": {"desc_en": "Whether the creator's account is marked as automated (a bot).", "title_zh": "创建者账号是否被标记为自动化（机器人）账号。"},
+          "data.creator.automatedBy": {"desc_en": "Identifier of the account that manages this automated account.", "title_zh": "管理该自动化账号的账号标识。"},
+          "status": {"desc_en": "Whether the request succeeded or errored.", "title_zh": "请求是成功还是出错。"},
+          "msg": {"desc_en": "Accompanying message, typically the error detail when the request did not succeed.", "title_zh": "附带消息，通常是请求未成功时的错误详情。"}
+        }
+      }
+    }
+  }
+}

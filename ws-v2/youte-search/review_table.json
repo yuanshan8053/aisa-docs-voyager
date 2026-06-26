@@ -1,0 +1,83 @@
+{
+  "sections": [
+    {
+      "operation": "GET /youtube/search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Perform a YouTube search via SearchApi",
+          "desc_en": "Search YouTube through the SearchApi aggregation engine and return a structured list of matching videos. This is a read-only query: narrow results with a country and interface language, or paginate and apply advanced sorting via YouTube's own filter token. Typical uses are content discovery, competitive monitoring, and sourcing material.",
+          "title_zh": "通过 SearchApi 聚合引擎检索 YouTube 视频,返回结构化的命中列表。这是只读查询接口:可用地区与界面语言收窄结果,或借 YouTube 自身的过滤令牌翻页并施加高级排序。典型场景为内容发现、竞品监测与素材采集。"
+        },
+        {
+          "path": "param:engine",
+          "src_en": "Engine identifier for YouTube Search",
+          "desc_en": "Selects which search backend to route the request to. For this endpoint it is always `youtube`, pinning the call to YouTube's search channel.",
+          "title_zh": "选择请求路由到哪个搜索后端。本接口固定为 `youtube`,将调用锁定在 YouTube 搜索通道。"
+        },
+        {
+          "path": "param:q",
+          "src_en": "Search query",
+          "desc_en": "The search phrase, exactly as a user would type it into YouTube's search box. It is the primary signal that determines which videos come back and in what relevance order.",
+          "title_zh": "搜索短语,等同用户在 YouTube 搜索框中键入的内容。它是决定返回哪些视频、以何种相关性排序的首要信号。"
+        },
+        {
+          "path": "param:sp",
+          "src_en": "YouTube filter token (pagination or advanced filters)",
+          "desc_en": "YouTube's opaque filter token. Pass it to page forward or to carry advanced filters such as upload date, duration, or sort order. The value is not constructed by hand — copy it from a previous response or from YouTube's frontend and pass it through unchanged.",
+          "title_zh": "YouTube 的不透明过滤令牌。用它向后翻页,或承载上传时间、时长、排序等高级筛选。该值不靠手工拼造 —— 从上一次响应或 YouTube 前端取得后原样透传。"
+        },
+        {
+          "path": "param:gl",
+          "src_en": "Country code (e.g. us, jp)",
+          "desc_en": "Country of the search context, given as a two-letter code such as `us` or `jp`. It localizes which results surface and how they rank. Omit it to fall back to the engine's default region.",
+          "title_zh": "检索所处的国家,用 `us`、`jp` 这类两字母代码表示。它决定结果的地域化呈现与排序。留空则回落到引擎默认地区。"
+        },
+        {
+          "path": "param:hl",
+          "src_en": "Interface language",
+          "desc_en": "Interface language for the search, given as a language code. It controls the language of localized text in the results, not which videos match. Omit it to fall back to the engine's default language.",
+          "title_zh": "检索的界面语言,用语言代码表示。它影响结果中本地化文案的语言,而非命中哪些视频。留空则回落到引擎默认语言。"
+        },
+        {
+          "path": "resp.200.search_metadata",
+          "src_en": "Search metadata",
+          "desc_en": "Metadata about this search request, recording status and other query-level context useful for troubleshooting and auditing.",
+          "title_zh": "本次检索请求的元信息,记录状态等查询级上下文,便于排障与审计。"
+        },
+        {
+          "path": "resp.200.search_results",
+          "src_en": "",
+          "desc_en": "The matched videos, ordered by the engine's relevance ranking. Each element is one video record.",
+          "title_zh": "命中的视频,按引擎相关性排序。每个元素是一条视频记录。"
+        },
+        {
+          "path": "resp.200.search_results.video_id",
+          "src_en": "",
+          "desc_en": "YouTube's unique identifier for the video. Use it to build a watch URL or as the input to downstream video APIs.",
+          "title_zh": "视频在 YouTube 上的唯一标识。可用于拼接播放地址,或作为下游视频接口的入参。"
+        },
+        {
+          "path": "resp.200.search_results.title",
+          "src_en": "",
+          "desc_en": "The video's display title.",
+          "title_zh": "视频的展示标题。"
+        },
+        {
+          "path": "resp.200.search_results.link",
+          "src_en": "",
+          "desc_en": "Direct, clickable watch URL for the video.",
+          "title_zh": "视频的可直接点击播放链接。"
+        },
+        {
+          "path": "resp.200.search_results.channel_name",
+          "src_en": "",
+          "desc_en": "Name of the channel that published the video.",
+          "title_zh": "发布该视频的频道名称。"
+        }
+      ]
+    }
+  ],
+  "total": 11,
+  "missing": []
+}

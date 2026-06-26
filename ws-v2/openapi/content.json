@@ -1,0 +1,115 @@
+{
+  "operations": {
+    "GET /plants": {
+      "heading_zh": "列出植物 GET /plants",
+      "desc_en": "List the plants in the store that the caller is allowed to see. This is a read-only listing; cap the result size with `limit`. Typical use is browsing or populating a catalog view.",
+      "description_zh": "列出当前调用方有权查看的店内植物。这是只读列表查询,可用 `limit` 限制返回数量。典型场景为浏览或填充目录视图。",
+      "resp_section_intro": "成功时返回植物对象数组。",
+      "errors_source": "spec 已声明 400,错误体为 Error(error + message)",
+      "errors": [
+        {"code": "400", "message_zh": "请求出错,返回错误码与说明。"}
+      ]
+    },
+    "POST /plants": {
+      "heading_zh": "新建植物 POST /plants",
+      "desc_en": "Create a new plant in the store from the supplied plant details and return the stored record. Typical use is adding inventory.",
+      "description_zh": "用提交的植物信息在店内新建一条植物记录,并返回入库后的对象。典型场景为新增库存。",
+      "resp_section_intro": "成功时返回新建的植物对象。",
+      "errors_source": "spec 已声明 400,错误体为 Error(error + message)",
+      "errors": [
+        {"code": "400", "message_zh": "请求出错,返回错误码与说明。"}
+      ]
+    },
+    "DELETE /plants/{id}": {
+      "heading_zh": "删除植物 DELETE /plants/{id}",
+      "desc_en": "Delete a single plant identified by its path `id`. On success the store returns no body. Typical use is removing inventory.",
+      "description_zh": "按路径中的 `id` 删除单条植物记录。成功时不返回响应体。典型场景为下架库存。",
+      "errors_source": "spec 已声明 400,错误体为 Error(error + message)",
+      "errors": [
+        {"code": "400", "message_zh": "请求出错,返回错误码与说明。"}
+      ]
+    }
+  },
+  "fields": {
+    "GET /plants": {
+      "parameters": {
+        "limit": {
+          "desc_en": "Caps how many plants are returned in one response. Omit it to let the server apply its own default ceiling.",
+          "title_zh": "限制单次响应返回的植物数量。留空则由服务端套用其默认上限。"
+        }
+      },
+      "response": {
+        "200": {
+          "name": {
+            "desc_en": "Display name of the plant.",
+            "title_zh": "植物的展示名称。"
+          },
+          "tag": {
+            "desc_en": "Free-text tag categorizing the plant by type.",
+            "title_zh": "用于按类型归类植物的自由文本标签。"
+          }
+        },
+        "400": {
+          "error": {
+            "desc_en": "Numeric error code identifying the failure.",
+            "title_zh": "标识本次失败的数字错误码。"
+          },
+          "message": {
+            "desc_en": "Human-readable detail describing the error.",
+            "title_zh": "对错误的可读详细说明。"
+          }
+        }
+      }
+    },
+    "POST /plants": {
+      "request": {
+        "id": {
+          "desc_en": "Caller-assigned identification number for the new plant, distinguishing it from existing records.",
+          "title_zh": "为新植物指定的标识编号,用于与现有记录区分。"
+        }
+      },
+      "response": {
+        "200": {
+          "name": {
+            "desc_en": "Display name of the created plant, echoing what was stored.",
+            "title_zh": "新建植物的展示名称,回显入库内容。"
+          },
+          "tag": {
+            "desc_en": "Free-text tag of the created plant.",
+            "title_zh": "新建植物的自由文本标签。"
+          }
+        },
+        "400": {
+          "error": {
+            "desc_en": "Numeric error code identifying the failure.",
+            "title_zh": "标识本次失败的数字错误码。"
+          },
+          "message": {
+            "desc_en": "Human-readable detail describing the error.",
+            "title_zh": "对错误的可读详细说明。"
+          }
+        }
+      }
+    },
+    "DELETE /plants/{id}": {
+      "parameters": {
+        "id": {
+          "desc_en": "Identifier of the plant to delete. The plant with this ID is removed from the store.",
+          "title_zh": "要删除的植物的标识。该 ID 对应的植物将从店内移除。"
+        }
+      },
+      "response": {
+        "400": {
+          "error": {
+            "desc_en": "Numeric error code identifying the failure.",
+            "title_zh": "标识本次失败的数字错误码。"
+          },
+          "message": {
+            "desc_en": "Human-readable detail describing the error.",
+            "title_zh": "对错误的可读详细说明。"
+          }
+        }
+      }
+    }
+  }
+}

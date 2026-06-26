@@ -1,0 +1,538 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AIsa API proxy",
+    "description": "APIs for prediction markets.",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/matching-markets/sports": {
+      "get": {
+        "summary": "Get Matching Markets for Sports",
+        "description": "Find equivalent markets across different prediction market platforms (Polymarket, Kalshi, etc.) for sports events. Provide either one or more Polymarket market slugs or Kalshi event tickers.",
+        "operationId": "get_matching-markets-sports",
+        "parameters": [
+          {
+            "name": "polymarket_market_slug",
+            "in": "query",
+            "required": false,
+            "description": "The Polymarket market slug(s) to find matching markets for. To get multiple markets at once, provide the query param multiple times with different slugs. Can not be combined with kalshi_event_ticker.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "nfl-ari-den-2025-08-16",
+                "nfl-dal-phi-2025-09-04"
+              ]
+            },
+            "style": "form",
+            "explode": true,
+            "x-doc": {
+              "desc_en": "One or more Polymarket market slugs to find cross-platform equivalents for. Repeat the query parameter to pass several at once. Cannot be combined with `kalshi_event_ticker` — choose one seed type per request.",
+              "title_zh": "一个或多个用于查找跨平台等价市场的 Polymarket market slug。重复该查询参数即可一次传入多个。不能与 `kalshi_event_ticker` 同时使用 —— 每次请求只选一种种子。",
+              "source": "ai",
+              "src_hash": "sha256:d05b931eede7",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "kalshi_event_ticker",
+            "in": "query",
+            "required": false,
+            "description": "The Kalshi event ticker(s) to find matching markets for. To get multiple markets at once, provide the query param multiple times with different tickers. Can not be combined with polymarket_market_slug.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "KXNFLGAME-25AUG16ARIDEN",
+                "KXNFLGAME-25SEP04DALPHI"
+              ]
+            },
+            "style": "form",
+            "explode": true,
+            "x-doc": {
+              "desc_en": "One or more Kalshi event tickers to find cross-platform equivalents for. Repeat the query parameter to pass several at once. Cannot be combined with `polymarket_market_slug` — choose one seed type per request.",
+              "title_zh": "一个或多个用于查找跨平台等价市场的 Kalshi event ticker。重复该查询参数即可一次传入多个。不能与 `polymarket_market_slug` 同时使用 —— 每次请求只选一种种子。",
+              "source": "ai",
+              "src_hash": "sha256:a9fcac3751ce",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching markets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "markets": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "description": "Kalshi market",
+                              "properties": {
+                                "platform": {
+                                  "type": "string",
+                                  "enum": [
+                                    "KALSHI"
+                                  ],
+                                  "example": "KALSHI"
+                                },
+                                "event_ticker": {
+                                  "type": "string",
+                                  "example": "KXNFLGAME-25AUG16ARIDEN"
+                                },
+                                "market_tickers": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "KXNFLGAME-25AUG16ARIDEN-ARI",
+                                    "KXNFLGAME-25AUG16ARIDEN-DEN"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "platform",
+                                "event_ticker",
+                                "market_tickers"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "description": "Polymarket market",
+                              "properties": {
+                                "platform": {
+                                  "type": "string",
+                                  "enum": [
+                                    "POLYMARKET"
+                                  ],
+                                  "example": "POLYMARKET"
+                                },
+                                "market_slug": {
+                                  "type": "string",
+                                  "example": "nfl-ari-den-2025-08-16"
+                                },
+                                "token_ids": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "34541522652444763571858406546623861155130750437169507355470933750634189084033",
+                                    "104612081187206848956763018128517335758189185749897027211060738913329108425255"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "platform",
+                                "market_slug",
+                                "token_ids"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "example": {
+                        "nfl-ari-den-2025-08-16": [
+                          {
+                            "platform": "KALSHI",
+                            "event_ticker": "KXNFLGAME-25AUG16ARIDEN",
+                            "market_tickers": [
+                              "KXNFLGAME-25AUG16ARIDEN-ARI",
+                              "KXNFLGAME-25AUG16ARIDEN-DEN"
+                            ]
+                          },
+                          {
+                            "platform": "POLYMARKET",
+                            "market_slug": "nfl-ari-den-2025-08-16",
+                            "token_ids": [
+                              "34541522652444763571858406546623861155130750437169507355470933750634189084033",
+                              "104612081187206848956763018128517335758189185749897027211060738913329108425255"
+                            ]
+                          }
+                        ],
+                        "nfl-dal-phi-2025-09-04": [
+                          {
+                            "platform": "KALSHI",
+                            "event_ticker": "KXNFLGAME-25SEP04DALPHI",
+                            "market_tickers": [
+                              "KXNFLGAME-25SEP04DALPHI-DAL",
+                              "KXNFLGAME-25SEP04DALPHI-PHI"
+                            ]
+                          }
+                        ]
+                      },
+                      "x-doc": {
+                        "desc_en": "Matched markets grouped by your seed: each key is the slug or ticker you supplied, and its value is the list of equivalent markets found across platforms. Each entry carries a `platform` discriminator (`KALSHI` or `POLYMARKET`) and that platform's native identifiers.",
+                        "title_zh": "按种子分组的匹配结果:每个键是你传入的 slug 或 ticker,其值是各平台上找到的等价市场列表。每条记录带有 `platform` 判别字段(`KALSHI` 或 `POLYMARKET`)及该平台的原生标识。",
+                        "source": "ai",
+                        "src_hash": "sha256:3243b8a08d3a",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing or invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Missing required parameter",
+                      "x-doc": {
+                        "desc_en": "Short machine-readable error label for a bad request, e.g. missing required parameters.",
+                        "title_zh": "请求无效时的简短机器可读错误标签,例如缺少必填参数。",
+                        "source": "ai",
+                        "src_hash": "sha256:3acac3d4af8a",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "At least one polymarket_market_slug or kalshi_event_ticker is required",
+                      "x-doc": {
+                        "desc_en": "Human-readable detail explaining what was wrong with the request.",
+                        "title_zh": "对请求错误原因的可读详细说明。",
+                        "source": "ai",
+                        "src_hash": "sha256:f655b826cbc0",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - No matching markets found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Not found",
+                      "x-doc": {
+                        "desc_en": "Short machine-readable error label indicating no matching markets were found.",
+                        "title_zh": "表示未匹配到市场的简短机器可读错误标签。",
+                        "source": "ai",
+                        "src_hash": "sha256:913a40140134",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No matching markets found for the provided parameters",
+                      "x-doc": {
+                        "desc_en": "Human-readable detail explaining that no equivalent markets matched the supplied seeds.",
+                        "title_zh": "对未匹配到等价市场的可读详细说明。",
+                        "source": "ai",
+                        "src_hash": "sha256:08ec14494dbf",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "查询体育赛事的等价市场 get_matching-markets-sports",
+          "desc_en": "Match equivalent prediction markets for the same sports events across platforms such as Polymarket and Kalshi. Seed the lookup with one or more Polymarket market slugs or Kalshi event tickers — the two seed types are mutually exclusive. Typical uses are cross-platform price comparison and arbitrage discovery.",
+          "description_zh": "为同一批体育赛事在 Polymarket、Kalshi 等平台间匹配等价的预测市场。用一个或多个 Polymarket market slug 或 Kalshi event ticker 作为查询种子 —— 两类种子互斥。典型场景为跨平台比价与套利发现。",
+          "resp_section_intro": "成功时按种子键返回各平台上匹配到的等价市场列表。",
+          "errors": [
+            {
+              "code": "400",
+              "message_zh": "请求参数缺失或非法,例如未提供任何 `polymarket_market_slug` 或 `kalshi_event_ticker`。"
+            },
+            {
+              "code": "404",
+              "message_zh": "未匹配到任何等价市场。"
+            }
+          ],
+          "errors_source": "spec 已声明 400/404,错误体为 {error, message}",
+          "source": "ai",
+          "src_hash": "sha256:b3b13daef5d0",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/matching-markets/sports/{sport}": {
+      "parameters": [
+        {
+          "name": "sport",
+          "in": "path",
+          "required": true,
+          "description": "The sport to find matching markets for.\n\nSport abbreviations:\n- nfl = Football\n- mlb = Baseball\n- cfb = College Football\n- nba = Basketball\n- nhl = Hockey\n- cbb = College Basketball\n- pga = Golf\n- tennis = Tennis",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "nfl",
+              "mlb",
+              "cfb",
+              "nba",
+              "nhl",
+              "cbb",
+              "pga",
+              "tennis"
+            ],
+            "example": "nfl"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Matching Markets for Sports by Sport and Date",
+        "description": "Find equivalent markets across different prediction market platforms (Polymarket, Kalshi, etc.) for sports events by sport and date.",
+        "operationId": "get_matching-markets-sports-by-sport",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "description": "The date to find matching markets for in YYYY-MM-DD format",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "example": "2025-08-16"
+            },
+            "x-doc": {
+              "desc_en": "The day to search, in `YYYY-MM-DD`. Only events scheduled on this date are matched.",
+              "title_zh": "要检索的日期,格式 `YYYY-MM-DD`。仅匹配当天进行的赛事。",
+              "source": "ai",
+              "src_hash": "sha256:b8a261190d76",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching markets response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "markets": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "description": "Kalshi market",
+                              "properties": {
+                                "platform": {
+                                  "type": "string",
+                                  "enum": [
+                                    "KALSHI"
+                                  ],
+                                  "example": "KALSHI"
+                                },
+                                "event_ticker": {
+                                  "type": "string",
+                                  "example": "KXNFLGAME-25AUG16ARIDEN"
+                                },
+                                "market_tickers": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "KXNFLGAME-25AUG16ARIDEN-ARI",
+                                    "KXNFLGAME-25AUG16ARIDEN-DEN"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "platform",
+                                "event_ticker",
+                                "market_tickers"
+                              ]
+                            },
+                            {
+                              "type": "object",
+                              "description": "Polymarket market",
+                              "properties": {
+                                "platform": {
+                                  "type": "string",
+                                  "enum": [
+                                    "POLYMARKET"
+                                  ],
+                                  "example": "POLYMARKET"
+                                },
+                                "market_slug": {
+                                  "type": "string",
+                                  "example": "nfl-ari-den-2025-08-16"
+                                },
+                                "token_ids": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "example": [
+                                    "34541522652444763571858406546623861155130750437169507355470933750634189084033",
+                                    "104612081187206848956763018128517335758189185749897027211060738913329108425255"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "platform",
+                                "market_slug",
+                                "token_ids"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "example": {
+                        "nfl-ari-den-2025-08-16": [
+                          {
+                            "platform": "KALSHI",
+                            "event_ticker": "KXNFLGAME-25AUG16ARIDEN",
+                            "market_tickers": [
+                              "KXNFLGAME-25AUG16ARIDEN-ARI",
+                              "KXNFLGAME-25AUG16ARIDEN-DEN"
+                            ]
+                          },
+                          {
+                            "platform": "POLYMARKET",
+                            "market_slug": "nfl-ari-den-2025-08-16",
+                            "token_ids": [
+                              "34541522652444763571858406546623861155130750437169507355470933750634189084033",
+                              "104612081187206848956763018128517335758189185749897027211060738913329108425255"
+                            ]
+                          }
+                        ]
+                      },
+                      "x-doc": {
+                        "desc_en": "Matched markets grouped by event: each key is an event identifier and its value is the list of equivalent markets found across platforms. Each entry carries a `platform` discriminator (`KALSHI` or `POLYMARKET`) and that platform's native identifiers.",
+                        "title_zh": "按赛事分组的匹配结果:每个键是一个赛事标识,其值是各平台上找到的等价市场列表。每条记录带有 `platform` 判别字段(`KALSHI` 或 `POLYMARKET`)及该平台的原生标识。",
+                        "source": "ai",
+                        "src_hash": "sha256:f0723dd35ff6",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "sport": {
+                      "type": "string",
+                      "example": "nfl",
+                      "x-doc": {
+                        "desc_en": "Echoes the sport code that was searched.",
+                        "title_zh": "回显本次检索的运动代码。",
+                        "source": "ai",
+                        "src_hash": "sha256:06625c9cd15e",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "date": {
+                      "type": "string",
+                      "example": "2025-08-16",
+                      "x-doc": {
+                        "desc_en": "Echoes the date that was searched, in `YYYY-MM-DD`.",
+                        "title_zh": "回显本次检索的日期,格式 `YYYY-MM-DD`。",
+                        "source": "ai",
+                        "src_hash": "sha256:07aff517233f",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Missing or invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Missing required parameter",
+                      "x-doc": {
+                        "desc_en": "Short machine-readable error label for a bad request, e.g. a missing required parameter.",
+                        "title_zh": "请求无效时的简短机器可读错误标签,例如缺少必填参数。",
+                        "source": "ai",
+                        "src_hash": "sha256:3acac3d4af8a",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "date parameter is required",
+                      "x-doc": {
+                        "desc_en": "Human-readable detail explaining what was wrong with the request, such as a missing `date`.",
+                        "title_zh": "对请求错误原因的可读详细说明,例如缺少 `date`。",
+                        "source": "ai",
+                        "src_hash": "sha256:c1fa592c59ca",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "按运动与日期查询等价市场 get_matching-markets-sports-by-sport",
+          "desc_en": "Match equivalent prediction markets across platforms for a given sport on a given date, instead of seeding by specific market identifiers. Pick the sport from the path and the day from the query. Typical use is sweeping a whole day's slate for cross-platform equivalents.",
+          "description_zh": "针对某项运动在某一天的赛事,跨平台匹配等价的预测市场,而非以具体市场标识作为种子。运动取自路径,日期取自查询参数。典型场景为扫描某日全部赛程以寻找跨平台等价市场。",
+          "resp_section_intro": "成功时按赛事键返回各平台上匹配到的等价市场列表,并回显查询的运动与日期。",
+          "errors": [
+            {
+              "code": "400",
+              "message_zh": "请求参数缺失或非法,例如未提供必填的 `date`。"
+            }
+          ],
+          "errors_source": "spec 已声明 400,错误体为 {error, message}",
+          "source": "ai",
+          "src_hash": "sha256:769281c8a972",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key",
+        "description": "Your AIsa API key as a Bearer token."
+      }
+    }
+  }
+}

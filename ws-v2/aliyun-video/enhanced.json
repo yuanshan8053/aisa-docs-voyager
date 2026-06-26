@@ -1,0 +1,731 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AIsa Video Generation API (async)",
+    "version": "1.0.0",
+    "description": "Asynchronous video generation. Submit a task via `POST /apis/v1/services/aigc/video-generation/video-synthesis`, then poll `GET /apis/v1/services/aigc/tasks/{task_id}` until the status is `SUCCEEDED` or `FAILED`."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key"
+      }
+    }
+  },
+  "paths": {
+    "/services/aigc/video-generation/video-synthesis": {
+      "post": {
+        "summary": "Create a video generation task",
+        "description": "Submit an asynchronous video generation task. Returns a `task_id` you then poll via `GET /apis/v1/services/aigc/tasks/{task_id}`.\n\n**Models.** Four Wan variants are accepted on this single endpoint:\n\n| Model | Kind | Image input field |\n| --- | --- | --- |\n| `wan2.6-t2v` | text-to-video | _n/a_ |\n| `wan2.6-i2v` | image-to-video | `input.img_url` |\n| `wan2.7-t2v` | text-to-video | _n/a_ |\n| `wan2.7-i2v` | image-to-video | `input.media` ⚠️ *not* `input.img_url` |\n\n**Header.** `X-DashScope-Async: enable` is required.\n\n**Body.** `model` and `input.prompt` are always required. For i2v, provide a reference image using the field indicated in the table above — `wan2.6-i2v` uses `input.img_url` (string URL), while `wan2.7-i2v` uses `input.media` (array of URLs).\n\nFailed tasks (e.g., invalid prompt, missing required field) are **not billed** — the task-status response returns `task_status: \"FAILED\"` with a `code` and `message`.",
+        "operationId": "createVideoSynthesisTask",
+        "tags": [
+          "Video Generation"
+        ],
+        "parameters": [
+          {
+            "name": "X-DashScope-Async",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "enable"
+              ]
+            },
+            "description": "Must be `enable` to run asynchronously (the only mode currently supported).",
+            "x-doc": {
+              "desc_en": "Switches the request into asynchronous task mode, which is the only mode this endpoint runs in.",
+              "title_zh": "将请求切换为异步任务模式，也是该接口唯一支持的模式。",
+              "source": "ai",
+              "src_hash": "sha256:b3e716fc78f1",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "input"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "wan2.6-t2v",
+                      "wan2.6-i2v",
+                      "wan2.7-t2v",
+                      "wan2.7-i2v"
+                    ],
+                    "description": "Video generation model. Use `-t2v` suffix for text-to-video, `-i2v` for image-to-video. **Note the i2v schema difference:** `wan2.6-i2v` takes a reference image via `input.img_url` (string), while `wan2.7-i2v` takes it via `input.media` (array).",
+                    "example": "wan2.6-t2v",
+                    "x-doc": {
+                      "desc_en": "Selects which Wan generation model handles the job; the suffix distinguishes text-to-video from image-to-video, and the two image-to-video variants take the reference image through different fields.",
+                      "title_zh": "选择由哪个 Wan 模型来处理任务；后缀区分文生视频与图生视频，两个图生视频变体通过不同字段传入参考图。",
+                      "source": "ai",
+                      "src_hash": "sha256:eb4722ecd5fe",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "input": {
+                    "type": "object",
+                    "required": [
+                      "prompt"
+                    ],
+                    "description": "Required body container. `prompt` is always required; image inputs depend on the model (see field descriptions).",
+                    "properties": {
+                      "prompt": {
+                        "type": "string",
+                        "description": "Text prompt describing the video. Must contain words — empty or whitespace-only prompts fail upstream with `prompt must contain words`.",
+                        "x-doc": {
+                          "desc_en": "Text describing the video to generate; must contain actual words, as empty or whitespace-only prompts are rejected upstream.",
+                          "title_zh": "描述要生成视频的文本提示词；必须包含实际词语，纯空白会被上游拒绝。",
+                          "source": "ai",
+                          "src_hash": "sha256:d3463f0289ee",
+                          "doc_version": "2.0.0"
+                        }
+                      },
+                      "negative_prompt": {
+                        "type": "string",
+                        "description": "Optional negative prompt.",
+                        "x-doc": {
+                          "desc_en": "Text describing what to keep out of the generated video.",
+                          "title_zh": "描述希望在生成视频中避免出现的内容。",
+                          "source": "ai",
+                          "src_hash": "sha256:67ce930a6352",
+                          "doc_version": "2.0.0"
+                        }
+                      },
+                      "img_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Reference image URL. **Required** for `wan2.6-i2v`. Ignored by t2v models. **Do NOT use for `wan2.7-i2v`** — that model uses `media` instead.",
+                        "x-doc": {
+                          "desc_en": "URL of the reference image for the `wan2.6-i2v` image-to-video model; text-to-video models ignore it, and `wan2.7-i2v` uses `input.media` instead.",
+                          "title_zh": "wan2.6-i2v 图生视频模型的参考图链接；文生视频模型会忽略它，wan2.7-i2v 改用 input.media。",
+                          "source": "ai",
+                          "src_hash": "sha256:15c4e182f485",
+                          "doc_version": "2.0.0"
+                        }
+                      },
+                      "media": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "description": "Reference image URLs as an array. **Required** for `wan2.7-i2v`. Do NOT use `img_url` with `wan2.7-i2v` — the upstream validator rejects submissions without `input.media`.",
+                        "x-doc": {
+                          "desc_en": "Reference image URLs supplied as an array, used by the `wan2.7-i2v` image-to-video model; do not use `input.img_url` with that model.",
+                          "title_zh": "以数组形式传入的参考图链接，供 wan2.7-i2v 图生视频模型使用；该模型不要改用 input.img_url。",
+                          "source": "ai",
+                          "src_hash": "sha256:ba22e4a2273e",
+                          "doc_version": "2.0.0"
+                        }
+                      },
+                      "audio_url": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Optional reference audio URL.",
+                        "x-doc": {
+                          "desc_en": "URL of an optional reference audio track.",
+                          "title_zh": "可选的参考音频链接。",
+                          "source": "ai",
+                          "src_hash": "sha256:c15e5c10edd5",
+                          "doc_version": "2.0.0"
+                        }
+                      }
+                    },
+                    "x-doc": {
+                      "desc_en": "Container for the generation inputs (prompt and optional reference image/audio).",
+                      "title_zh": "生成输入的容器（提示词及可选的参考图、参考音频）。",
+                      "source": "ai",
+                      "src_hash": "sha256:09be97906f0e",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "parameters": {
+                    "type": "object",
+                    "properties": {
+                      "resolution": {
+                        "type": "string",
+                        "enum": [
+                          "720P",
+                          "1080P"
+                        ],
+                        "default": "720P",
+                        "x-doc": {
+                          "desc_en": "Output resolution of the generated video.",
+                          "title_zh": "生成视频的输出分辨率。",
+                          "source": "ai",
+                          "src_hash": "sha256:90320a4db4dd",
+                          "doc_version": "2.0.0"
+                        }
+                      },
+                      "duration": {
+                        "type": "integer",
+                        "enum": [
+                          5,
+                          10
+                        ],
+                        "default": 5,
+                        "description": "Video length in seconds.",
+                        "x-doc": {
+                          "desc_en": "Length of the generated clip, in seconds.",
+                          "title_zh": "生成片段的时长，单位为秒。",
+                          "source": "ai",
+                          "src_hash": "sha256:c2836c399267",
+                          "doc_version": "2.0.0"
+                        }
+                      },
+                      "shot_type": {
+                        "type": "string",
+                        "enum": [
+                          "single",
+                          "multi"
+                        ],
+                        "default": "single",
+                        "x-doc": {
+                          "desc_en": "Whether the output is a single continuous shot or stitched from multiple shots.",
+                          "title_zh": "输出为单一连续镜头还是由多个镜头拼接。",
+                          "source": "ai",
+                          "src_hash": "sha256:d18e46ec77ff",
+                          "doc_version": "2.0.0"
+                        }
+                      },
+                      "watermark": {
+                        "type": "boolean",
+                        "default": false,
+                        "x-doc": {
+                          "desc_en": "Whether to overlay a watermark on the generated video.",
+                          "title_zh": "是否在生成视频上叠加水印。",
+                          "source": "ai",
+                          "src_hash": "sha256:ac2af4107369",
+                          "doc_version": "2.0.0"
+                        }
+                      },
+                      "seed": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 2147483647,
+                        "x-doc": {
+                          "desc_en": "Random seed controlling generation; reusing the same seed with identical inputs reproduces the same output.",
+                          "title_zh": "控制生成的随机种子；在相同输入下复用同一种子可复现相同结果。",
+                          "source": "ai",
+                          "src_hash": "sha256:758fbec6063c",
+                          "doc_version": "2.0.0"
+                        }
+                      }
+                    },
+                    "x-doc": {
+                      "desc_en": "Container for generation tuning options such as resolution, duration, and seed.",
+                      "title_zh": "生成调节项的容器，如分辨率、时长、随机种子等。",
+                      "source": "ai",
+                      "src_hash": "sha256:3a8bb0dcda64",
+                      "doc_version": "2.0.0"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "wan26_t2v": {
+                  "summary": "wan2.6-t2v — text-to-video, 5 s, 720P",
+                  "value": {
+                    "model": "wan2.6-t2v",
+                    "input": {
+                      "prompt": "cinematic close-up, slow push-in, shallow depth of field"
+                    },
+                    "parameters": {
+                      "resolution": "720P",
+                      "duration": 5
+                    }
+                  }
+                },
+                "wan26_i2v": {
+                  "summary": "wan2.6-i2v — image-to-video (uses img_url)",
+                  "value": {
+                    "model": "wan2.6-i2v",
+                    "input": {
+                      "prompt": "gentle camera orbit, golden hour lighting",
+                      "img_url": "https://example.com/reference.jpg"
+                    },
+                    "parameters": {
+                      "resolution": "1080P",
+                      "duration": 10
+                    }
+                  }
+                },
+                "wan27_t2v": {
+                  "summary": "wan2.7-t2v — text-to-video, newer model",
+                  "value": {
+                    "model": "wan2.7-t2v",
+                    "input": {
+                      "prompt": "wide sweeping shot of a neon cyberpunk skyline at dusk"
+                    },
+                    "parameters": {
+                      "resolution": "720P",
+                      "duration": 5
+                    }
+                  }
+                },
+                "wan27_i2v": {
+                  "summary": "wan2.7-i2v — image-to-video (uses media ARRAY, not img_url)",
+                  "value": {
+                    "model": "wan2.7-i2v",
+                    "input": {
+                      "prompt": "gentle zoom with parallax, cinematic color grading",
+                      "media": [
+                        "https://example.com/reference.jpg"
+                      ]
+                    },
+                    "parameters": {
+                      "resolution": "720P",
+                      "duration": 5
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task created — poll `/services/aigc/tasks/{task_id}` for progress.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "type": "string",
+                          "description": "Pass this to `GET /services/aigc/tasks/{task_id}`.",
+                          "x-doc": {
+                            "desc_en": "Identifier of the created task; pass it to `getVideoSynthesisTask` to poll for the result.",
+                            "title_zh": "所创建任务的标识，传给 getVideoSynthesisTask 轮询结果。",
+                            "source": "ai",
+                            "src_hash": "sha256:e82fc44fa606",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "task_status": {
+                          "type": "string",
+                          "enum": [
+                            "PENDING"
+                          ],
+                          "x-doc": {
+                            "desc_en": "Lifecycle status of the task right after creation, before processing begins.",
+                            "title_zh": "任务创建之后、开始处理之前的生命周期状态。",
+                            "source": "ai",
+                            "src_hash": "sha256:b03617493f05",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Container for the newly created task's identifier and initial status.",
+                        "title_zh": "新建任务的标识与初始状态的容器。",
+                        "source": "ai",
+                        "src_hash": "sha256:da841e0bac3a",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "x-doc": {
+                        "desc_en": "Identifier of this API call, useful for tracing and support.",
+                        "title_zh": "本次接口调用的标识，便于追踪与排障。",
+                        "source": "ai",
+                        "src_hash": "sha256:38a346cadbd3",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "output": {
+                    "task_id": "b3be072e-cc82-4033-8fb7-0b089846544f",
+                    "task_status": "PENDING"
+                  },
+                  "request_id": "8a931b13-c44f-9230-a76b-83487d840060"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "`model not supported` (the model isn't routed through this endpoint) or `input param is required` (body missing `input`).\n\nNote: for `wan2.7-i2v`, submission **succeeds with HTTP 200** even without the image input — the task later lands in `FAILED` status with `code: \"InvalidParameter\"` and `message: \"Field required: input.media\"`."
+          }
+        },
+        "x-doc": {
+          "heading_zh": "创建视频生成任务 createVideoSynthesisTask",
+          "desc_en": "Submit an asynchronous text-to-video or image-to-video generation job on one of the Wan models and get back a `task_id` to poll with `getVideoSynthesisTask`. The async header must be enabled, and image-to-video models differ in how the reference image is supplied (`input.img_url` vs `input.media`).",
+          "description_zh": "在某个 Wan 模型上提交异步的文生视频或图生视频任务，返回可交给 getVideoSynthesisTask 轮询的 task_id。需开启异步请求头，且不同图生视频模型传参考图的字段不同（input.img_url 与 input.media）。",
+          "source": "ai",
+          "src_hash": "sha256:c021c5d2a865",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/services/aigc/tasks/{task_id}": {
+      "get": {
+        "summary": "Get video generation task result",
+        "description": "Poll the status and result of a task created by `POST /apis/v1/services/aigc/video-generation/video-synthesis`. The `task_id` is a **path parameter**, not a query string.\n\nSuggested polling: every 3–5 seconds, with a hard timeout around 5 minutes.",
+        "operationId": "getVideoSynthesisTask",
+        "tags": [
+          "Video Generation"
+        ],
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Task ID returned by the video-synthesis create call. Unknown IDs return `task_status: \"UNKNOWN\"` (HTTP 200).",
+            "x-doc": {
+              "desc_en": "Identifier of the task to query, as returned by `createVideoSynthesisTask`; unrecognized IDs come back with an unknown status rather than an error.",
+              "title_zh": "要查询的任务标识，由 createVideoSynthesisTask 返回；无法识别的 ID 会返回未知状态而非报错。",
+              "source": "ai",
+              "src_hash": "sha256:9b58859ea2aa",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task status response. Always HTTP 200 — inspect `output.task_status` to tell lifecycle states apart.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "output": {
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "type": "string",
+                          "x-doc": {
+                            "desc_en": "Identifier of the queried task.",
+                            "title_zh": "所查询任务的标识。",
+                            "source": "ai",
+                            "src_hash": "sha256:38a346cadbd3",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "task_status": {
+                          "type": "string",
+                          "enum": [
+                            "PENDING",
+                            "RUNNING",
+                            "SUCCEEDED",
+                            "FAILED",
+                            "CANCELED",
+                            "UNKNOWN"
+                          ],
+                          "x-doc": {
+                            "desc_en": "Current lifecycle status of the task; drives whether you keep polling, read the result, or inspect the failure fields.",
+                            "title_zh": "任务当前的生命周期状态；据此决定继续轮询、读取结果还是查看失败字段。",
+                            "source": "ai",
+                            "src_hash": "sha256:4660afef9fcf",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "video_url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "Present on `SUCCEEDED`. Short-lived URL — download and persist the video before it expires.",
+                          "x-doc": {
+                            "desc_en": "Link to the generated video, present once the task succeeds; it is short-lived, so download and persist the video promptly.",
+                            "title_zh": "生成视频的链接，任务成功后才出现；该链接有效期短，请尽快下载并自行保存。",
+                            "source": "ai",
+                            "src_hash": "sha256:412a211b2669",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "orig_prompt": {
+                          "type": "string",
+                          "description": "The original prompt as stored by the upstream provider.",
+                          "x-doc": {
+                            "desc_en": "The original prompt as stored by the upstream provider.",
+                            "title_zh": "上游服务保存的原始提示词。",
+                            "source": "ai",
+                            "src_hash": "sha256:498f68084662",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "submit_time": {
+                          "type": "string",
+                          "description": "When the task was accepted.",
+                          "x-doc": {
+                            "desc_en": "When the task was accepted.",
+                            "title_zh": "任务被受理的时间。",
+                            "source": "ai",
+                            "src_hash": "sha256:f94a6e4bf525",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "scheduled_time": {
+                          "type": "string",
+                          "description": "When the task was scheduled for execution.",
+                          "x-doc": {
+                            "desc_en": "When the task was scheduled for execution.",
+                            "title_zh": "任务被调度执行的时间。",
+                            "source": "ai",
+                            "src_hash": "sha256:c7bc887596ba",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "end_time": {
+                          "type": "string",
+                          "description": "When the task reached a terminal state.",
+                          "x-doc": {
+                            "desc_en": "When the task reached a terminal state.",
+                            "title_zh": "任务到达终态的时间。",
+                            "source": "ai",
+                            "src_hash": "sha256:5e5aa206b6e0",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "code": {
+                          "type": "string",
+                          "description": "Present on `FAILED`. Example: `InvalidParameter`.",
+                          "x-doc": {
+                            "desc_en": "Machine-readable error code, present when the task failed.",
+                            "title_zh": "机器可读的错误码，任务失败时出现。",
+                            "source": "ai",
+                            "src_hash": "sha256:1fce008ebc26",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "message": {
+                          "type": "string",
+                          "description": "Present on `FAILED`. Human-readable failure reason.",
+                          "x-doc": {
+                            "desc_en": "Human-readable failure reason, present when the task failed.",
+                            "title_zh": "可读的失败原因，任务失败时出现。",
+                            "source": "ai",
+                            "src_hash": "sha256:df1ae98e4df4",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Container for the task's current status and, once finished, its result or failure details.",
+                        "title_zh": "任务当前状态的容器，任务结束后还含结果或失败详情。",
+                        "source": "ai",
+                        "src_hash": "sha256:7709781089f7",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "description": "Present on `SUCCEEDED`.",
+                      "properties": {
+                        "input_video_duration": {
+                          "type": "integer",
+                          "description": "Duration of any input video reference (0 when none).",
+                          "x-doc": {
+                            "desc_en": "Duration of any input video reference, in seconds; zero when no input video was provided.",
+                            "title_zh": "输入视频参考的时长（秒），未提供输入视频时为 0。",
+                            "source": "ai",
+                            "src_hash": "sha256:df5d3aabd1c7",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "output_video_duration": {
+                          "type": "integer",
+                          "description": "Duration of the generated video in seconds.",
+                          "x-doc": {
+                            "desc_en": "Duration of the generated video, in seconds.",
+                            "title_zh": "生成视频的时长，单位为秒。",
+                            "source": "ai",
+                            "src_hash": "sha256:9e79ce90d25d",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "duration": {
+                          "type": "number",
+                          "description": "Total duration used for billing.",
+                          "x-doc": {
+                            "desc_en": "The duration figure used as the basis for billing.",
+                            "title_zh": "用作计费依据的时长数值。",
+                            "source": "ai",
+                            "src_hash": "sha256:719ad2c100a6",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "video_count": {
+                          "type": "integer",
+                          "description": "Number of videos produced (always 1 today).",
+                          "x-doc": {
+                            "desc_en": "Number of videos produced by the task.",
+                            "title_zh": "任务生成的视频数量。",
+                            "source": "ai",
+                            "src_hash": "sha256:d7749c819a1c",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "size": {
+                          "type": "string",
+                          "description": "Actual dimensions of the generated video, formatted as `WIDTH*HEIGHT` (e.g., `1920*1080`). Note the `*` separator. Present on `wan2.6-*` outputs.",
+                          "example": "1920*1080",
+                          "x-doc": {
+                            "desc_en": "Actual pixel dimensions of the generated video, given as width by height.",
+                            "title_zh": "生成视频的实际像素尺寸，以宽乘高的形式给出。",
+                            "source": "ai",
+                            "src_hash": "sha256:d4de186180e5",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "ratio": {
+                          "type": "string",
+                          "description": "Aspect ratio of the output (e.g., `16:9`). Present on `wan2.7-t2v` outputs.",
+                          "example": "16:9",
+                          "x-doc": {
+                            "desc_en": "Aspect ratio of the generated video.",
+                            "title_zh": "生成视频的宽高比。",
+                            "source": "ai",
+                            "src_hash": "sha256:8afdc3a00490",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "SR": {
+                          "type": "integer",
+                          "description": "Super-resolution output height. `wan2.6-t2v` upscales 720P input to 1080. `wan2.6-i2v`, `wan2.7-t2v`, `wan2.7-i2v` return 720.",
+                          "example": 1080,
+                          "x-doc": {
+                            "desc_en": "Super-resolution output height the video was upscaled to.",
+                            "title_zh": "视频经超分辨率放大后的输出高度。",
+                            "source": "ai",
+                            "src_hash": "sha256:dedc285923d3",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Container for resource-usage figures, present once the task succeeds.",
+                        "title_zh": "资源用量数据的容器，任务成功后出现。",
+                        "source": "ai",
+                        "src_hash": "sha256:265fda1def8a",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "x-doc": {
+                        "desc_en": "Identifier of this API call, useful for tracing and support.",
+                        "title_zh": "本次接口调用的标识，便于追踪与排障。",
+                        "source": "ai",
+                        "src_hash": "sha256:38a346cadbd3",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "succeeded": {
+                    "summary": "SUCCEEDED — video_url is populated",
+                    "value": {
+                      "output": {
+                        "task_id": "b3be072e-cc82-4033-8fb7-0b089846544f",
+                        "task_status": "SUCCEEDED",
+                        "video_url": "https://cdn.aisa.one/videos/wan2.6/20260418-abc.mp4",
+                        "orig_prompt": "cinematic close-up, slow push-in, shallow depth of field",
+                        "submit_time": "2026-04-18 15:16:01.841",
+                        "scheduled_time": "2026-04-18 15:16:01.867",
+                        "end_time": "2026-04-18 15:16:42.512"
+                      },
+                      "usage": {
+                        "output_video_duration": 5,
+                        "video_count": 1,
+                        "SR": 720
+                      },
+                      "request_id": "8a931b13-c44f-9230-a76b-83487d840060"
+                    }
+                  },
+                  "failed": {
+                    "summary": "FAILED (invalid prompt — not billed)",
+                    "value": {
+                      "output": {
+                        "task_id": "b3be072e-cc82-4033-8fb7-0b089846544f",
+                        "task_status": "FAILED",
+                        "code": "InvalidParameter",
+                        "message": "prompt must contain words",
+                        "submit_time": "2026-04-18 15:16:01.841",
+                        "scheduled_time": "2026-04-18 15:16:01.867",
+                        "end_time": "2026-04-18 15:16:01.941"
+                      },
+                      "request_id": "8a931b13-c44f-9230-a76b-83487d840060"
+                    }
+                  },
+                  "running": {
+                    "summary": "RUNNING (still processing)",
+                    "value": {
+                      "output": {
+                        "task_id": "b3be072e-cc82-4033-8fb7-0b089846544f",
+                        "task_status": "RUNNING"
+                      },
+                      "request_id": "8a931b13-c44f-9230-a76b-83487d840060"
+                    }
+                  },
+                  "unknown": {
+                    "summary": "UNKNOWN task_id (still returns HTTP 200)",
+                    "value": {
+                      "output": {
+                        "task_id": "bogus-task-id",
+                        "task_status": "UNKNOWN"
+                      },
+                      "request_id": "71b2b0ad-cb6f-9de4-a8bc-a88e4fb72f0e"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "500": {
+            "description": "`unsupported uri` — check the path. The correct pattern is `/services/aigc/tasks/{task_id}`, not `/services/aigc/tasks?task_id=`."
+          }
+        },
+        "x-doc": {
+          "heading_zh": "查询视频生成任务结果 getVideoSynthesisTask",
+          "desc_en": "Poll the status and result of a job created by `createVideoSynthesisTask`. Read `output.task_status` to tell lifecycle states apart; on success the playable video URL appears in `output.video_url`.",
+          "description_zh": "轮询由 createVideoSynthesisTask 创建的任务的状态与结果。通过 output.task_status 区分各生命周期状态，成功后可在 output.video_url 取到视频地址。",
+          "source": "ai",
+          "src_hash": "sha256:cdb4341c88b2",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  }
+}

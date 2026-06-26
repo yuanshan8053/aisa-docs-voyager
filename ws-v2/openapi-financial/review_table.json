@@ -1,0 +1,3203 @@
+{
+  "sections": [
+    {
+      "operation": "searchLineItems",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search for specific financial metrics across income statements, balance sheets, and cash flow statements for a list of tickers.",
+          "desc_en": "Search for specific financial line items across income statements, balance sheets, and cash flow statements for one or more tickers.",
+          "title_zh": "在一个或多个股票代码的利润表、资产负债表与现金流量表中检索指定的财务行项目。"
+        },
+        {
+          "path": "req.line_items",
+          "src_en": "An array of line items to apply to the search.",
+          "desc_en": "List of financial line-item names to retrieve across the supported statements.",
+          "title_zh": "要在各支持报表中检索的财务行项目名称列表。"
+        },
+        {
+          "path": "req.tickers",
+          "src_en": "An array of tickers to apply to the search.",
+          "desc_en": "List of ticker symbols whose financials are searched.",
+          "title_zh": "要检索其财务数据的股票代码列表。"
+        },
+        {
+          "path": "req.period",
+          "src_en": "The time period for the financial data.",
+          "desc_en": "Reporting cadence of the financial data to return.",
+          "title_zh": "返回财务数据所采用的报告周期。"
+        },
+        {
+          "path": "req.limit",
+          "src_en": "The maximum number of results to return.",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "resp.200.search_results",
+          "src_en": "",
+          "desc_en": "List of stocks matching all supplied filters.",
+          "title_zh": "满足全部筛选条件的股票列表。"
+        },
+        {
+          "path": "resp.200.search_results.ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.search_results.report_period",
+          "src_en": "The reporting period of the financial data.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.search_results.period",
+          "src_en": "The time period of the financial data.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.search_results.currency",
+          "src_en": "The currency of the financial data.",
+          "desc_en": "Currency in which the returned financial figures are reported.",
+          "title_zh": "所返回财务数值采用的计价货币。"
+        }
+      ]
+    },
+    {
+      "operation": "getInsiderTrades",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get insider trades like buys and sells for a ticker by a company insider.",
+          "desc_en": "Retrieve insider buy and sell transactions reported by a company's insiders for the given ticker.",
+          "title_zh": "获取指定股票代码下公司内部人申报的买入与卖出交易记录。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of transactions to return (default: 10).",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "param:name",
+          "src_en": "Filter by insider name (e.g., 'Jen Hsun Huang'). Use the /insider-trades/names endpoint to get available names for a ticker.",
+          "desc_en": "Filter results to a specific insider by name; obtain valid names from the insider-trades names endpoint.",
+          "title_zh": "按内部人姓名筛选结果；有效姓名可从内部人姓名查询接口获取。"
+        },
+        {
+          "path": "param:transaction_type",
+          "src_en": "Filter by transaction type (e.g., 'Open market sale', 'Gift'). Use the /insider-trades/transaction-types endpoint to get available types.",
+          "desc_en": "Filter results to a specific transaction type; obtain valid types from the insider-trades transaction-types endpoint.",
+          "title_zh": "按交易类型筛选结果；有效类型可从内部人交易类型查询接口获取。"
+        },
+        {
+          "path": "param:filing_date",
+          "src_en": "Filter by exact filing date in YYYY-MM-DD format.",
+          "desc_en": "Return only trades filed on this exact date.",
+          "title_zh": "仅返回在该确切日期申报的交易。"
+        },
+        {
+          "path": "param:filing_date_gte",
+          "src_en": "Filter by filing date greater than or equal to this date (YYYY-MM-DD).",
+          "desc_en": "Return only trades filed on or after this date.",
+          "title_zh": "仅返回在该日期当天或之后申报的交易。"
+        },
+        {
+          "path": "param:filing_date_lte",
+          "src_en": "Filter by filing date less than or equal to this date (YYYY-MM-DD).",
+          "desc_en": "Return only trades filed on or before this date.",
+          "title_zh": "仅返回在该日期当天或之前申报的交易。"
+        },
+        {
+          "path": "param:filing_date_gt",
+          "src_en": "Filter by filing date greater than this date (YYYY-MM-DD).",
+          "desc_en": "Return only trades filed strictly after this date.",
+          "title_zh": "仅返回在该日期之后申报的交易。"
+        },
+        {
+          "path": "param:filing_date_lt",
+          "src_en": "Filter by filing date less than this date (YYYY-MM-DD).",
+          "desc_en": "Return only trades filed strictly before this date.",
+          "title_zh": "仅返回在该日期之前申报的交易。"
+        },
+        {
+          "path": "resp.200.insider_trades",
+          "src_en": "",
+          "desc_en": "List of insider transaction records matching the query.",
+          "title_zh": "符合查询条件的内部人交易记录列表。"
+        },
+        {
+          "path": "resp.200.insider_trades.ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.insider_trades.issuer",
+          "src_en": "The name of the issuing company.",
+          "desc_en": "Name of the company that issued the traded security.",
+          "title_zh": "发行所交易证券的公司名称。"
+        },
+        {
+          "path": "resp.200.insider_trades.name",
+          "src_en": "The name of the insider.",
+          "desc_en": "Name of the insider who carried out the transaction.",
+          "title_zh": "实施该交易的内部人姓名。"
+        },
+        {
+          "path": "resp.200.insider_trades.title",
+          "src_en": "The title of the insider.",
+          "desc_en": "Role or title the insider holds at the company.",
+          "title_zh": "内部人在公司担任的职务或头衔。"
+        },
+        {
+          "path": "resp.200.insider_trades.is_board_director",
+          "src_en": "Whether the insider is a board director.",
+          "desc_en": "Whether the insider serves on the company's board of directors.",
+          "title_zh": "该内部人是否为公司董事会成员。"
+        },
+        {
+          "path": "resp.200.insider_trades.transaction_date",
+          "src_en": "The date of the transaction.",
+          "desc_en": "Date on which the transaction took place.",
+          "title_zh": "交易发生的日期。"
+        },
+        {
+          "path": "resp.200.insider_trades.transaction_shares",
+          "src_en": "The number of shares involved in the transaction.",
+          "desc_en": "Number of shares bought or sold in the transaction.",
+          "title_zh": "本次交易买入或卖出的股数。"
+        },
+        {
+          "path": "resp.200.insider_trades.transaction_price_per_share",
+          "src_en": "The price per share in the transaction.",
+          "desc_en": "Price per share at which the transaction was executed.",
+          "title_zh": "本次交易成交的每股价格。"
+        },
+        {
+          "path": "resp.200.insider_trades.transaction_value",
+          "src_en": "The total value of the transaction.",
+          "desc_en": "Total monetary value of the transaction.",
+          "title_zh": "本次交易的总金额。"
+        },
+        {
+          "path": "resp.200.insider_trades.shares_owned_before_transaction",
+          "src_en": "The number of shares owned before the transaction.",
+          "desc_en": "Shares the insider held before the transaction.",
+          "title_zh": "交易发生前该内部人持有的股数。"
+        },
+        {
+          "path": "resp.200.insider_trades.shares_owned_after_transaction",
+          "src_en": "The number of shares owned after the transaction.",
+          "desc_en": "Shares the insider held after the transaction.",
+          "title_zh": "交易发生后该内部人持有的股数。"
+        },
+        {
+          "path": "resp.200.insider_trades.security_title",
+          "src_en": "The title of the security involved in the transaction.",
+          "desc_en": "Title of the security involved in the transaction.",
+          "title_zh": "本次交易所涉证券的名称。"
+        },
+        {
+          "path": "resp.200.insider_trades.filing_date",
+          "src_en": "The date the transaction was filed.",
+          "desc_en": "Date the transaction was filed with the regulator.",
+          "title_zh": "该交易向监管机构申报的日期。"
+        }
+      ]
+    },
+    {
+      "operation": "getInstitutionalOwnership",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get institutional ownership by investor or ticker. Requires either investor or ticker parameter, but not both.",
+          "desc_en": "Retrieve institutional equity holdings, queried either by investment manager or by ticker (supply exactly one of the two).",
+          "title_zh": "按投资管理人或股票代码查询机构持有的股权头寸（二者须且仅须提供其一）。"
+        },
+        {
+          "path": "param:investor",
+          "src_en": "The name of the investment manager",
+          "desc_en": "Name of the investment manager whose holdings to retrieve.",
+          "title_zh": "要查询其持仓的投资管理人名称。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol, if queried by investor.",
+          "desc_en": "Ticker symbol whose institutional holders to retrieve.",
+          "title_zh": "要查询其机构持有人的股票代码。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of holdings to return (default: 10).",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "resp.200.institutional-ownership",
+          "src_en": "",
+          "desc_en": "List of institutional holding records matching the query.",
+          "title_zh": "符合查询条件的机构持仓记录列表。"
+        },
+        {
+          "path": "resp.200.institutional-ownership.ticker",
+          "src_en": "The ticker symbol, if queried by investor.",
+          "desc_en": "Ticker symbol of the held security; populated when querying by investor.",
+          "title_zh": "所持证券的股票代码；按投资管理人查询时返回。"
+        },
+        {
+          "path": "resp.200.institutional-ownership.investor",
+          "src_en": "The investor name, if queried by ticker.",
+          "desc_en": "Name of the holding investment manager; populated when querying by ticker.",
+          "title_zh": "持有该证券的投资管理人名称；按股票代码查询时返回。"
+        },
+        {
+          "path": "resp.200.institutional-ownership.report_period",
+          "src_en": "The reporting period of the institutional ownership.",
+          "desc_en": "Reporting period to which this holding record corresponds.",
+          "title_zh": "本持仓记录所对应的报告期。"
+        },
+        {
+          "path": "resp.200.institutional-ownership.price",
+          "src_en": "The estimated purchase price of the equity position.",
+          "desc_en": "Estimated purchase price of the equity position.",
+          "title_zh": "该股权头寸的估算买入价格。"
+        },
+        {
+          "path": "resp.200.institutional-ownership.shares",
+          "src_en": "The number of shares held by the investment manager.",
+          "desc_en": "Number of shares held in the position.",
+          "title_zh": "该头寸持有的股数。"
+        },
+        {
+          "path": "resp.200.institutional-ownership.market_value",
+          "src_en": "The market value of the equity position.",
+          "desc_en": "Market value of the equity position.",
+          "title_zh": "该股权头寸的市值。"
+        }
+      ]
+    },
+    {
+      "operation": "getCompanyFacts",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get company facts for a ticker.",
+          "desc_en": "Retrieve descriptive company facts and identifiers for the given ticker.",
+          "title_zh": "获取指定股票代码下公司的概况信息与标识。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The CIK of the company.",
+          "desc_en": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+          "title_zh": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。"
+        },
+        {
+          "path": "resp.200.company_facts",
+          "src_en": "",
+          "desc_en": "Descriptive facts and identifiers for the company.",
+          "title_zh": "公司的概况信息与标识。"
+        },
+        {
+          "path": "resp.200.company_facts.ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.company_facts.name",
+          "src_en": "The name of the company.",
+          "desc_en": "Full legal or common name of the company.",
+          "title_zh": "公司的法定或通用名称。"
+        },
+        {
+          "path": "resp.200.company_facts.cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key assigned to the company.",
+          "title_zh": "SEC 为该公司分配的中央索引号（CIK）。"
+        },
+        {
+          "path": "resp.200.company_facts.industry",
+          "src_en": "The industry of the company.",
+          "desc_en": "Industry classification of the company.",
+          "title_zh": "公司所属的行业分类。"
+        },
+        {
+          "path": "resp.200.company_facts.sector",
+          "src_en": "The sector of the company.",
+          "desc_en": "Sector classification of the company.",
+          "title_zh": "公司所属的板块分类。"
+        },
+        {
+          "path": "resp.200.company_facts.category",
+          "src_en": "The category of the company.",
+          "desc_en": "Business category of the company.",
+          "title_zh": "公司的业务类别。"
+        },
+        {
+          "path": "resp.200.company_facts.exchange",
+          "src_en": "The exchange of the company.",
+          "desc_en": "Stock exchange on which the company is listed.",
+          "title_zh": "公司挂牌上市的证券交易所。"
+        },
+        {
+          "path": "resp.200.company_facts.is_active",
+          "src_en": "Whether the company is currently active.",
+          "desc_en": "Whether the company is currently active.",
+          "title_zh": "公司目前是否处于存续状态。"
+        },
+        {
+          "path": "resp.200.company_facts.listing_date",
+          "src_en": "The date the company was listed on the stock exchange.",
+          "desc_en": "Date the company was listed on the exchange.",
+          "title_zh": "公司在交易所挂牌上市的日期。"
+        },
+        {
+          "path": "resp.200.company_facts.location",
+          "src_en": "The location of the company.",
+          "desc_en": "Geographic location of the company.",
+          "title_zh": "公司所在的地理位置。"
+        },
+        {
+          "path": "resp.200.company_facts.market_cap",
+          "src_en": "The market capitalization of the company.",
+          "desc_en": "Market capitalization of the company.",
+          "title_zh": "公司的总市值。"
+        },
+        {
+          "path": "resp.200.company_facts.number_of_employees",
+          "src_en": "The number of employees at the company.",
+          "desc_en": "Total number of employees at the company.",
+          "title_zh": "公司的员工总数。"
+        },
+        {
+          "path": "resp.200.company_facts.sec_filings_url",
+          "src_en": "The URL of the company's SEC filings.",
+          "desc_en": "URL to the company's SEC filings.",
+          "title_zh": "公司 SEC 备案文件的链接。"
+        },
+        {
+          "path": "resp.200.company_facts.sic_code",
+          "src_en": "The Standard Industrial Classification (SIC) code of the company.",
+          "desc_en": "Standard Industrial Classification code of the company.",
+          "title_zh": "公司的标准产业分类（SIC）代码。"
+        },
+        {
+          "path": "resp.200.company_facts.sic_industry",
+          "src_en": "The industry of the company based on the SIC code.",
+          "desc_en": "Industry derived from the company's SIC code.",
+          "title_zh": "依据 SIC 代码归类的公司行业。"
+        },
+        {
+          "path": "resp.200.company_facts.sic_sector",
+          "src_en": "The sector of the company based on the SIC code.",
+          "desc_en": "Sector derived from the company's SIC code.",
+          "title_zh": "依据 SIC 代码归类的公司板块。"
+        },
+        {
+          "path": "resp.200.company_facts.website_url",
+          "src_en": "The URL of the company's website.",
+          "desc_en": "URL of the company's website.",
+          "title_zh": "公司官方网站的链接。"
+        },
+        {
+          "path": "resp.200.company_facts.weighted_average_shares",
+          "src_en": "The weighted average shares of the company.",
+          "desc_en": "Weighted-average shares outstanding for the company.",
+          "title_zh": "公司的加权平均流通股数。"
+        }
+      ]
+    },
+    {
+      "operation": "getFilings",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get SEC filings for a company.",
+          "desc_en": "Retrieve the list of SEC filings submitted by a company.",
+          "title_zh": "获取公司向 SEC 提交的备案文件列表。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+          "title_zh": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "param:filing_type",
+          "src_en": "Filter by one or more filing types. Repeat the query parameter to pass multiple values (e.g. filing_type=10-Q&filing_type=10-K).",
+          "desc_en": "Filter by one or more SEC filing types; repeat the parameter to pass multiple values.",
+          "title_zh": "按一种或多种 SEC 备案类型筛选；重复该参数可传入多个值。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of filings to return (default: 10).",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "resp.200.filings",
+          "src_en": "",
+          "desc_en": "List of SEC filings matching the query.",
+          "title_zh": "符合查询条件的 SEC 备案文件列表。"
+        },
+        {
+          "path": "resp.200.filings.cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key of the filing company.",
+          "title_zh": "备案公司的 SEC 中央索引号（CIK）。"
+        },
+        {
+          "path": "resp.200.filings.accession_number",
+          "src_en": "The accession number of the filing.",
+          "desc_en": "SEC accession number uniquely identifying the filing.",
+          "title_zh": "唯一标识该备案的 SEC 受理编号。"
+        },
+        {
+          "path": "resp.200.filings.filing_type",
+          "src_en": "The type of the SEC filing (e.g., 10-Q, 8-K).",
+          "desc_en": "SEC form type of the filing.",
+          "title_zh": "该备案的 SEC 表格类型。"
+        },
+        {
+          "path": "resp.200.filings.report_date",
+          "src_en": "The date of the report.",
+          "desc_en": "Date the filing's report covers.",
+          "title_zh": "该备案报告所覆盖的日期。"
+        },
+        {
+          "path": "resp.200.filings.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.filings.url",
+          "src_en": "The URL of the SEC filing.",
+          "desc_en": "URL to the filing on the SEC website.",
+          "title_zh": "该备案在 SEC 网站上的链接。"
+        }
+      ]
+    },
+    {
+      "operation": "getFilingItems",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get the raw text Items from an SEC filing.",
+          "desc_en": "Retrieve the raw text of individual Items within a specific SEC filing.",
+          "title_zh": "获取某份 SEC 备案文件中各独立条目（Item）的原始正文。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "param:filing_type",
+          "src_en": "The type of filing.",
+          "desc_en": "SEC form type of the filing to read items from.",
+          "title_zh": "要读取条目的备案 SEC 表格类型。"
+        },
+        {
+          "path": "param:year",
+          "src_en": "The year of the filing.",
+          "desc_en": "Filing year to select.",
+          "title_zh": "要选取的备案年份。"
+        },
+        {
+          "path": "param:quarter",
+          "src_en": "The quarter of the filing if 10-Q.",
+          "desc_en": "Filing quarter, used for 10-Q filings.",
+          "title_zh": "备案季度，用于 10-Q 季报。"
+        },
+        {
+          "path": "param:item",
+          "src_en": "The item to get.",
+          "desc_en": "Specific filing Item to retrieve.",
+          "title_zh": "要获取的具体备案条目（Item）。"
+        },
+        {
+          "path": "param:accession_number",
+          "src_en": "The accession number of the filing if 8-K.",
+          "desc_en": "Accession number identifying the filing, used for 8-K filings.",
+          "title_zh": "标识该备案的受理编号，用于 8-K 文件。"
+        },
+        {
+          "path": "param:include_exhibits",
+          "src_en": "Whether to include the raw text from linked exhibits. Only applicable for 8-K filings. When true, exhibit objects will include the 'text' field containing the full exhibit content.",
+          "desc_en": "Whether to include the raw text of linked exhibits; applies only to 8-K filings, and when enabled each exhibit object carries its full text.",
+          "title_zh": "是否包含所链接附件的原始正文；仅对 8-K 文件生效，启用后每个附件对象将携带其完整正文。"
+        },
+        {
+          "path": "resp.200.ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key of the filing company.",
+          "title_zh": "备案公司的 SEC 中央索引号（CIK）。"
+        },
+        {
+          "path": "resp.200.filing_type",
+          "src_en": "The type of filing.",
+          "desc_en": "SEC form type of the filing.",
+          "title_zh": "该备案的 SEC 表格类型。"
+        },
+        {
+          "path": "resp.200.accession_number",
+          "src_en": "The accession number of the filing.",
+          "desc_en": "SEC accession number identifying the filing.",
+          "title_zh": "标识该备案的 SEC 受理编号。"
+        },
+        {
+          "path": "resp.200.year",
+          "src_en": "The year of the filing.",
+          "desc_en": "Year of the filing.",
+          "title_zh": "备案所属年份。"
+        },
+        {
+          "path": "resp.200.quarter",
+          "src_en": "The quarter of the filing.",
+          "desc_en": "Quarter of the filing.",
+          "title_zh": "备案所属季度。"
+        },
+        {
+          "path": "resp.200.items",
+          "src_en": "",
+          "desc_en": "List of Item sections extracted from the filing.",
+          "title_zh": "从该备案中抽取的条目（Item）小节列表。"
+        },
+        {
+          "path": "resp.200.items.number",
+          "src_en": "The item number.",
+          "desc_en": "Identifier of the filing Item.",
+          "title_zh": "备案条目的编号。"
+        },
+        {
+          "path": "resp.200.items.name",
+          "src_en": "The item name.",
+          "desc_en": "Title of the filing Item.",
+          "title_zh": "备案条目的标题。"
+        },
+        {
+          "path": "resp.200.items.text",
+          "src_en": "The item text.",
+          "desc_en": "Raw text content of the filing Item.",
+          "title_zh": "备案条目的原始正文内容。"
+        }
+      ]
+    },
+    {
+      "operation": "getSegmentedRevenues",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Deprecated. Use /financials/income-statements/segments instead.",
+          "desc_en": "Deprecated. Retrieve revenue broken down by reporting segment; use the income-statement segments endpoint instead.",
+          "title_zh": "已废弃。按报告分部拆分获取营业收入，建议改用利润表分部接口。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol. Required if cik is not provided.",
+          "desc_en": "Stock ticker symbol of the company; required when `cik` is not provided.",
+          "title_zh": "目标公司的股票代码；未提供 `cik` 时必填。"
+        },
+        {
+          "path": "param:period",
+          "src_en": "The date or time period to which the reported revenue data relates in ISO 8601 format (YYYY-MM-DD).",
+          "desc_en": "Date or time period the reported revenue relates to, in ISO 8601 format.",
+          "title_zh": "所报告营收对应的日期或时间区间，采用 ISO 8601 格式。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of revenue statements to return.",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+          "title_zh": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。"
+        },
+        {
+          "path": "resp.200.segmented_revenues",
+          "src_en": "",
+          "desc_en": "List of segmented-revenue records for the company.",
+          "title_zh": "公司分部营收记录列表。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.report_period",
+          "src_en": "The reporting period of the revenue.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.period",
+          "src_en": "The time period of the revenue.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.items",
+          "src_en": "An array of revenue segments from SEC filings (10-Ks and 10-Qs) in XBRL format",
+          "desc_en": "Revenue segments parsed from SEC 10-K and 10-Q filings in XBRL form.",
+          "title_zh": "从 SEC 10-K 与 10-Q 备案的 XBRL 数据中解析出的营收分部。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.items.name",
+          "src_en": "The name of the revenue segment.",
+          "desc_en": "Name of the revenue segment.",
+          "title_zh": "该营收分部的名称。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.items.amount",
+          "src_en": "The numerical amount reported for the specified financial metric, expressed in the company's reporting currency; default is USD.",
+          "desc_en": "Reported revenue amount for the segment, in the company's reporting currency (default USD).",
+          "title_zh": "该分部报告的营收金额，以公司报告货币计价（默认美元）。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.items.end_period",
+          "src_en": "The end period of the revenue segment.  Only provided for quarterly data.",
+          "desc_en": "End of the segment's reporting interval; provided only for quarterly data.",
+          "title_zh": "该分部报告区间的结束时点；仅季度数据提供。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.items.start_period",
+          "src_en": "The start period of the revenue segment.  Only provided for quarterly data.",
+          "desc_en": "Start of the segment's reporting interval; provided only for quarterly data.",
+          "title_zh": "该分部报告区间的起始时点；仅季度数据提供。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.items.segments",
+          "src_en": "",
+          "desc_en": "Dimension breakdown describing how the segment is classified.",
+          "title_zh": "描述该分部如何归类的维度拆分。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.items.segments.label",
+          "src_en": "The label for the revenue segment.",
+          "desc_en": "Label of the segment dimension.",
+          "title_zh": "分部维度的标签。"
+        },
+        {
+          "path": "resp.200.segmented_revenues.items.segments.type",
+          "src_en": "The type of revenue segment.",
+          "desc_en": "Type of the segment dimension.",
+          "title_zh": "分部维度的类型。"
+        }
+      ]
+    },
+    {
+      "operation": "getIncomeStatements",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get income statements for a ticker.",
+          "desc_en": "Retrieve income statements for the given ticker.",
+          "title_zh": "获取指定股票代码的利润表。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol. Required if cik is not provided.",
+          "desc_en": "Stock ticker symbol of the company; required when `cik` is not provided.",
+          "title_zh": "目标公司的股票代码；未提供 `cik` 时必填。"
+        },
+        {
+          "path": "param:period",
+          "src_en": "The time period of the income statements.",
+          "desc_en": "Reporting cadence of the financial data to return.",
+          "title_zh": "返回财务数据所采用的报告周期。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of income statements to return.",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+          "title_zh": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。"
+        },
+        {
+          "path": "resp.200.income_statements",
+          "src_en": "",
+          "desc_en": "List of income statement records for the ticker.",
+          "title_zh": "该股票代码的利润表记录列表。"
+        },
+        {
+          "path": "resp.200.income_statements.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.income_statements.report_period",
+          "src_en": "The reporting period of the income statement.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.income_statements.fiscal_period",
+          "src_en": "The fiscal period of the income statement.",
+          "desc_en": "Issuer's fiscal-period label for the reporting interval.",
+          "title_zh": "本报告区间对应的公司财年周期标签。"
+        },
+        {
+          "path": "resp.200.income_statements.period",
+          "src_en": "The time period of the income statement.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.income_statements.currency",
+          "src_en": "The currency in which the financial data is reported.",
+          "desc_en": "Currency in which the monetary figures in this record are reported.",
+          "title_zh": "本条记录中各金额数值所采用的计价货币。"
+        },
+        {
+          "path": "resp.200.income_statements.revenue",
+          "src_en": "The total revenue of the company.",
+          "desc_en": "Total sales the company generated over the reporting period.",
+          "title_zh": "公司在报告期内实现的销售总额。"
+        },
+        {
+          "path": "resp.200.income_statements.cost_of_revenue",
+          "src_en": "The cost of revenue of the company.",
+          "desc_en": "Direct costs attributable to producing the goods or services sold.",
+          "title_zh": "与所售商品或服务直接相关的生产成本。"
+        },
+        {
+          "path": "resp.200.income_statements.gross_profit",
+          "src_en": "The gross profit of the company.",
+          "desc_en": "Revenue remaining after subtracting the cost of revenue.",
+          "title_zh": "营业收入扣除营业成本后的毛利润。"
+        },
+        {
+          "path": "resp.200.income_statements.operating_expense",
+          "src_en": "The operating expenses of the company.",
+          "desc_en": "Operating costs incurred outside the direct cost of revenue.",
+          "title_zh": "营业成本之外发生的运营费用。"
+        },
+        {
+          "path": "resp.200.income_statements.selling_general_and_administrative_expenses",
+          "src_en": "The selling, general, and administrative expenses of the company.",
+          "desc_en": "Selling, general, and administrative overhead for the period.",
+          "title_zh": "报告期内的销售、一般及管理费用。"
+        },
+        {
+          "path": "resp.200.income_statements.research_and_development",
+          "src_en": "The research and development expenses of the company.",
+          "desc_en": "Spending on research and development activities.",
+          "title_zh": "研发活动支出。"
+        },
+        {
+          "path": "resp.200.income_statements.operating_income",
+          "src_en": "The operating income of the company.",
+          "desc_en": "Profit from core operations before interest and taxes.",
+          "title_zh": "核心经营在扣除利息与税项前产生的营业利润。"
+        },
+        {
+          "path": "resp.200.income_statements.interest_expense",
+          "src_en": "The interest expenses of the company.",
+          "desc_en": "Cost of interest on the company's borrowings.",
+          "title_zh": "公司债务产生的利息支出。"
+        },
+        {
+          "path": "resp.200.income_statements.ebit",
+          "src_en": "The earnings before interest and taxes of the company.",
+          "desc_en": "Earnings before interest and taxes.",
+          "title_zh": "息税前利润（EBIT）。"
+        },
+        {
+          "path": "resp.200.income_statements.income_tax_expense",
+          "src_en": "The income tax expenses of the company.",
+          "desc_en": "Income tax charged against the period's profit.",
+          "title_zh": "计入本期利润的所得税费用。"
+        },
+        {
+          "path": "resp.200.income_statements.net_income_discontinued_operations",
+          "src_en": "The net income from discontinued operations of the company.",
+          "desc_en": "Net income contributed by operations that have been discontinued.",
+          "title_zh": "已终止经营业务贡献的净利润。"
+        },
+        {
+          "path": "resp.200.income_statements.net_income_non_controlling_interests",
+          "src_en": "The net income from non-controlling interests of the company.",
+          "desc_en": "Portion of net income attributable to non-controlling (minority) interests.",
+          "title_zh": "归属于非控股（少数股东）权益的净利润部分。"
+        },
+        {
+          "path": "resp.200.income_statements.net_income",
+          "src_en": "The net income of the company.",
+          "desc_en": "Bottom-line profit after all expenses, interest, and taxes.",
+          "title_zh": "扣除全部费用、利息与税项后的净利润。"
+        },
+        {
+          "path": "resp.200.income_statements.net_income_common_stock",
+          "src_en": "The net income available to common stockholders of the company.",
+          "desc_en": "Net income attributable to common shareholders after preferred claims.",
+          "title_zh": "扣除优先股索偿后归属于普通股股东的净利润。"
+        },
+        {
+          "path": "resp.200.income_statements.preferred_dividends_impact",
+          "src_en": "The impact of preferred dividends on the net income of the company.",
+          "desc_en": "Effect of preferred dividends on income available to common shareholders.",
+          "title_zh": "优先股股息对可分配给普通股股东利润的影响。"
+        },
+        {
+          "path": "resp.200.income_statements.consolidated_income",
+          "src_en": "The consolidated income of the company.",
+          "desc_en": "Total consolidated income including all controlled entities.",
+          "title_zh": "涵盖全部受控主体的合并总收益。"
+        },
+        {
+          "path": "resp.200.income_statements.earnings_per_share",
+          "src_en": "The earnings per share of the company.",
+          "desc_en": "Net income allocated to each outstanding common share.",
+          "title_zh": "分摊到每股流通普通股的净利润（基本每股收益）。"
+        },
+        {
+          "path": "resp.200.income_statements.earnings_per_share_diluted",
+          "src_en": "The diluted earnings per share of the company.",
+          "desc_en": "Earnings per share assuming all dilutive securities are converted.",
+          "title_zh": "假设全部稀释性证券转换后的每股收益（稀释每股收益）。"
+        },
+        {
+          "path": "resp.200.income_statements.dividends_per_common_share",
+          "src_en": "The dividends per common share of the company.",
+          "desc_en": "Dividends declared per common share for the period.",
+          "title_zh": "报告期内每股普通股宣派的股息。"
+        },
+        {
+          "path": "resp.200.income_statements.weighted_average_shares",
+          "src_en": "The weighted average shares of the company.",
+          "desc_en": "Time-weighted average of common shares outstanding during the period.",
+          "title_zh": "报告期内流通普通股的加权平均股数。"
+        },
+        {
+          "path": "resp.200.income_statements.weighted_average_shares_diluted",
+          "src_en": "The diluted weighted average shares of the company.",
+          "desc_en": "Diluted weighted-average share count including dilutive securities.",
+          "title_zh": "计入稀释性证券后的加权平均稀释股数。"
+        }
+      ]
+    },
+    {
+      "operation": "getBalanceSheets",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get balance sheets for a ticker.",
+          "desc_en": "Retrieve balance sheets for the given ticker.",
+          "title_zh": "获取指定股票代码的资产负债表。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol. Required if cik is not provided.",
+          "desc_en": "Stock ticker symbol of the company; required when `cik` is not provided.",
+          "title_zh": "目标公司的股票代码；未提供 `cik` 时必填。"
+        },
+        {
+          "path": "param:period",
+          "src_en": "The time period of the balance sheets.",
+          "desc_en": "Reporting cadence of the financial data to return.",
+          "title_zh": "返回财务数据所采用的报告周期。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of balance sheets to return",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+          "title_zh": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。"
+        },
+        {
+          "path": "resp.200.balance_sheets",
+          "src_en": "",
+          "desc_en": "List of balance sheet records for the ticker.",
+          "title_zh": "该股票代码的资产负债表记录列表。"
+        },
+        {
+          "path": "resp.200.balance_sheets.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.balance_sheets.report_period",
+          "src_en": "The reporting period of the balance sheet.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.balance_sheets.fiscal_period",
+          "src_en": "The fiscal period of the balance sheet.",
+          "desc_en": "Issuer's fiscal-period label for the reporting interval.",
+          "title_zh": "本报告区间对应的公司财年周期标签。"
+        },
+        {
+          "path": "resp.200.balance_sheets.period",
+          "src_en": "The time period of the balance sheet.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.balance_sheets.currency",
+          "src_en": "The currency in which the financial data is reported.",
+          "desc_en": "Currency in which the monetary figures in this record are reported.",
+          "title_zh": "本条记录中各金额数值所采用的计价货币。"
+        },
+        {
+          "path": "resp.200.balance_sheets.total_assets",
+          "src_en": "The total assets of the company.",
+          "desc_en": "Sum of all assets the company holds.",
+          "title_zh": "公司持有的全部资产合计。"
+        },
+        {
+          "path": "resp.200.balance_sheets.current_assets",
+          "src_en": "The current assets of the company.",
+          "desc_en": "Assets expected to be converted to cash or used within one year.",
+          "title_zh": "预计在一年内变现或耗用的流动资产。"
+        },
+        {
+          "path": "resp.200.balance_sheets.cash_and_equivalents",
+          "src_en": "The cash and equivalents of the company.",
+          "desc_en": "Cash on hand plus highly liquid short-term holdings.",
+          "title_zh": "库存现金及高流动性的短期等价物。"
+        },
+        {
+          "path": "resp.200.balance_sheets.inventory",
+          "src_en": "The inventory of the company.",
+          "desc_en": "Value of goods held for sale or production.",
+          "title_zh": "为销售或生产而持有的存货价值。"
+        },
+        {
+          "path": "resp.200.balance_sheets.current_investments",
+          "src_en": "The current investments of the company.",
+          "desc_en": "Short-term investments classified as current assets.",
+          "title_zh": "归类为流动资产的短期投资。"
+        },
+        {
+          "path": "resp.200.balance_sheets.trade_and_non_trade_receivables",
+          "src_en": "The trade and non-trade receivables of the company.",
+          "desc_en": "Amounts owed to the company from trade and non-trade sources.",
+          "title_zh": "公司应收的贸易与非贸易款项。"
+        },
+        {
+          "path": "resp.200.balance_sheets.non_current_assets",
+          "src_en": "The non-current assets of the company.",
+          "desc_en": "Assets not expected to be realized within one year.",
+          "title_zh": "预计一年内无法变现的非流动资产。"
+        },
+        {
+          "path": "resp.200.balance_sheets.property_plant_and_equipment",
+          "src_en": "The property, plant, and equipment of the company.",
+          "desc_en": "Carrying value of property, plant, and equipment.",
+          "title_zh": "房产、厂房及设备的账面价值。"
+        },
+        {
+          "path": "resp.200.balance_sheets.goodwill_and_intangible_assets",
+          "src_en": "The goodwill and intangible assets of the company.",
+          "desc_en": "Goodwill together with other intangible assets.",
+          "title_zh": "商誉及其他无形资产合计。"
+        },
+        {
+          "path": "resp.200.balance_sheets.investments",
+          "src_en": "The investments of the company.",
+          "desc_en": "Total investment holdings of the company.",
+          "title_zh": "公司投资持仓合计。"
+        },
+        {
+          "path": "resp.200.balance_sheets.non_current_investments",
+          "src_en": "The non-current investments of the company.",
+          "desc_en": "Investments held beyond one year.",
+          "title_zh": "持有期超过一年的非流动投资。"
+        },
+        {
+          "path": "resp.200.balance_sheets.outstanding_shares",
+          "src_en": "The outstanding shares of the company.",
+          "desc_en": "Number of common shares currently issued and outstanding.",
+          "title_zh": "当前已发行并流通在外的普通股股数。"
+        },
+        {
+          "path": "resp.200.balance_sheets.tax_assets",
+          "src_en": "The tax assets of the company.",
+          "desc_en": "Recognized tax-related assets such as deferred tax assets.",
+          "title_zh": "已确认的税务相关资产，如递延所得税资产。"
+        },
+        {
+          "path": "resp.200.balance_sheets.total_liabilities",
+          "src_en": "The total liabilities of the company.",
+          "desc_en": "Sum of all the company's liabilities.",
+          "title_zh": "公司全部负债合计。"
+        },
+        {
+          "path": "resp.200.balance_sheets.current_liabilities",
+          "src_en": "The current liabilities of the company.",
+          "desc_en": "Obligations due within one year.",
+          "title_zh": "一年内到期的流动负债。"
+        },
+        {
+          "path": "resp.200.balance_sheets.current_debt",
+          "src_en": "The current debt of the company.",
+          "desc_en": "Portion of debt due within one year.",
+          "title_zh": "一年内到期的债务部分。"
+        },
+        {
+          "path": "resp.200.balance_sheets.trade_and_non_trade_payables",
+          "src_en": "The trade and non-trade payables of the company.",
+          "desc_en": "Amounts the company owes from trade and non-trade sources.",
+          "title_zh": "公司应付的贸易与非贸易款项。"
+        },
+        {
+          "path": "resp.200.balance_sheets.deferred_revenue",
+          "src_en": "The deferred revenue of the company.",
+          "desc_en": "Payments received for goods or services not yet delivered.",
+          "title_zh": "已收取但尚未交付商品或服务对应的递延收入。"
+        },
+        {
+          "path": "resp.200.balance_sheets.deposit_liabilities",
+          "src_en": "The deposit liabilities of the company.",
+          "desc_en": "Liabilities arising from customer or counterparty deposits.",
+          "title_zh": "客户或交易对手存入款项形成的存款负债。"
+        },
+        {
+          "path": "resp.200.balance_sheets.non_current_liabilities",
+          "src_en": "The non-current liabilities of the company.",
+          "desc_en": "Obligations due beyond one year.",
+          "title_zh": "一年以上到期的非流动负债。"
+        },
+        {
+          "path": "resp.200.balance_sheets.non_current_debt",
+          "src_en": "The non-current debt of the company.",
+          "desc_en": "Portion of debt due beyond one year.",
+          "title_zh": "一年以上到期的债务部分。"
+        },
+        {
+          "path": "resp.200.balance_sheets.tax_liabilities",
+          "src_en": "The tax liabilities of the company.",
+          "desc_en": "Recognized tax-related obligations such as deferred tax liabilities.",
+          "title_zh": "已确认的税务相关负债，如递延所得税负债。"
+        },
+        {
+          "path": "resp.200.balance_sheets.shareholders_equity",
+          "src_en": "The shareholders' equity of the company.",
+          "desc_en": "Residual interest in assets after deducting liabilities.",
+          "title_zh": "资产扣除负债后归属于股东的剩余权益。"
+        },
+        {
+          "path": "resp.200.balance_sheets.retained_earnings",
+          "src_en": "The retained earnings of the company.",
+          "desc_en": "Cumulative earnings retained rather than distributed as dividends.",
+          "title_zh": "历年留存而未作为股息分配的累计利润。"
+        },
+        {
+          "path": "resp.200.balance_sheets.accumulated_other_comprehensive_income",
+          "src_en": "The accumulated other comprehensive income of the company.",
+          "desc_en": "Cumulative gains and losses recorded outside the income statement.",
+          "title_zh": "计入损益表之外的累计其他综合收益。"
+        },
+        {
+          "path": "resp.200.balance_sheets.total_debt",
+          "src_en": "The total debt of the company.",
+          "desc_en": "Combined current and non-current interest-bearing debt.",
+          "title_zh": "流动与非流动有息债务合计。"
+        }
+      ]
+    },
+    {
+      "operation": "getCashFlowStatements",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get cash flow statements for a ticker.",
+          "desc_en": "Retrieve cash flow statements for the given ticker.",
+          "title_zh": "获取指定股票代码的现金流量表。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol. Required if cik is not provided.",
+          "desc_en": "Stock ticker symbol of the company; required when `cik` is not provided.",
+          "title_zh": "目标公司的股票代码；未提供 `cik` 时必填。"
+        },
+        {
+          "path": "param:period",
+          "src_en": "The time period of the cash flow statements.",
+          "desc_en": "Reporting cadence of the financial data to return.",
+          "title_zh": "返回财务数据所采用的报告周期。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of cash flow statements to return.",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+          "title_zh": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements",
+          "src_en": "",
+          "desc_en": "List of cash flow statement records for the ticker.",
+          "title_zh": "该股票代码的现金流量表记录列表。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.report_period",
+          "src_en": "The reporting period of the cash flow statement.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.fiscal_period",
+          "src_en": "The fiscal period of the cash flow statement.",
+          "desc_en": "Issuer's fiscal-period label for the reporting interval.",
+          "title_zh": "本报告区间对应的公司财年周期标签。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.period",
+          "src_en": "The time period of the cash flow statement.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.currency",
+          "src_en": "The currency in which the financial data is reported.",
+          "desc_en": "Currency in which the monetary figures in this record are reported.",
+          "title_zh": "本条记录中各金额数值所采用的计价货币。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.net_income",
+          "src_en": "The net income of the company.",
+          "desc_en": "Net income carried from the income statement as the starting point of the cash flow.",
+          "title_zh": "由损益表结转、作为现金流量起点的净利润。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.depreciation_and_amortization",
+          "src_en": "The depreciation and amortization of the company.",
+          "desc_en": "Non-cash depreciation and amortization added back to earnings.",
+          "title_zh": "加回利润的非现金折旧与摊销。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.share_based_compensation",
+          "src_en": "The share-based compensation of the company.",
+          "desc_en": "Non-cash expense from share-based employee compensation.",
+          "title_zh": "以股份为基础的员工薪酬产生的非现金费用。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.net_cash_flow_from_operations",
+          "src_en": "The net cash flow from operations of the company.",
+          "desc_en": "Net cash generated by core operating activities.",
+          "title_zh": "核心经营活动产生的净现金流。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.capital_expenditure",
+          "src_en": "The capital expenditure of the company.",
+          "desc_en": "Cash spent acquiring or upgrading long-term assets.",
+          "title_zh": "用于购置或升级长期资产的资本性支出。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.business_acquisitions_and_disposals",
+          "src_en": "The business acquisitions and disposals of the company.",
+          "desc_en": "Net cash from acquiring or disposing of businesses.",
+          "title_zh": "收购或处置业务产生的净现金。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.investment_acquisitions_and_disposals",
+          "src_en": "The investment acquisitions and disposals of the company.",
+          "desc_en": "Net cash from buying or selling investments.",
+          "title_zh": "买入或卖出投资产生的净现金。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.net_cash_flow_from_investing",
+          "src_en": "The net cash flow from investing of the company.",
+          "desc_en": "Net cash generated or used by investing activities.",
+          "title_zh": "投资活动产生或消耗的净现金流。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.issuance_or_repayment_of_debt_securities",
+          "src_en": "The issuance or repayment of debt securities of the company.",
+          "desc_en": "Net cash from issuing or repaying debt securities.",
+          "title_zh": "发行或偿还债务证券产生的净现金。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.issuance_or_purchase_of_equity_shares",
+          "src_en": "The issuance or purchase of equity shares of the company.",
+          "desc_en": "Net cash from issuing or repurchasing equity shares.",
+          "title_zh": "发行或回购股本产生的净现金。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.dividends_and_other_cash_distributions",
+          "src_en": "The dividends and other cash distributions of the company.",
+          "desc_en": "Cash paid out as dividends and other distributions.",
+          "title_zh": "以股息及其他形式分配支付的现金。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.net_cash_flow_from_financing",
+          "src_en": "The net cash flow from financing of the company.",
+          "desc_en": "Net cash generated or used by financing activities.",
+          "title_zh": "融资活动产生或消耗的净现金流。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.change_in_cash_and_equivalents",
+          "src_en": "The change in cash and equivalents of the company.",
+          "desc_en": "Net change in cash and equivalents over the period.",
+          "title_zh": "报告期内现金及等价物的净变动额。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.effect_of_exchange_rate_changes",
+          "src_en": "The effect of exchange rate changes of the company.",
+          "desc_en": "Impact of foreign-exchange rate movements on cash balances.",
+          "title_zh": "汇率变动对现金余额的影响。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.ending_cash_balance",
+          "src_en": "The ending cash balance of the company.",
+          "desc_en": "Cash and equivalents balance at the end of the period.",
+          "title_zh": "报告期末的现金及等价物余额。"
+        },
+        {
+          "path": "resp.200.cash_flow_statements.free_cash_flow",
+          "src_en": "The free cash flow of the company.",
+          "desc_en": "Operating cash flow remaining after capital expenditure.",
+          "title_zh": "经营现金流扣除资本性支出后的自由现金流。"
+        }
+      ]
+    },
+    {
+      "operation": "getEarningsPressReleases",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get earnings press releases for a ticker.",
+          "desc_en": "Retrieve earnings-related press releases for the given ticker.",
+          "title_zh": "获取指定股票代码的财报相关新闻稿。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.press_releases",
+          "src_en": "",
+          "desc_en": "List of earnings press releases for the ticker.",
+          "title_zh": "该股票代码的财报新闻稿列表。"
+        },
+        {
+          "path": "resp.200.press_releases.ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.press_releases.title",
+          "src_en": "The title of the press release.",
+          "desc_en": "Headline of the press release.",
+          "title_zh": "新闻稿的标题。"
+        },
+        {
+          "path": "resp.200.press_releases.url",
+          "src_en": "The URL of the press release.",
+          "desc_en": "URL to the full press release.",
+          "title_zh": "新闻稿全文的链接。"
+        },
+        {
+          "path": "resp.200.press_releases.date",
+          "src_en": "The date the press release was published.",
+          "desc_en": "Publication date of the press release.",
+          "title_zh": "新闻稿的发布日期。"
+        },
+        {
+          "path": "resp.200.press_releases.text",
+          "src_en": "The full text of the press release.",
+          "desc_en": "Full body text of the press release.",
+          "title_zh": "新闻稿的完整正文。"
+        }
+      ]
+    },
+    {
+      "operation": "getPriceSnapshot",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get the real-time price snapshot for a stock, including the current price, day change, and day change percent.",
+          "desc_en": "Retrieve a real-time price snapshot for a stock, including current price, day change, and day change percent.",
+          "title_zh": "获取股票的实时价格快照，含当前价格、当日涨跌额与当日涨跌幅。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The stock ticker symbol (e.g. AAPL, MSFT).",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.snapshot",
+          "src_en": "",
+          "desc_en": "Real-time price snapshot for the stock.",
+          "title_zh": "该股票的实时价格快照。"
+        },
+        {
+          "path": "resp.200.snapshot.price",
+          "src_en": "The current price of the stock.",
+          "desc_en": "Current trading price of the stock.",
+          "title_zh": "该股票的当前成交价格。"
+        },
+        {
+          "path": "resp.200.snapshot.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.snapshot.day_change",
+          "src_en": "The price change since the previous trading day's close.",
+          "desc_en": "Price change since the previous trading day's close.",
+          "title_zh": "相对上一交易日收盘价的价格变动额。"
+        },
+        {
+          "path": "resp.200.snapshot.day_change_percent",
+          "src_en": "The percentage price change since the previous trading day's close.",
+          "desc_en": "Percentage price change since the previous trading day's close.",
+          "title_zh": "相对上一交易日收盘价的价格变动百分比。"
+        },
+        {
+          "path": "resp.200.snapshot.market_cap",
+          "src_en": "The market capitalization of the company.",
+          "desc_en": "Current market capitalization of the company.",
+          "title_zh": "公司当前的总市值。"
+        },
+        {
+          "path": "resp.200.snapshot.time",
+          "src_en": "The timestamp of the price snapshot in human-readable format in UTC.",
+          "desc_en": "Timestamp of the snapshot as a human-readable UTC value.",
+          "title_zh": "快照时点的可读时间戳（UTC）。"
+        },
+        {
+          "path": "resp.200.snapshot.time_milliseconds",
+          "src_en": "The timestamp of the price snapshot in milliseconds since epoch.",
+          "desc_en": "Timestamp of the snapshot in milliseconds since the Unix epoch.",
+          "title_zh": "快照时点的时间戳，以 Unix 纪元起算的毫秒数表示。"
+        }
+      ]
+    },
+    {
+      "operation": "getAllFinancialStatements",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get all financial statements for a ticker.",
+          "desc_en": "Retrieve income statements, balance sheets, and cash flow statements for the given ticker in a single response.",
+          "title_zh": "一次性获取指定股票代码的利润表、资产负债表与现金流量表。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol. Required if cik is not provided.",
+          "desc_en": "Stock ticker symbol of the company; required when `cik` is not provided.",
+          "title_zh": "目标公司的股票代码；未提供 `cik` 时必填。"
+        },
+        {
+          "path": "param:period",
+          "src_en": "The time period of the financial statements.",
+          "desc_en": "Reporting cadence of the financial data to return.",
+          "title_zh": "返回财务数据所采用的报告周期。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of financial statements to return.",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The Central Index Key (CIK) of the company.",
+          "desc_en": "SEC Central Index Key identifying the company; an alternative lookup key to the ticker.",
+          "title_zh": "公司在 SEC 的中央索引号（CIK），可作为股票代码之外的查询键。"
+        },
+        {
+          "path": "resp.200.financials",
+          "src_en": "",
+          "desc_en": "Container bundling the income statements, balance sheets, and cash flow statements.",
+          "title_zh": "汇总利润表、资产负债表与现金流量表的容器。"
+        },
+        {
+          "path": "resp.200.financials.income_statements",
+          "src_en": "",
+          "desc_en": "List of income statement records for the ticker.",
+          "title_zh": "该股票代码的利润表记录列表。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.report_period",
+          "src_en": "The reporting period of the income statement.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.fiscal_period",
+          "src_en": "The fiscal period of the income statement.",
+          "desc_en": "Issuer's fiscal-period label for the reporting interval.",
+          "title_zh": "本报告区间对应的公司财年周期标签。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.period",
+          "src_en": "The time period of the income statement.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.currency",
+          "src_en": "The currency in which the financial data is reported.",
+          "desc_en": "Currency in which the monetary figures in this record are reported.",
+          "title_zh": "本条记录中各金额数值所采用的计价货币。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.revenue",
+          "src_en": "The total revenue of the company.",
+          "desc_en": "Total sales the company generated over the reporting period.",
+          "title_zh": "公司在报告期内实现的销售总额。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.cost_of_revenue",
+          "src_en": "The cost of revenue of the company.",
+          "desc_en": "Direct costs attributable to producing the goods or services sold.",
+          "title_zh": "与所售商品或服务直接相关的生产成本。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.gross_profit",
+          "src_en": "The gross profit of the company.",
+          "desc_en": "Revenue remaining after subtracting the cost of revenue.",
+          "title_zh": "营业收入扣除营业成本后的毛利润。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.operating_expense",
+          "src_en": "The operating expenses of the company.",
+          "desc_en": "Operating costs incurred outside the direct cost of revenue.",
+          "title_zh": "营业成本之外发生的运营费用。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.selling_general_and_administrative_expenses",
+          "src_en": "The selling, general, and administrative expenses of the company.",
+          "desc_en": "Selling, general, and administrative overhead for the period.",
+          "title_zh": "报告期内的销售、一般及管理费用。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.research_and_development",
+          "src_en": "The research and development expenses of the company.",
+          "desc_en": "Spending on research and development activities.",
+          "title_zh": "研发活动支出。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.operating_income",
+          "src_en": "The operating income of the company.",
+          "desc_en": "Profit from core operations before interest and taxes.",
+          "title_zh": "核心经营在扣除利息与税项前产生的营业利润。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.interest_expense",
+          "src_en": "The interest expenses of the company.",
+          "desc_en": "Cost of interest on the company's borrowings.",
+          "title_zh": "公司债务产生的利息支出。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.ebit",
+          "src_en": "The earnings before interest and taxes of the company.",
+          "desc_en": "Earnings before interest and taxes.",
+          "title_zh": "息税前利润（EBIT）。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.income_tax_expense",
+          "src_en": "The income tax expenses of the company.",
+          "desc_en": "Income tax charged against the period's profit.",
+          "title_zh": "计入本期利润的所得税费用。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.net_income_discontinued_operations",
+          "src_en": "The net income from discontinued operations of the company.",
+          "desc_en": "Net income contributed by operations that have been discontinued.",
+          "title_zh": "已终止经营业务贡献的净利润。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.net_income_non_controlling_interests",
+          "src_en": "The net income from non-controlling interests of the company.",
+          "desc_en": "Portion of net income attributable to non-controlling (minority) interests.",
+          "title_zh": "归属于非控股（少数股东）权益的净利润部分。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.net_income",
+          "src_en": "The net income of the company.",
+          "desc_en": "Bottom-line profit after all expenses, interest, and taxes.",
+          "title_zh": "扣除全部费用、利息与税项后的净利润。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.net_income_common_stock",
+          "src_en": "The net income available to common stockholders of the company.",
+          "desc_en": "Net income attributable to common shareholders after preferred claims.",
+          "title_zh": "扣除优先股索偿后归属于普通股股东的净利润。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.preferred_dividends_impact",
+          "src_en": "The impact of preferred dividends on the net income of the company.",
+          "desc_en": "Effect of preferred dividends on income available to common shareholders.",
+          "title_zh": "优先股股息对可分配给普通股股东利润的影响。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.consolidated_income",
+          "src_en": "The consolidated income of the company.",
+          "desc_en": "Total consolidated income including all controlled entities.",
+          "title_zh": "涵盖全部受控主体的合并总收益。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.earnings_per_share",
+          "src_en": "The earnings per share of the company.",
+          "desc_en": "Net income allocated to each outstanding common share.",
+          "title_zh": "分摊到每股流通普通股的净利润（基本每股收益）。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.earnings_per_share_diluted",
+          "src_en": "The diluted earnings per share of the company.",
+          "desc_en": "Earnings per share assuming all dilutive securities are converted.",
+          "title_zh": "假设全部稀释性证券转换后的每股收益（稀释每股收益）。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.dividends_per_common_share",
+          "src_en": "The dividends per common share of the company.",
+          "desc_en": "Dividends declared per common share for the period.",
+          "title_zh": "报告期内每股普通股宣派的股息。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.weighted_average_shares",
+          "src_en": "The weighted average shares of the company.",
+          "desc_en": "Time-weighted average of common shares outstanding during the period.",
+          "title_zh": "报告期内流通普通股的加权平均股数。"
+        },
+        {
+          "path": "resp.200.financials.income_statements.weighted_average_shares_diluted",
+          "src_en": "The diluted weighted average shares of the company.",
+          "desc_en": "Diluted weighted-average share count including dilutive securities.",
+          "title_zh": "计入稀释性证券后的加权平均稀释股数。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets",
+          "src_en": "",
+          "desc_en": "List of balance sheet records for the ticker.",
+          "title_zh": "该股票代码的资产负债表记录列表。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.report_period",
+          "src_en": "The reporting period of the balance sheet.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.fiscal_period",
+          "src_en": "The fiscal period of the balance sheet.",
+          "desc_en": "Issuer's fiscal-period label for the reporting interval.",
+          "title_zh": "本报告区间对应的公司财年周期标签。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.period",
+          "src_en": "The time period of the balance sheet.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.currency",
+          "src_en": "The currency in which the financial data is reported.",
+          "desc_en": "Currency in which the monetary figures in this record are reported.",
+          "title_zh": "本条记录中各金额数值所采用的计价货币。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.total_assets",
+          "src_en": "The total assets of the company.",
+          "desc_en": "Sum of all assets the company holds.",
+          "title_zh": "公司持有的全部资产合计。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.current_assets",
+          "src_en": "The current assets of the company.",
+          "desc_en": "Assets expected to be converted to cash or used within one year.",
+          "title_zh": "预计在一年内变现或耗用的流动资产。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.cash_and_equivalents",
+          "src_en": "The cash and equivalents of the company.",
+          "desc_en": "Cash on hand plus highly liquid short-term holdings.",
+          "title_zh": "库存现金及高流动性的短期等价物。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.inventory",
+          "src_en": "The inventory of the company.",
+          "desc_en": "Value of goods held for sale or production.",
+          "title_zh": "为销售或生产而持有的存货价值。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.current_investments",
+          "src_en": "The current investments of the company.",
+          "desc_en": "Short-term investments classified as current assets.",
+          "title_zh": "归类为流动资产的短期投资。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.trade_and_non_trade_receivables",
+          "src_en": "The trade and non-trade receivables of the company.",
+          "desc_en": "Amounts owed to the company from trade and non-trade sources.",
+          "title_zh": "公司应收的贸易与非贸易款项。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.non_current_assets",
+          "src_en": "The non-current assets of the company.",
+          "desc_en": "Assets not expected to be realized within one year.",
+          "title_zh": "预计一年内无法变现的非流动资产。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.property_plant_and_equipment",
+          "src_en": "The property, plant, and equipment of the company.",
+          "desc_en": "Carrying value of property, plant, and equipment.",
+          "title_zh": "房产、厂房及设备的账面价值。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.goodwill_and_intangible_assets",
+          "src_en": "The goodwill and intangible assets of the company.",
+          "desc_en": "Goodwill together with other intangible assets.",
+          "title_zh": "商誉及其他无形资产合计。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.investments",
+          "src_en": "The investments of the company.",
+          "desc_en": "Total investment holdings of the company.",
+          "title_zh": "公司投资持仓合计。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.non_current_investments",
+          "src_en": "The non-current investments of the company.",
+          "desc_en": "Investments held beyond one year.",
+          "title_zh": "持有期超过一年的非流动投资。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.outstanding_shares",
+          "src_en": "The outstanding shares of the company.",
+          "desc_en": "Number of common shares currently issued and outstanding.",
+          "title_zh": "当前已发行并流通在外的普通股股数。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.tax_assets",
+          "src_en": "The tax assets of the company.",
+          "desc_en": "Recognized tax-related assets such as deferred tax assets.",
+          "title_zh": "已确认的税务相关资产，如递延所得税资产。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.total_liabilities",
+          "src_en": "The total liabilities of the company.",
+          "desc_en": "Sum of all the company's liabilities.",
+          "title_zh": "公司全部负债合计。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.current_liabilities",
+          "src_en": "The current liabilities of the company.",
+          "desc_en": "Obligations due within one year.",
+          "title_zh": "一年内到期的流动负债。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.current_debt",
+          "src_en": "The current debt of the company.",
+          "desc_en": "Portion of debt due within one year.",
+          "title_zh": "一年内到期的债务部分。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.trade_and_non_trade_payables",
+          "src_en": "The trade and non-trade payables of the company.",
+          "desc_en": "Amounts the company owes from trade and non-trade sources.",
+          "title_zh": "公司应付的贸易与非贸易款项。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.deferred_revenue",
+          "src_en": "The deferred revenue of the company.",
+          "desc_en": "Payments received for goods or services not yet delivered.",
+          "title_zh": "已收取但尚未交付商品或服务对应的递延收入。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.deposit_liabilities",
+          "src_en": "The deposit liabilities of the company.",
+          "desc_en": "Liabilities arising from customer or counterparty deposits.",
+          "title_zh": "客户或交易对手存入款项形成的存款负债。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.non_current_liabilities",
+          "src_en": "The non-current liabilities of the company.",
+          "desc_en": "Obligations due beyond one year.",
+          "title_zh": "一年以上到期的非流动负债。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.non_current_debt",
+          "src_en": "The non-current debt of the company.",
+          "desc_en": "Portion of debt due beyond one year.",
+          "title_zh": "一年以上到期的债务部分。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.tax_liabilities",
+          "src_en": "The tax liabilities of the company.",
+          "desc_en": "Recognized tax-related obligations such as deferred tax liabilities.",
+          "title_zh": "已确认的税务相关负债，如递延所得税负债。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.shareholders_equity",
+          "src_en": "The shareholders' equity of the company.",
+          "desc_en": "Residual interest in assets after deducting liabilities.",
+          "title_zh": "资产扣除负债后归属于股东的剩余权益。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.retained_earnings",
+          "src_en": "The retained earnings of the company.",
+          "desc_en": "Cumulative earnings retained rather than distributed as dividends.",
+          "title_zh": "历年留存而未作为股息分配的累计利润。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.accumulated_other_comprehensive_income",
+          "src_en": "The accumulated other comprehensive income of the company.",
+          "desc_en": "Cumulative gains and losses recorded outside the income statement.",
+          "title_zh": "计入损益表之外的累计其他综合收益。"
+        },
+        {
+          "path": "resp.200.financials.balance_sheets.total_debt",
+          "src_en": "The total debt of the company.",
+          "desc_en": "Combined current and non-current interest-bearing debt.",
+          "title_zh": "流动与非流动有息债务合计。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements",
+          "src_en": "",
+          "desc_en": "List of cash flow statement records for the ticker.",
+          "title_zh": "该股票代码的现金流量表记录列表。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.report_period",
+          "src_en": "The reporting period of the cash flow statement.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.fiscal_period",
+          "src_en": "The fiscal period of the cash flow statement.",
+          "desc_en": "Issuer's fiscal-period label for the reporting interval.",
+          "title_zh": "本报告区间对应的公司财年周期标签。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.period",
+          "src_en": "The time period of the cash flow statement.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.currency",
+          "src_en": "The currency in which the financial data is reported.",
+          "desc_en": "Currency in which the monetary figures in this record are reported.",
+          "title_zh": "本条记录中各金额数值所采用的计价货币。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.net_income",
+          "src_en": "The net income of the company.",
+          "desc_en": "Net income carried from the income statement as the starting point of the cash flow.",
+          "title_zh": "由损益表结转、作为现金流量起点的净利润。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.depreciation_and_amortization",
+          "src_en": "The depreciation and amortization of the company.",
+          "desc_en": "Non-cash depreciation and amortization added back to earnings.",
+          "title_zh": "加回利润的非现金折旧与摊销。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.share_based_compensation",
+          "src_en": "The share-based compensation of the company.",
+          "desc_en": "Non-cash expense from share-based employee compensation.",
+          "title_zh": "以股份为基础的员工薪酬产生的非现金费用。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.net_cash_flow_from_operations",
+          "src_en": "The net cash flow from operations of the company.",
+          "desc_en": "Net cash generated by core operating activities.",
+          "title_zh": "核心经营活动产生的净现金流。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.capital_expenditure",
+          "src_en": "The capital expenditure of the company.",
+          "desc_en": "Cash spent acquiring or upgrading long-term assets.",
+          "title_zh": "用于购置或升级长期资产的资本性支出。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.business_acquisitions_and_disposals",
+          "src_en": "The business acquisitions and disposals of the company.",
+          "desc_en": "Net cash from acquiring or disposing of businesses.",
+          "title_zh": "收购或处置业务产生的净现金。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.investment_acquisitions_and_disposals",
+          "src_en": "The investment acquisitions and disposals of the company.",
+          "desc_en": "Net cash from buying or selling investments.",
+          "title_zh": "买入或卖出投资产生的净现金。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.net_cash_flow_from_investing",
+          "src_en": "The net cash flow from investing of the company.",
+          "desc_en": "Net cash generated or used by investing activities.",
+          "title_zh": "投资活动产生或消耗的净现金流。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.issuance_or_repayment_of_debt_securities",
+          "src_en": "The issuance or repayment of debt securities of the company.",
+          "desc_en": "Net cash from issuing or repaying debt securities.",
+          "title_zh": "发行或偿还债务证券产生的净现金。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.issuance_or_purchase_of_equity_shares",
+          "src_en": "The issuance or purchase of equity shares of the company.",
+          "desc_en": "Net cash from issuing or repurchasing equity shares.",
+          "title_zh": "发行或回购股本产生的净现金。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.dividends_and_other_cash_distributions",
+          "src_en": "The dividends and other cash distributions of the company.",
+          "desc_en": "Cash paid out as dividends and other distributions.",
+          "title_zh": "以股息及其他形式分配支付的现金。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.net_cash_flow_from_financing",
+          "src_en": "The net cash flow from financing of the company.",
+          "desc_en": "Net cash generated or used by financing activities.",
+          "title_zh": "融资活动产生或消耗的净现金流。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.change_in_cash_and_equivalents",
+          "src_en": "The change in cash and equivalents of the company.",
+          "desc_en": "Net change in cash and equivalents over the period.",
+          "title_zh": "报告期内现金及等价物的净变动额。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.effect_of_exchange_rate_changes",
+          "src_en": "The effect of exchange rate changes of the company.",
+          "desc_en": "Impact of foreign-exchange rate movements on cash balances.",
+          "title_zh": "汇率变动对现金余额的影响。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.ending_cash_balance",
+          "src_en": "The ending cash balance of the company.",
+          "desc_en": "Cash and equivalents balance at the end of the period.",
+          "title_zh": "报告期末的现金及等价物余额。"
+        },
+        {
+          "path": "resp.200.financials.cash_flow_statements.free_cash_flow",
+          "src_en": "The free cash flow of the company.",
+          "desc_en": "Operating cash flow remaining after capital expenditure.",
+          "title_zh": "经营现金流扣除资本性支出后的自由现金流。"
+        }
+      ]
+    },
+    {
+      "operation": "getNews",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get recent news articles for a specific company or the broad market. Pass a ticker for company-specific news, or omit the ticker for general market news. Articles are sourced from RSS feeds of publishers like The Motley Fool, Investing.com, Reuters, and more.",
+          "desc_en": "Retrieve recent news articles for a specific company, or broad-market news when the ticker is omitted.",
+          "title_zh": "获取指定公司的近期新闻；省略股票代码时返回大盘新闻。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol of the company. Omit for broad market news.",
+          "desc_en": "Ticker symbol for company-specific news; omit to receive broad-market news.",
+          "title_zh": "用于获取特定公司新闻的股票代码；省略则返回大盘新闻。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of news articles to return (default: 5, max: 10).",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "resp.200.news",
+          "src_en": "",
+          "desc_en": "List of news articles matching the query.",
+          "title_zh": "符合查询条件的新闻文章列表。"
+        },
+        {
+          "path": "resp.200.news.ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.news.title",
+          "src_en": "The title of the news article.",
+          "desc_en": "Headline of the news article.",
+          "title_zh": "新闻文章的标题。"
+        },
+        {
+          "path": "resp.200.news.author",
+          "src_en": "The author of the news article.",
+          "desc_en": "Author of the news article.",
+          "title_zh": "新闻文章的作者。"
+        },
+        {
+          "path": "resp.200.news.source",
+          "src_en": "The source of the news article.",
+          "desc_en": "Publisher or source of the news article.",
+          "title_zh": "新闻文章的发布方或来源。"
+        },
+        {
+          "path": "resp.200.news.date",
+          "src_en": "The date the news article was published.",
+          "desc_en": "Publication date of the news article.",
+          "title_zh": "新闻文章的发布日期。"
+        },
+        {
+          "path": "resp.200.news.url",
+          "src_en": "The URL of the news article.",
+          "desc_en": "URL to the full news article.",
+          "title_zh": "新闻文章全文的链接。"
+        },
+        {
+          "path": "resp.200.news.sentiment",
+          "src_en": "The sentiment of the news article.",
+          "desc_en": "Sentiment classification assigned to the news article.",
+          "title_zh": "为该新闻文章判定的情感倾向分类。"
+        }
+      ]
+    },
+    {
+      "operation": "getPrices",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get end-of-day (EOD) historical price data for stocks.",
+          "desc_en": "Retrieve end-of-day historical price data for a stock over a date range.",
+          "title_zh": "按日期区间获取股票的日终历史价格数据。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The stock ticker symbol (e.g. AAPL, MSFT).",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "param:interval",
+          "src_en": "The time interval for the price data.",
+          "desc_en": "Aggregation interval of each returned price bar.",
+          "title_zh": "每条返回价格数据的聚合时间粒度。"
+        },
+        {
+          "path": "param:start_date",
+          "src_en": "The start date for the price data (format: YYYY-MM-DD).",
+          "desc_en": "Earliest date to include in the returned price series.",
+          "title_zh": "返回价格序列纳入的最早日期。"
+        },
+        {
+          "path": "param:end_date",
+          "src_en": "The end date for the price data (format: YYYY-MM-DD).",
+          "desc_en": "Latest date to include in the returned price series.",
+          "title_zh": "返回价格序列纳入的最晚日期。"
+        },
+        {
+          "path": "resp.200.prices",
+          "src_en": "",
+          "desc_en": "List of historical price bars for the ticker.",
+          "title_zh": "该股票代码的历史价格数据列表。"
+        },
+        {
+          "path": "resp.200.prices.open",
+          "src_en": "The open price of the ticker in the given time period.",
+          "desc_en": "Opening price of the ticker for the interval.",
+          "title_zh": "该时间区间内的开盘价。"
+        },
+        {
+          "path": "resp.200.prices.close",
+          "src_en": "The close price of the ticker in the given time period.",
+          "desc_en": "Closing price of the ticker for the interval.",
+          "title_zh": "该时间区间内的收盘价。"
+        },
+        {
+          "path": "resp.200.prices.high",
+          "src_en": "The high price of the ticker in the given time period.",
+          "desc_en": "Highest price of the ticker during the interval.",
+          "title_zh": "该时间区间内的最高价。"
+        },
+        {
+          "path": "resp.200.prices.low",
+          "src_en": "The low price of the ticker in the given time period.",
+          "desc_en": "Lowest price of the ticker during the interval.",
+          "title_zh": "该时间区间内的最低价。"
+        },
+        {
+          "path": "resp.200.prices.volume",
+          "src_en": "The volume of the ticker in the given time period.",
+          "desc_en": "Trading volume of the ticker during the interval.",
+          "title_zh": "该时间区间内的成交量。"
+        },
+        {
+          "path": "resp.200.prices.time",
+          "src_en": "The human-readable time format of the price in UTC.",
+          "desc_en": "Interval timestamp as a human-readable UTC value.",
+          "title_zh": "该数据时点的可读时间戳（UTC）。"
+        },
+        {
+          "path": "resp.200.prices.time_milliseconds",
+          "src_en": "The timestamp of the price in milliseconds since epoch.",
+          "desc_en": "Interval timestamp in milliseconds since the Unix epoch.",
+          "title_zh": "该数据时点的时间戳，以 Unix 纪元起算的毫秒数表示。"
+        },
+        {
+          "path": "resp.200.next_page_url",
+          "src_en": "The URL to the next page of results.",
+          "desc_en": "URL to fetch the next page of price results, when more data is available.",
+          "title_zh": "当存在更多数据时，用于获取下一页价格结果的链接。"
+        }
+      ]
+    },
+    {
+      "operation": "getFinancialMetrics",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get financial metrics for a ticker, including valuation, profitability, efficiency, liquidity, leverage, growth, and per share metrics.",
+          "desc_en": "Retrieve financial metrics for a ticker across valuation, profitability, efficiency, liquidity, leverage, growth, and per-share categories.",
+          "title_zh": "获取指定股票代码的财务指标，涵盖估值、盈利能力、运营效率、流动性、杠杆、成长性与每股指标。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol of the company. Required if cik is not provided.",
+          "desc_en": "Stock ticker symbol of the company; required when `cik` is not provided.",
+          "title_zh": "目标公司的股票代码；未提供 `cik` 时必填。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The Central Index Key (CIK) of the company. Can be used instead of ticker.",
+          "desc_en": "SEC Central Index Key of the company; an alternative to the ticker.",
+          "title_zh": "公司的 SEC 中央索引号（CIK），可替代股票代码使用。"
+        },
+        {
+          "path": "param:period",
+          "src_en": "The time period for the financial data.",
+          "desc_en": "Reporting cadence of the financial data to return.",
+          "title_zh": "返回财务数据所采用的报告周期。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "The maximum number of results to return.",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "resp.200.ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.market_cap",
+          "src_en": "The market capitalization of the company.",
+          "desc_en": "Total market value of the company's outstanding shares.",
+          "title_zh": "公司全部流通股的总市值。"
+        },
+        {
+          "path": "resp.200.enterprise_value",
+          "src_en": "The total value of the company (market cap + debt - cash).",
+          "desc_en": "Total company value combining equity market cap with debt, net of cash.",
+          "title_zh": "以股权市值叠加债务、扣除现金后的公司整体价值。"
+        },
+        {
+          "path": "resp.200.price_to_earnings_ratio",
+          "src_en": "Price to earnings ratio.",
+          "desc_en": "Share price relative to earnings per share.",
+          "title_zh": "股价相对于每股收益的倍数（市盈率）。"
+        },
+        {
+          "path": "resp.200.price_to_book_ratio",
+          "src_en": "Price to book ratio.",
+          "desc_en": "Share price relative to book value per share.",
+          "title_zh": "股价相对于每股账面价值的倍数（市净率）。"
+        },
+        {
+          "path": "resp.200.price_to_sales_ratio",
+          "src_en": "Price to sales ratio.",
+          "desc_en": "Share price relative to revenue per share.",
+          "title_zh": "股价相对于每股营收的倍数（市销率）。"
+        },
+        {
+          "path": "resp.200.enterprise_value_to_ebitda_ratio",
+          "src_en": "Enterprise value to EBITDA ratio.",
+          "desc_en": "Enterprise value relative to EBITDA.",
+          "title_zh": "企业价值相对于 EBITDA 的倍数。"
+        },
+        {
+          "path": "resp.200.enterprise_value_to_revenue_ratio",
+          "src_en": "Enterprise value to revenue ratio.",
+          "desc_en": "Enterprise value relative to revenue.",
+          "title_zh": "企业价值相对于营业收入的倍数。"
+        },
+        {
+          "path": "resp.200.free_cash_flow_yield",
+          "src_en": "Free cash flow yield.",
+          "desc_en": "Free cash flow relative to market capitalization.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "自由现金流相对于市值的收益率。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.peg_ratio",
+          "src_en": "Price to earnings growth ratio.",
+          "desc_en": "Price-to-earnings ratio relative to earnings growth.",
+          "title_zh": "市盈率相对于盈利增长的比率（PEG）。"
+        },
+        {
+          "path": "resp.200.gross_margin",
+          "src_en": "Gross profit as a percentage of revenue.",
+          "desc_en": "Gross profit expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "毛利润相对于营业收入的占比（毛利率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.operating_margin",
+          "src_en": "Operating income as a percentage of revenue.",
+          "desc_en": "Operating income expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "营业利润相对于营业收入的占比（营业利润率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.net_margin",
+          "src_en": "Net income as a percentage of revenue.",
+          "desc_en": "Net income expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "净利润相对于营业收入的占比（净利率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.return_on_equity",
+          "src_en": "Net income as a percentage of shareholders' equity.",
+          "desc_en": "Net income expressed relative to shareholders' equity.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "净利润相对于股东权益的回报水平（净资产收益率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.return_on_assets",
+          "src_en": "Net income as a percentage of total assets.",
+          "desc_en": "Net income expressed relative to total assets.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "净利润相对于总资产的回报水平（总资产收益率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.return_on_invested_capital",
+          "src_en": "Net operating profit after taxes as a percentage of invested capital.",
+          "desc_en": "After-tax operating profit relative to invested capital.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "税后营业利润相对于投入资本的回报水平。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.asset_turnover",
+          "src_en": "Revenue divided by average total assets.",
+          "desc_en": "Revenue generated per unit of average total assets.",
+          "title_zh": "每单位平均总资产所产生的营业收入（总资产周转率）。"
+        },
+        {
+          "path": "resp.200.inventory_turnover",
+          "src_en": "Cost of goods sold divided by average inventory.",
+          "desc_en": "Cost of goods sold relative to average inventory.",
+          "title_zh": "销货成本相对于平均存货的周转倍数（存货周转率）。"
+        },
+        {
+          "path": "resp.200.receivables_turnover",
+          "src_en": "Revenue divided by average accounts receivable.",
+          "desc_en": "Revenue relative to average accounts receivable.",
+          "title_zh": "营业收入相对于平均应收账款的周转倍数（应收账款周转率）。"
+        },
+        {
+          "path": "resp.200.days_sales_outstanding",
+          "src_en": "Average accounts receivable divided by revenue over the period.",
+          "desc_en": "Average number of days to collect receivables.",
+          "title_zh": "收回应收账款平均所需的天数。"
+        },
+        {
+          "path": "resp.200.operating_cycle",
+          "src_en": "Inventory turnover + receivables turnover.",
+          "desc_en": "Combined cycle of converting inventory and receivables into cash.",
+          "title_zh": "存货与应收账款转化为现金的合计周期。"
+        },
+        {
+          "path": "resp.200.working_capital_turnover",
+          "src_en": "Revenue divided by average working capital.",
+          "desc_en": "Revenue generated per unit of average working capital.",
+          "title_zh": "每单位平均营运资本所产生的营业收入。"
+        },
+        {
+          "path": "resp.200.current_ratio",
+          "src_en": "Current assets divided by current liabilities.",
+          "desc_en": "Current assets relative to current liabilities.",
+          "title_zh": "流动资产相对于流动负债的比率（流动比率）。"
+        },
+        {
+          "path": "resp.200.quick_ratio",
+          "src_en": "Quick assets divided by current liabilities.",
+          "desc_en": "Liquid current assets relative to current liabilities.",
+          "title_zh": "速动资产相对于流动负债的比率（速动比率）。"
+        },
+        {
+          "path": "resp.200.cash_ratio",
+          "src_en": "Cash and cash equivalents divided by current liabilities.",
+          "desc_en": "Cash and equivalents relative to current liabilities.",
+          "title_zh": "现金及等价物相对于流动负债的比率（现金比率）。"
+        },
+        {
+          "path": "resp.200.operating_cash_flow_ratio",
+          "src_en": "Operating cash flow divided by current liabilities.",
+          "desc_en": "Operating cash flow relative to current liabilities.",
+          "title_zh": "经营现金流相对于流动负债的比率。"
+        },
+        {
+          "path": "resp.200.debt_to_equity",
+          "src_en": "Total debt divided by shareholders' equity.",
+          "desc_en": "Total debt relative to shareholders' equity.",
+          "title_zh": "总债务相对于股东权益的比率（产权比率）。"
+        },
+        {
+          "path": "resp.200.debt_to_assets",
+          "src_en": "Total debt divided by total assets.",
+          "desc_en": "Total debt relative to total assets.",
+          "title_zh": "总债务相对于总资产的比率（资产负债率）。"
+        },
+        {
+          "path": "resp.200.interest_coverage",
+          "src_en": "EBIT divided by interest expense.",
+          "desc_en": "EBIT relative to interest expense.",
+          "title_zh": "息税前利润相对于利息支出的覆盖倍数（利息保障倍数）。"
+        },
+        {
+          "path": "resp.200.revenue_growth",
+          "src_en": "Year-over-year growth in revenue.",
+          "desc_en": "Year-over-year change in revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "营业收入的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.earnings_growth",
+          "src_en": "Year-over-year growth in earnings.",
+          "desc_en": "Year-over-year change in earnings.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "盈利的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.book_value_growth",
+          "src_en": "Year-over-year growth in book value.",
+          "desc_en": "Year-over-year change in book value.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "账面价值的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.earnings_per_share_growth",
+          "src_en": "Growth in earnings per share over the period.",
+          "desc_en": "Change in earnings per share over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "每股收益在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.free_cash_flow_growth",
+          "src_en": "Growth in free cash flow over the period.",
+          "desc_en": "Change in free cash flow over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "自由现金流在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.operating_income_growth",
+          "src_en": "Growth in operating income over the period.",
+          "desc_en": "Change in operating income over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "营业利润在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.ebitda_growth",
+          "src_en": "Growth in EBITDA over the period.",
+          "desc_en": "Change in EBITDA over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "EBITDA 在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.payout_ratio",
+          "src_en": "Dividends paid as a percentage of net income.",
+          "desc_en": "Dividends paid relative to net income.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "已派股息相对于净利润的占比（派息率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.earnings_per_share",
+          "src_en": "Net income divided by weighted average shares outstanding.",
+          "desc_en": "Net income allocated to each outstanding common share.",
+          "title_zh": "分摊到每股流通普通股的净利润。"
+        },
+        {
+          "path": "resp.200.book_value_per_share",
+          "src_en": "Shareholders' equity divided by shares outstanding.",
+          "desc_en": "Shareholders' equity allocated to each outstanding share.",
+          "title_zh": "分摊到每股流通股的股东权益（每股账面价值）。"
+        },
+        {
+          "path": "resp.200.free_cash_flow_per_share",
+          "src_en": "Free cash flow divided by shares outstanding.",
+          "desc_en": "Free cash flow allocated to each outstanding share.",
+          "title_zh": "分摊到每股流通股的自由现金流。"
+        }
+      ]
+    },
+    {
+      "operation": "getFinancialMetricsSnapshot",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get the real-time financial metrics snapshot for a stock, including valuation ratios, profitability, efficiency, liquidity, leverage, growth, and per share metrics.",
+          "desc_en": "Retrieve a real-time snapshot of a stock's financial metrics across valuation, profitability, efficiency, liquidity, leverage, growth, and per-share categories.",
+          "title_zh": "获取股票财务指标的实时快照，涵盖估值、盈利能力、运营效率、流动性、杠杆、成长性与每股指标。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "param:cik",
+          "src_en": "The Central Index Key (CIK) of the company. Can be used instead of ticker.",
+          "desc_en": "SEC Central Index Key of the company; an alternative to the ticker.",
+          "title_zh": "公司的 SEC 中央索引号（CIK），可替代股票代码使用。"
+        },
+        {
+          "path": "resp.200.snapshot",
+          "src_en": "",
+          "desc_en": "Real-time snapshot of the stock's financial metrics.",
+          "title_zh": "该股票财务指标的实时快照。"
+        },
+        {
+          "path": "resp.200.snapshot.ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.snapshot.market_cap",
+          "src_en": "The total market capitalization (stock price × shares outstanding).",
+          "desc_en": "Total market capitalization, computed from current share price and shares outstanding.",
+          "title_zh": "按当前股价与流通股数计算的总市值。"
+        },
+        {
+          "path": "resp.200.snapshot.enterprise_value",
+          "src_en": "The total value of the company (market cap + debt - cash).",
+          "desc_en": "Total company value combining equity market cap with debt, net of cash.",
+          "title_zh": "以股权市值叠加债务、扣除现金后的公司整体价值。"
+        },
+        {
+          "path": "resp.200.snapshot.price_to_earnings_ratio",
+          "src_en": "Price to earnings ratio.",
+          "desc_en": "Share price relative to earnings per share.",
+          "title_zh": "股价相对于每股收益的倍数（市盈率）。"
+        },
+        {
+          "path": "resp.200.snapshot.price_to_book_ratio",
+          "src_en": "Price to book ratio.",
+          "desc_en": "Share price relative to book value per share.",
+          "title_zh": "股价相对于每股账面价值的倍数（市净率）。"
+        },
+        {
+          "path": "resp.200.snapshot.price_to_sales_ratio",
+          "src_en": "Price to sales ratio.",
+          "desc_en": "Share price relative to revenue per share.",
+          "title_zh": "股价相对于每股营收的倍数（市销率）。"
+        },
+        {
+          "path": "resp.200.snapshot.enterprise_value_to_ebitda_ratio",
+          "src_en": "Enterprise value to EBITDA ratio.",
+          "desc_en": "Enterprise value relative to EBITDA.",
+          "title_zh": "企业价值相对于 EBITDA 的倍数。"
+        },
+        {
+          "path": "resp.200.snapshot.enterprise_value_to_revenue_ratio",
+          "src_en": "Enterprise value to revenue ratio.",
+          "desc_en": "Enterprise value relative to revenue.",
+          "title_zh": "企业价值相对于营业收入的倍数。"
+        },
+        {
+          "path": "resp.200.snapshot.free_cash_flow_yield",
+          "src_en": "Free cash flow yield.",
+          "desc_en": "Free cash flow relative to market capitalization.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "自由现金流相对于市值的收益率。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.peg_ratio",
+          "src_en": "Price to earnings growth ratio.",
+          "desc_en": "Price-to-earnings ratio relative to earnings growth.",
+          "title_zh": "市盈率相对于盈利增长的比率（PEG）。"
+        },
+        {
+          "path": "resp.200.snapshot.gross_margin",
+          "src_en": "Gross profit as a percentage of revenue.",
+          "desc_en": "Gross profit expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "毛利润相对于营业收入的占比（毛利率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.operating_margin",
+          "src_en": "Operating income as a percentage of revenue.",
+          "desc_en": "Operating income expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "营业利润相对于营业收入的占比（营业利润率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.net_margin",
+          "src_en": "Net income as a percentage of revenue.",
+          "desc_en": "Net income expressed relative to revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "净利润相对于营业收入的占比（净利率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.return_on_equity",
+          "src_en": "Net income as a percentage of shareholders' equity.",
+          "desc_en": "Net income expressed relative to shareholders' equity.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "净利润相对于股东权益的回报水平（净资产收益率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.return_on_assets",
+          "src_en": "Net income as a percentage of total assets.",
+          "desc_en": "Net income expressed relative to total assets.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "净利润相对于总资产的回报水平（总资产收益率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.return_on_invested_capital",
+          "src_en": "Net operating profit after taxes as a percentage of invested capital.",
+          "desc_en": "After-tax operating profit relative to invested capital.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "税后营业利润相对于投入资本的回报水平。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.asset_turnover",
+          "src_en": "Revenue divided by average total assets.",
+          "desc_en": "Revenue generated per unit of average total assets.",
+          "title_zh": "每单位平均总资产所产生的营业收入（总资产周转率）。"
+        },
+        {
+          "path": "resp.200.snapshot.inventory_turnover",
+          "src_en": "Cost of goods sold divided by average inventory.",
+          "desc_en": "Cost of goods sold relative to average inventory.",
+          "title_zh": "销货成本相对于平均存货的周转倍数（存货周转率）。"
+        },
+        {
+          "path": "resp.200.snapshot.receivables_turnover",
+          "src_en": "Revenue divided by average accounts receivable.",
+          "desc_en": "Revenue relative to average accounts receivable.",
+          "title_zh": "营业收入相对于平均应收账款的周转倍数（应收账款周转率）。"
+        },
+        {
+          "path": "resp.200.snapshot.days_sales_outstanding",
+          "src_en": "Average accounts receivable divided by revenue over the period.",
+          "desc_en": "Average number of days to collect receivables.",
+          "title_zh": "收回应收账款平均所需的天数。"
+        },
+        {
+          "path": "resp.200.snapshot.operating_cycle",
+          "src_en": "Inventory turnover + receivables turnover.",
+          "desc_en": "Combined cycle of converting inventory and receivables into cash.",
+          "title_zh": "存货与应收账款转化为现金的合计周期。"
+        },
+        {
+          "path": "resp.200.snapshot.working_capital_turnover",
+          "src_en": "Revenue divided by average working capital.",
+          "desc_en": "Revenue generated per unit of average working capital.",
+          "title_zh": "每单位平均营运资本所产生的营业收入。"
+        },
+        {
+          "path": "resp.200.snapshot.current_ratio",
+          "src_en": "Current assets divided by current liabilities.",
+          "desc_en": "Current assets relative to current liabilities.",
+          "title_zh": "流动资产相对于流动负债的比率（流动比率）。"
+        },
+        {
+          "path": "resp.200.snapshot.quick_ratio",
+          "src_en": "Quick assets divided by current liabilities.",
+          "desc_en": "Liquid current assets relative to current liabilities.",
+          "title_zh": "速动资产相对于流动负债的比率（速动比率）。"
+        },
+        {
+          "path": "resp.200.snapshot.cash_ratio",
+          "src_en": "Cash and cash equivalents divided by current liabilities.",
+          "desc_en": "Cash and equivalents relative to current liabilities.",
+          "title_zh": "现金及等价物相对于流动负债的比率（现金比率）。"
+        },
+        {
+          "path": "resp.200.snapshot.operating_cash_flow_ratio",
+          "src_en": "Operating cash flow divided by current liabilities.",
+          "desc_en": "Operating cash flow relative to current liabilities.",
+          "title_zh": "经营现金流相对于流动负债的比率。"
+        },
+        {
+          "path": "resp.200.snapshot.debt_to_equity",
+          "src_en": "Total debt divided by shareholders' equity.",
+          "desc_en": "Total debt relative to shareholders' equity.",
+          "title_zh": "总债务相对于股东权益的比率（产权比率）。"
+        },
+        {
+          "path": "resp.200.snapshot.debt_to_assets",
+          "src_en": "Total debt divided by total assets.",
+          "desc_en": "Total debt relative to total assets.",
+          "title_zh": "总债务相对于总资产的比率（资产负债率）。"
+        },
+        {
+          "path": "resp.200.snapshot.interest_coverage",
+          "src_en": "EBIT divided by interest expense.",
+          "desc_en": "EBIT relative to interest expense.",
+          "title_zh": "息税前利润相对于利息支出的覆盖倍数（利息保障倍数）。"
+        },
+        {
+          "path": "resp.200.snapshot.revenue_growth",
+          "src_en": "Year-over-year growth in revenue.",
+          "desc_en": "Year-over-year change in revenue.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "营业收入的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.earnings_growth",
+          "src_en": "Year-over-year growth in earnings.",
+          "desc_en": "Year-over-year change in earnings.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "盈利的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.book_value_growth",
+          "src_en": "Year-over-year growth in book value.",
+          "desc_en": "Year-over-year change in book value.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "账面价值的同比变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.earnings_per_share_growth",
+          "src_en": "Growth in earnings per share over the period.",
+          "desc_en": "Change in earnings per share over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "每股收益在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.free_cash_flow_growth",
+          "src_en": "Growth in free cash flow over the period.",
+          "desc_en": "Change in free cash flow over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "自由现金流在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.operating_income_growth",
+          "src_en": "Growth in operating income over the period.",
+          "desc_en": "Change in operating income over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "营业利润在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.ebitda_growth",
+          "src_en": "Growth in EBITDA over the period.",
+          "desc_en": "Change in EBITDA over the period.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "EBITDA 在报告期内的变动幅度。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.payout_ratio",
+          "src_en": "Dividends paid as a percentage of net income.",
+          "desc_en": "Dividends paid relative to net income.\n[⚠️Note:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]",
+          "title_zh": "已派股息相对于净利润的占比（派息率）。\n[⚠️批注:源码未声明该比率/百分比字段是以百分数（如 25.3）还是小数（如 0.253）返回，待研发确认。]"
+        },
+        {
+          "path": "resp.200.snapshot.earnings_per_share",
+          "src_en": "Net income divided by weighted average shares outstanding.",
+          "desc_en": "Net income allocated to each outstanding common share.",
+          "title_zh": "分摊到每股流通普通股的净利润。"
+        },
+        {
+          "path": "resp.200.snapshot.book_value_per_share",
+          "src_en": "Shareholders' equity divided by shares outstanding.",
+          "desc_en": "Shareholders' equity allocated to each outstanding share.",
+          "title_zh": "分摊到每股流通股的股东权益（每股账面价值）。"
+        },
+        {
+          "path": "resp.200.snapshot.free_cash_flow_per_share",
+          "src_en": "Free cash flow divided by shares outstanding.",
+          "desc_en": "Free cash flow allocated to each outstanding share.",
+          "title_zh": "分摊到每股流通股的自由现金流。"
+        }
+      ]
+    },
+    {
+      "operation": "stockScreener",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search for stocks by filtering across financial metrics from income statements, balance sheets, and cash flow statements.",
+          "desc_en": "Screen for stocks by applying filters across financial metrics drawn from income statements, balance sheets, and cash flow statements.",
+          "title_zh": "通过对取自利润表、资产负债表与现金流量表的财务指标设定筛选条件来检索股票。"
+        },
+        {
+          "path": "req.period",
+          "src_en": "The time period for the financial data.",
+          "desc_en": "Reporting cadence of the financial data to return.",
+          "title_zh": "返回财务数据所采用的报告周期。"
+        },
+        {
+          "path": "req.limit",
+          "src_en": "The maximum number of results to return.",
+          "desc_en": "Upper bound on the number of records returned in one response.",
+          "title_zh": "单次响应返回记录数的上限。"
+        },
+        {
+          "path": "req.order_by",
+          "src_en": "The field to order the results by.  Use -field to order in descending order.",
+          "desc_en": "Field used to sort the results; prefix with a minus sign to sort in descending order.",
+          "title_zh": "用于结果排序的字段；前缀加减号表示降序排列。"
+        },
+        {
+          "path": "req.currency",
+          "src_en": "The currency of the financial data.",
+          "desc_en": "Currency in which the screened financial figures are expressed.",
+          "title_zh": "筛选所依据的财务数值采用的计价货币。"
+        },
+        {
+          "path": "req.historical",
+          "src_en": "Whether to return historical financial data.",
+          "desc_en": "Whether to evaluate filters against historical financial data rather than the latest only.",
+          "title_zh": "是否对历史财务数据（而非仅最新数据）应用筛选条件。"
+        },
+        {
+          "path": "req.filters",
+          "src_en": "An array of filter objects to apply to the search.",
+          "desc_en": "List of filter conditions combined to screen the stock universe.",
+          "title_zh": "用于组合筛选股票池的过滤条件列表。"
+        },
+        {
+          "path": "req.filters.field",
+          "src_en": "The criteria to filter on.  For financial metric fields, use 'gt', 'lt', 'gte', 'lte', 'eq' operators.  For 'ticker' and 'cik' fields, use the 'in' operator to filter against multiple values.",
+          "desc_en": "Financial metric or identifier the condition is evaluated on; use comparison operators for metric fields and the 'in' operator for ticker or cik.",
+          "title_zh": "该条件所作用的财务指标或标识；指标字段使用比较运算符，ticker 或 cik 使用 'in' 运算符。"
+        },
+        {
+          "path": "req.filters.operator",
+          "src_en": "The comparison operator. The 'in' operator can only be used with a field value of 'ticker' or 'cik' and lets you filter against multiple values.",
+          "desc_en": "Comparison operator applied between the field and the value; the 'in' operator works only with the ticker or cik field for multi-value matching.",
+          "title_zh": "在字段与取值之间施加的比较运算符；'in' 运算符仅可与 ticker 或 cik 字段配合用于多值匹配。"
+        },
+        {
+          "path": "req.filters.value",
+          "src_en": "",
+          "desc_en": "Value to compare against: a single number for comparison operators, or a list of ticker/cik strings for the 'in' operator.",
+          "title_zh": "用于比较的取值：比较运算符对应单个数值，'in' 运算符对应 ticker/cik 字符串列表。"
+        },
+        {
+          "path": "resp.200.search_results",
+          "src_en": "",
+          "desc_en": "List of stocks matching all supplied filters.",
+          "title_zh": "满足全部筛选条件的股票列表。"
+        },
+        {
+          "path": "resp.200.search_results.ticker",
+          "src_en": "The ticker symbol of the company.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.search_results.report_period",
+          "src_en": "The reporting period of the financial data.",
+          "desc_en": "Date the underlying report covers, marking which fiscal point the figures belong to.",
+          "title_zh": "本条数据所属报告的覆盖日期，标明各数值对应的财报时点。"
+        },
+        {
+          "path": "resp.200.search_results.period",
+          "src_en": "The time period of the financial data.",
+          "desc_en": "Reporting cadence to which this record's figures correspond.",
+          "title_zh": "本条记录数值所对应的报告周期。"
+        },
+        {
+          "path": "resp.200.search_results.currency",
+          "src_en": "The currency of the financial data.",
+          "desc_en": "Currency in which the returned financial figures are reported.",
+          "title_zh": "所返回财务数值采用的计价货币。"
+        }
+      ]
+    },
+    {
+      "operation": "getEarnings",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get the most recent earnings snapshot for a ticker. Optional estimate/surprise and change fields are returned only when available.",
+          "desc_en": "Retrieve the most recent earnings snapshot for a ticker; optional estimate, surprise, and change fields are returned only when available.",
+          "title_zh": "获取指定股票代码的最新财报快照；可选的预期、超预期及变动字段仅在可获取时返回。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The ticker symbol.",
+          "desc_en": "Stock ticker symbol identifying the company to query.",
+          "title_zh": "标识目标公司的股票代码。"
+        },
+        {
+          "path": "resp.200.earnings",
+          "src_en": "",
+          "desc_en": "Earnings snapshot for the ticker, split into quarterly and annual views.",
+          "title_zh": "该股票代码的财报快照，分为季度与年度两组视图。"
+        },
+        {
+          "path": "resp.200.earnings.ticker",
+          "src_en": "The requested ticker symbol.",
+          "desc_en": "Ticker symbol the snapshot was requested for.",
+          "title_zh": "本次查询所针对的股票代码。"
+        },
+        {
+          "path": "resp.200.earnings.report_period",
+          "src_en": "Most recent report period found for the ticker.",
+          "desc_en": "Most recent report period found for the ticker.",
+          "title_zh": "该股票代码可获取的最近报告期。"
+        },
+        {
+          "path": "resp.200.earnings.fiscal_period",
+          "src_en": "Fiscal period label (e.g. 2025-Q4 or 2025-FY).",
+          "desc_en": "Fiscal-period label for the snapshot.",
+          "title_zh": "本快照对应的财年周期标签。"
+        },
+        {
+          "path": "resp.200.earnings.currency",
+          "src_en": "ISO currency code (e.g. USD).",
+          "desc_en": "ISO currency code in which the figures are reported.",
+          "title_zh": "各数值采用的 ISO 货币代码。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly",
+          "src_en": "",
+          "desc_en": "Quarterly earnings view, where change fields are quarter-over-quarter.",
+          "title_zh": "季度财报视图，其中变动字段为环比口径。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.fiscal_period",
+          "src_en": "Fiscal period label (e.g. 2025-Q4 or 2025-FY).",
+          "desc_en": "Issuer's fiscal-period label for the reporting interval.",
+          "title_zh": "本报告区间对应的公司财年周期标签。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.currency",
+          "src_en": "ISO currency code (e.g. USD).",
+          "desc_en": "Currency in which the monetary figures in this record are reported.",
+          "title_zh": "本条记录中各金额数值所采用的计价货币。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.revenue",
+          "src_en": "",
+          "desc_en": "Reported revenue for the period.",
+          "title_zh": "报告期内实现的营业收入。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.estimated_revenue",
+          "src_en": "Estimated revenue. Returned only when available.",
+          "desc_en": "Analyst-consensus estimated revenue for the period; present only when available.",
+          "title_zh": "本期分析师一致预期的营业收入；仅在可获取时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.revenue_surprise",
+          "src_en": "Revenue surprise classification versus estimate. Returned only when available.",
+          "desc_en": "Whether reported revenue beat, missed, or met the estimate; present only when available.",
+          "title_zh": "实际营业收入相对于预期为超预期、低于预期还是符合预期；仅在可获取时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.earnings_per_share",
+          "src_en": "",
+          "desc_en": "Reported earnings per share for the period.",
+          "title_zh": "报告期内的每股收益。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.estimated_earnings_per_share",
+          "src_en": "Estimated earnings per share. Returned only when available.",
+          "desc_en": "Analyst-consensus estimated earnings per share; present only when available.",
+          "title_zh": "本期分析师一致预期的每股收益；仅在可获取时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.eps_surprise",
+          "src_en": "EPS surprise classification versus estimate. Returned only when available.",
+          "desc_en": "Whether reported EPS beat, missed, or met the estimate; present only when available.",
+          "title_zh": "实际每股收益相对于预期为超预期、低于预期还是符合预期；仅在可获取时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.net_income",
+          "src_en": "",
+          "desc_en": "Reported net income for the period.",
+          "title_zh": "报告期内的净利润。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.gross_profit",
+          "src_en": "",
+          "desc_en": "Reported gross profit for the period.",
+          "title_zh": "报告期内的毛利润。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.operating_income",
+          "src_en": "",
+          "desc_en": "Reported operating income for the period.",
+          "title_zh": "报告期内的营业利润。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.weighted_average_shares",
+          "src_en": "",
+          "desc_en": "Weighted-average common shares outstanding for the period.",
+          "title_zh": "报告期内的加权平均流通普通股股数。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.weighted_average_shares_diluted",
+          "src_en": "",
+          "desc_en": "Diluted weighted-average share count for the period.",
+          "title_zh": "报告期内的加权平均稀释股数。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.cash_and_equivalents",
+          "src_en": "",
+          "desc_en": "Cash and equivalents at period end.",
+          "title_zh": "报告期末的现金及等价物。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.total_debt",
+          "src_en": "",
+          "desc_en": "Total interest-bearing debt at period end.",
+          "title_zh": "报告期末的有息债务合计。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.total_assets",
+          "src_en": "",
+          "desc_en": "Total assets at period end.",
+          "title_zh": "报告期末的资产合计。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.total_liabilities",
+          "src_en": "",
+          "desc_en": "Total liabilities at period end.",
+          "title_zh": "报告期末的负债合计。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.shareholders_equity",
+          "src_en": "",
+          "desc_en": "Shareholders' equity at period end.",
+          "title_zh": "报告期末的股东权益。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.net_cash_flow_from_operations",
+          "src_en": "",
+          "desc_en": "Net cash from operating activities for the period.",
+          "title_zh": "报告期内经营活动产生的净现金流。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.capital_expenditure",
+          "src_en": "",
+          "desc_en": "Capital expenditure for the period.",
+          "title_zh": "报告期内的资本性支出。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.net_cash_flow_from_investing",
+          "src_en": "",
+          "desc_en": "Net cash from investing activities for the period.",
+          "title_zh": "报告期内投资活动产生的净现金流。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.net_cash_flow_from_financing",
+          "src_en": "",
+          "desc_en": "Net cash from financing activities for the period.",
+          "title_zh": "报告期内融资活动产生的净现金流。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.change_in_cash_and_equivalents",
+          "src_en": "",
+          "desc_en": "Net change in cash and equivalents for the period.",
+          "title_zh": "报告期内现金及等价物的净变动额。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.free_cash_flow",
+          "src_en": "",
+          "desc_en": "Free cash flow for the period.",
+          "title_zh": "报告期内的自由现金流。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.revenue_chg",
+          "src_en": "Percentage change in revenue. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in revenue, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "营业收入的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.net_income_chg",
+          "src_en": "Percentage change in net income. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in net income, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "净利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.operating_income_chg",
+          "src_en": "Percentage change in operating income. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in operating income, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "营业利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.gross_profit_chg",
+          "src_en": "Percentage change in gross profit. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in gross profit, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "毛利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.net_cash_flow_from_operations_chg",
+          "src_en": "Percentage change in net cash flow from operations. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in operating cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "经营现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.net_cash_flow_from_investing_chg",
+          "src_en": "Percentage change in net cash flow from investing. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in investing cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "投资现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.net_cash_flow_from_financing_chg",
+          "src_en": "Percentage change in net cash flow from financing. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in financing cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "融资现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.quarterly.free_cash_flow_chg",
+          "src_en": "Percentage change in free cash flow. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in free cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "自由现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual",
+          "src_en": "",
+          "desc_en": "Annual earnings view, where change fields are year-over-year.",
+          "title_zh": "年度财报视图，其中变动字段为同比口径。"
+        },
+        {
+          "path": "resp.200.earnings.annual.fiscal_period",
+          "src_en": "Fiscal period label (e.g. 2025-Q4 or 2025-FY).",
+          "desc_en": "Issuer's fiscal-period label for the reporting interval.",
+          "title_zh": "本报告区间对应的公司财年周期标签。"
+        },
+        {
+          "path": "resp.200.earnings.annual.currency",
+          "src_en": "ISO currency code (e.g. USD).",
+          "desc_en": "Currency in which the monetary figures in this record are reported.",
+          "title_zh": "本条记录中各金额数值所采用的计价货币。"
+        },
+        {
+          "path": "resp.200.earnings.annual.revenue",
+          "src_en": "",
+          "desc_en": "Reported revenue for the period.",
+          "title_zh": "报告期内实现的营业收入。"
+        },
+        {
+          "path": "resp.200.earnings.annual.estimated_revenue",
+          "src_en": "Estimated revenue. Returned only when available.",
+          "desc_en": "Analyst-consensus estimated revenue for the period; present only when available.",
+          "title_zh": "本期分析师一致预期的营业收入；仅在可获取时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.revenue_surprise",
+          "src_en": "Revenue surprise classification versus estimate. Returned only when available.",
+          "desc_en": "Whether reported revenue beat, missed, or met the estimate; present only when available.",
+          "title_zh": "实际营业收入相对于预期为超预期、低于预期还是符合预期；仅在可获取时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.earnings_per_share",
+          "src_en": "",
+          "desc_en": "Reported earnings per share for the period.",
+          "title_zh": "报告期内的每股收益。"
+        },
+        {
+          "path": "resp.200.earnings.annual.estimated_earnings_per_share",
+          "src_en": "Estimated earnings per share. Returned only when available.",
+          "desc_en": "Analyst-consensus estimated earnings per share; present only when available.",
+          "title_zh": "本期分析师一致预期的每股收益；仅在可获取时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.eps_surprise",
+          "src_en": "EPS surprise classification versus estimate. Returned only when available.",
+          "desc_en": "Whether reported EPS beat, missed, or met the estimate; present only when available.",
+          "title_zh": "实际每股收益相对于预期为超预期、低于预期还是符合预期；仅在可获取时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.net_income",
+          "src_en": "",
+          "desc_en": "Reported net income for the period.",
+          "title_zh": "报告期内的净利润。"
+        },
+        {
+          "path": "resp.200.earnings.annual.gross_profit",
+          "src_en": "",
+          "desc_en": "Reported gross profit for the period.",
+          "title_zh": "报告期内的毛利润。"
+        },
+        {
+          "path": "resp.200.earnings.annual.operating_income",
+          "src_en": "",
+          "desc_en": "Reported operating income for the period.",
+          "title_zh": "报告期内的营业利润。"
+        },
+        {
+          "path": "resp.200.earnings.annual.weighted_average_shares",
+          "src_en": "",
+          "desc_en": "Weighted-average common shares outstanding for the period.",
+          "title_zh": "报告期内的加权平均流通普通股股数。"
+        },
+        {
+          "path": "resp.200.earnings.annual.weighted_average_shares_diluted",
+          "src_en": "",
+          "desc_en": "Diluted weighted-average share count for the period.",
+          "title_zh": "报告期内的加权平均稀释股数。"
+        },
+        {
+          "path": "resp.200.earnings.annual.cash_and_equivalents",
+          "src_en": "",
+          "desc_en": "Cash and equivalents at period end.",
+          "title_zh": "报告期末的现金及等价物。"
+        },
+        {
+          "path": "resp.200.earnings.annual.total_debt",
+          "src_en": "",
+          "desc_en": "Total interest-bearing debt at period end.",
+          "title_zh": "报告期末的有息债务合计。"
+        },
+        {
+          "path": "resp.200.earnings.annual.total_assets",
+          "src_en": "",
+          "desc_en": "Total assets at period end.",
+          "title_zh": "报告期末的资产合计。"
+        },
+        {
+          "path": "resp.200.earnings.annual.total_liabilities",
+          "src_en": "",
+          "desc_en": "Total liabilities at period end.",
+          "title_zh": "报告期末的负债合计。"
+        },
+        {
+          "path": "resp.200.earnings.annual.shareholders_equity",
+          "src_en": "",
+          "desc_en": "Shareholders' equity at period end.",
+          "title_zh": "报告期末的股东权益。"
+        },
+        {
+          "path": "resp.200.earnings.annual.net_cash_flow_from_operations",
+          "src_en": "",
+          "desc_en": "Net cash from operating activities for the period.",
+          "title_zh": "报告期内经营活动产生的净现金流。"
+        },
+        {
+          "path": "resp.200.earnings.annual.capital_expenditure",
+          "src_en": "",
+          "desc_en": "Capital expenditure for the period.",
+          "title_zh": "报告期内的资本性支出。"
+        },
+        {
+          "path": "resp.200.earnings.annual.net_cash_flow_from_investing",
+          "src_en": "",
+          "desc_en": "Net cash from investing activities for the period.",
+          "title_zh": "报告期内投资活动产生的净现金流。"
+        },
+        {
+          "path": "resp.200.earnings.annual.net_cash_flow_from_financing",
+          "src_en": "",
+          "desc_en": "Net cash from financing activities for the period.",
+          "title_zh": "报告期内融资活动产生的净现金流。"
+        },
+        {
+          "path": "resp.200.earnings.annual.change_in_cash_and_equivalents",
+          "src_en": "",
+          "desc_en": "Net change in cash and equivalents for the period.",
+          "title_zh": "报告期内现金及等价物的净变动额。"
+        },
+        {
+          "path": "resp.200.earnings.annual.free_cash_flow",
+          "src_en": "",
+          "desc_en": "Free cash flow for the period.",
+          "title_zh": "报告期内的自由现金流。"
+        },
+        {
+          "path": "resp.200.earnings.annual.revenue_chg",
+          "src_en": "Percentage change in revenue. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in revenue, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "营业收入的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.net_income_chg",
+          "src_en": "Percentage change in net income. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in net income, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "净利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.operating_income_chg",
+          "src_en": "Percentage change in operating income. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in operating income, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "营业利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.gross_profit_chg",
+          "src_en": "Percentage change in gross profit. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in gross profit, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "毛利润的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.net_cash_flow_from_operations_chg",
+          "src_en": "Percentage change in net cash flow from operations. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in operating cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "经营现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.net_cash_flow_from_investing_chg",
+          "src_en": "Percentage change in net cash flow from investing. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in investing cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "投资现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.net_cash_flow_from_financing_chg",
+          "src_en": "Percentage change in net cash flow from financing. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in financing cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "融资现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        },
+        {
+          "path": "resp.200.earnings.annual.free_cash_flow_chg",
+          "src_en": "Percentage change in free cash flow. QoQ in quarterly payload and YoY in annual payload. Returned only when calculable.",
+          "desc_en": "Percentage change in free cash flow, QoQ in the quarterly payload and YoY in the annual payload; present only when calculable.",
+          "title_zh": "自由现金流的变动幅度，季度数据为环比、年度数据为同比；仅在可计算时返回。"
+        }
+      ]
+    }
+  ],
+  "total": 498,
+  "missing": []
+}

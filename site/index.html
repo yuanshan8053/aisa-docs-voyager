@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AIsa 文档质量工程 · 成果与历程</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel-2: #1c2330;
+    --line: #2a3038;
+    --ink: #e6edf3;
+    --ink-dim: #9aa7b4;
+    --accent: #4f9cf9;
+    --accent-2: #3fb950;
+    --warn: #d29922;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* hero */
+  header.hero {
+    padding: 88px 0 56px;
+    border-bottom: 1px solid var(--line);
+    background: radial-gradient(1200px 400px at 70% -10%, rgba(79,156,249,0.14), transparent 60%);
+  }
+  .eyebrow { color: var(--accent); font-weight: 600; letter-spacing: .08em; font-size: 13px; text-transform: uppercase; }
+  h1 { font-size: 40px; line-height: 1.25; margin: 14px 0 12px; font-weight: 700; }
+  .lede { font-size: 18px; color: var(--ink-dim); max-width: 720px; margin: 0 0 28px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 11px 22px; border-radius: 8px;
+    border: 1px solid var(--line); color: var(--ink); font-weight: 600; font-size: 15px;
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #06121f; }
+  .btn.primary:hover { background: #6cb0ff; text-decoration: none; }
+  .btn:hover { background: var(--panel-2); text-decoration: none; }
+
+  /* metrics */
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 40px 0 8px; }
+  .metric { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 18px; }
+  .metric .n { font-size: 32px; font-weight: 700; color: var(--ink); }
+  .metric .n small { font-size: 16px; color: var(--ink-dim); font-weight: 600; }
+  .metric .l { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+
+  section { padding: 56px 0; border-bottom: 1px solid var(--line); }
+  h2 { font-size: 26px; margin: 0 0 8px; font-weight: 700; }
+  .sub { color: var(--ink-dim); margin: 0 0 28px; max-width: 760px; }
+
+  /* journey */
+  .journey { display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start;
+          background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+  .step .idx { width: 36px; height: 36px; border-radius: 50%; background: var(--panel-2);
+               border: 1px solid var(--line); display: grid; place-items: center; font-weight: 700; color: var(--accent); }
+  .step h3 { margin: 2px 0 4px; font-size: 17px; }
+  .step p { margin: 0; color: var(--ink-dim); font-size: 15px; }
+
+  /* deliverables */
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+          padding: 24px; display: flex; flex-direction: column; }
+  .card .tag { font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+               color: var(--accent-2); margin-bottom: 8px; }
+  .card h3 { margin: 0 0 8px; font-size: 19px; }
+  .card p { margin: 0 0 16px; color: var(--ink-dim); font-size: 15px; flex: 1; }
+  .card .links { display: flex; gap: 14px; flex-wrap: wrap; font-size: 14px; font-weight: 600; }
+
+  /* phases table */
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+  th { color: var(--ink-dim); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+  td .ok { color: var(--accent-2); font-weight: 600; }
+
+  /* proof */
+  .proof { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .proof .p { background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+              border-radius: var(--radius); padding: 20px 22px; }
+  .proof .p h3 { margin: 0 0 6px; font-size: 16px; }
+  .proof .p p { margin: 0; color: var(--ink-dim); font-size: 14px; }
+
+  code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px;
+         padding: 1px 6px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+
+  footer { padding: 40px 0 64px; color: var(--ink-dim); font-size: 14px; }
+
+  @media (max-width: 760px) {
+    h1 { font-size: 30px; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .cards, .proof { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">AIsa · 文档质量工程</div>
+    <h1>把文档质量,做成一套可验收、可复现、证据确凿的工程</h1>
+    <p class="lede">从对 AIsa 文档一无所知,到摸清生产链路、对 73 页人写散文做 AI 友好度质检、把 31 份 OpenAPI 加强成双语 API 站点上线——每一步都有独立产物与可复跑的复现命令。</p>
+    <div class="cta">
+      <a class="btn primary" href="./en/">英文 API 站 ↗</a>
+      <a class="btn" href="./zh/">中文 API 站 ↗</a>
+      <a class="btn" href="https://github.com/yuanshan8053/aisa-docs-voyager">代码与报告 ↗</a>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="n">31</div><div class="l">份 OpenAPI spec 全量加强</div></div>
+      <div class="metric"><div class="n">667</div><div class="l">个接口加强描述</div></div>
+      <div class="metric"><div class="n">18,290</div><div class="l">个对外字段双字段加强</div></div>
+      <div class="metric"><div class="n">109</div><div class="l">条硬事实缺口主动留痕</div></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>项目历程:先看清,再分流,各个击破</h2>
+    <p class="sub">起点是对文档一无所知。整体节奏是「看清文档怎么生产 → 按现状把对象分流 → 两条线分别治理 → 最后呈现与交付」。</p>
+    <div class="journey">
+      <div class="step"><div class="idx">1</div><div>
+        <h3>摸清文档生产模式</h3>
+        <p>源仓库 <code>AIsa-team/docs</code>(<code>.mdx</code> 散文 + <code>openapi/*.json</code>)经部署层渲染成线上 <code>aisa.one</code>——给人看 HTML,给 Agent 看 <code>.md</code> 孪生页与发现契约。把 GitHub 源与线上两份都抓到本地比对,推断出完整生产链路。</p>
+      </div></div>
+      <div class="step"><div class="idx">2</div><div>
+        <h3>现状统计,据此分流</h3>
+        <p>743 页 <code>.mdx</code> 中,664 页是 API 参考桩页(正文由 spec 内联渲染,非手写),真正可做散文质检的只有 73 页人写散文。两类状态与风格迥异,于是分两条线治理。</p>
+      </div></div>
+      <div class="step"><div class="idx">3</div><div>
+        <h3>手写散文 → 质检</h3>
+        <p>阶段一静态硬伤检查(零依赖、零误报),阶段二对 73 页做 AI 友好度系统质检。20 条缺口收口到一个根因:agent-skills 缺一个被全站引用的权威事实源。</p>
+      </div></div>
+      <div class="step"><div class="idx">4</div><div>
+        <h3>API 文档 → 加强 · 翻译 · 上线</h3>
+        <p>31 份 spec 逐字段加强英文描述 + 中文本地化,加性注入 <code>x-doc</code>(原生零改动),投影成干净标准 OpenAPI,Scalar 渲染成双语站点上线 GitHub Pages。</p>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>高价值产物</h2>
+    <p class="sub">四块最终沉淀,各自可独立消费、可复现。</p>
+    <div class="cards">
+      <div class="card">
+        <div class="tag">质检结果与洞察</div>
+        <h3>存量文档质检</h3>
+        <p>阶段一 3 项可证伪 BLOCKER + 阶段二 73 页 20 条 AI 友好度缺口,根因收口到「手抄而非引用」。含可读叙事版与逐条对账技术版。</p>
+        <div class="links">
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/ai-friendly-prose-readable-2026-06-26.md">可读版 ↗</a>
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/hard-defects-2026-06-26.md">硬伤报告 ↗</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tag">改造后部署 · 翻译后部署</div>
+        <h3>双语 API 参考站点</h3>
+        <p>30 份 AIsa spec 的加强英文站 + 中文本地化站,Scalar 渲染。投影闸门三闸(无遗漏 / 无篡改 / 无杜撰)对 60 份投影档逐字节验收 exit 0。</p>
+        <div class="links">
+          <a href="./en/">英文站 ↗</a>
+          <a href="./zh/">中文站 ↗</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tag">批注反馈问题</div>
+        <h3>待研发确认清单(109 条)</h3>
+        <p>源 spec 未声明、加强时拒绝杜撰而显式留痕的硬事实缺口(哈希取值、内部标志含义、单位上限……),含 spec/接口/字段/类型/原描述/改后描述/批注,可直接交研发。</p>
+        <div class="links">
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/annotations-for-dev-2026-06-26.md">清单 ↗</a>
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/annotations-for-dev-2026-06-26.csv">CSV ↗</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tag">API 写作实践</div>
+        <h3>专业写作模式集(9 模式)</h3>
+        <p>从 17,550 对改前改后实例提炼,每模式 ≥2 真实案例 + rationale:从无到有、补默认行为、补下游用途、枚举写业务含义、跨字段关系、不确定留批注……</p>
+        <div class="links">
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/api-writing-patterns-2026-06-26.md">实践集 ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>五个阶段,各自独立验收</h2>
+    <p class="sub">每阶段独立实现、独立验收、有明确产物与复现命令。</p>
+    <table>
+      <thead><tr><th>阶段</th><th>工作</th><th>关键产物</th><th>验收</th></tr></thead>
+      <tbody>
+        <tr><td>一</td><td>硬伤静态质检</td><td><code>checks/src_consistency.py</code> + 报告</td><td><span class="ok">3 项 BLOCKER · 零误报</span></td></tr>
+        <tr><td>二</td><td>AI 友好度质检(73 页)</td><td>全量 + 可读版报告</td><td><span class="ok">20 条缺口 · 账平</span></td></tr>
+        <tr><td>三</td><td>OpenAPI 内容加强(双字段)</td><td>31 spec 五件套 + <code>x-doc</code></td><td><span class="ok">31/31 双闸门 exit 0</span></td></tr>
+        <tr><td>四</td><td>报告汇总</td><td>报告契约 + 对外报告甲</td><td><span class="ok">已交付</span></td></tr>
+        <tr><td>五</td><td>双语 Scalar 站点呈现</td><td><code>ws-site/{en,zh}</code> + 部署 workflow</td><td><span class="ok">60/60 投影闸门 · 已上线</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>这套工程怎么守住质量</h2>
+    <p class="sub">文档负责人的标准,落到每一条可机检的纪律上。</p>
+    <div class="proof">
+      <div class="p"><h3>零误报是红线</h3><p>凡列为阻断硬伤的,必须仅凭源仓库文件即可 Ctrl+F 证伪;live 探测只作旁证,绝不单独定罪。曾据此主动撤回一条无法证伪的误报。</p></div>
+      <div class="p"><h3>绝不杜撰,主动留痕</h3><p>源 spec 没声明清楚的硬事实一律不编,转成显式批注 <code>[⚠️待研发确认]</code>。109 条批注就是这条红线的落地——诚实留白比自信错误更有价值。</p></div>
+      <div class="p"><h3>原生零改动,只增不改</h3><p>加强成果加性挂在 <code>x-doc</code>,原生 <code>description</code>/<code>summary</code> 逐字节不动。<code>check_native_preserved.py</code> 对 31 份 spec exit 0 机器坐实。</p></div>
+      <div class="p"><h3>一切可复现</h3><p>每个数字都附可独立跑的命令,基线钉死 pinned commit <code>16863d3</code>。<code>python3 ws-v2/central_accept.py</code> 一键复跑全量验收。</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    AIsa 文档质量工程 · 受众:产品负责人 · 标准:真实、可复现、可交付　|
+    <a href="https://github.com/yuanshan8053/aisa-docs-voyager">GitHub 仓库</a> ·
+    <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/README.md">README</a>
+  </div>
+</footer>
+
+</body>
+</html>

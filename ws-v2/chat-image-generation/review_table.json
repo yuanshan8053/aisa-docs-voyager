@@ -1,0 +1,167 @@
+{
+  "sections": [
+    {
+      "operation": "generateImageViaChat",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Generate images with the Wan 2.7 image models. Request shape matches OpenAI Chat Completions with multimodal content; the response contains `choices[].message.content[]` where each item is `{type: \"image\", image: \"<url or base64>\"}`.\n\n**Important:** `messages[].content` must be an **array of typed parts**, not a plain string. Passing a string returns `400 invalid_parameter_error` with `Input should be a valid list: messages[*].content`.\n\nBy default `wan2.7-image` returns **4 candidate images** (billed per image). Set `n` to request a different count.",
+          "desc_en": "Generate images with the Wan 2.7 image models through the standard chat-completions endpoint. Send the prompt as typed parts inside the last user message, optionally with a reference image for image-to-image; generated images come back as image parts in the assistant message.",
+          "title_zh": "借助标准的对话补全端点,用 Wan 2.7 系列图像模型生成图像。将提示词以带类型的片段放入最后一条用户消息中,可选附参考图以做图生图;生成结果以图像片段形式回填在助手消息里。"
+        },
+        {
+          "path": "req.model",
+          "src_en": "Image-generation model. `wan2.7-image` ($0.030/image) for standard quality, `wan2.7-image-pro` ($0.075/image) for higher fidelity.",
+          "desc_en": "Which image model to run. The two variants trade off quality against price, with the pro variant offering higher fidelity at a higher per-image cost.",
+          "title_zh": "本次使用的图像模型。两个变体在画质与价格之间权衡,pro 变体以更高的单图成本换取更高的保真度。"
+        },
+        {
+          "path": "req.messages",
+          "src_en": "Conversation messages. Image prompts go in the last user message's `content` array as `{type: \"text\"}` parts.",
+          "desc_en": "The conversation sent to the model. Put the image prompt in the last user message; each message carries a role and a content array of typed parts.",
+          "title_zh": "发送给模型的对话。把图像提示词放进最后一条用户消息;每条消息带有角色,以及一个由带类型片段组成的 content 数组。"
+        },
+        {
+          "path": "req.messages.role",
+          "src_en": "",
+          "desc_en": "Who authored the message, distinguishing system guidance, user input, and prior assistant output.",
+          "title_zh": "该消息的作者身份,用于区分系统引导、用户输入与助手既往输出。"
+        },
+        {
+          "path": "req.messages.content",
+          "src_en": "Multimodal parts. For image generation, include at least one `{type: \"text\"}` part with the prompt.",
+          "desc_en": "The typed parts making up one message. It must be an array of parts, not a plain string; for image generation include at least one text part holding the prompt, and add an image part for image-to-image.",
+          "title_zh": "构成一条消息的带类型片段。它必须是片段数组而非纯字符串;做图像生成时至少包含一个携带提示词的文本片段,做图生图时再加入图像片段。"
+        },
+        {
+          "path": "req.messages.content.type",
+          "src_en": "",
+          "desc_en": "What kind of part this is: a text segment carrying the prompt, or an image-URL part supplying a reference image for image-to-image.",
+          "title_zh": "该片段的类别:承载提示词的文本片段,或为图生图提供参考图的图像 URL 片段。"
+        },
+        {
+          "path": "req.messages.content.text",
+          "src_en": "Used when `type: \"text\"`.",
+          "desc_en": "The prompt text, used for a text-type part.",
+          "title_zh": "提示词文本,用于文本类型的片段。"
+        },
+        {
+          "path": "req.messages.content.image_url",
+          "src_en": "Used when `type: \"image_url\"` (image-to-image use cases).",
+          "desc_en": "A reference image for image-to-image generation, supplied for an image-URL part.",
+          "title_zh": "用于图生图的参考图,在图像 URL 类型片段中提供。"
+        },
+        {
+          "path": "req.messages.content.image_url.url",
+          "src_en": "",
+          "desc_en": "Location of the reference image.",
+          "title_zh": "参考图的地址。"
+        },
+        {
+          "path": "req.n",
+          "src_en": "Number of images to generate. `wan2.7-image` returns 4 by default; pass `1` to save cost.",
+          "desc_en": "How many candidate images to generate in one call. Each image is billed separately, so request fewer to save cost.",
+          "title_zh": "单次调用生成的候选图像数量。每张图单独计费,需要省成本时请减少数量。"
+        },
+        {
+          "path": "resp.200.id",
+          "src_en": "",
+          "desc_en": "Unique identifier of this generation response.",
+          "title_zh": "本次生成响应的唯一标识。"
+        },
+        {
+          "path": "resp.200.object",
+          "src_en": "",
+          "desc_en": "Object type of the payload, mirroring the chat-completions response shape.",
+          "title_zh": "载荷的对象类型,沿用对话补全的响应结构。"
+        },
+        {
+          "path": "resp.200.created",
+          "src_en": "",
+          "desc_en": "When the response was produced.",
+          "title_zh": "该响应的生成时间。"
+        },
+        {
+          "path": "resp.200.model",
+          "src_en": "",
+          "desc_en": "The image model that actually served the request.",
+          "title_zh": "实际处理本次请求的图像模型。"
+        },
+        {
+          "path": "resp.200.choices",
+          "src_en": "One entry per generated image.",
+          "desc_en": "The generated results, one entry per image.",
+          "title_zh": "生成结果,每张图像对应一个条目。"
+        },
+        {
+          "path": "resp.200.choices.index",
+          "src_en": "",
+          "desc_en": "Position of this result within the choices list.",
+          "title_zh": "该结果在 choices 列表中的位置。"
+        },
+        {
+          "path": "resp.200.choices.finish_reason",
+          "src_en": "",
+          "desc_en": "Why generation for this result stopped.",
+          "title_zh": "该结果停止生成的原因。"
+        },
+        {
+          "path": "resp.200.choices.message",
+          "src_en": "",
+          "desc_en": "The assistant message that holds the generated image.",
+          "title_zh": "承载生成图像的助手消息。"
+        },
+        {
+          "path": "resp.200.choices.message.role",
+          "src_en": "",
+          "desc_en": "Author role of the generated message, always the assistant.",
+          "title_zh": "生成消息的作者角色,固定为助手。"
+        },
+        {
+          "path": "resp.200.choices.message.content",
+          "src_en": "",
+          "desc_en": "The message's parts; for this endpoint each part wraps one generated image.",
+          "title_zh": "该消息的片段;在本接口中每个片段包裹一张生成图像。"
+        },
+        {
+          "path": "resp.200.choices.message.content.type",
+          "src_en": "",
+          "desc_en": "Part kind, marking the part as a generated image.",
+          "title_zh": "片段类别,标记该片段为生成图像。"
+        },
+        {
+          "path": "resp.200.choices.message.content.image",
+          "src_en": "Short-lived URL to the generated image (or base64-encoded data, depending on your account configuration).",
+          "desc_en": "The generated image itself, delivered either as a short-lived URL or as base64 data depending on account configuration.",
+          "title_zh": "生成的图像本身,依据账号配置以短时有效的 URL 或 base64 数据形式给出。"
+        },
+        {
+          "path": "resp.200.usage",
+          "src_en": "",
+          "desc_en": "Token accounting for the request.",
+          "title_zh": "本次请求的 token 计量。"
+        },
+        {
+          "path": "resp.200.usage.prompt_tokens",
+          "src_en": "",
+          "desc_en": "Tokens consumed by the input prompt.",
+          "title_zh": "输入提示词消耗的 token 数。"
+        },
+        {
+          "path": "resp.200.usage.completion_tokens",
+          "src_en": "",
+          "desc_en": "Tokens attributed to the generated output.",
+          "title_zh": "归于生成输出的 token 数。"
+        },
+        {
+          "path": "resp.200.usage.total_tokens",
+          "src_en": "",
+          "desc_en": "Combined input and output token count.",
+          "title_zh": "输入与输出合计的 token 数。"
+        }
+      ]
+    }
+  ],
+  "total": 25,
+  "missing": []
+}

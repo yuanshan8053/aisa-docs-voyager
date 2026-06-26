@@ -1,0 +1,350 @@
+{
+  "sections": [
+    {
+      "operation": "searchSmart",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Perform intelligent search that combines web and academic results",
+          "desc_en": "Run a single query that blends general web results with academic-paper results, returning a unified ranked list plus a `search_id` you can later pass to `explainSearch` for an AI explanation.",
+          "title_zh": "用一次查询同时检索网页与学术论文，返回融合排序后的结果列表，并附带可交给 explainSearch 生成解读的检索标识。"
+        },
+        {
+          "path": "param:query",
+          "src_en": "Search query for scholarly materials",
+          "desc_en": "The search terms to look up.",
+          "title_zh": "要检索的查询词。"
+        },
+        {
+          "path": "param:max_num_results",
+          "src_en": "Maximum number of search results to return, up to 100",
+          "desc_en": "Caps how many results come back.",
+          "title_zh": "限制返回结果的数量上限。"
+        },
+        {
+          "path": "param:as_ylo",
+          "src_en": "Year of publication lower bound",
+          "desc_en": "Earliest publication year to include; results published before it are excluded.",
+          "title_zh": "纳入结果的最早出版年份，早于该年份的结果会被排除。"
+        },
+        {
+          "path": "param:as_yhi",
+          "src_en": "Year of publication upper bound",
+          "desc_en": "Latest publication year to include; results published after it are excluded.",
+          "title_zh": "纳入结果的最晚出版年份，晚于该年份的结果会被排除。"
+        },
+        {
+          "path": "resp.200.id",
+          "src_en": "Unique identifier for the search request",
+          "desc_en": "Identifier of this search request; pass it to `explainSearch` to get an explanation of these results.",
+          "title_zh": "本次搜索请求的标识，可传给 explainSearch 以解读这批结果。"
+        },
+        {
+          "path": "resp.200.results",
+          "src_en": "List of smart search results combining web and academic content",
+          "desc_en": "The blended web-and-academic result list.",
+          "title_zh": "融合网页与学术内容的结果列表。"
+        },
+        {
+          "path": "resp.200.results.title",
+          "src_en": "Title of the result",
+          "desc_en": "Title of the result.",
+          "title_zh": "结果标题。"
+        },
+        {
+          "path": "resp.200.results.link",
+          "src_en": "URL to access the content",
+          "desc_en": "URL where the result content can be opened.",
+          "title_zh": "可打开该结果内容的链接。"
+        },
+        {
+          "path": "resp.200.results.snippet",
+          "src_en": "Brief summary or abstract",
+          "desc_en": "Short summary or abstract of the result.",
+          "title_zh": "结果的简要摘要或概述。"
+        },
+        {
+          "path": "resp.200.results.authors",
+          "src_en": "List of authors (for academic content)",
+          "desc_en": "Authors of the item, populated for academic results.",
+          "title_zh": "条目作者，学术类结果才会有值。"
+        },
+        {
+          "path": "resp.200.results.number_of_citations",
+          "src_en": "Number of citations (for academic content)",
+          "desc_en": "How many times the item has been cited, populated for academic results.",
+          "title_zh": "条目被引用的次数，学术类结果才会有值。"
+        },
+        {
+          "path": "resp.200.results.type",
+          "src_en": "Type of the result",
+          "desc_en": "Whether this entry originates from the web or from academic sources.",
+          "title_zh": "该条目来自网页还是学术来源。"
+        },
+        {
+          "path": "resp.200.results.relevance_score",
+          "src_en": "Relevance score of the result",
+          "desc_en": "How relevant the result is to the query, on a 0-to-1 scale where higher is more relevant.",
+          "title_zh": "结果与查询的相关程度，取值 0 到 1，越高越相关。"
+        },
+        {
+          "path": "resp.200.search_type",
+          "src_en": "Type of search results included",
+          "desc_en": "Which mix of sources the returned results actually drew from.",
+          "title_zh": "返回结果实际取自的来源组合。"
+        }
+      ]
+    },
+    {
+      "operation": "searchWeb",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Perform web search and return structured results",
+          "desc_en": "Run a web search and return structured results (title, link, snippet). The response carries a `search_id` reusable with `explainSearch`.",
+          "title_zh": "执行网页搜索并返回结构化结果（标题、链接、摘要），响应中的检索标识可复用于 explainSearch。"
+        },
+        {
+          "path": "param:query",
+          "src_en": "Search query for scholarly materials",
+          "desc_en": "The search terms to look up.",
+          "title_zh": "要检索的查询词。"
+        },
+        {
+          "path": "param:max_num_results",
+          "src_en": "Maximum number of search results to return, up to 100",
+          "desc_en": "Caps how many results come back.",
+          "title_zh": "限制返回结果的数量上限。"
+        },
+        {
+          "path": "param:as_ylo",
+          "src_en": "Year of publication lower bound",
+          "desc_en": "Earliest publication year to include; results published before it are excluded.",
+          "title_zh": "纳入结果的最早出版年份，早于该年份的结果会被排除。"
+        },
+        {
+          "path": "param:as_yhi",
+          "src_en": "Year of publication upper bound",
+          "desc_en": "Latest publication year to include; results published after it are excluded.",
+          "title_zh": "纳入结果的最晚出版年份，晚于该年份的结果会被排除。"
+        },
+        {
+          "path": "resp.200.id",
+          "src_en": "Unique identifier for the search request",
+          "desc_en": "Identifier of this search request; pass it to `explainSearch` to get an explanation of these results.",
+          "title_zh": "本次搜索请求的标识，可传给 explainSearch 以解读这批结果。"
+        },
+        {
+          "path": "resp.200.results",
+          "src_en": "List of web search results",
+          "desc_en": "The web search result list.",
+          "title_zh": "网页搜索结果列表。"
+        },
+        {
+          "path": "resp.200.results.title",
+          "src_en": "Title of the web page",
+          "desc_en": "Title of the web page.",
+          "title_zh": "网页标题。"
+        },
+        {
+          "path": "resp.200.results.link",
+          "src_en": "URL to access the web page",
+          "desc_en": "URL where the web page can be opened.",
+          "title_zh": "可打开该网页的链接。"
+        },
+        {
+          "path": "resp.200.results.snippet",
+          "src_en": "Brief summary or preview of the web page content",
+          "desc_en": "Short preview of the web page content.",
+          "title_zh": "网页内容的简要预览。"
+        },
+        {
+          "path": "resp.200.results.display_url",
+          "src_en": "Display-friendly URL",
+          "desc_en": "Human-readable form of the URL for display.",
+          "title_zh": "便于展示的可读版链接。"
+        },
+        {
+          "path": "resp.200.results.published_date",
+          "src_en": "Publication date of the web page",
+          "desc_en": "When the web page was published.",
+          "title_zh": "网页的发布时间。"
+        }
+      ]
+    },
+    {
+      "operation": "searchScholar",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Perform academic paper search using Google Scholar or similar sources",
+          "desc_en": "Search academic papers (via Google Scholar or comparable sources) and return per-paper metadata such as authors, citation count, and journal. The response carries a `search_id` reusable with `explainSearch`.",
+          "title_zh": "检索学术论文（通过 Google Scholar 等来源），返回作者、被引次数、期刊等论文元数据，响应中的检索标识可复用于 explainSearch。"
+        },
+        {
+          "path": "param:query",
+          "src_en": "Search query for scholarly materials",
+          "desc_en": "The search terms to look up.",
+          "title_zh": "要检索的查询词。"
+        },
+        {
+          "path": "param:max_num_results",
+          "src_en": "Maximum number of search results to return, up to 100",
+          "desc_en": "Caps how many results come back.",
+          "title_zh": "限制返回结果的数量上限。"
+        },
+        {
+          "path": "param:as_ylo",
+          "src_en": "Year of publication lower bound",
+          "desc_en": "Earliest publication year to include; results published before it are excluded.",
+          "title_zh": "纳入结果的最早出版年份，早于该年份的结果会被排除。"
+        },
+        {
+          "path": "param:as_yhi",
+          "src_en": "Year of publication upper bound",
+          "desc_en": "Latest publication year to include; results published after it are excluded.",
+          "title_zh": "纳入结果的最晚出版年份，晚于该年份的结果会被排除。"
+        },
+        {
+          "path": "resp.200.id",
+          "src_en": "Unique identifier for the search request",
+          "desc_en": "Identifier of this search request; pass it to `explainSearch` to get an explanation of these results.",
+          "title_zh": "本次搜索请求的标识，可传给 explainSearch 以解读这批结果。"
+        },
+        {
+          "path": "resp.200.results",
+          "src_en": "List of academic paper results",
+          "desc_en": "The academic paper result list.",
+          "title_zh": "学术论文结果列表。"
+        },
+        {
+          "path": "resp.200.results.title",
+          "src_en": "Title of the academic paper",
+          "desc_en": "Title of the paper.",
+          "title_zh": "论文标题。"
+        },
+        {
+          "path": "resp.200.results.link",
+          "src_en": "URL to access the full paper",
+          "desc_en": "URL to access the full paper.",
+          "title_zh": "访问论文全文的链接。"
+        },
+        {
+          "path": "resp.200.results.snippet",
+          "src_en": "Brief summary or abstract of the paper",
+          "desc_en": "Short summary or abstract of the paper.",
+          "title_zh": "论文的摘要或简述。"
+        },
+        {
+          "path": "resp.200.results.authors",
+          "src_en": "List of authors",
+          "desc_en": "Authors of the paper.",
+          "title_zh": "论文作者。"
+        },
+        {
+          "path": "resp.200.results.number_of_citations",
+          "src_en": "Number of citations the paper has received",
+          "desc_en": "How many times the paper has been cited.",
+          "title_zh": "论文被引用的次数。"
+        },
+        {
+          "path": "resp.200.results.year",
+          "src_en": "Publication year",
+          "desc_en": "Year the paper was published.",
+          "title_zh": "论文的出版年份。"
+        },
+        {
+          "path": "resp.200.results.journal",
+          "src_en": "Journal or conference name",
+          "desc_en": "Journal or conference the paper appeared in.",
+          "title_zh": "论文所在的期刊或会议。"
+        }
+      ]
+    },
+    {
+      "operation": "explainSearch",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Generate explanations for search results in different languages and formats",
+          "desc_en": "Generate an AI explanation of a previous search's results, addressed by its `search_id`, with controllable output language, format, and depth.",
+          "title_zh": "针对此前某次搜索（通过 search_id 指定）的结果生成 AI 解读，可控制输出语言、格式与详尽程度。"
+        },
+        {
+          "path": "req.search_id",
+          "src_en": "ID of the search to explain",
+          "desc_en": "Identifier of the earlier search whose results you want explained; obtained from the `id` field of a search response.",
+          "title_zh": "要解读的此前那次搜索的标识，取自某次搜索响应的 id 字段。"
+        },
+        {
+          "path": "req.response_mode",
+          "src_en": "Format of the explanation response",
+          "desc_en": "Output format of the explanation: a full write-up, a condensed summary, or bullet points.",
+          "title_zh": "解读的输出格式：完整长文、精简摘要或要点列表。"
+        },
+        {
+          "path": "req.language",
+          "src_en": "Language code for the explanation (e.g., en, zh, ar)",
+          "desc_en": "Language the explanation should be written in, given as a language code (e.g. `en`, `zh`, `ar`).",
+          "title_zh": "解读所用的语言，以语言代码给出（如 `en`、`zh`、`ar`）。"
+        },
+        {
+          "path": "req.detail_level",
+          "src_en": "Level of detail in the explanation",
+          "desc_en": "How much depth the explanation should go into.",
+          "title_zh": "解读展开的详尽程度。"
+        },
+        {
+          "path": "resp.200.search_id",
+          "src_en": "ID of the search being explained",
+          "desc_en": "Identifier of the search this explanation refers to.",
+          "title_zh": "本次解读所针对的搜索标识。"
+        },
+        {
+          "path": "resp.200.explanation",
+          "src_en": "Detailed explanation of the search results",
+          "desc_en": "The generated explanation of the search results.",
+          "title_zh": "针对搜索结果生成的解读正文。"
+        },
+        {
+          "path": "resp.200.language",
+          "src_en": "Language of the explanation",
+          "desc_en": "Language the explanation was written in.",
+          "title_zh": "解读实际使用的语言。"
+        },
+        {
+          "path": "resp.200.response_mode",
+          "src_en": "Format of the response",
+          "desc_en": "Output format the explanation was rendered in.",
+          "title_zh": "解读实际采用的输出格式。"
+        },
+        {
+          "path": "resp.200.summary",
+          "src_en": "Brief summary of the explanation",
+          "desc_en": "A brief summary of the explanation.",
+          "title_zh": "解读的简要摘要。"
+        },
+        {
+          "path": "resp.200.key_insights",
+          "src_en": "List of key insights from the search results",
+          "desc_en": "Key takeaways distilled from the search results.",
+          "title_zh": "从搜索结果中提炼出的关键要点。"
+        },
+        {
+          "path": "resp.200.confidence_score",
+          "src_en": "Confidence score for the explanation",
+          "desc_en": "How confident the model is in the explanation, on a 0-to-1 scale where higher is more confident.",
+          "title_zh": "模型对该解读的置信度，取值 0 到 1，越高越自信。"
+        },
+        {
+          "path": "resp.200.generated_at",
+          "src_en": "Timestamp when the explanation was generated",
+          "desc_en": "When the explanation was generated.",
+          "title_zh": "解读的生成时间。"
+        }
+      ]
+    }
+  ],
+  "total": 50,
+  "missing": []
+}

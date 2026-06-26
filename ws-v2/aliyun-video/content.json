@@ -1,0 +1,72 @@
+{
+  "operations": {
+    "createVideoSynthesisTask": {
+      "heading_zh": "创建视频生成任务 createVideoSynthesisTask",
+      "desc_en": "Submit an asynchronous text-to-video or image-to-video generation job on one of the Wan models and get back a `task_id` to poll with `getVideoSynthesisTask`. The async header must be enabled, and image-to-video models differ in how the reference image is supplied (`input.img_url` vs `input.media`).",
+      "description_zh": "在某个 Wan 模型上提交异步的文生视频或图生视频任务，返回可交给 getVideoSynthesisTask 轮询的 task_id。需开启异步请求头，且不同图生视频模型传参考图的字段不同（input.img_url 与 input.media）。"
+    },
+    "getVideoSynthesisTask": {
+      "heading_zh": "查询视频生成任务结果 getVideoSynthesisTask",
+      "desc_en": "Poll the status and result of a job created by `createVideoSynthesisTask`. Read `output.task_status` to tell lifecycle states apart; on success the playable video URL appears in `output.video_url`.",
+      "description_zh": "轮询由 createVideoSynthesisTask 创建的任务的状态与结果。通过 output.task_status 区分各生命周期状态，成功后可在 output.video_url 取到视频地址。"
+    }
+  },
+  "fields": {
+    "createVideoSynthesisTask": {
+      "parameters": {
+        "X-DashScope-Async": {"desc_en": "Switches the request into asynchronous task mode, which is the only mode this endpoint runs in.", "title_zh": "将请求切换为异步任务模式，也是该接口唯一支持的模式。"}
+      },
+      "request": {
+        "model": {"desc_en": "Selects which Wan generation model handles the job; the suffix distinguishes text-to-video from image-to-video, and the two image-to-video variants take the reference image through different fields.", "title_zh": "选择由哪个 Wan 模型来处理任务；后缀区分文生视频与图生视频，两个图生视频变体通过不同字段传入参考图。"},
+        "input": {"desc_en": "Container for the generation inputs (prompt and optional reference image/audio).", "title_zh": "生成输入的容器（提示词及可选的参考图、参考音频）。"},
+        "input.prompt": {"desc_en": "Text describing the video to generate; must contain actual words, as empty or whitespace-only prompts are rejected upstream.", "title_zh": "描述要生成视频的文本提示词；必须包含实际词语，纯空白会被上游拒绝。"},
+        "input.negative_prompt": {"desc_en": "Text describing what to keep out of the generated video.", "title_zh": "描述希望在生成视频中避免出现的内容。"},
+        "input.img_url": {"desc_en": "URL of the reference image for the `wan2.6-i2v` image-to-video model; text-to-video models ignore it, and `wan2.7-i2v` uses `input.media` instead.", "title_zh": "wan2.6-i2v 图生视频模型的参考图链接；文生视频模型会忽略它，wan2.7-i2v 改用 input.media。"},
+        "input.media": {"desc_en": "Reference image URLs supplied as an array, used by the `wan2.7-i2v` image-to-video model; do not use `input.img_url` with that model.", "title_zh": "以数组形式传入的参考图链接，供 wan2.7-i2v 图生视频模型使用；该模型不要改用 input.img_url。"},
+        "input.audio_url": {"desc_en": "URL of an optional reference audio track.", "title_zh": "可选的参考音频链接。"},
+        "parameters": {"desc_en": "Container for generation tuning options such as resolution, duration, and seed.", "title_zh": "生成调节项的容器，如分辨率、时长、随机种子等。"},
+        "parameters.resolution": {"desc_en": "Output resolution of the generated video.", "title_zh": "生成视频的输出分辨率。"},
+        "parameters.duration": {"desc_en": "Length of the generated clip, in seconds.", "title_zh": "生成片段的时长，单位为秒。"},
+        "parameters.shot_type": {"desc_en": "Whether the output is a single continuous shot or stitched from multiple shots.", "title_zh": "输出为单一连续镜头还是由多个镜头拼接。"},
+        "parameters.watermark": {"desc_en": "Whether to overlay a watermark on the generated video.", "title_zh": "是否在生成视频上叠加水印。"},
+        "parameters.seed": {"desc_en": "Random seed controlling generation; reusing the same seed with identical inputs reproduces the same output.", "title_zh": "控制生成的随机种子；在相同输入下复用同一种子可复现相同结果。"}
+      },
+      "response": {
+        "200": {
+          "output": {"desc_en": "Container for the newly created task's identifier and initial status.", "title_zh": "新建任务的标识与初始状态的容器。"},
+          "output.task_id": {"desc_en": "Identifier of the created task; pass it to `getVideoSynthesisTask` to poll for the result.", "title_zh": "所创建任务的标识，传给 getVideoSynthesisTask 轮询结果。"},
+          "output.task_status": {"desc_en": "Lifecycle status of the task right after creation, before processing begins.", "title_zh": "任务创建之后、开始处理之前的生命周期状态。"},
+          "request_id": {"desc_en": "Identifier of this API call, useful for tracing and support.", "title_zh": "本次接口调用的标识，便于追踪与排障。"}
+        }
+      }
+    },
+    "getVideoSynthesisTask": {
+      "parameters": {
+        "task_id": {"desc_en": "Identifier of the task to query, as returned by `createVideoSynthesisTask`; unrecognized IDs come back with an unknown status rather than an error.", "title_zh": "要查询的任务标识，由 createVideoSynthesisTask 返回；无法识别的 ID 会返回未知状态而非报错。"}
+      },
+      "response": {
+        "200": {
+          "output": {"desc_en": "Container for the task's current status and, once finished, its result or failure details.", "title_zh": "任务当前状态的容器，任务结束后还含结果或失败详情。"},
+          "output.task_id": {"desc_en": "Identifier of the queried task.", "title_zh": "所查询任务的标识。"},
+          "output.task_status": {"desc_en": "Current lifecycle status of the task; drives whether you keep polling, read the result, or inspect the failure fields.", "title_zh": "任务当前的生命周期状态；据此决定继续轮询、读取结果还是查看失败字段。"},
+          "output.video_url": {"desc_en": "Link to the generated video, present once the task succeeds; it is short-lived, so download and persist the video promptly.", "title_zh": "生成视频的链接，任务成功后才出现；该链接有效期短，请尽快下载并自行保存。"},
+          "output.orig_prompt": {"desc_en": "The original prompt as stored by the upstream provider.", "title_zh": "上游服务保存的原始提示词。"},
+          "output.submit_time": {"desc_en": "When the task was accepted.", "title_zh": "任务被受理的时间。"},
+          "output.scheduled_time": {"desc_en": "When the task was scheduled for execution.", "title_zh": "任务被调度执行的时间。"},
+          "output.end_time": {"desc_en": "When the task reached a terminal state.", "title_zh": "任务到达终态的时间。"},
+          "output.code": {"desc_en": "Machine-readable error code, present when the task failed.", "title_zh": "机器可读的错误码，任务失败时出现。"},
+          "output.message": {"desc_en": "Human-readable failure reason, present when the task failed.", "title_zh": "可读的失败原因，任务失败时出现。"},
+          "usage": {"desc_en": "Container for resource-usage figures, present once the task succeeds.", "title_zh": "资源用量数据的容器，任务成功后出现。"},
+          "usage.input_video_duration": {"desc_en": "Duration of any input video reference, in seconds; zero when no input video was provided.", "title_zh": "输入视频参考的时长（秒），未提供输入视频时为 0。"},
+          "usage.output_video_duration": {"desc_en": "Duration of the generated video, in seconds.", "title_zh": "生成视频的时长，单位为秒。"},
+          "usage.duration": {"desc_en": "The duration figure used as the basis for billing.", "title_zh": "用作计费依据的时长数值。"},
+          "usage.video_count": {"desc_en": "Number of videos produced by the task.", "title_zh": "任务生成的视频数量。"},
+          "usage.size": {"desc_en": "Actual pixel dimensions of the generated video, given as width by height.", "title_zh": "生成视频的实际像素尺寸，以宽乘高的形式给出。"},
+          "usage.ratio": {"desc_en": "Aspect ratio of the generated video.", "title_zh": "生成视频的宽高比。"},
+          "usage.SR": {"desc_en": "Super-resolution output height the video was upscaled to.", "title_zh": "视频经超分辨率放大后的输出高度。"},
+          "request_id": {"desc_en": "Identifier of this API call, useful for tracing and support.", "title_zh": "本次接口调用的标识，便于追踪与排障。"}
+        }
+      }
+    }
+  }
+}

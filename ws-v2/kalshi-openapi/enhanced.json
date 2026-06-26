@@ -1,0 +1,1402 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AIsa API proxy",
+    "description": "APIs for prediction markets.",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/kalshi/markets": {
+      "get": {
+        "summary": "Get Kalshi Markets",
+        "description": "Fetches Kalshi market data with optional filtering by market ticker, event ticker, status, and volume. Returns markets with details including pricing, volume, and status information.",
+        "operationId": "get_kalshi-markets",
+        "parameters": [
+          {
+            "name": "market_ticker",
+            "in": "query",
+            "required": false,
+            "description": "Filter markets by market ticker(s). Can provide multiple values.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "KXMAYORNYCPARTY-25-D"
+              ]
+            },
+            "style": "form",
+            "explode": true,
+            "x-doc": {
+              "desc_en": "Restrict results to one or more specific Kalshi markets by their market ticker.",
+              "title_zh": "按一个或多个 Kalshi 市场的 market ticker 限定返回结果。",
+              "source": "ai",
+              "src_hash": "sha256:1b3acb3e7e53",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "event_ticker",
+            "in": "query",
+            "required": false,
+            "description": "Filter markets by event ticker(s). Can provide multiple values.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "KXMAYORNYCPARTY-25"
+              ]
+            },
+            "style": "form",
+            "explode": true,
+            "x-doc": {
+              "desc_en": "Restrict results to markets belonging to one or more events, identified by event ticker.",
+              "title_zh": "按一个或多个 event ticker 限定返回属于这些事件的市场。",
+              "source": "ai",
+              "src_hash": "sha256:2fee67798065",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "description": "Search markets by keywords in title and description. Must be URL encoded (e.g., 'bitcoin%20price' for 'bitcoin price').",
+            "schema": {
+              "type": "string",
+              "example": "bitcoin"
+            },
+            "x-doc": {
+              "desc_en": "Keyword query matched against market title and description; the value must be URL-encoded.",
+              "title_zh": "针对市场标题与描述的关键词检索，取值需经 URL 编码。",
+              "source": "ai",
+              "src_hash": "sha256:50cf5b27558f",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter markets by status (whether they're open or closed)",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "open",
+                "closed"
+              ],
+              "example": "open"
+            },
+            "x-doc": {
+              "desc_en": "Filter by trading state: `open` markets still accept trades, `closed` markets no longer do.",
+              "title_zh": "按交易状态筛选：`open` 表示仍可交易，`closed` 表示已停止交易。",
+              "source": "ai",
+              "src_hash": "sha256:5eb788a8db63",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "min_volume",
+            "in": "query",
+            "required": false,
+            "description": "Filter markets with total trading volume greater than or equal to this amount (in dollars)",
+            "schema": {
+              "type": "number",
+              "example": 10000000
+            },
+            "x-doc": {
+              "desc_en": "Keep only markets whose total trading volume is at least this amount, in dollars.",
+              "title_zh": "仅保留总成交量不低于该金额的市场，单位为美元。",
+              "source": "ai",
+              "src_hash": "sha256:ddb2778d1c55",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Number of markets to return (1-100). Default: 10.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 10,
+              "example": 20
+            },
+            "x-doc": {
+              "desc_en": "Number of markets to return per page.",
+              "title_zh": "每页返回的市场数量。",
+              "source": "ai",
+              "src_hash": "sha256:eb77743a8390",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "pagination_key",
+            "in": "query",
+            "required": false,
+            "description": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object.",
+            "schema": {
+              "type": "string",
+              "example": "eyJvcGVuX3RpbWUiOiIyMDI1LTAxLTE5VDEyOjAwOjAwLjAwMFoiLCJtYXJrZXRfdGlja2VyIjoiS1hNQVlPUk5ZQ1BBUlRZLTI1LUQiLCJ0b3RhbCI6MTUwfQ=="
+            },
+            "x-doc": {
+              "desc_en": "Opaque cursor for fetching the next page; take it from the pagination object of the previous response.",
+              "title_zh": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。",
+              "source": "ai",
+              "src_hash": "sha256:5d916f925be0",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kalshi markets response with pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "markets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "event_ticker": {
+                            "type": "string",
+                            "description": "The Kalshi event ticker",
+                            "example": "KXMAYORNYCPARTY-25",
+                            "x-doc": {
+                              "desc_en": "Ticker of the event this market belongs to.",
+                              "title_zh": "该市场所属事件的 ticker。",
+                              "source": "ai",
+                              "src_hash": "sha256:aae33551a2b6",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "market_ticker": {
+                            "type": "string",
+                            "description": "The Kalshi market ticker",
+                            "example": "KXMAYORNYCPARTY-25-D",
+                            "x-doc": {
+                              "desc_en": "Ticker uniquely identifying this market; use it to query price, trades or order book.",
+                              "title_zh": "唯一标识该市场的 ticker，可用于查询价格、成交记录或订单簿。",
+                              "source": "ai",
+                              "src_hash": "sha256:45e3d35e008e",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "Market question/title",
+                            "example": "Will a representative of the Democratic party win the NYC Mayor race in 2025?",
+                            "x-doc": {
+                              "desc_en": "Human-readable question the market resolves.",
+                              "title_zh": "市场所裁决问题的可读标题。",
+                              "source": "ai",
+                              "src_hash": "sha256:ecba8faebcf0",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "start_time": {
+                            "type": "integer",
+                            "description": "Unix timestamp in seconds when the market opens",
+                            "example": 1731150000,
+                            "x-doc": {
+                              "desc_en": "When trading on the market opens.",
+                              "title_zh": "市场开放交易的时间。",
+                              "source": "ai",
+                              "src_hash": "sha256:fc6bca9c52fe",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "end_time": {
+                            "type": "integer",
+                            "description": "Unix timestamp in seconds when the market is scheduled to end",
+                            "example": 1793775600,
+                            "x-doc": {
+                              "desc_en": "Scheduled time at which the market is expected to end.",
+                              "title_zh": "市场预计结束的计划时间。",
+                              "source": "ai",
+                              "src_hash": "sha256:f2e2e5041d0a",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "close_time": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Unix timestamp in seconds when the market actually resolves/closes (may be before end_time if market finishes early, null if not yet closed)",
+                            "example": 1793775600,
+                            "x-doc": {
+                              "desc_en": "When the market actually resolved and closed; may precede end_time if it finished early, and is null while still open.",
+                              "title_zh": "市场实际裁决并关闭的时间；若提前结束可能早于 end_time，仍开放时为 null。",
+                              "source": "ai",
+                              "src_hash": "sha256:1c93b0fae366",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "Market status",
+                            "enum": [
+                              "open",
+                              "closed"
+                            ],
+                            "example": "open",
+                            "x-doc": {
+                              "desc_en": "Current trading state: `open` still accepts trades, `closed` no longer does.",
+                              "title_zh": "当前交易状态：`open` 仍可交易，`closed` 已停止交易。",
+                              "source": "ai",
+                              "src_hash": "sha256:75e66a1e7be7",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "last_price": {
+                            "type": "number",
+                            "description": "Last traded price in cents",
+                            "example": 89,
+                            "x-doc": {
+                              "desc_en": "Price of the most recent trade.",
+                              "title_zh": "最近一笔成交的价格。",
+                              "source": "ai",
+                              "src_hash": "sha256:b8f223e9d7f3",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "volume": {
+                            "type": "number",
+                            "description": "Total trading volume in dollars",
+                            "example": 18261146,
+                            "x-doc": {
+                              "desc_en": "Cumulative trading volume since the market opened.",
+                              "title_zh": "自市场开放以来的累计成交量。",
+                              "source": "ai",
+                              "src_hash": "sha256:dfd410499fb6",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "volume_24h": {
+                            "type": "number",
+                            "description": "24-hour trading volume in dollars",
+                            "example": 931138,
+                            "x-doc": {
+                              "desc_en": "Trading volume over the trailing 24 hours.",
+                              "title_zh": "过去 24 小时的成交量。",
+                              "source": "ai",
+                              "src_hash": "sha256:8aee2499e774",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "result": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Market result (null if unresolved)",
+                            "example": null,
+                            "x-doc": {
+                              "desc_en": "Final outcome of the market once resolved; null while unresolved.\n[⚠️Note:已裁决时 result 的具体取值集合源码未说明，待研发确认。]",
+                              "title_zh": "市场裁决后的最终结果；未裁决时为 null。\n[⚠️批注:已裁决时 result 的具体取值集合源码未说明，待研发确认。]",
+                              "source": "ai",
+                              "src_hash": "sha256:7ee17b98b684",
+                              "doc_version": "2.0.0"
+                            }
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "List of matching Kalshi markets.",
+                        "title_zh": "匹配的 Kalshi 市场列表。",
+                        "source": "ai",
+                        "src_hash": "sha256:3374a332eaee",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 20,
+                          "x-doc": {
+                            "desc_en": "Page size that was applied to this response.",
+                            "title_zh": "本次响应实际采用的每页数量。",
+                            "source": "ai",
+                            "src_hash": "sha256:48dfce64c40e",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "description": "Total number of markets matching the filters",
+                          "example": 150,
+                          "x-doc": {
+                            "desc_en": "Total number of markets matching the filters across all pages.",
+                            "title_zh": "在所有分页中匹配筛选条件的市场总数。",
+                            "source": "ai",
+                            "src_hash": "sha256:e67eff2e992a",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "has_more": {
+                          "type": "boolean",
+                          "description": "Whether there are more markets available",
+                          "example": true,
+                          "x-doc": {
+                            "desc_en": "Whether further pages of results remain.",
+                            "title_zh": "是否还有更多分页结果。",
+                            "source": "ai",
+                            "src_hash": "sha256:32791c86ed1c",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "pagination_key": {
+                          "type": "string",
+                          "description": "Base64-encoded cursor for the next page. Only present when there are more results.",
+                          "example": "eyJvcGVuX3RpbWUiOiIyMDI1LTAxLTE5VDEyOjAwOjAwLjAwMFoiLCJtYXJrZXRfdGlja2VyIjoiS1hNQVlPUk5ZQ1BBUlRZLTI1LUQiLCJ0b3RhbCI6MTUwfQ==",
+                          "x-doc": {
+                            "desc_en": "Cursor to pass as pagination_key on the next request; present only when more results remain.",
+                            "title_zh": "下次请求作为 pagination_key 传入的游标，仅在还有更多结果时出现。",
+                            "source": "ai",
+                            "src_hash": "sha256:e7c64f49ec46",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Pagination metadata for the result set.",
+                        "title_zh": "结果集的分页元信息。",
+                        "source": "ai",
+                        "src_hash": "sha256:93d3abf9f066",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters or validation errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid limit parameter",
+                      "x-doc": {
+                        "desc_en": "Short machine-readable error code for the failed request.",
+                        "title_zh": "请求失败时的简短机器可读错误码。",
+                        "source": "ai",
+                        "src_hash": "sha256:8f729f6434db",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "limit must be a number between 1 and 100",
+                      "x-doc": {
+                        "desc_en": "Human-readable explanation of why the request was rejected.",
+                        "title_zh": "对请求被拒原因的可读说明。",
+                        "source": "ai",
+                        "src_hash": "sha256:fd4c2a482585",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "查询 Kalshi 市场 get_kalshi-markets",
+          "desc_en": "List Kalshi prediction markets with their pricing, volume and status, optionally filtered by market ticker, event ticker, keyword search, status or minimum volume. Results are cursor-paginated.",
+          "description_zh": "列出 Kalshi 预测市场及其价格、成交量与状态，可按 market ticker、event ticker、关键词、状态或最小成交量筛选。结果采用游标分页。",
+          "source": "ai",
+          "src_hash": "sha256:3bc8cec5060f",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/kalshi/trades": {
+      "get": {
+        "summary": "Get Kalshi Trades",
+        "description": "Fetches historical trade data for Kalshi markets with optional filtering by ticker and time range. Returns executed trades with pricing, volume, and taker side information. All timestamps are in seconds.",
+        "operationId": "get_kalshi-trades",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": false,
+            "description": "The Kalshi market ticker to filter trades",
+            "schema": {
+              "type": "string",
+              "example": "KXNFLGAME-25NOV09PITLAC-PIT"
+            },
+            "x-doc": {
+              "desc_en": "Restrict trades to a single Kalshi market by its ticker.",
+              "title_zh": "按 market ticker 将成交记录限定到单个 Kalshi 市场。",
+              "source": "ai",
+              "src_hash": "sha256:670b9bf5adde",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "description": "Start time in Unix timestamp (seconds)",
+            "schema": {
+              "type": "integer",
+              "example": 1762716000
+            },
+            "x-doc": {
+              "desc_en": "Lower bound of the trade time window; only trades at or after this moment are returned.",
+              "title_zh": "成交时间窗的下界，仅返回该时刻及之后的成交。",
+              "source": "ai",
+              "src_hash": "sha256:d2c638fb2565",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "description": "End time in Unix timestamp (seconds)",
+            "schema": {
+              "type": "integer",
+              "example": 1762720600
+            },
+            "x-doc": {
+              "desc_en": "Upper bound of the trade time window; only trades at or before this moment are returned.",
+              "title_zh": "成交时间窗的上界，仅返回该时刻及之前的成交。",
+              "source": "ai",
+              "src_hash": "sha256:6f54aeeae107",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of trades to return (default: 100)",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "example": 10
+            },
+            "x-doc": {
+              "desc_en": "Maximum number of trades to return per page.",
+              "title_zh": "每页返回的成交记录数量上限。",
+              "source": "ai",
+              "src_hash": "sha256:e6e11e84fbcf",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "pagination_key",
+            "in": "query",
+            "required": false,
+            "description": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object.",
+            "schema": {
+              "type": "string",
+              "example": "eyJjcmVhdGVkX3RpbWUiOiIyMDI1LTAxLTE5VDEyOjAwOjAwLjAwMFoiLCJ0cmFkZV9pZCI6IjEyMzQ1Njc4OTAiLCJ0b3RhbCI6NTAwMDB9"
+            },
+            "x-doc": {
+              "desc_en": "Opaque cursor for fetching the next page; take it from the pagination object of the previous response.",
+              "title_zh": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。",
+              "source": "ai",
+              "src_hash": "sha256:9f0b6b896446",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kalshi trades response with pagination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "trades": {
+                      "type": "array",
+                      "description": "Array of executed trades",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "trade_id": {
+                            "type": "string",
+                            "description": "Unique identifier for the trade",
+                            "example": "587f9eb0-1ae1-7b53-9536-fcf3fc503630",
+                            "x-doc": {
+                              "desc_en": "Identifier uniquely referencing this individual trade.",
+                              "title_zh": "唯一引用该笔成交的标识。",
+                              "source": "ai",
+                              "src_hash": "sha256:2f81f1b6adbf",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "market_ticker": {
+                            "type": "string",
+                            "description": "The Kalshi market ticker",
+                            "example": "KXNFLGAME-25NOV09PITLAC-PIT",
+                            "x-doc": {
+                              "desc_en": "Ticker of the market on which the trade executed.",
+                              "title_zh": "该笔成交所属市场的 ticker。",
+                              "source": "ai",
+                              "src_hash": "sha256:f9e6d5a56b5a",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "count": {
+                            "type": "integer",
+                            "description": "Number of contracts traded",
+                            "example": 93,
+                            "x-doc": {
+                              "desc_en": "Number of contracts exchanged in this trade.",
+                              "title_zh": "该笔成交中交换的合约数量。",
+                              "source": "ai",
+                              "src_hash": "sha256:e5e1e6f04cbd",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "yes_price": {
+                            "type": "integer",
+                            "description": "Yes side price in cents",
+                            "example": 1,
+                            "x-doc": {
+                              "desc_en": "Execution price of the yes side, expressed in cents.",
+                              "title_zh": "yes 一侧的成交价格，以分计。",
+                              "source": "ai",
+                              "src_hash": "sha256:810703e44a4e",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "no_price": {
+                            "type": "integer",
+                            "description": "No side price in cents",
+                            "example": 99,
+                            "x-doc": {
+                              "desc_en": "Execution price of the no side, expressed in cents.",
+                              "title_zh": "no 一侧的成交价格，以分计。",
+                              "source": "ai",
+                              "src_hash": "sha256:075cfba246bd",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "yes_price_dollars": {
+                            "type": "number",
+                            "description": "Yes side price in dollars",
+                            "example": 0.01,
+                            "x-doc": {
+                              "desc_en": "Execution price of the yes side, expressed in dollars.",
+                              "title_zh": "yes 一侧的成交价格，以美元计。",
+                              "source": "ai",
+                              "src_hash": "sha256:05314c914590",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "no_price_dollars": {
+                            "type": "number",
+                            "description": "No side price in dollars",
+                            "example": 0.99,
+                            "x-doc": {
+                              "desc_en": "Execution price of the no side, expressed in dollars.",
+                              "title_zh": "no 一侧的成交价格，以美元计。",
+                              "source": "ai",
+                              "src_hash": "sha256:d60cc4e5b3af",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "taker_side": {
+                            "type": "string",
+                            "description": "Which side was the taker (yes or no)",
+                            "enum": [
+                              "yes",
+                              "no"
+                            ],
+                            "example": "yes",
+                            "x-doc": {
+                              "desc_en": "Which side initiated the trade by crossing the spread: `yes` or `no`.",
+                              "title_zh": "主动吃单成交的一方：`yes` 或 `no`。",
+                              "source": "ai",
+                              "src_hash": "sha256:74904884114b",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "created_time": {
+                            "type": "integer",
+                            "description": "Timestamp of the trade in seconds (Unix timestamp)",
+                            "example": 1762718746,
+                            "x-doc": {
+                              "desc_en": "Moment at which the trade was executed.",
+                              "title_zh": "该笔成交发生的时间。",
+                              "source": "ai",
+                              "src_hash": "sha256:1817dcd20dd5",
+                              "doc_version": "2.0.0"
+                            }
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "List of executed trades matching the filters.",
+                        "title_zh": "匹配筛选条件的成交记录列表。",
+                        "source": "ai",
+                        "src_hash": "sha256:ef0f3d53ad8a",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 50,
+                          "x-doc": {
+                            "desc_en": "Page size that was applied to this response.",
+                            "title_zh": "本次响应实际采用的每页数量。",
+                            "source": "ai",
+                            "src_hash": "sha256:edfbb3671d2a",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "description": "Total number of trades matching the filters",
+                          "example": 43154,
+                          "x-doc": {
+                            "desc_en": "Total number of trades matching the filters across all pages.",
+                            "title_zh": "在所有分页中匹配筛选条件的成交总数。",
+                            "source": "ai",
+                            "src_hash": "sha256:6755111adb76",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "has_more": {
+                          "type": "boolean",
+                          "description": "Whether there are more trades available",
+                          "example": true,
+                          "x-doc": {
+                            "desc_en": "Whether further pages of results remain.",
+                            "title_zh": "是否还有更多分页结果。",
+                            "source": "ai",
+                            "src_hash": "sha256:1660b66cc966",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "pagination_key": {
+                          "type": "string",
+                          "description": "Base64-encoded cursor for the next page. Only present when there are more results.",
+                          "example": "eyJjcmVhdGVkX3RpbWUiOiIyMDI1LTAxLTE5VDEyOjAwOjAwLjAwMFoiLCJ0cmFkZV9pZCI6IjEyMzQ1Njc4OTAiLCJ0b3RhbCI6NTAwMDB9",
+                          "x-doc": {
+                            "desc_en": "Cursor to pass as pagination_key on the next request; present only when more results remain.",
+                            "title_zh": "下次请求作为 pagination_key 传入的游标，仅在还有更多结果时出现。",
+                            "source": "ai",
+                            "src_hash": "sha256:4fc6e278990a",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Pagination metadata for the result set.",
+                        "title_zh": "结果集的分页元信息。",
+                        "source": "ai",
+                        "src_hash": "sha256:aa6c38b6fa81",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid parameters",
+                      "x-doc": {
+                        "desc_en": "Short machine-readable error code for the failed request.",
+                        "title_zh": "请求失败时的简短机器可读错误码。",
+                        "source": "ai",
+                        "src_hash": "sha256:48c02d9a6b8e",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid time range or parameters",
+                      "x-doc": {
+                        "desc_en": "Human-readable explanation of why the request was rejected.",
+                        "title_zh": "对请求被拒原因的可读说明。",
+                        "source": "ai",
+                        "src_hash": "sha256:cfaa680bc59b",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "查询 Kalshi 成交记录 get_kalshi-trades",
+          "desc_en": "List historical executed trades for Kalshi markets, optionally filtered by market ticker and a time window, returning per-trade price, contract count and taker side. Results are cursor-paginated.",
+          "description_zh": "列出 Kalshi 市场的历史成交记录，可按 market ticker 与时间区间筛选，返回每笔成交的价格、合约数量与吃单方向。结果采用游标分页。",
+          "source": "ai",
+          "src_hash": "sha256:3673b50f5f63",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/kalshi/market-price/{market_ticker}": {
+      "parameters": [
+        {
+          "name": "market_ticker",
+          "in": "path",
+          "required": true,
+          "description": "The market ticker for the Kalshi market",
+          "schema": {
+            "type": "string",
+            "example": "KXNFLGAME-25AUG16ARIDEN-ARI"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Kalshi Market Price",
+        "description": "Fetches the current market price for a Kalshi market by `market_ticker`. When `at_time` is not provided, returns the most real-time price available. When `at_time` is provided, returns the historical market price at that specific timestamp. Returns prices for both yes and no sides.\n\n**Example Request (with historical timestamp):**\n```bash\ncurl 'https://api.domeapi.io/v1/kalshi/market-price/KXNFLGAME-25AUG16ARIDEN-ARI?at_time=1762164600' \\\n  -H 'Authorization: Bearer YOUR_TOKEN'\n```\n\n**Example Request (real-time price):**\n```bash\ncurl 'https://api.domeapi.io/v1/kalshi/market-price/KXNFLGAME-25AUG16ARIDEN-ARI' \\\n  -H 'Authorization: Bearer YOUR_TOKEN'\n```",
+        "operationId": "get_kalshi-market-price",
+        "parameters": [
+          {
+            "name": "at_time",
+            "in": "query",
+            "required": false,
+            "description": "Optional Unix timestamp (in seconds) to fetch a historical market price. If not provided, returns the most real-time price available.",
+            "schema": {
+              "type": "integer",
+              "example": 1762164600
+            },
+            "x-doc": {
+              "desc_en": "Fetch the historical price as of this moment; omit to get the latest available price.",
+              "title_zh": "查询截至该时刻的历史价格；省略则返回最新可得价格。",
+              "source": "ai",
+              "src_hash": "sha256:7709ff3cca05",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Market price response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "yes": {
+                      "type": "object",
+                      "description": "Yes side price information",
+                      "properties": {
+                        "price": {
+                          "type": "number",
+                          "description": "The yes side price in dollars (between 0 and 1)",
+                          "example": 0.75,
+                          "x-doc": {
+                            "desc_en": "Yes-side price, expressed in dollars as a probability-like value between 0 and 1.",
+                            "title_zh": "yes 一侧价格，以美元计，取值介于 0 与 1 之间，类似概率。",
+                            "source": "ai",
+                            "src_hash": "sha256:2d06a6c078fe",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "at_time": {
+                          "type": "integer",
+                          "description": "The timestamp for which the price was fetched (Unix timestamp in seconds)",
+                          "example": 1762164600,
+                          "x-doc": {
+                            "desc_en": "Moment the returned yes-side price corresponds to.",
+                            "title_zh": "所返回 yes 一侧价格对应的时间点。",
+                            "source": "ai",
+                            "src_hash": "sha256:5f3f1a7f4a77",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "required": [
+                        "price",
+                        "at_time"
+                      ],
+                      "x-doc": {
+                        "desc_en": "Price information for the yes side of the market.",
+                        "title_zh": "市场 yes 一侧的价格信息。",
+                        "source": "ai",
+                        "src_hash": "sha256:3f6635be8cf8",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "no": {
+                      "type": "object",
+                      "description": "No side price information",
+                      "properties": {
+                        "price": {
+                          "type": "number",
+                          "description": "The no side price in dollars (between 0 and 1)",
+                          "example": 0.25,
+                          "x-doc": {
+                            "desc_en": "No-side price, expressed in dollars as a probability-like value between 0 and 1.",
+                            "title_zh": "no 一侧价格，以美元计，取值介于 0 与 1 之间，类似概率。",
+                            "source": "ai",
+                            "src_hash": "sha256:19c6713fba32",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "at_time": {
+                          "type": "integer",
+                          "description": "The timestamp for which the price was fetched (Unix timestamp in seconds)",
+                          "example": 1762164600,
+                          "x-doc": {
+                            "desc_en": "Moment the returned no-side price corresponds to.",
+                            "title_zh": "所返回 no 一侧价格对应的时间点。",
+                            "source": "ai",
+                            "src_hash": "sha256:5f3f1a7f4a77",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "required": [
+                        "price",
+                        "at_time"
+                      ],
+                      "x-doc": {
+                        "desc_en": "Price information for the no side of the market.",
+                        "title_zh": "市场 no 一侧的价格信息。",
+                        "source": "ai",
+                        "src_hash": "sha256:bc75d72f89fd",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  },
+                  "required": [
+                    "yes",
+                    "no"
+                  ]
+                },
+                "examples": {
+                  "with_at_time": {
+                    "summary": "Historical price lookup",
+                    "description": "Response when `at_time` parameter is provided",
+                    "value": {
+                      "yes": {
+                        "price": 0.75,
+                        "at_time": 1762164600
+                      },
+                      "no": {
+                        "price": 0.25,
+                        "at_time": 1762164600
+                      }
+                    }
+                  },
+                  "real_time": {
+                    "summary": "Real-time price lookup",
+                    "description": "Response when `at_time` parameter is omitted (most recent price)",
+                    "value": {
+                      "yes": {
+                        "price": 0.82,
+                        "at_time": 1757008834
+                      },
+                      "no": {
+                        "price": 0.18,
+                        "at_time": 1757008834
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid at_time parameter",
+                      "x-doc": {
+                        "desc_en": "Short machine-readable error code for the failed request.",
+                        "title_zh": "请求失败时的简短机器可读错误码。",
+                        "source": "ai",
+                        "src_hash": "sha256:e2bbaae583dd",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "at_time must be a valid Unix timestamp in seconds",
+                      "x-doc": {
+                        "desc_en": "Human-readable explanation of why the request was rejected.",
+                        "title_zh": "对请求被拒原因的可读说明。",
+                        "source": "ai",
+                        "src_hash": "sha256:7abf29ca4075",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Market not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Not Found",
+                      "x-doc": {
+                        "desc_en": "Short machine-readable error code indicating the market was not found.",
+                        "title_zh": "表示未找到该市场的简短机器可读错误码。",
+                        "source": "ai",
+                        "src_hash": "sha256:fa2b9e529dde",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "No price data found for market_ticker KXNFLGAME-25AUG16ARIDEN-ARI",
+                      "x-doc": {
+                        "desc_en": "Human-readable explanation that no price data exists for the requested market.",
+                        "title_zh": "对所请求市场不存在价格数据的可读说明。",
+                        "source": "ai",
+                        "src_hash": "sha256:cd508bfc541b",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "查询 Kalshi 市场价格 get_kalshi-market-price",
+          "desc_en": "Get the price of a single Kalshi market identified by its market ticker, for both the yes and no sides. Returns the latest available price by default, or the historical price at a given timestamp when at_time is supplied.",
+          "description_zh": "查询由 market ticker 指定的单个 Kalshi 市场价格，包含 yes 与 no 两侧。默认返回最新可得价格；传入 at_time 时返回该时间点的历史价格。",
+          "source": "ai",
+          "src_hash": "sha256:f4181fd5ffd5",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/kalshi/orderbooks": {
+      "get": {
+        "summary": "Get Kalshi Orderbook History",
+        "description": "Fetches historical orderbook snapshots for a specific Kalshi market (ticker) over a specified time range. If no start_time and end_time are provided, returns the latest orderbook snapshot for the market. Returns snapshots of the order book including yes/no bids and asks with prices in both cents and dollars. All timestamps are in milliseconds. Orderbook data has history starting from October 29th, 2025. Note: When fetching the latest orderbook (without start/end times), the limit parameter is ignored.",
+        "operationId": "get_kalshi-orderbooks",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": true,
+            "description": "The Kalshi market ticker",
+            "schema": {
+              "type": "string",
+              "example": "KXNFLGAME-25AUG16ARIDEN-ARI"
+            },
+            "x-doc": {
+              "desc_en": "Kalshi market ticker whose order book history is requested.",
+              "title_zh": "要查询订单簿历史的 Kalshi 市场 ticker。",
+              "source": "ai",
+              "src_hash": "sha256:53b9132bb887",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "start_time",
+            "in": "query",
+            "required": false,
+            "description": "Start time in Unix timestamp (milliseconds). Optional - if not provided along with end_time, returns the latest orderbook snapshot.",
+            "schema": {
+              "type": "integer",
+              "example": 1760470000000
+            },
+            "x-doc": {
+              "desc_en": "Lower bound of the snapshot time window; omit together with end_time to get only the latest snapshot.",
+              "title_zh": "快照时间窗的下界；与 end_time 一并省略则只返回最新一条快照。",
+              "source": "ai",
+              "src_hash": "sha256:74be2cce5bc4",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "end_time",
+            "in": "query",
+            "required": false,
+            "description": "End time in Unix timestamp (milliseconds). Optional - if not provided along with start_time, returns the latest orderbook snapshot.",
+            "schema": {
+              "type": "integer",
+              "example": 1760480000000
+            },
+            "x-doc": {
+              "desc_en": "Upper bound of the snapshot time window; omit together with start_time to get only the latest snapshot.",
+              "title_zh": "快照时间窗的上界；与 start_time 一并省略则只返回最新一条快照。",
+              "source": "ai",
+              "src_hash": "sha256:ba4e4980629b",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of snapshots to return (default: 100, max: 200). Ignored when fetching the latest orderbook without start_time and end_time.",
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "maximum": 200,
+              "example": 100
+            },
+            "x-doc": {
+              "desc_en": "Maximum number of snapshots to return per page; ignored when fetching only the latest snapshot.",
+              "title_zh": "每页返回的快照数量上限；仅取最新快照时该参数被忽略。",
+              "source": "ai",
+              "src_hash": "sha256:60c5f3d09ca2",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "paginationKey",
+            "in": "query",
+            "required": false,
+            "description": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object.",
+            "schema": {
+              "type": "string",
+              "example": "eyJ0aW1lc3RhbXAiOjE3NjA0NzAwMDAwMDAsInRpY2tlciI6IktYTkZMR0FNRS0yNUFVRzE2QVJJREVOLUFSSSIsInRvdGFsIjoxMDB9"
+            },
+            "x-doc": {
+              "desc_en": "Opaque cursor for fetching the next page; take it from the pagination object of the previous response.",
+              "title_zh": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。",
+              "source": "ai",
+              "src_hash": "sha256:4556b1ea3294",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Kalshi orderbook history response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "snapshots": {
+                      "type": "array",
+                      "description": "Array of orderbook snapshots at different points in time",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "orderbook": {
+                            "type": "object",
+                            "properties": {
+                              "yes": {
+                                "type": "array",
+                                "description": "Yes side orders with prices in cents",
+                                "items": {
+                                  "type": "array",
+                                  "description": "[price_in_cents, contract_count]",
+                                  "items": {
+                                    "type": "number"
+                                  },
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "example": [
+                                    75,
+                                    100
+                                  ]
+                                },
+                                "x-doc": {
+                                  "desc_en": "Resting yes-side orders, each as a [price, contract count] pair with price in cents.",
+                                  "title_zh": "yes 一侧的挂单，每项为 [价格, 合约数量] 对，价格以分计。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:c34cd64a242a",
+                                  "doc_version": "2.0.0"
+                                }
+                              },
+                              "no": {
+                                "type": "array",
+                                "description": "No side orders with prices in cents",
+                                "items": {
+                                  "type": "array",
+                                  "description": "[price_in_cents, contract_count]",
+                                  "items": {
+                                    "type": "number"
+                                  },
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "example": [
+                                    25,
+                                    100
+                                  ]
+                                },
+                                "x-doc": {
+                                  "desc_en": "Resting no-side orders, each as a [price, contract count] pair with price in cents.",
+                                  "title_zh": "no 一侧的挂单，每项为 [价格, 合约数量] 对，价格以分计。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:599c6c6f5916",
+                                  "doc_version": "2.0.0"
+                                }
+                              },
+                              "yes_dollars": {
+                                "type": "array",
+                                "description": "Yes side orders with prices in dollars",
+                                "items": {
+                                  "type": "array",
+                                  "description": "[price_as_dollar_string, contract_count]",
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "items": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "example": [
+                                    "0.75",
+                                    100
+                                  ]
+                                },
+                                "x-doc": {
+                                  "desc_en": "Resting yes-side orders, each as a [price, contract count] pair with price in dollars.",
+                                  "title_zh": "yes 一侧的挂单，每项为 [价格, 合约数量] 对，价格以美元计。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:d95eef362517",
+                                  "doc_version": "2.0.0"
+                                }
+                              },
+                              "no_dollars": {
+                                "type": "array",
+                                "description": "No side orders with prices in dollars",
+                                "items": {
+                                  "type": "array",
+                                  "description": "[price_as_dollar_string, contract_count]",
+                                  "minItems": 2,
+                                  "maxItems": 2,
+                                  "items": {
+                                    "oneOf": [
+                                      {
+                                        "type": "string"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  "example": [
+                                    "0.25",
+                                    100
+                                  ]
+                                },
+                                "x-doc": {
+                                  "desc_en": "Resting no-side orders, each as a [price, contract count] pair with price in dollars.",
+                                  "title_zh": "no 一侧的挂单，每项为 [价格, 合约数量] 对，价格以美元计。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:c15de24bd0ac",
+                                  "doc_version": "2.0.0"
+                                }
+                              }
+                            },
+                            "x-doc": {
+                              "desc_en": "The bid levels of the order book at this snapshot, split by side and price unit.",
+                              "title_zh": "该快照时刻订单簿的报价档位，按方向与价格单位拆分。",
+                              "source": "ai",
+                              "src_hash": "sha256:077efb1517d0",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "timestamp": {
+                            "type": "integer",
+                            "description": "Timestamp of the snapshot in milliseconds",
+                            "example": 1760471849407,
+                            "x-doc": {
+                              "desc_en": "Moment this order book snapshot was captured.",
+                              "title_zh": "该订单簿快照的采集时间。",
+                              "source": "ai",
+                              "src_hash": "sha256:bd67de51df17",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "ticker": {
+                            "type": "string",
+                            "description": "The Kalshi market ticker",
+                            "example": "KXNFLGAME-25AUG16ARIDEN-ARI",
+                            "x-doc": {
+                              "desc_en": "Ticker of the market this snapshot belongs to.",
+                              "title_zh": "该快照所属市场的 ticker。",
+                              "source": "ai",
+                              "src_hash": "sha256:e43e8e3775ec",
+                              "doc_version": "2.0.0"
+                            }
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Order book snapshots ordered through the requested time window.",
+                        "title_zh": "在所请求时间窗内排列的订单簿快照。",
+                        "source": "ai",
+                        "src_hash": "sha256:0c72aae22e08",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer",
+                          "example": 100,
+                          "x-doc": {
+                            "desc_en": "Page size that was applied to this response.",
+                            "title_zh": "本次响应实际采用的每页数量。",
+                            "source": "ai",
+                            "src_hash": "sha256:dcd203216c82",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "count": {
+                          "type": "integer",
+                          "description": "Number of snapshots returned",
+                          "example": 4,
+                          "x-doc": {
+                            "desc_en": "Number of snapshots returned in this page.",
+                            "title_zh": "本页返回的快照数量。",
+                            "source": "ai",
+                            "src_hash": "sha256:c11df922a5f6",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "paginationKey": {
+                          "type": "string",
+                          "description": "Base64-encoded cursor for fetching the next page of results. Only present when has_more is true.",
+                          "example": "eyJ0aW1lc3RhbXAiOjE3NjA0NzAwMDAwMDAsInRpY2tlciI6IktYTkZMR0FNRS0yNUFVRzE2QVJJREVOLUFSSSIsInRvdGFsIjoxMDB9",
+                          "x-doc": {
+                            "desc_en": "Cursor to pass as paginationKey on the next request; present only when more results remain.",
+                            "title_zh": "下次请求作为 paginationKey 传入的游标，仅在还有更多结果时出现。",
+                            "source": "ai",
+                            "src_hash": "sha256:b82e6ce3642c",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "has_more": {
+                          "type": "boolean",
+                          "description": "Whether there are more snapshots available",
+                          "example": false,
+                          "x-doc": {
+                            "desc_en": "Whether further pages of snapshots remain.",
+                            "title_zh": "是否还有更多分页快照。",
+                            "source": "ai",
+                            "src_hash": "sha256:1a6738e61362",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Pagination metadata for the result set.",
+                        "title_zh": "结果集的分页元信息。",
+                        "source": "ai",
+                        "src_hash": "sha256:122dbccf4961",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Invalid parameters",
+                      "x-doc": {
+                        "desc_en": "Short machine-readable error code for the failed request.",
+                        "title_zh": "请求失败时的简短机器可读错误码。",
+                        "source": "ai",
+                        "src_hash": "sha256:48c02d9a6b8e",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "ticker, start_time, and end_time are required",
+                      "x-doc": {
+                        "desc_en": "Human-readable explanation of why the request was rejected.",
+                        "title_zh": "对请求被拒原因的可读说明。",
+                        "source": "ai",
+                        "src_hash": "sha256:03790e4ae1e6",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "查询 Kalshi 订单簿历史 get_kalshi-orderbooks",
+          "desc_en": "Get historical order book snapshots for a single Kalshi market over a time window, returning yes/no bid levels in both cents and dollars. When no time window is given, returns only the latest snapshot. Results are cursor-paginated.",
+          "description_zh": "查询单个 Kalshi 市场在某时间区间内的历史订单簿快照，返回 yes/no 两侧的报价档位（同时给出以分和以美元计的价格）。未指定时间区间时仅返回最新一条快照。结果采用游标分页。",
+          "source": "ai",
+          "src_hash": "sha256:89af889b2afc",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key",
+        "description": "Your AIsa API key as a Bearer token."
+      }
+    }
+  }
+}

@@ -1,0 +1,3636 @@
+{
+  "sections": [
+    {
+      "operation": "post_apollo_people_match",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the People Enrichment endpoint to enrich data for 1 person. To enrich data for up to 10 people with a single API call, use the Bulk People Enrichment endpoint instead. Apollo relies on the information you pass via the endpoint's parameters to identify the correct person to enrich. If you provide more information about a person, Apollo is more likely to find a match within its database. If you only provide general information, such as a name without a domain or email address, you might receive a 200 response, but the response will indicate that no records have been enriched. By default, this endpoint does not return personal emails or phone numbers. Use the reveal_personal_emails and reveal_phone_number parameters to retrieve emails and phone numbers. You can also use the run_waterfall_email and run_waterfall_phone parameters to run waterfall enrichment via this endpoint. gives you broader data coverage by checking connected third-party data sources for contact emails and phone numbers. When you call this endpoint and include at least one waterfall parameter, Apollo returns an immediate synchronous response with demographic and firmographic data, along with a waterfall enrichment request status. Apollo delivers enriched emails and/or phone numbers asynchronously to a configured webhook. **Webhook Response Details:** - When using native enrichment for phone number enrichment, the webhook response follows: - When passing Waterfall flags, the webhook response follows: **Webhook Requirements:** - **HTTPS Required:** Your endpoint must be publicly accessible over HTTPS. - **Rate Limiting:** Ensure your webhook endpoint can handle the volume of webhook traffic sent by Apollo. - **Idempotency:** Apollo may retry webhook calls; your endpoint should be idempotent to handle duplicate payloads safely. Using this endpoint will consume credits based on your account's pricing plan. If you run waterfall enrichment parameters, your depends on the type of data you request (emails and/or phone numbers) and which data source returns enriched data. To view a summary of Apollo's pricing, visit the public pricing page ↗ For detailed information regarding API credit usage, see the API enrichment ↗ section on the *About Credits* page (login required).",
+          "desc_en": "Enrich a single person with Apollo's contact and company data; optionally trigger waterfall email/phone enrichment and reveal personal emails or phone numbers. Provide as many identifying parameters (name, email, domain, LinkedIn URL, Apollo id) as possible to improve match accuracy.",
+          "title_zh": "用 Apollo 的联系人与公司数据丰富单个人；可选触发邮箱/电话瀑布式补全，并解锁个人邮箱或电话号码。尽量多提供标识参数（姓名、邮箱、域名、LinkedIn 链接、Apollo id）以提升匹配准确率。"
+        },
+        {
+          "path": "param:first_name",
+          "src_en": "The first name of the person. This is typically used in combination with the last_name parameter. Example: tim",
+          "desc_en": "Person's first name; pair with last_name to identify by full name when no email or id is available.",
+          "title_zh": "人的名字；在没有邮箱或 id 时与 last_name 搭配按全名匹配。"
+        },
+        {
+          "path": "param:last_name",
+          "src_en": "The last name of the person. This is typically used in combination with the first_name parameter. Example: zheng",
+          "desc_en": "Person's last name; pair with first_name.",
+          "title_zh": "人的姓氏；与 first_name 搭配使用。"
+        },
+        {
+          "path": "param:name",
+          "src_en": "The full name of the person. This will typically be a first name and last name separated by a space. If you use this parameter, you do not need to use the first_name and last_name parameters. Example: tim zheng",
+          "desc_en": "Full name as an alternative to sending first_name and last_name separately.",
+          "title_zh": "全名，可替代分别传 first_name 与 last_name。"
+        },
+        {
+          "path": "param:email",
+          "src_en": "The email address of the person. Example: example@email.com",
+          "desc_en": "Person's email address; the strongest single signal for an accurate match.",
+          "title_zh": "人的邮箱地址；单一最强的精确匹配信号。"
+        },
+        {
+          "path": "param:hashed_email",
+          "src_en": "The hashed email of the person. The email should adhere to either the MD5 or SHA-256 hash format. Example: 8d935115b9ff4489f2d1f9249503cadf (MD5) or 97817c0c49994eb500ad0a5e7e2d8aed51977b26424d508f66e4e8887746a152 (SHA-256)",
+          "desc_en": "Hashed email used to match without sending the plaintext address.\n[⚠️Note:源码未声明 MD5 与 SHA-256 之外的取值，详细哈希规范待研发确认。]",
+          "title_zh": "邮箱哈希值，用于在不传明文邮箱的情况下匹配。\n[⚠️批注:源码未声明 MD5 与 SHA-256 之外的取值，详细哈希规范待研发确认。]"
+        },
+        {
+          "path": "param:organization_name",
+          "src_en": "The name of the person's employer. This can be the current employer or a previous employer. Example: apollo",
+          "desc_en": "Name of the person's employer (current or past), used to disambiguate matches.",
+          "title_zh": "人的雇主名称（现任或曾任），用于区分匹配。"
+        },
+        {
+          "path": "param:domain",
+          "src_en": "The domain name for the person's employer. This can be the current employer or a previous employer. Do not include www., the @ symbol, or similar. Example: apollo.io or microsoft.com",
+          "desc_en": "Web domain of the person's employer (current or past), used to disambiguate matches.",
+          "title_zh": "人的雇主主域名（现任或曾任），用于区分匹配。"
+        },
+        {
+          "path": "param:id",
+          "src_en": "The Apollo ID for the person. Each person in the Apollo database is assigned a unique ID. To find IDs, call the People API Search endpoint and identify the values for person_id. Example: 587cf802f65125cad923a266",
+          "desc_en": "Apollo identifier of the person.",
+          "title_zh": "该人员的 Apollo 标识。"
+        },
+        {
+          "path": "param:linkedin_url",
+          "src_en": "The URL for the person's LinkedIn profile. Example: http://www.linkedin.com/in/tim-zheng-677ba010",
+          "desc_en": "URL of the person's LinkedIn profile; a strong matching signal.",
+          "title_zh": "人的 LinkedIn 主页链接；很强的匹配信号。"
+        },
+        {
+          "path": "param:run_waterfall_email",
+          "src_en": "Set to true to enable email waterfall enrichment",
+          "desc_en": "Enable waterfall email enrichment, which queries additional data sources to find an email.",
+          "title_zh": "启用邮箱瀑布式补全，调用更多数据源来寻找邮箱。"
+        },
+        {
+          "path": "param:run_waterfall_phone",
+          "src_en": "Set to true to enable phone waterfall enrichment",
+          "desc_en": "Enable waterfall phone enrichment, which queries additional data sources to find a phone number.",
+          "title_zh": "启用电话瀑布式补全，调用更多数据源来寻找电话。"
+        },
+        {
+          "path": "param:reveal_personal_emails",
+          "src_en": "Set to true if you want to enrich the person's data with personal emails. This potentially consumes credits as part of your Apollo pricing plan . The default value is false. If a person resides in a GDPR -compliant region, Apollo will not reveal their personal email.",
+          "desc_en": "Include the person's personal emails in the result; may consume extra credits.",
+          "title_zh": "在结果中包含个人邮箱；可能额外消耗额度。"
+        },
+        {
+          "path": "param:reveal_phone_number",
+          "src_en": "Set to true if you want to enrich the person's data with all available phone numbers, including mobile phone numbers. This potentially consumes credits as part of your Apollo pricing plan . The default value is false. If this parameter is set to true, you must enter a webhook URL for the webhook_url parameter. Apollo will asynchronously verify phone numbers for you, then send a JSON response that includes only details about the person's phone numbers to the webhook URL you provide. It can take several minutes for the phone numbers to be delivered.",
+          "desc_en": "Include all available phone numbers in the result; when enabled, webhook_url becomes required because numbers are delivered asynchronously.",
+          "title_zh": "在结果中包含所有可用电话；启用后 webhook_url 变为必填，因为号码异步回传。"
+        },
+        {
+          "path": "param:webhook_url",
+          "src_en": "If you set the reveal_phone_number parameter to true, this parameter becomes mandatory. Otherwise, do not use this parameter. Enter the webhook URL that specifies where Apollo should send a JSON response that includes the phone number you requested. Apollo suggests testing this flow to ensure you receive the separate response with the phone number. If phone numbers are not revealed delivered to the webhook URL, try applying UTF-8 encoding to the webhook URL. Example: https://webhook.site/cc4cf44e-e047-4774-8dac-473d28474e40; https%3A%2F%2Fwebhook.site%2Fcc4cf44e-e047-4774-8dac-473d28474e40",
+          "desc_en": "Callback URL that receives revealed phone numbers asynchronously; required when reveal_phone_number is enabled.",
+          "title_zh": "异步接收已揭示电话号码的回调地址；reveal_phone_number 启用时必填。"
+        },
+        {
+          "path": "resp.200.person",
+          "src_en": "Response object",
+          "desc_en": "Enriched profile of the matched person.",
+          "title_zh": "匹配到的人员的丰富后画像。"
+        },
+        {
+          "path": "resp.200.waterfall",
+          "src_en": "Response object",
+          "desc_en": "Status and results of any waterfall email/phone enrichment that was triggered.",
+          "title_zh": "触发的邮箱/电话瀑布式补全的状态与结果。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_people_bulk_match",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the Bulk People Enrichment endpoint to enrich data for up to 10 people with a single API call. To enrich data for only 1 person, use the People Enrichment endpoint instead. Apollo relies on the information you pass via the endpoint's parameters to identify the correct people to enrich. When you provide more information, Apollo is more likely to find matches within its database. If you only provide general information, such as a name without a domain or email address, you might receive a 200 response, but the response will indicate that no records have been enriched. The details for each person should be passed as an object with the details[] array. By default, this endpoint does not return personal emails or phone numbers. Use the reveal_personal_emails and reveal_phone_number parameters to retrieve emails and phone numbers. If you set either of these parameters to true, Apollo will attempt to provide emails or phone numbers for all matches. You can use also use the run_waterfall_email and run_waterfall_phone parameters to run waterfall enrichment via this endpoint. gives you broader data coverage by checking connected third-party data sources for contact emails and phone numbers. When you call this endpoint and include at least one waterfall parameter, Apollo returns an immediate synchronous response with demographic and firmographic data, along with a waterfall enrichment request status. Apollo delivers enriched emails and/or phone numbers asynchronously to a configured webhook. **Webhook Response Details:** - When using native enrichment for phone number enrichment, the webhook response follows: - When passing Waterfall flags, the webhook response follows: **Webhook Requirements:** - **HTTPS Required:** Your endpoint must be publicly accessible over HTTPS. - **Rate Limiting:** Ensure your webhook endpoint can handle the volume of webhook traffic sent by Apollo. - **Idempotency:** Apollo may retry webhook calls. Your endpoint should be idempotent to handle duplicate payloads safely. Using this endpoint will consume credits based on your account's pricing plan. If you run waterfall enrichment parameters, your depends on the type of data you request (emails and/or phone numbers) and which data source returns enriched data. To view a summary of Apollo's pricing, visit the public pricing page ↗ For detailed information regarding API credit usage, see the API enrichment ↗ section on the *About Credits* page (login required). This endpoint's rate limit is throttled to 50% of the People Enrichment endpoint's per-minute rate limit, and is 100% of the hourly and daily rate limits for the same individual endpoint.",
+          "desc_en": "Enrich up to 10 people in one call by passing an array of person records. Returns per-record match results plus aggregate counts of how many records were enriched and how many credits were spent.",
+          "title_zh": "一次调用最多丰富 10 个人，传入人员记录数组。返回每条记录的匹配结果，以及成功丰富数量、消耗额度等汇总计数。"
+        },
+        {
+          "path": "param:run_waterfall_email",
+          "src_en": "Set to true to enable email waterfall enrichment",
+          "desc_en": "Enable waterfall email enrichment for every record in the batch.",
+          "title_zh": "为批次中每条记录启用邮箱瀑布式补全。"
+        },
+        {
+          "path": "param:run_waterfall_phone",
+          "src_en": "Set to true to enable phone waterfall enrichment",
+          "desc_en": "Enable waterfall phone enrichment for every record in the batch.",
+          "title_zh": "为批次中每条记录启用电话瀑布式补全。"
+        },
+        {
+          "path": "param:reveal_personal_emails",
+          "src_en": "Set to true if you want to enrich all matched people with personal emails. This potentially consumes credits as part of your Apollo pricing plan . The default value is false. If a person resides in a GDPR -compliant region, Apollo will not reveal their personal email.",
+          "desc_en": "Include personal emails for every record; may consume extra credits.",
+          "title_zh": "为每条记录包含个人邮箱；可能额外消耗额度。"
+        },
+        {
+          "path": "param:reveal_phone_number",
+          "src_en": "Set to true if you want to enrich the data of all matched people with all available phone numbers, including mobile phone numbers. This potentially consumes credits as part of your Apollo pricing plan . The default value is false. If this parameter is set to true, you must enter a webhook URL for the webhook_url parameter. Apollo will asynchronously verify phone numbers for you, then send a JSON response that includes only details about the phone numbers to the webhook URL you provide. It can take several minutes for the phone numbers to be delivered.",
+          "desc_en": "Include all phone numbers for every record; requires webhook_url for asynchronous delivery.",
+          "title_zh": "为每条记录包含所有电话；需 webhook_url 异步回传。"
+        },
+        {
+          "path": "param:webhook_url",
+          "src_en": "If you set the reveal_phone_number parameter to true, this parameter becomes mandatory. Otherwise, do not use this parameter. Enter the webhook URL that specifies where Apollo should send a JSON response that includes the phone number you requested. Apollo suggests testing this flow to ensure you receive the separate response with the phone number. If phone numbers are not revealed delivered to the webhook URL, try applying UTF-8 encoding to the webhook URL. Example: https://webhook.site/cc4cf44e-e047-4774-8dac-473d28474e40; https%3A%2F%2Fwebhook.site%2Fcc4cf44e-e047-4774-8dac-473d28474e40",
+          "desc_en": "Callback URL receiving revealed phone numbers; required when reveal_phone_number is enabled.",
+          "title_zh": "接收已揭示电话号码的回调地址；reveal_phone_number 启用时必填。"
+        },
+        {
+          "path": "req.details",
+          "src_en": "Provide info for each person you want to enrich as an object within this array. Add up to 10 people.",
+          "desc_en": "Array of person records to enrich, one object per person, up to 10.",
+          "title_zh": "待丰富的人员记录数组，每人一个对象，最多 10 条。"
+        },
+        {
+          "path": "resp.200.status",
+          "src_en": "Response field",
+          "desc_en": "Overall processing status of the bulk request.",
+          "title_zh": "批量请求的整体处理状态。"
+        },
+        {
+          "path": "resp.200.error_code",
+          "src_en": "Response field",
+          "desc_en": "Error code when the request failed; absent on success.",
+          "title_zh": "失败时的错误码；成功时不返回。"
+        },
+        {
+          "path": "resp.200.error_message",
+          "src_en": "Response field",
+          "desc_en": "Human-readable error detail when the request failed.",
+          "title_zh": "失败时的可读错误说明。"
+        },
+        {
+          "path": "resp.200.total_requested_enrichments",
+          "src_en": "Response field",
+          "desc_en": "Number of enrichments requested in this call.",
+          "title_zh": "本次调用请求的丰富数量。"
+        },
+        {
+          "path": "resp.200.unique_enriched_records",
+          "src_en": "Response field",
+          "desc_en": "Number of distinct records that were successfully enriched.",
+          "title_zh": "成功丰富的去重记录数。"
+        },
+        {
+          "path": "resp.200.missing_records",
+          "src_en": "Response field",
+          "desc_en": "Number of records that could not be matched.",
+          "title_zh": "未能匹配的记录数。"
+        },
+        {
+          "path": "resp.200.credits_consumed",
+          "src_en": "Response field",
+          "desc_en": "Credits spent on this bulk enrichment.",
+          "title_zh": "本次批量丰富消耗的额度。"
+        },
+        {
+          "path": "resp.200.matches",
+          "src_en": "Response array",
+          "desc_en": "Per-record enrichment results, aligned to the input order.",
+          "title_zh": "逐条记录的丰富结果，与输入顺序对应。"
+        },
+        {
+          "path": "resp.200.waterfall",
+          "src_en": "Response object",
+          "desc_en": "Aggregate status of waterfall enrichment across the batch.",
+          "title_zh": "整批瀑布式补全的汇总状态。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_organizations_enrich",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the Oganization Enrichment endpoint to enrich data for 1 company. To enrich data for up to 10 companies with a single API call, use the Bulk Organization Enrichment endpoint instead. Calling this endpoint does consume credits as part of your Apollo pricing plan . Enriched data potentially includes industry information, revenue, employee counts, funding round details, and corporate phone numbers and locations. Calling this endpoint does consume credits as part of your Apollo pricing plan .",
+          "desc_en": "Enrich a single company by its web domain, returning Apollo's full organization profile.",
+          "title_zh": "按公司主域名丰富单个公司，返回 Apollo 完整的公司画像。"
+        },
+        {
+          "path": "param:domain",
+          "src_en": "The domain of the company that you want to enrich. Do not include www., the @ symbol, or similar. Example: apollo.io or microsoft.com",
+          "desc_en": "Web domain of the company to enrich, e.g. apollo.io.",
+          "title_zh": "待丰富公司的主域名，例如 apollo.io。"
+        },
+        {
+          "path": "resp.200.organization",
+          "src_en": "Response object",
+          "desc_en": "Enriched company profile.",
+          "title_zh": "丰富后的公司画像。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_organizations_bulk_enrich",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the Bulk Organization Enrichment endpoint to enrich data for up to 10 companies with a single API call. To enrich data for only 1 company, use the Organization Enrichment endpoint instead. Enriched data potentially includes industry information, revenue, employee counts, funding round details, and corporate phone numbers and locations. Calling this endpoint does consume credits as part of your Apollo pricing plan . This endpoint's rate limit is throttled to 50% of the Organization Enrichment endpoint's per-minute rate limit, and is 100% of the hourly and daily rate limits for the same individual endpoint.",
+          "desc_en": "Enrich up to 10 companies in one call by passing multiple domains. Returns matched organization profiles plus counts of requested, unique, enriched, and missing records.",
+          "title_zh": "一次调用最多丰富 10 个公司，传入多个域名。返回匹配到的公司画像，以及请求数、去重数、丰富数、未命中数等计数。"
+        },
+        {
+          "path": "param:domains[]",
+          "src_en": "The domain of each company that you want to enrich. Do not include www., the @ symbol, or similar. Example: apollo.io and microsoft.com",
+          "desc_en": "Company domains to enrich, up to 10 per call.",
+          "title_zh": "待丰富的公司域名，每次最多 10 个。"
+        },
+        {
+          "path": "resp.200.status",
+          "src_en": "Response field",
+          "desc_en": "Overall processing status of the bulk request.",
+          "title_zh": "批量请求的整体处理状态。"
+        },
+        {
+          "path": "resp.200.error_code",
+          "src_en": "Response field",
+          "desc_en": "Error code when the request failed; absent on success.",
+          "title_zh": "失败时的错误码；成功时不返回。"
+        },
+        {
+          "path": "resp.200.error_message",
+          "src_en": "Response field",
+          "desc_en": "Human-readable error detail when the request failed.",
+          "title_zh": "失败时的可读错误说明。"
+        },
+        {
+          "path": "resp.200.total_requested_domains",
+          "src_en": "Response field",
+          "desc_en": "Number of domains submitted in this call.",
+          "title_zh": "本次调用提交的域名数量。"
+        },
+        {
+          "path": "resp.200.unique_domains",
+          "src_en": "Response field",
+          "desc_en": "Number of distinct domains after deduplication.",
+          "title_zh": "去重后的域名数量。"
+        },
+        {
+          "path": "resp.200.unique_enriched_records",
+          "src_en": "Response field",
+          "desc_en": "Number of distinct companies successfully enriched.",
+          "title_zh": "成功丰富的去重公司数。"
+        },
+        {
+          "path": "resp.200.missing_records",
+          "src_en": "Response field",
+          "desc_en": "Number of domains that could not be matched.",
+          "title_zh": "未能匹配的域名数。"
+        },
+        {
+          "path": "resp.200.organizations",
+          "src_en": "Response array",
+          "desc_en": "Enriched company profiles, one per matched domain.",
+          "title_zh": "丰富后的公司画像，每个匹配域名一条。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_mixed_people_api_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the People API Search endpoint to find net new people in the Apollo database. Several filters are available to help narrow your search. This endpoint is optimized for API usage and does not consume credits. This endpoint is primarily designed for prospecting net new people. This endpoint does not return email addresses or phone numbers. Use the People Enrichment or Bulk People Enrichment endpoints to enrich data. This endpoint requires a master API key. Refer to Create API Keys to learn how to create a master API key. To protect Apollo's performance for all users, this endpoint has a display limit of 50,000 records (100 records per page, up to 500 pages). Add more filters to narrow your search results as much as possible. This limitation does not restrict your access to Apollo's database; you just need to access the data in batches.",
+          "desc_en": "Find net-new people in the Apollo database using filters such as job title, seniority, location, employer attributes, and technologies used. Results are paginated; combine filters to narrow the audience.",
+          "title_zh": "用职位、资历、地区、雇主属性、所用技术等筛选条件在 Apollo 库中查找全新人员。结果分页；组合多个筛选可缩小目标人群。"
+        },
+        {
+          "path": "param:person_titles[]",
+          "src_en": "Job titles held by the people you want to find. For a person to be included in search results, they only need to match 1 of the job titles you add. Adding more job titles expands your search results. Results also include job titles with the same terms, even if they are not exact matches. For example, searching for marketing manager might return people with the job title content marketing manager. Use this parameter in combination with the person_seniorities[] parameter to find people based on specific job functions and seniority levels. Examples: sales development representative; marketing manager; research analyst",
+          "desc_en": "Job titles to match; a person is included if their current title matches any value.",
+          "title_zh": "要匹配的职位；人的当前职位命中任一值即纳入。"
+        },
+        {
+          "path": "param:include_similar_titles",
+          "src_en": "This parameter determines whether people with job titles similar to the titles you define in the person_titles[] parameter are returned in the response. Set this parameter to false when using person_titles[] to return only strict matches for job titles.",
+          "desc_en": "Also include people whose titles are similar to those you listed, broadening the audience.",
+          "title_zh": "同时纳入职位与所列相近的人，扩大目标人群。"
+        },
+        {
+          "path": "param:q_keywords",
+          "src_en": "A string of words over which we want to filter the results.",
+          "desc_en": "Free-text keywords used to further filter results.",
+          "title_zh": "用于进一步筛选结果的自由文本关键词。"
+        },
+        {
+          "path": "param:person_locations[]",
+          "src_en": "The location where people live. You can search across cities, US states, and countries. To find people based on the headquarters locations of their current employer, use the organization_locations parameter. Examples: california; ireland; chicago",
+          "desc_en": "Locations where people live; matches across cities, US states, and countries.",
+          "title_zh": "人的居住地；可按城市、美国州、国家匹配。"
+        },
+        {
+          "path": "param:person_seniorities[]",
+          "src_en": "The job seniority that people hold within their current employer. This enables you to find people that currently hold positions at certain reporting levels, such as Director level or senior IC level. For a person to be included in search results, they only need to match 1 of the seniorities you add. Adding more seniorities expands your search results. Searches only return results based on their current job title, so searching for Director-level employees only returns people that currently hold a Director-level title. If someone was previously a Director, but is currently a VP, they would not be included in your search results. Use this parameter in combination with the person_titles[] parameter to find people based on specific job functions and seniority levels. The following options can be used for this parameter: owner founder c_suite partner vp head director manager senior entry intern",
+          "desc_en": "Seniority levels held at the current employer, to target by org level.",
+          "title_zh": "在现任雇主的资历层级，用于按层级定位。"
+        },
+        {
+          "path": "param:organization_locations[]",
+          "src_en": "The location of the company headquarters for a person's current employer. You can search across cities, US states, and countries. If a company has several office locations, results are still based on the headquarters location. For example, if you search chicago but a company's HQ location is in boston, people that work for the Boston-based company will not appear in your results, even if they match other parameters. To find people based on their personal location, use the person_locations parameter. Examples: texas; tokyo; spain",
+          "desc_en": "Headquarters location of a person's current employer.",
+          "title_zh": "人现任雇主的总部所在地。"
+        },
+        {
+          "path": "param:q_organization_domains_list[]",
+          "src_en": "The domain name for the person's employer. This can be the current employer or a previous employer. Do not include www., the @ symbol, or similar. This parameter accepts up to 1,000 domains in a single request. Examples: apollo.io; microsoft.com",
+          "desc_en": "Employer web domains to match (current or past employer).",
+          "title_zh": "要匹配的雇主主域名（现任或曾任）。"
+        },
+        {
+          "path": "param:contact_email_status[]",
+          "src_en": "The email statuses for the people you want to find. You can add multiple statuses to expand your search. The statuses you can search include: verified unverified likely to engage unavailable",
+          "desc_en": "Email verification statuses to include, used to control match quality.",
+          "title_zh": "要纳入的邮箱验证状态，用于控制匹配质量。"
+        },
+        {
+          "path": "param:organization_ids[]",
+          "src_en": "The Apollo IDs for the companies (employers) you want to include in your search results. Each company in the Apollo database is assigned a unique ID. To find IDs, call the Organization Search endpoint and identify the values for organization_id. Example: 5e66b6381e05b4008c8331b8",
+          "desc_en": "Apollo company ids whose employees should be included.",
+          "title_zh": "其员工应被纳入的 Apollo 公司 id。"
+        },
+        {
+          "path": "param:organization_num_employees_ranges[]",
+          "src_en": "The number range of employees working for the person's current company. This enables you to find people based on the headcount of their employer. You can add multiple ranges to expand your search results. Each range you add needs to be a string, with the upper and lower numbers of the range separated only by a comma. Examples: 1,10; 250,500; 10000,20000",
+          "desc_en": "Employee-count ranges of the current employer, to target by company size.",
+          "title_zh": "现任雇主的员工人数区间，用于按公司规模定位。"
+        },
+        {
+          "path": "param:revenue_range[min]",
+          "src_en": "The minimum revenue the person's current employer generates. Use this parameter in combination with revenue_range[max] to set a revenue range. Do not enter currency symbols, commas, or decimal points in the figure. Examples: 500000; 1500000",
+          "desc_en": "Minimum revenue of the current employer; pair with revenue_range[max].",
+          "title_zh": "现任雇主的最低营收；与 revenue_range[max] 搭配。"
+        },
+        {
+          "path": "param:revenue_range[max]",
+          "src_en": "The maximum revenue the person's current employer generates. Use this parameter in combination with revenue_range[min] to set a revenue range. Do not enter currency symbols, commas, or decimal points in the figure. Examples: 500000; 1500000",
+          "desc_en": "Maximum revenue of the current employer; pair with revenue_range[min].",
+          "title_zh": "现任雇主的最高营收；与 revenue_range[min] 搭配。"
+        },
+        {
+          "path": "param:currently_using_all_of_technology_uids[]",
+          "src_en": "Find people based on all of the technologies their current employer uses. Apollo supports filtering by 1,500+ technologies. Apollo calculates technologies data from multiple sources. This data is updated regularly. Check out the full list of supported technologies by downloading this CSV file . Use underscores (_) to replace spaces and periods for the technologies listed in the CSV file. Examples: salesforce; google_analytics; wordpress_org",
+          "desc_en": "Match employers using all of the listed technologies (AND).",
+          "title_zh": "匹配同时使用所列全部技术的雇主（与逻辑）。"
+        },
+        {
+          "path": "param:currently_using_any_of_technology_uids[]",
+          "src_en": "Find people based on any of the technologies their current employer uses. Apollo supports filtering by 1,500+ technologies. Apollo calculates technologies data from multiple sources. This data is updated regularly. Check out the full list of supported technologies by downloading this CSV file . Use underscores (_) to replace spaces and periods for the technologies listed in the CSV file. Examples: salesforce; google_analytics; wordpress_org",
+          "desc_en": "Match employers using any of the listed technologies (OR).",
+          "title_zh": "匹配使用所列任一技术的雇主（或逻辑）。"
+        },
+        {
+          "path": "param:currently_not_using_any_of_technology_uids[]",
+          "src_en": "Exclude people from your search based on any of the technologies their current employer uses. Apollo supports filtering by 1,500+ technologies. Apollo calculates technologies data from multiple sources. This data is updated regularly. Check out the full list of supported technologies by downloading this CSV file . Use underscores (_) to replace spaces and periods for the technologies listed in the CSV file. Examples: salesforce; google_analytics; wordpress_org",
+          "desc_en": "Exclude employers using any of the listed technologies.",
+          "title_zh": "排除使用所列任一技术的雇主。"
+        },
+        {
+          "path": "param:q_organization_job_titles[]",
+          "src_en": "The job titles that are listed in active job postings at the person's current employer. Examples: sales manager; research analyst",
+          "desc_en": "Job titles appearing in the employer's active job postings.",
+          "title_zh": "出现在雇主在招职位中的职位名称。"
+        },
+        {
+          "path": "param:organization_job_locations[]",
+          "src_en": "The locations of the jobs being actively recruited by the person's employer. Examples: atlanta; japan",
+          "desc_en": "Locations of jobs the employer is actively recruiting for.",
+          "title_zh": "雇主正在招聘的职位所在地。"
+        },
+        {
+          "path": "param:organization_num_jobs_range[min]",
+          "src_en": "The minimum number of job postings active at the person's current employer. Use this parameter in combination with organization_num_jobs_range[max] to set a job postings range. Examples: 50; 500",
+          "desc_en": "Minimum number of active job postings at the employer.",
+          "title_zh": "雇主在招职位的最少数量。"
+        },
+        {
+          "path": "param:organization_num_jobs_range[max]",
+          "src_en": "The maximum number of job postings active at the person's current employer. Use this parameter in combination with organization_num_jobs_range[min] to set a job postings range. Examples: 50; 500",
+          "desc_en": "Maximum number of active job postings at the employer.",
+          "title_zh": "雇主在招职位的最多数量。"
+        },
+        {
+          "path": "param:organization_job_posted_at_range[min]",
+          "src_en": "The earliest date when jobs were posted by the person's current employer. Use this parameter in combination with organization_job_posted_at_range[max] to set a date range for when jobs posted. Example: 2025-07-25",
+          "desc_en": "Earliest job-posting date at the employer; pair with the max bound.",
+          "title_zh": "雇主职位发布的最早日期；与最大值搭配。"
+        },
+        {
+          "path": "param:organization_job_posted_at_range[max]",
+          "src_en": "The latest date when jobs were posted by the person's current employer. Use this parameter in combination with organization_job_posted_at_range[min] to set a date range for when jobs posted. Example: 2025-09-25",
+          "desc_en": "Latest job-posting date at the employer; pair with the min bound.",
+          "title_zh": "雇主职位发布的最晚日期；与最小值搭配。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "The page number of the Apollo data that you want to retrieve. Use this parameter in combination with the per_page parameter to make search results for navigable and improve the performance of the endpoint. Example: 4",
+          "desc_en": "Page number to retrieve, used with per_page for pagination.",
+          "title_zh": "要获取的页码，与 per_page 配合分页。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "The number of search results that should be returned for each page. Limiting the number of results per page improves the endpoint's performance. Use the page parameter to search the different pages of data. Example: 10",
+          "desc_en": "Number of results per page; lowering it can speed up responses.",
+          "title_zh": "每页结果数；调小可加快响应。"
+        },
+        {
+          "path": "resp.200.total_entries",
+          "src_en": "Response field",
+          "desc_en": "Total number of people matching the filters across all pages.",
+          "title_zh": "所有页中匹配该筛选的人员总数。"
+        },
+        {
+          "path": "resp.200.people",
+          "src_en": "Response array",
+          "desc_en": "The page of matched people.",
+          "title_zh": "当前页匹配到的人员。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_mixed_companies_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the Organization Search endpoint to find companies in the Apollo database. Several filters are available to help narrow your search. Calling this endpoint does consume credits as part of your Apollo pricing plan . To protect Apollo's performance for all users, this endpoint has a display limit of 50,000 records (100 records per page, up to 500 pages). Add more filters to narrow your search results as much as possible. This limitation does not restrict your access to Apollo's database; you just need to access the data in batches.",
+          "desc_en": "Find companies in the Apollo database using filters such as domain, headcount range, location, revenue, funding, technologies, and active job postings. Results are paginated.",
+          "title_zh": "用域名、人数区间、地区、营收、融资、技术栈、在招职位等筛选条件在 Apollo 库中查找公司。结果分页。"
+        },
+        {
+          "path": "param:q_organization_domains_list[]",
+          "src_en": "The domain name for the person's employer. This can be the current employer or a previous employer. Do not include www., the @ symbol, or similar. This parameter accepts up to 1,000 domains in a single request. Examples: apollo.io; microsoft.com",
+          "desc_en": "Company web domains to match.",
+          "title_zh": "要匹配的公司主域名。"
+        },
+        {
+          "path": "param:organization_num_employees_ranges[]",
+          "src_en": "The number range of employees working for the company. This enables you to find companies based on headcount. You can add multiple ranges to expand your search results. Each range you add needs to be a string, with the upper and lower numbers of the range separated only by a comma. Examples: 1,10; 250,500; 10000,20000",
+          "desc_en": "Employee-count ranges to target by company size.",
+          "title_zh": "按公司规模定位的员工人数区间。"
+        },
+        {
+          "path": "param:organization_locations[]",
+          "src_en": "The location of the company headquarters. You can search across cities, US states, and countries. If a company has several office locations, results are still based on the headquarters location. For example, if you search chicago but a company's HQ location is in boston, any Boston-based companies will not appearch in your search results, even if they match other parameters.. To exclude companies based on location, use the organization_not_locations parameter. Examples: texas; tokyo; spain",
+          "desc_en": "Company headquarters locations to include.",
+          "title_zh": "要纳入的公司总部所在地。"
+        },
+        {
+          "path": "param:organization_not_locations[]",
+          "src_en": "Exclude companies from search results based on the location of the company headquarters. You can use cities, US states, and countries as locations to exclude. This parameter is useful for ensuring you do not prospect in an undesirable territory. For example, if you use ireland as a value, no Ireland-based companies will appear in your search results. Examples: minnesota; ireland; seoul",
+          "desc_en": "Company headquarters locations to exclude.",
+          "title_zh": "要排除的公司总部所在地。"
+        },
+        {
+          "path": "param:revenue_range[min]",
+          "src_en": "Search for organizations based on their revenue. Use this parameter to set the lower range of organization revenue. Use the revenue_range[max] parameter to set the upper range of revenue. Do not enter currency symbols, commas, or decimal points in the figure. Example: 300000",
+          "desc_en": "Minimum company revenue; pair with revenue_range[max].",
+          "title_zh": "公司最低营收；与 revenue_range[max] 搭配。"
+        },
+        {
+          "path": "param:revenue_range[max]",
+          "src_en": "Search for organizations based on their revenue. Use this parameter to set the upper range of organization revenue. Use the revenue_range[min] parameter to set the lower range of revenue. Do not enter currency symbols, commas, or decimal points in the figure. Example: 50000000",
+          "desc_en": "Maximum company revenue; pair with revenue_range[min].",
+          "title_zh": "公司最高营收；与 revenue_range[min] 搭配。"
+        },
+        {
+          "path": "param:currently_using_any_of_technology_uids[]",
+          "src_en": "Find organizations based on the technologies they currently use. Apollo supports filtering by 1,500+ technologies. Apollo calculates technologies data from multiple sources. This data is updated regularly. Check out the full list of supported technologies by downloading this CSV file . Use underscores (_) to replace spaces and periods for the technologies listed in the CSV file. Examples: salesforce; google_analytics; wordpress_org",
+          "desc_en": "Match companies using any of the listed technologies.",
+          "title_zh": "匹配使用所列任一技术的公司。"
+        },
+        {
+          "path": "param:q_organization_keyword_tags[]",
+          "src_en": "Filter search results based on keywords associated with companies. For example, you can enter mining as a value to return only companies that have an association with the mining industry. Examples: mining; sales strategy; consulting",
+          "desc_en": "Keyword tags describing the company's industry or focus.",
+          "title_zh": "描述公司行业或方向的关键词标签。"
+        },
+        {
+          "path": "param:q_organization_name",
+          "src_en": "Filter search results to include a specific company name. If the value you enter for this parameter does not match with a company's name, the company will not appear in search results, even if it matches other parameters. Partial matches are accepted. For example, if you filter by the value marketing, a company called NY Marketing Unlimited would still be eligible as a search result, but NY Market Analysis would not be eligible. Example: apollo or mining",
+          "desc_en": "Filter by company name.",
+          "title_zh": "按公司名称筛选。"
+        },
+        {
+          "path": "param:organization_ids[]",
+          "src_en": "The Apollo IDs for the companies you want to include in your search results. Each company in the Apollo database is assigned a unique ID. To find IDs, identify the values for organization_id when you call this endpoint. Example: 5e66b6381e05b4008c8331b8",
+          "desc_en": "Apollo company ids to include.",
+          "title_zh": "要纳入的 Apollo 公司 id。"
+        },
+        {
+          "path": "param:latest_funding_amount_range[min]",
+          "src_en": "The minimum amount the company received with its most recent funding round. Use this parameter in combination with latest_funding_amount_range[max] to set a monetary range for the company's most recent funding round. Do not enter currency symbols, commas, or decimal points in the figure. Examples: 5000000; 15000000",
+          "desc_en": "Minimum amount of the company's most recent funding round.",
+          "title_zh": "公司最近一轮融资的最小金额。"
+        },
+        {
+          "path": "param:latest_funding_amount_range[max]",
+          "src_en": "The maximium amount the company received with its most recent funding round. Use this parameter in combination with latest_funding_amount_range[min] to set a monetary range for the company's most recent funding round. Do not enter currency symbols, commas, or decimal points in the figure. Examples: 5000000; 15000000",
+          "desc_en": "Maximum amount of the company's most recent funding round.",
+          "title_zh": "公司最近一轮融资的最大金额。"
+        },
+        {
+          "path": "param:total_funding_range[min]",
+          "src_en": "The minimum amount the company received during all of its funding rounds combined. Use this parameter in combination with total_funding_range[max] to set a monetary range for all of the company's funding rounds. Do not enter currency symbols, commas, or decimal points in the figure. Examples: 50000000; 350000000",
+          "desc_en": "Minimum total funding raised by the company.",
+          "title_zh": "公司累计融资的最小总额。"
+        },
+        {
+          "path": "param:total_funding_range[max]",
+          "src_en": "The maximum amount the company received during all of its funding rounds combined. Use this parameter in combination with total_funding_range[min] to set a monetary range for all of the company's funding rounds. Do not enter currency symbols, commas, or decimal points in the figure. Examples: 50000000; 350000000",
+          "desc_en": "Maximum total funding raised by the company.",
+          "title_zh": "公司累计融资的最大总额。"
+        },
+        {
+          "path": "param:latest_funding_date_range[min]",
+          "src_en": "The earliest date when the company received its most recent funding round. Use this parameter in combination with latest_funding_date_range[max] to set a date range for when the company received its most recent funding round. Example: 2025-07-25",
+          "desc_en": "Earliest date of the company's most recent funding; pair with the max bound.",
+          "title_zh": "公司最近一轮融资的最早日期；与最大值搭配。"
+        },
+        {
+          "path": "param:latest_funding_date_range[max]",
+          "src_en": "The latest date when the company received its most recent funding round. Use this parameter in combination with latest_funding_date_range[min] to set a date range for when the company received its most recent funding round. Example: 2025-09-25",
+          "desc_en": "Latest date of the company's most recent funding; pair with the min bound.",
+          "title_zh": "公司最近一轮融资的最晚日期；与最小值搭配。"
+        },
+        {
+          "path": "param:q_organization_job_titles[]",
+          "src_en": "The job titles that are listed in active job postings at the company. Examples: sales manager; research analyst",
+          "desc_en": "Job titles appearing in the company's active job postings.",
+          "title_zh": "出现在公司在招职位中的职位名称。"
+        },
+        {
+          "path": "param:organization_job_locations[]",
+          "src_en": "The locations of the jobs being actively recruited by the company. Examples: atlanta; japan",
+          "desc_en": "Locations of jobs the company is actively recruiting for.",
+          "title_zh": "公司正在招聘的职位所在地。"
+        },
+        {
+          "path": "param:organization_num_jobs_range[min]",
+          "src_en": "The minimum number of job postings active at the company. Use this parameter in combination with organization_num_jobs_range[max] to set a job postings range. Examples: 50; 500",
+          "desc_en": "Minimum number of active job postings at the company.",
+          "title_zh": "公司在招职位的最少数量。"
+        },
+        {
+          "path": "param:organization_num_jobs_range[max]",
+          "src_en": "The maximum number of job postings active at the company. Use this parameter in combination with organization_num_jobs_range[min] to set a job postings range. Examples: 50; 500",
+          "desc_en": "Maximum number of active job postings at the company.",
+          "title_zh": "公司在招职位的最多数量。"
+        },
+        {
+          "path": "param:organization_job_posted_at_range[min]",
+          "src_en": "The earliest date when jobs were posted by the company. Use this parameter in combination with organization_job_posted_at_range[max] to set a date range for when jobs posted. Example: 2025-07-25",
+          "desc_en": "Earliest job-posting date at the company; pair with the max bound.",
+          "title_zh": "公司职位发布的最早日期；与最大值搭配。"
+        },
+        {
+          "path": "param:organization_job_posted_at_range[max]",
+          "src_en": "The latest date when jobs were posted by the company. Use this parameter in combination with organization_job_posted_at_range[min] to set a date range for when jobs posted. Example: 2025-09-25",
+          "desc_en": "Latest job-posting date at the company; pair with the min bound.",
+          "title_zh": "公司职位发布的最晚日期；与最小值搭配。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "The page number of the Apollo data that you want to retrieve. Use this parameter in combination with the per_page parameter to make search results for navigable and improve the performance of the endpoint. Example: 4",
+          "desc_en": "Page number to retrieve, used with per_page for pagination.",
+          "title_zh": "要获取的页码，与 per_page 配合分页。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "The number of search results that should be returned for each page. Limiting the number of results per page improves the endpoint's performance. Use the page parameter to search the different pages of data. Example: 10",
+          "desc_en": "Number of results per page; lowering it can speed up responses.",
+          "title_zh": "每页结果数；调小可加快响应。"
+        },
+        {
+          "path": "resp.200.breadcrumbs",
+          "src_en": "Response array",
+          "desc_en": "Applied-filter breadcrumbs echoing how the result set was narrowed.",
+          "title_zh": "已应用筛选的面包屑，回显结果是如何被缩小的。"
+        },
+        {
+          "path": "resp.200.partial_results_only",
+          "src_en": "Response field",
+          "desc_en": "Whether only a partial result set was returned.",
+          "title_zh": "是否只返回了部分结果。"
+        },
+        {
+          "path": "resp.200.has_join",
+          "src_en": "Response field",
+          "desc_en": "Internal flag indicating a join was applied to the query.\n[⚠️Note:源码未声明该字段的业务含义，待研发确认。]",
+          "title_zh": "内部标志，表示查询进行了 join。\n[⚠️批注:源码未声明该字段的业务含义，待研发确认。]"
+        },
+        {
+          "path": "resp.200.disable_eu_prospecting",
+          "src_en": "Response field",
+          "desc_en": "Whether EU prospecting was disabled for this query, per compliance settings.",
+          "title_zh": "本次查询是否按合规设置禁用了欧盟潜客挖掘。"
+        },
+        {
+          "path": "resp.200.partial_results_limit",
+          "src_en": "Response field",
+          "desc_en": "The cap that triggered partial results, when applicable.",
+          "title_zh": "触发部分结果时所对应的上限。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Response object",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        },
+        {
+          "path": "resp.200.accounts",
+          "src_en": "Response array",
+          "desc_en": "Matching companies already saved as accounts in your CRM.",
+          "title_zh": "已作为账户保存在 CRM 中的匹配公司。"
+        },
+        {
+          "path": "resp.200.organizations",
+          "src_en": "Response array",
+          "desc_en": "Matching companies from the Apollo database.",
+          "title_zh": "来自 Apollo 库的匹配公司。"
+        },
+        {
+          "path": "resp.200.model_ids",
+          "src_en": "Response array",
+          "desc_en": "Identifiers of the records backing the results.\n[⚠️Note:源码未声明该字段的业务含义，待研发确认。]",
+          "title_zh": "支撑结果的记录标识。\n[⚠️批注:源码未声明该字段的业务含义，待研发确认。]"
+        },
+        {
+          "path": "resp.200.num_fetch_result",
+          "src_en": "Response field",
+          "desc_en": "Number of records fetched for this page.",
+          "title_zh": "本页抓取的记录数。"
+        },
+        {
+          "path": "resp.200.derived_params",
+          "src_en": "Response field",
+          "desc_en": "Query parameters Apollo derived from your input.",
+          "title_zh": "Apollo 根据你的输入推导出的查询参数。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_organizations_organization_id_job_postings",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the Organization Job Postings endpoint to retrieve the current job postings for companies. This can help you identify companies that are growing headcount in areas that are strategically important for you. Calling this endpoint does consume credits as part of your Apollo pricing plan . To protect Apollo's performance for all users, this endpoint has a display limit of 10,000 records. This limitation does not restrict your access to Apollo's database; you just need to access the data in batches.",
+          "desc_en": "Retrieve the current active job postings for a given organization, useful for identifying hiring signals and growth areas.",
+          "title_zh": "获取指定公司当前在招的职位，可用于识别招聘信号与增长方向。"
+        },
+        {
+          "path": "param:organization_id",
+          "src_en": "The organization ID of the company for which you want to find job postings. Each company in the Apollo database is assigned a unique ID. To find IDs, call the Organization Search endpoint and identify the values for organization_id. Example: 5e66b6381e05b4008c8331b8",
+          "desc_en": "Apollo id of the company whose job postings you want.",
+          "title_zh": "要查询在招职位的公司 Apollo id。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "The page number of the Apollo data that you want to retrieve. Use this parameter in combination with the per_page parameter to make search results for navigable and improve the performance of the endpoint. Example: 4",
+          "desc_en": "Page number to retrieve, used with per_page for pagination.",
+          "title_zh": "要获取的页码，与 per_page 配合分页。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "The number of search results that should be returned for each page. Limiting the number of results per page improves the endpoint's performance. Use the page parameter to search the different pages of data. Example: 10",
+          "desc_en": "Number of results per page; lowering it can speed up responses.",
+          "title_zh": "每页结果数；调小可加快响应。"
+        },
+        {
+          "path": "resp.200.organization_job_postings",
+          "src_en": "Response array",
+          "desc_en": "The company's current active job postings.",
+          "title_zh": "该公司当前在招的职位。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_organizations_id",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the Get Complete Organization Info endpoint to retrieve complete details about an organization in the Apollo database. This endpoint requires a master API key. If you attempt to call the endpoint without a master key, you will receive a 403 response. Refer to Create API Keys to learn how to create a master API key. u003e ? Credits u003e u003e Using this endpoint potentially consumes your account’s credits. Refer to Apollo’s for more details.",
+          "desc_en": "Retrieve the complete profile of an organization by its Apollo id.",
+          "title_zh": "按 Apollo id 获取公司的完整画像。"
+        },
+        {
+          "path": "param:id",
+          "src_en": "The Apollo ID for the organization that you want to research. To find organization IDs, call the Organization Search endpoint and identify the organizaton_id value for the organization. Example: 5e66b6381e05b4008c8331b8",
+          "desc_en": "Apollo id of the organization to retrieve.",
+          "title_zh": "要查询的公司 Apollo id。"
+        },
+        {
+          "path": "resp.200.organization",
+          "src_en": "Response object",
+          "desc_en": "The full organization profile.",
+          "title_zh": "公司的完整画像。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_news_articles_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Use the News Articles Search endpoint to find news articles related to companies in the Apollo database. Several filters are available to help narrow your search. Calling this endpoint does consume credits as part of your Apollo pricing plan .",
+          "desc_en": "Find news articles tied to companies in the Apollo database, optionally filtered by organization, category, and publish-date window. Results are paginated.",
+          "title_zh": "查找与 Apollo 库中公司关联的新闻，可按公司、类别、发布时间窗口筛选。结果分页。"
+        },
+        {
+          "path": "param:organization_ids[]",
+          "src_en": "The Apollo IDs for the companies you want to include in your search results. Each company in the Apollo database is assigned a unique ID. To find IDs, call the Organization Search endpoint and identify the values for organization_id. Example: 5e66b6381e05b4008c8331b8",
+          "desc_en": "Apollo company ids whose news you want.",
+          "title_zh": "要查询新闻的 Apollo 公司 id。"
+        },
+        {
+          "path": "param:categories[]",
+          "src_en": "Filter your search to include only certain categories or sub-categories of news. Use the News search filter for companies within Apollo to uncover all possible categories and sub-categories. Examples: hires; investment; contract",
+          "desc_en": "News categories to filter by, such as funding or leadership changes.\n[⚠️Note:源码未声明完整的类别取值，待研发确认。]",
+          "title_zh": "要筛选的新闻类别，如融资、管理层变动等。\n[⚠️批注:源码未声明完整的类别取值，待研发确认。]"
+        },
+        {
+          "path": "param:published_at[min]",
+          "src_en": "Set the lower bound of the date range you want to search. Use this parameter in combination with the published_at[max] parameter. This date should fall before the published_at[max] date. The date should be formatted as YYYY-MM-DD. Example: 2025-02-15",
+          "desc_en": "Earliest publish date; pair with published_at[max].",
+          "title_zh": "最早发布日期；与 published_at[max] 搭配。"
+        },
+        {
+          "path": "param:published_at[max]",
+          "src_en": "Set the upper bound of the date range you want to search. Use this parameter in combination with the published_at[min] parameter. This date should fall after the published_at[min] date. The date should be formatted as YYYY-MM-DD. Example: 2025-05-15",
+          "desc_en": "Latest publish date; pair with published_at[min].",
+          "title_zh": "最晚发布日期；与 published_at[min] 搭配。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "The page number of the Apollo data that you want to retrieve. Use this parameter in combination with the per_page parameter to make search results for navigable and improve the performance of the endpoint. Example: 4",
+          "desc_en": "Page number to retrieve, used with per_page for pagination.",
+          "title_zh": "要获取的页码，与 per_page 配合分页。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "The number of search results that should be returned for each page. Limiting the number of results per page improves the endpoint's performance. Use the page parameter to search the different pages of data. Example: 10",
+          "desc_en": "Number of results per page; lowering it can speed up responses.",
+          "title_zh": "每页结果数；调小可加快响应。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Response object",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        },
+        {
+          "path": "resp.200.news_articles",
+          "src_en": "Response array",
+          "desc_en": "The page of matching news articles.",
+          "title_zh": "当前页匹配到的新闻。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_accounts",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Create a new account. Duplicate domains are not allowed. Requires a master API key.",
+          "desc_en": "Create a new account (a company saved in your team's CRM). Duplicate domains are rejected. Requires a master API key.",
+          "title_zh": "创建账户（保存在团队 CRM 中的公司）。域名重复会被拒绝。需主 API key。"
+        },
+        {
+          "path": "req.name",
+          "src_en": "Account name",
+          "desc_en": "Account (company) name to create.",
+          "title_zh": "要创建的账户（公司）名称。"
+        },
+        {
+          "path": "req.domain",
+          "src_en": "Account domain",
+          "desc_en": "Account's primary web domain; must be unique, duplicates are rejected.",
+          "title_zh": "账户的主域名；须唯一，重复会被拒绝。"
+        },
+        {
+          "path": "req.owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id to assign as the account owner.",
+          "title_zh": "指派为账户负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "req.account_stage_id",
+          "src_en": "Account stage ID",
+          "desc_en": "Id of the stage to place the account in.",
+          "title_zh": "将账户置于其中的阶段 id。"
+        }
+      ]
+    },
+    {
+      "operation": "patch_apollo_accounts_account_id",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Update fields on an existing account. Requires a master API key.",
+          "desc_en": "Update fields on an existing account identified by account_id. Only the fields you send are changed. Requires a master API key.",
+          "title_zh": "按 account_id 更新已有账户的字段，仅修改你传入的字段。需主 API key。"
+        },
+        {
+          "path": "param:account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account to update.",
+          "title_zh": "要更新的账户 Apollo id。"
+        },
+        {
+          "path": "req.name",
+          "src_en": "Account name",
+          "desc_en": "New account name.",
+          "title_zh": "新的账户名称。"
+        },
+        {
+          "path": "req.domain",
+          "src_en": "Account domain",
+          "desc_en": "New primary web domain.",
+          "title_zh": "新的主域名。"
+        },
+        {
+          "path": "req.owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "New account owner's Apollo user id.",
+          "title_zh": "新的账户负责人 Apollo 用户 id。"
+        },
+        {
+          "path": "req.account_stage_id",
+          "src_en": "Account stage ID",
+          "desc_en": "New stage id for the account.",
+          "title_zh": "账户的新阶段 id。"
+        },
+        {
+          "path": "req.raw_address",
+          "src_en": "Raw address",
+          "desc_en": "Free-text postal address for the account.",
+          "title_zh": "账户的自由文本邮寄地址。"
+        },
+        {
+          "path": "req.phone",
+          "src_en": "Phone number",
+          "desc_en": "Account's phone number.",
+          "title_zh": "账户的电话号码。"
+        },
+        {
+          "path": "req.typed_custom_fields",
+          "src_en": "Typed custom fields object",
+          "desc_en": "Custom-field values to set, keyed by field id.",
+          "title_zh": "要设置的自定义字段值，以字段 id 为键。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_accounts_bulk_create",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Bulk create accounts. Requires a master API key.",
+          "desc_en": "Create multiple accounts in one call. The response separates records newly created from those that already existed. Requires a master API key.",
+          "title_zh": "一次创建多个账户。响应把新建记录与已存在记录分开返回。需主 API key。"
+        },
+        {
+          "path": "req.accounts",
+          "src_en": "Array of accounts to create",
+          "desc_en": "Array of account objects to create.",
+          "title_zh": "要创建的账户对象数组。"
+        },
+        {
+          "path": "req.append_label_names",
+          "src_en": "Label names to append to each created account",
+          "desc_en": "Label names to attach to every created account.",
+          "title_zh": "附加到每个新建账户上的标签名。"
+        },
+        {
+          "path": "req.run_dedupe",
+          "src_en": "Enable deduplication. Default false.",
+          "desc_en": "Run deduplication so existing accounts are reused instead of duplicated.",
+          "title_zh": "执行去重，使已存在账户被复用而非重复创建。"
+        },
+        {
+          "path": "resp.200.created_accounts",
+          "src_en": "Accounts created in this request",
+          "desc_en": "Accounts newly created by this call.",
+          "title_zh": "本次新建的账户。"
+        },
+        {
+          "path": "resp.200.created_accounts[].id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account.",
+          "title_zh": "该账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.created_accounts[].name",
+          "src_en": "Account name",
+          "desc_en": "Account (company) name.",
+          "title_zh": "账户（公司）名称。"
+        },
+        {
+          "path": "resp.200.created_accounts[].domain",
+          "src_en": "Account domain",
+          "desc_en": "Account's primary web domain.",
+          "title_zh": "账户的主域名。"
+        },
+        {
+          "path": "resp.200.created_accounts[].team_id",
+          "src_en": "Team ID",
+          "desc_en": "Id of the team that owns this account.",
+          "title_zh": "拥有该账户的团队 id。"
+        },
+        {
+          "path": "resp.200.created_accounts[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the account owner.",
+          "title_zh": "账户负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.created_accounts[].account_stage_id",
+          "src_en": "Account stage ID",
+          "desc_en": "Id of the account's current stage.",
+          "title_zh": "账户当前阶段的 id。"
+        },
+        {
+          "path": "resp.200.created_accounts[].phone",
+          "src_en": "Phone number",
+          "desc_en": "Account's phone number.",
+          "title_zh": "账户的电话号码。"
+        },
+        {
+          "path": "resp.200.created_accounts[].created_at",
+          "src_en": "Created timestamp",
+          "desc_en": "Timestamp when the account was created.",
+          "title_zh": "账户创建时间。"
+        },
+        {
+          "path": "resp.200.created_accounts[].updated_at",
+          "src_en": "Updated timestamp",
+          "desc_en": "Timestamp when the account was last updated.",
+          "title_zh": "账户最近更新时间。"
+        },
+        {
+          "path": "resp.200.existing_accounts",
+          "src_en": "Accounts that already existed (dedupe matches)",
+          "desc_en": "Accounts that already existed and were matched instead of created.",
+          "title_zh": "已存在、被匹配而非新建的账户。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account.",
+          "title_zh": "该账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].name",
+          "src_en": "Account name",
+          "desc_en": "Account (company) name.",
+          "title_zh": "账户（公司）名称。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].domain",
+          "src_en": "Account domain",
+          "desc_en": "Account's primary web domain.",
+          "title_zh": "账户的主域名。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].team_id",
+          "src_en": "Team ID",
+          "desc_en": "Id of the team that owns this account.",
+          "title_zh": "拥有该账户的团队 id。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the account owner.",
+          "title_zh": "账户负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].account_stage_id",
+          "src_en": "Account stage ID",
+          "desc_en": "Id of the account's current stage.",
+          "title_zh": "账户当前阶段的 id。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].phone",
+          "src_en": "Phone number",
+          "desc_en": "Account's phone number.",
+          "title_zh": "账户的电话号码。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].created_at",
+          "src_en": "Created timestamp",
+          "desc_en": "Timestamp when the account was created.",
+          "title_zh": "账户创建时间。"
+        },
+        {
+          "path": "resp.200.existing_accounts[].updated_at",
+          "src_en": "Updated timestamp",
+          "desc_en": "Timestamp when the account was last updated.",
+          "title_zh": "账户最近更新时间。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_accounts_bulk_update",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Bulk update accounts. Requires a master API key.",
+          "desc_en": "Update multiple accounts in one call by pairing account_ids with the attributes to change. Supports asynchronous processing. Requires a master API key.",
+          "title_zh": "一次更新多个账户，将 account_ids 与要修改的属性配对。支持异步处理。需主 API key。"
+        },
+        {
+          "path": "req.account_ids",
+          "src_en": "IDs of accounts to update",
+          "desc_en": "Ids of the accounts to update.",
+          "title_zh": "要更新的账户 id。"
+        },
+        {
+          "path": "req.account_attributes",
+          "src_en": "List of account attribute update objects",
+          "desc_en": "Attribute values applied to the targeted accounts.",
+          "title_zh": "应用到目标账户的属性值。"
+        },
+        {
+          "path": "req.account_attributes[].name",
+          "src_en": "Account name",
+          "desc_en": "New account name to apply.",
+          "title_zh": "要应用的新账户名称。"
+        },
+        {
+          "path": "req.account_attributes[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "New owner's Apollo user id to apply.",
+          "title_zh": "要应用的新负责人 Apollo 用户 id。"
+        },
+        {
+          "path": "req.account_attributes[].account_stage_id",
+          "src_en": "Account stage ID",
+          "desc_en": "New stage id to apply.",
+          "title_zh": "要应用的新阶段 id。"
+        },
+        {
+          "path": "req.async",
+          "src_en": "Run asynchronously. Default false.",
+          "desc_en": "Process the update asynchronously rather than waiting for completion.",
+          "title_zh": "异步处理更新，而非等待完成。"
+        },
+        {
+          "path": "resp.200.accounts",
+          "src_en": "Updated accounts",
+          "desc_en": "The updated accounts.",
+          "title_zh": "已更新的账户。"
+        },
+        {
+          "path": "resp.200.accounts[].id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the updated account.",
+          "title_zh": "已更新账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.accounts[].account_stage_id",
+          "src_en": "Account stage ID",
+          "desc_en": "Account's stage id after the update.",
+          "title_zh": "更新后账户的阶段 id。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_accounts_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search for accounts. Requires a master API key.",
+          "desc_en": "Search your team's accounts by name, stage, and label, with sorting and pagination. Requires a master API key.",
+          "title_zh": "按名称、阶段、标签搜索团队账户，支持排序与分页。需主 API key。"
+        },
+        {
+          "path": "req.q_organization_name",
+          "src_en": "Organization name query",
+          "desc_en": "Filter accounts by company name.",
+          "title_zh": "按公司名称筛选账户。"
+        },
+        {
+          "path": "req.account_stage_ids",
+          "src_en": "Filter by account stage IDs",
+          "desc_en": "Only include accounts in these stages.",
+          "title_zh": "仅纳入处于这些阶段的账户。"
+        },
+        {
+          "path": "req.account_label_ids",
+          "src_en": "Filter by account label IDs",
+          "desc_en": "Only include accounts carrying these labels.",
+          "title_zh": "仅纳入带有这些标签的账户。"
+        },
+        {
+          "path": "req.sort_by_field",
+          "src_en": "Sort field (e.g. account_last_activity_date, account_created_at, account_updated_at)",
+          "desc_en": "Field to sort the results by.",
+          "title_zh": "结果排序所依据的字段。"
+        },
+        {
+          "path": "req.sort_ascending",
+          "src_en": "Sort ascending",
+          "desc_en": "Sort ascending when true, descending when false.",
+          "title_zh": "为 true 时升序，false 时降序。"
+        },
+        {
+          "path": "req.page",
+          "src_en": "Page number",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        },
+        {
+          "path": "req.per_page",
+          "src_en": "Items per page",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_accounts_id",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "View an account by ID. Requires a master API key.",
+          "desc_en": "Retrieve a single account by its id. Requires a master API key.",
+          "title_zh": "按 id 获取单个账户。需主 API key。"
+        },
+        {
+          "path": "param:id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account to retrieve.",
+          "title_zh": "要查询的账户 Apollo id。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_accounts_update_owners",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Update account owner for multiple accounts. Requires a master API key.",
+          "desc_en": "Reassign the owner of multiple accounts at once. Requires a master API key.",
+          "title_zh": "一次为多个账户重新指派负责人。需主 API key。"
+        },
+        {
+          "path": "param:account_ids[]",
+          "src_en": "Account IDs",
+          "desc_en": "Ids of the accounts to reassign.",
+          "title_zh": "要重新指派的账户 id。"
+        },
+        {
+          "path": "param:owner_id",
+          "src_en": "New owner ID",
+          "desc_en": "Apollo user id of the new owner for all listed accounts.",
+          "title_zh": "所有所列账户的新负责人 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.accounts",
+          "src_en": "Updated accounts",
+          "desc_en": "The accounts whose owner was changed.",
+          "title_zh": "负责人已变更的账户。"
+        },
+        {
+          "path": "resp.200.accounts[].id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account.",
+          "title_zh": "账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.accounts[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Account owner's Apollo user id after the change.",
+          "title_zh": "变更后账户负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.accounts[].crm_owner_id",
+          "src_en": "CRM owner ID",
+          "desc_en": "Corresponding owner id in the connected CRM, when synced.",
+          "title_zh": "已同步时在所连 CRM 中对应的负责人 id。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_account_stages",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "List account stages. Requires a master API key.",
+          "desc_en": "List all account stages configured for your team. Use the returned ids to set or filter account_stage_id elsewhere. Requires a master API key.",
+          "title_zh": "列出团队配置的所有账户阶段。返回的 id 可在别处用于设置或筛选 account_stage_id。需主 API key。"
+        },
+        {
+          "path": "resp.200.account_stages",
+          "src_en": "Account stages list",
+          "desc_en": "The list of configured account stages.",
+          "title_zh": "已配置的账户阶段列表。"
+        },
+        {
+          "path": "resp.200.account_stages[].id",
+          "src_en": "Stage ID",
+          "desc_en": "Stage id; use it to set or filter account_stage_id.",
+          "title_zh": "阶段 id；可用于设置或筛选 account_stage_id。"
+        },
+        {
+          "path": "resp.200.account_stages[].team_id",
+          "src_en": "Team ID",
+          "desc_en": "Id of the team that owns the stage.",
+          "title_zh": "拥有该阶段的团队 id。"
+        },
+        {
+          "path": "resp.200.account_stages[].display_name",
+          "src_en": "Display name",
+          "desc_en": "Stage name shown in the Apollo UI.",
+          "title_zh": "在 Apollo 界面中显示的阶段名称。"
+        },
+        {
+          "path": "resp.200.account_stages[].name",
+          "src_en": "Name",
+          "desc_en": "Internal name of the stage.",
+          "title_zh": "阶段的内部名称。"
+        },
+        {
+          "path": "resp.200.account_stages[].display_order",
+          "src_en": "Display order",
+          "desc_en": "Position of the stage in the ordered pipeline.",
+          "title_zh": "阶段在有序流程中的位置。"
+        },
+        {
+          "path": "resp.200.account_stages[].default_exclude_for_leadgen",
+          "src_en": "Default exclude for leadgen",
+          "desc_en": "Whether accounts in this stage are excluded from lead generation by default.",
+          "title_zh": "处于该阶段的账户是否默认从潜客生成中排除。"
+        },
+        {
+          "path": "resp.200.account_stages[].category",
+          "src_en": "Category",
+          "desc_en": "Category the stage belongs to.\n[⚠️Note:源码未声明该字段的取值集合，待研发确认。]",
+          "title_zh": "阶段所属的类别。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+        },
+        {
+          "path": "resp.200.account_stages[].is_meeting_set",
+          "src_en": "Is meeting set",
+          "desc_en": "Whether this stage represents a meeting having been set.",
+          "title_zh": "该阶段是否代表已安排会议。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_contacts",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Create a new contact. Requires a master API key.",
+          "desc_en": "Create a new contact (a person saved in your team's CRM). Requires a master API key.",
+          "title_zh": "创建联系人（保存在团队 CRM 中的人）。需主 API key。"
+        },
+        {
+          "path": "req.first_name",
+          "src_en": "First name",
+          "desc_en": "Contact's first name.",
+          "title_zh": "联系人的名字。"
+        },
+        {
+          "path": "req.last_name",
+          "src_en": "Last name",
+          "desc_en": "Contact's last name.",
+          "title_zh": "联系人的姓氏。"
+        },
+        {
+          "path": "req.organization_name",
+          "src_en": "Organization name",
+          "desc_en": "Name of the contact's employer.",
+          "title_zh": "联系人雇主的名称。"
+        },
+        {
+          "path": "req.title",
+          "src_en": "Title",
+          "desc_en": "Contact's job title.",
+          "title_zh": "联系人的职位。"
+        },
+        {
+          "path": "req.account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account to link this contact to.",
+          "title_zh": "要关联此联系人的账户 Apollo id。"
+        },
+        {
+          "path": "req.email",
+          "src_en": "Email",
+          "desc_en": "Contact's email address.",
+          "title_zh": "联系人的邮箱地址。"
+        },
+        {
+          "path": "req.website_url",
+          "src_en": "Website URL",
+          "desc_en": "Contact's website URL.",
+          "title_zh": "联系人的网站链接。"
+        },
+        {
+          "path": "req.label_names",
+          "src_en": "Labels to set on the contact",
+          "desc_en": "Labels to apply to the contact.",
+          "title_zh": "要应用到联系人的标签。"
+        },
+        {
+          "path": "req.contact_stage_id",
+          "src_en": "Contact stage ID",
+          "desc_en": "Id of the stage to place the contact in.",
+          "title_zh": "将联系人置于其中的阶段 id。"
+        },
+        {
+          "path": "req.present_raw_address",
+          "src_en": "Raw address",
+          "desc_en": "Contact's current free-text address.",
+          "title_zh": "联系人当前的自由文本地址。"
+        },
+        {
+          "path": "req.direct_phone",
+          "src_en": "Direct phone",
+          "desc_en": "Contact's direct phone number.",
+          "title_zh": "联系人的直拨电话。"
+        },
+        {
+          "path": "req.corporate_phone",
+          "src_en": "Corporate phone",
+          "desc_en": "Contact's corporate phone number.",
+          "title_zh": "联系人的公司电话。"
+        },
+        {
+          "path": "req.mobile_phone",
+          "src_en": "Mobile phone",
+          "desc_en": "Contact's mobile phone number.",
+          "title_zh": "联系人的手机号码。"
+        },
+        {
+          "path": "req.home_phone",
+          "src_en": "Home phone",
+          "desc_en": "Contact's home phone number.",
+          "title_zh": "联系人的家庭电话。"
+        },
+        {
+          "path": "req.other_phone",
+          "src_en": "Other phone",
+          "desc_en": "Contact's other phone number.",
+          "title_zh": "联系人的其他电话。"
+        },
+        {
+          "path": "req.typed_custom_fields",
+          "src_en": "Typed custom fields object",
+          "desc_en": "Custom-field values to set, keyed by field id.",
+          "title_zh": "要设置的自定义字段值，以字段 id 为键。"
+        },
+        {
+          "path": "req.run_dedupe",
+          "src_en": "Enable deduplication. Default false.",
+          "desc_en": "Run deduplication so an existing matching contact is reused instead of duplicated.",
+          "title_zh": "执行去重，使匹配到的已有联系人被复用而非重复创建。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_contacts_contact_id",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "View a contact by ID. Requires a master API key.",
+          "desc_en": "Retrieve a single contact by its id. Requires a master API key.",
+          "title_zh": "按 id 获取单个联系人。需主 API key。"
+        },
+        {
+          "path": "param:contact_id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact to retrieve.",
+          "title_zh": "要查询的联系人 Apollo id。"
+        },
+        {
+          "path": "resp.200.contact",
+          "src_en": "Contact object",
+          "desc_en": "The retrieved contact.",
+          "title_zh": "查询到的联系人。"
+        },
+        {
+          "path": "resp.200.contact.id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact.",
+          "title_zh": "联系人的 Apollo id。"
+        },
+        {
+          "path": "resp.200.contact.first_name",
+          "src_en": "First name",
+          "desc_en": "Contact's first name.",
+          "title_zh": "联系人的名字。"
+        },
+        {
+          "path": "resp.200.contact.last_name",
+          "src_en": "Last name",
+          "desc_en": "Contact's last name.",
+          "title_zh": "联系人的姓氏。"
+        },
+        {
+          "path": "resp.200.contact.organization_name",
+          "src_en": "Organization name",
+          "desc_en": "Name of the contact's employer.",
+          "title_zh": "联系人雇主的名称。"
+        },
+        {
+          "path": "resp.200.contact.title",
+          "src_en": "Title",
+          "desc_en": "Contact's job title.",
+          "title_zh": "联系人的职位。"
+        },
+        {
+          "path": "resp.200.contact.email",
+          "src_en": "Email",
+          "desc_en": "Contact's email address.",
+          "title_zh": "联系人的邮箱地址。"
+        },
+        {
+          "path": "resp.200.contact.phone_numbers",
+          "src_en": "Phone numbers",
+          "desc_en": "The contact's phone numbers.",
+          "title_zh": "联系人的电话号码列表。"
+        },
+        {
+          "path": "resp.200.contact.phone_numbers[].raw_number",
+          "src_en": "Raw number",
+          "desc_en": "Phone number as originally stored.",
+          "title_zh": "原始存储的电话号码。"
+        },
+        {
+          "path": "resp.200.contact.phone_numbers[].sanitized_number",
+          "src_en": "Sanitized number",
+          "desc_en": "Phone number normalized to a standard format.",
+          "title_zh": "规范化为标准格式的电话号码。"
+        },
+        {
+          "path": "resp.200.contact.owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the contact owner.",
+          "title_zh": "联系人负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.contact.account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the linked account.",
+          "title_zh": "所关联账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.contact.present_raw_address",
+          "src_en": "Raw address",
+          "desc_en": "Contact's current free-text address.",
+          "title_zh": "联系人当前的自由文本地址。"
+        },
+        {
+          "path": "resp.200.contact.linkedin_url",
+          "src_en": "LinkedIn URL",
+          "desc_en": "URL of the contact's LinkedIn profile.",
+          "title_zh": "联系人 LinkedIn 主页链接。"
+        },
+        {
+          "path": "resp.200.contact.updated_at",
+          "src_en": "Updated timestamp",
+          "desc_en": "Timestamp when the contact was last updated.",
+          "title_zh": "联系人最近更新时间。"
+        }
+      ]
+    },
+    {
+      "operation": "patch_apollo_contacts_contact_id",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Update fields on an existing contact. Requires a master API key.",
+          "desc_en": "Update fields on an existing contact identified by contact_id. Only the fields you send are changed. Requires a master API key.",
+          "title_zh": "按 contact_id 更新已有联系人的字段，仅修改你传入的字段。需主 API key。"
+        },
+        {
+          "path": "param:contact_id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact to update.",
+          "title_zh": "要更新的联系人 Apollo id。"
+        },
+        {
+          "path": "req.first_name",
+          "src_en": "First name",
+          "desc_en": "Contact's first name.",
+          "title_zh": "联系人的名字。"
+        },
+        {
+          "path": "req.last_name",
+          "src_en": "Last name",
+          "desc_en": "Contact's last name.",
+          "title_zh": "联系人的姓氏。"
+        },
+        {
+          "path": "req.organization_name",
+          "src_en": "Organization name",
+          "desc_en": "Name of the contact's employer.",
+          "title_zh": "联系人雇主的名称。"
+        },
+        {
+          "path": "req.title",
+          "src_en": "Title",
+          "desc_en": "Contact's job title.",
+          "title_zh": "联系人的职位。"
+        },
+        {
+          "path": "req.account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account to link this contact to.",
+          "title_zh": "要关联此联系人的账户 Apollo id。"
+        },
+        {
+          "path": "req.email",
+          "src_en": "Email",
+          "desc_en": "Contact's email address.",
+          "title_zh": "联系人的邮箱地址。"
+        },
+        {
+          "path": "req.website_url",
+          "src_en": "Website URL",
+          "desc_en": "Contact's website URL.",
+          "title_zh": "联系人的网站链接。"
+        },
+        {
+          "path": "req.label_names",
+          "src_en": "Labels to set on the contact",
+          "desc_en": "Labels to apply to the contact.",
+          "title_zh": "要应用到联系人的标签。"
+        },
+        {
+          "path": "req.contact_stage_id",
+          "src_en": "Contact stage ID",
+          "desc_en": "Id of the stage to place the contact in.",
+          "title_zh": "将联系人置于其中的阶段 id。"
+        },
+        {
+          "path": "req.present_raw_address",
+          "src_en": "Raw address",
+          "desc_en": "Contact's current free-text address.",
+          "title_zh": "联系人当前的自由文本地址。"
+        },
+        {
+          "path": "req.direct_phone",
+          "src_en": "Direct phone",
+          "desc_en": "Contact's direct phone number.",
+          "title_zh": "联系人的直拨电话。"
+        },
+        {
+          "path": "req.corporate_phone",
+          "src_en": "Corporate phone",
+          "desc_en": "Contact's corporate phone number.",
+          "title_zh": "联系人的公司电话。"
+        },
+        {
+          "path": "req.mobile_phone",
+          "src_en": "Mobile phone",
+          "desc_en": "Contact's mobile phone number.",
+          "title_zh": "联系人的手机号码。"
+        },
+        {
+          "path": "req.home_phone",
+          "src_en": "Home phone",
+          "desc_en": "Contact's home phone number.",
+          "title_zh": "联系人的家庭电话。"
+        },
+        {
+          "path": "req.other_phone",
+          "src_en": "Other phone",
+          "desc_en": "Contact's other phone number.",
+          "title_zh": "联系人的其他电话。"
+        },
+        {
+          "path": "req.typed_custom_fields",
+          "src_en": "Typed custom fields object",
+          "desc_en": "Custom-field values to set, keyed by field id.",
+          "title_zh": "要设置的自定义字段值，以字段 id 为键。"
+        },
+        {
+          "path": "resp.200.contact",
+          "src_en": "Updated contact",
+          "desc_en": "The updated contact.",
+          "title_zh": "已更新的联系人。"
+        },
+        {
+          "path": "resp.200.contact.id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact.",
+          "title_zh": "联系人的 Apollo id。"
+        },
+        {
+          "path": "resp.200.contact.first_name",
+          "src_en": "First name",
+          "desc_en": "Contact's first name.",
+          "title_zh": "联系人的名字。"
+        },
+        {
+          "path": "resp.200.contact.last_name",
+          "src_en": "Last name",
+          "desc_en": "Contact's last name.",
+          "title_zh": "联系人的姓氏。"
+        },
+        {
+          "path": "resp.200.contact.email",
+          "src_en": "Email",
+          "desc_en": "Contact's email address.",
+          "title_zh": "联系人的邮箱地址。"
+        },
+        {
+          "path": "resp.200.contact.title",
+          "src_en": "Title",
+          "desc_en": "Contact's job title.",
+          "title_zh": "联系人的职位。"
+        },
+        {
+          "path": "resp.200.contact.organization_name",
+          "src_en": "Organization name",
+          "desc_en": "Name of the contact's employer.",
+          "title_zh": "联系人雇主的名称。"
+        },
+        {
+          "path": "resp.200.contact.owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the contact owner.",
+          "title_zh": "联系人负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.contact.account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the linked account.",
+          "title_zh": "所关联账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.contact.present_raw_address",
+          "src_en": "Raw address",
+          "desc_en": "Contact's current free-text address.",
+          "title_zh": "联系人当前的自由文本地址。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_contacts_bulk_create",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Bulk create contacts. Requires a master API key.",
+          "desc_en": "Create multiple contacts in one call. The response separates records newly created from those that already existed. Requires a master API key.",
+          "title_zh": "一次创建多个联系人。响应把新建记录与已存在记录分开返回。需主 API key。"
+        },
+        {
+          "path": "req.contacts",
+          "src_en": "Array of contacts to create",
+          "desc_en": "Array of contact objects to create.",
+          "title_zh": "要创建的联系人对象数组。"
+        },
+        {
+          "path": "req.append_label_names",
+          "src_en": "Label names to append to each created contact",
+          "desc_en": "Label names to attach to every created contact.",
+          "title_zh": "附加到每个新建联系人上的标签名。"
+        },
+        {
+          "path": "req.run_dedupe",
+          "src_en": "Enable deduplication. Default false.",
+          "desc_en": "Run deduplication so existing contacts are reused instead of duplicated.",
+          "title_zh": "执行去重，使已存在联系人被复用而非重复创建。"
+        },
+        {
+          "path": "resp.200.created_contacts",
+          "src_en": "Contacts created in this request",
+          "desc_en": "Contacts newly created by this call.",
+          "title_zh": "本次新建的联系人。"
+        },
+        {
+          "path": "resp.200.created_contacts[].id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact.",
+          "title_zh": "联系人的 Apollo id。"
+        },
+        {
+          "path": "resp.200.created_contacts[].first_name",
+          "src_en": "First name",
+          "desc_en": "Contact's first name.",
+          "title_zh": "联系人的名字。"
+        },
+        {
+          "path": "resp.200.created_contacts[].last_name",
+          "src_en": "Last name",
+          "desc_en": "Contact's last name.",
+          "title_zh": "联系人的姓氏。"
+        },
+        {
+          "path": "resp.200.created_contacts[].organization_name",
+          "src_en": "Organization name",
+          "desc_en": "Name of the contact's employer.",
+          "title_zh": "联系人雇主的名称。"
+        },
+        {
+          "path": "resp.200.created_contacts[].title",
+          "src_en": "Title",
+          "desc_en": "Contact's job title.",
+          "title_zh": "联系人的职位。"
+        },
+        {
+          "path": "resp.200.created_contacts[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the contact owner.",
+          "title_zh": "联系人负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.created_contacts[].account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the linked account.",
+          "title_zh": "所关联账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.created_contacts[].email",
+          "src_en": "Email",
+          "desc_en": "Contact's email address.",
+          "title_zh": "联系人的邮箱地址。"
+        },
+        {
+          "path": "resp.200.created_contacts[].phone_numbers",
+          "src_en": "Phone numbers",
+          "desc_en": "The contact's phone numbers.",
+          "title_zh": "联系人的电话号码列表。"
+        },
+        {
+          "path": "resp.200.created_contacts[].typed_custom_fields",
+          "src_en": "Typed custom fields object",
+          "desc_en": "Custom-field values on the contact.",
+          "title_zh": "联系人上的自定义字段值。"
+        },
+        {
+          "path": "resp.200.created_contacts[].updated_at",
+          "src_en": "Updated timestamp",
+          "desc_en": "Timestamp when the contact was last updated.",
+          "title_zh": "联系人最近更新时间。"
+        },
+        {
+          "path": "resp.200.existing_contacts",
+          "src_en": "Contacts that already existed (dedupe matches)",
+          "desc_en": "Contacts that already existed and were matched instead of created.",
+          "title_zh": "已存在、被匹配而非新建的联系人。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact.",
+          "title_zh": "联系人的 Apollo id。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].first_name",
+          "src_en": "First name",
+          "desc_en": "Contact's first name.",
+          "title_zh": "联系人的名字。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].last_name",
+          "src_en": "Last name",
+          "desc_en": "Contact's last name.",
+          "title_zh": "联系人的姓氏。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].organization_name",
+          "src_en": "Organization name",
+          "desc_en": "Name of the contact's employer.",
+          "title_zh": "联系人雇主的名称。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].title",
+          "src_en": "Title",
+          "desc_en": "Contact's job title.",
+          "title_zh": "联系人的职位。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the contact owner.",
+          "title_zh": "联系人负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the linked account.",
+          "title_zh": "所关联账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].email",
+          "src_en": "Email",
+          "desc_en": "Contact's email address.",
+          "title_zh": "联系人的邮箱地址。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].phone_numbers",
+          "src_en": "Phone numbers",
+          "desc_en": "The contact's phone numbers.",
+          "title_zh": "联系人的电话号码列表。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].typed_custom_fields",
+          "src_en": "Typed custom fields object",
+          "desc_en": "Custom-field values on the contact.",
+          "title_zh": "联系人上的自定义字段值。"
+        },
+        {
+          "path": "resp.200.existing_contacts[].updated_at",
+          "src_en": "Updated timestamp",
+          "desc_en": "Timestamp when the contact was last updated.",
+          "title_zh": "联系人最近更新时间。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_contacts_bulk_update",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Bulk update contacts. Requires a master API key.",
+          "desc_en": "Update multiple contacts in one call. Requires a master API key.",
+          "title_zh": "一次更新多个联系人。需主 API key。"
+        },
+        {
+          "path": "resp.200.contacts",
+          "src_en": "Updated contacts",
+          "desc_en": "The updated contacts.",
+          "title_zh": "已更新的联系人。"
+        },
+        {
+          "path": "resp.200.contacts[].id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact.",
+          "title_zh": "联系人的 Apollo id。"
+        },
+        {
+          "path": "resp.200.contacts[].first_name",
+          "src_en": "First name",
+          "desc_en": "Contact's first name.",
+          "title_zh": "联系人的名字。"
+        },
+        {
+          "path": "resp.200.contacts[].last_name",
+          "src_en": "Last name",
+          "desc_en": "Contact's last name.",
+          "title_zh": "联系人的姓氏。"
+        },
+        {
+          "path": "resp.200.contacts[].email",
+          "src_en": "Email",
+          "desc_en": "Contact's email address.",
+          "title_zh": "联系人的邮箱地址。"
+        },
+        {
+          "path": "resp.200.contacts[].title",
+          "src_en": "Title",
+          "desc_en": "Contact's job title.",
+          "title_zh": "联系人的职位。"
+        },
+        {
+          "path": "resp.200.contacts[].organization_name",
+          "src_en": "Organization name",
+          "desc_en": "Name of the contact's employer.",
+          "title_zh": "联系人雇主的名称。"
+        },
+        {
+          "path": "resp.200.contacts[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the contact owner.",
+          "title_zh": "联系人负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.contacts[].account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the linked account.",
+          "title_zh": "所关联账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.contacts[].present_raw_address",
+          "src_en": "Raw address",
+          "desc_en": "Contact's current free-text address.",
+          "title_zh": "联系人当前的自由文本地址。"
+        },
+        {
+          "path": "resp.200.contacts[].linkedin_url",
+          "src_en": "LinkedIn URL",
+          "desc_en": "URL of the contact's LinkedIn profile.",
+          "title_zh": "联系人 LinkedIn 主页链接。"
+        },
+        {
+          "path": "resp.200.contacts[].updated_at",
+          "src_en": "Updated timestamp",
+          "desc_en": "Timestamp when the contact was last updated.",
+          "title_zh": "联系人最近更新时间。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_contacts_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search for contacts. Requires a master API key.",
+          "desc_en": "Search your team's contacts by keyword, stage, and label, with sorting and pagination. Requires a master API key.",
+          "title_zh": "按关键词、阶段、标签搜索团队联系人，支持排序与分页。需主 API key。"
+        },
+        {
+          "path": "req.q_keywords",
+          "src_en": "Keyword query",
+          "desc_en": "Free-text keywords to filter contacts by.",
+          "title_zh": "用于筛选联系人的自由文本关键词。"
+        },
+        {
+          "path": "req.contact_stage_ids",
+          "src_en": "Filter by contact stage IDs",
+          "desc_en": "Only include contacts in these stages.",
+          "title_zh": "仅纳入处于这些阶段的联系人。"
+        },
+        {
+          "path": "req.contact_label_ids",
+          "src_en": "Filter by contact label IDs",
+          "desc_en": "Only include contacts carrying these labels.",
+          "title_zh": "仅纳入带有这些标签的联系人。"
+        },
+        {
+          "path": "req.sort_by_field",
+          "src_en": "Sort field (e.g. contact_last_activity_date, contact_created_at, contact_updated_at)",
+          "desc_en": "Field to sort the results by.",
+          "title_zh": "结果排序所依据的字段。"
+        },
+        {
+          "path": "req.sort_ascending",
+          "src_en": "Sort ascending. Default false.",
+          "desc_en": "Sort ascending when true, descending when false.",
+          "title_zh": "为 true 时升序，false 时降序。"
+        },
+        {
+          "path": "req.per_page",
+          "src_en": "Items per page",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        },
+        {
+          "path": "req.page",
+          "src_en": "Page number",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_contacts_update_stages",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Update contact stage for multiple contacts. Requires a master API key.",
+          "desc_en": "Move multiple contacts to a single contact stage at once. Requires a master API key.",
+          "title_zh": "一次把多个联系人移动到同一个联系人阶段。需主 API key。"
+        },
+        {
+          "path": "param:contact_ids[]",
+          "src_en": "Contact IDs",
+          "desc_en": "Ids of the contacts to move.",
+          "title_zh": "要移动的联系人 id。"
+        },
+        {
+          "path": "param:contact_stage_id",
+          "src_en": "New contact stage ID",
+          "desc_en": "Id of the stage to move all listed contacts into.",
+          "title_zh": "将所有所列联系人移入的阶段 id。"
+        },
+        {
+          "path": "resp.200.contacts",
+          "src_en": "Updated contacts",
+          "desc_en": "The contacts whose stage was changed.",
+          "title_zh": "阶段已变更的联系人。"
+        },
+        {
+          "path": "resp.200.contacts[].id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact.",
+          "title_zh": "联系人的 Apollo id。"
+        },
+        {
+          "path": "resp.200.contacts[].first_name",
+          "src_en": "First name",
+          "desc_en": "Contact's first name.",
+          "title_zh": "联系人的名字。"
+        },
+        {
+          "path": "resp.200.contacts[].last_name",
+          "src_en": "Last name",
+          "desc_en": "Contact's last name.",
+          "title_zh": "联系人的姓氏。"
+        },
+        {
+          "path": "resp.200.contacts[].contact_stage_id",
+          "src_en": "Contact stage ID",
+          "desc_en": "Contact's stage id after the change.",
+          "title_zh": "变更后联系人的阶段 id。"
+        },
+        {
+          "path": "resp.200.contacts[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the contact owner.",
+          "title_zh": "联系人负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.contacts[].email",
+          "src_en": "Email",
+          "desc_en": "Contact's email address.",
+          "title_zh": "联系人的邮箱地址。"
+        },
+        {
+          "path": "resp.200.contacts[].organization_name",
+          "src_en": "Organization name",
+          "desc_en": "Name of the contact's employer.",
+          "title_zh": "联系人雇主的名称。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_contacts_update_owners",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Update contact owner for multiple contacts. Requires a master API key.",
+          "desc_en": "Reassign the owner of multiple contacts at once. Requires a master API key.",
+          "title_zh": "一次为多个联系人重新指派负责人。需主 API key。"
+        },
+        {
+          "path": "param:contact_ids[]",
+          "src_en": "Contact IDs",
+          "desc_en": "Ids of the contacts to reassign.",
+          "title_zh": "要重新指派的联系人 id。"
+        },
+        {
+          "path": "param:owner_id",
+          "src_en": "New owner ID",
+          "desc_en": "Apollo user id of the new owner for all listed contacts.",
+          "title_zh": "所有所列联系人的新负责人 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.contacts",
+          "src_en": "Updated contacts",
+          "desc_en": "The contacts whose owner was changed.",
+          "title_zh": "负责人已变更的联系人。"
+        },
+        {
+          "path": "resp.200.contacts[].id",
+          "src_en": "Contact ID",
+          "desc_en": "Apollo id of the contact.",
+          "title_zh": "联系人的 Apollo id。"
+        },
+        {
+          "path": "resp.200.contacts[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Contact owner's Apollo user id after the change.",
+          "title_zh": "变更后联系人负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.contacts[].crm_owner_id",
+          "src_en": "CRM owner ID",
+          "desc_en": "Corresponding owner id in the connected CRM, when synced.",
+          "title_zh": "已同步时在所连 CRM 中对应的负责人 id。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_contact_stages",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "List contact stages. Requires a master API key.",
+          "desc_en": "List all contact stages configured for your team. Use the returned ids to set or filter contact_stage_id elsewhere. Requires a master API key.",
+          "title_zh": "列出团队配置的所有联系人阶段。返回的 id 可在别处用于设置或筛选 contact_stage_id。需主 API key。"
+        },
+        {
+          "path": "resp.200.contact_stages",
+          "src_en": "Contact stages list",
+          "desc_en": "The list of configured contact stages.",
+          "title_zh": "已配置的联系人阶段列表。"
+        },
+        {
+          "path": "resp.200.contact_stages[].id",
+          "src_en": "Stage ID",
+          "desc_en": "Stage id; use it to set or filter contact_stage_id.",
+          "title_zh": "阶段 id；可用于设置或筛选 contact_stage_id。"
+        },
+        {
+          "path": "resp.200.contact_stages[].team_id",
+          "src_en": "Team ID",
+          "desc_en": "Id of the team that owns the stage.",
+          "title_zh": "拥有该阶段的团队 id。"
+        },
+        {
+          "path": "resp.200.contact_stages[].display_name",
+          "src_en": "Display name",
+          "desc_en": "Stage name shown in the Apollo UI.",
+          "title_zh": "在 Apollo 界面中显示的阶段名称。"
+        },
+        {
+          "path": "resp.200.contact_stages[].name",
+          "src_en": "Name",
+          "desc_en": "Internal name of the stage.",
+          "title_zh": "阶段的内部名称。"
+        },
+        {
+          "path": "resp.200.contact_stages[].display_order",
+          "src_en": "Display order",
+          "desc_en": "Position of the stage in the ordered pipeline.",
+          "title_zh": "阶段在有序流程中的位置。"
+        },
+        {
+          "path": "resp.200.contact_stages[].ignore_trigger_override",
+          "src_en": "Ignore trigger override",
+          "desc_en": "Whether automation triggers are ignored when contacts enter this stage.",
+          "title_zh": "联系人进入该阶段时是否忽略自动化触发。"
+        },
+        {
+          "path": "resp.200.contact_stages[].category",
+          "src_en": "Category",
+          "desc_en": "Category the stage belongs to.\n[⚠️Note:源码未声明该字段的取值集合，待研发确认。]",
+          "title_zh": "阶段所属的类别。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+        },
+        {
+          "path": "resp.200.contact_stages[].is_meeting_set",
+          "src_en": "Is meeting set",
+          "desc_en": "Whether this stage represents a meeting having been set.",
+          "title_zh": "该阶段是否代表已安排会议。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_opportunities",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Create a deal (opportunity). Requires a master API key.",
+          "desc_en": "Create a deal (opportunity) tied to an account. Requires a master API key.",
+          "title_zh": "创建商机（deal），并关联到某个账户。需主 API key。"
+        },
+        {
+          "path": "req.name",
+          "src_en": "Deal name",
+          "desc_en": "Deal name to create.",
+          "title_zh": "要创建的商机名称。"
+        },
+        {
+          "path": "req.owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id to assign as the deal owner.",
+          "title_zh": "指派为商机负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "req.account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account this deal belongs to.",
+          "title_zh": "该商机所属账户的 Apollo id。"
+        },
+        {
+          "path": "req.amount",
+          "src_en": "Deal amount",
+          "desc_en": "Monetary value of the deal.",
+          "title_zh": "商机的金额。"
+        },
+        {
+          "path": "req.opportunity_stage_id",
+          "src_en": "Deal stage ID",
+          "desc_en": "Id of the stage to place the deal in.",
+          "title_zh": "将商机置于其中的阶段 id。"
+        },
+        {
+          "path": "req.closed_date",
+          "src_en": "Closed date (date string)",
+          "desc_en": "Expected or actual close date of the deal.",
+          "title_zh": "商机的预计或实际关闭日期。"
+        },
+        {
+          "path": "req.typed_custom_fields",
+          "src_en": "Typed custom fields object",
+          "desc_en": "Custom-field values to set, keyed by field id.",
+          "title_zh": "要设置的自定义字段值，以字段 id 为键。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_opportunities_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "List all deals (opportunities). Requires a master API key.",
+          "desc_en": "List all deals (opportunities), with sorting and pagination. Requires a master API key.",
+          "title_zh": "列出全部商机，支持排序与分页。需主 API key。"
+        },
+        {
+          "path": "param:sort_by_field",
+          "src_en": "Sort field",
+          "desc_en": "Field to sort the deals by.",
+          "title_zh": "商机排序所依据的字段。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "Page number",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "Items per page",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        },
+        {
+          "path": "resp.200.opportunities",
+          "src_en": "Opportunities list",
+          "desc_en": "The page of deals.",
+          "title_zh": "当前页的商机。"
+        },
+        {
+          "path": "resp.200.opportunities[].id",
+          "src_en": "Opportunity ID",
+          "desc_en": "Apollo id of the deal.",
+          "title_zh": "商机的 Apollo id。"
+        },
+        {
+          "path": "resp.200.opportunities[].owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the deal owner.",
+          "title_zh": "商机负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.opportunities[].account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account the deal belongs to.",
+          "title_zh": "商机所属账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.opportunities[].amount",
+          "src_en": "Amount",
+          "desc_en": "Monetary value of the deal.",
+          "title_zh": "商机的金额。"
+        },
+        {
+          "path": "resp.200.opportunities[].name",
+          "src_en": "Name",
+          "desc_en": "Deal name.",
+          "title_zh": "商机名称。"
+        },
+        {
+          "path": "resp.200.opportunities[].opportunity_stage_id",
+          "src_en": "Stage ID",
+          "desc_en": "Id of the deal's current stage.",
+          "title_zh": "商机当前阶段的 id。"
+        },
+        {
+          "path": "resp.200.opportunities[].is_closed",
+          "src_en": "Is closed",
+          "desc_en": "Whether the deal has been closed (won or lost).",
+          "title_zh": "商机是否已关闭（赢单或输单）。"
+        },
+        {
+          "path": "resp.200.opportunities[].is_won",
+          "src_en": "Is won",
+          "desc_en": "Whether the deal was won.",
+          "title_zh": "商机是否赢单。"
+        },
+        {
+          "path": "resp.200.opportunities[].created_at",
+          "src_en": "Created timestamp",
+          "desc_en": "Timestamp when the deal was created.",
+          "title_zh": "商机创建时间。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Pagination object",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        },
+        {
+          "path": "resp.200.pagination.page",
+          "src_en": "Page number",
+          "desc_en": "Current page number.",
+          "title_zh": "当前页码。"
+        },
+        {
+          "path": "resp.200.pagination.per_page",
+          "src_en": "Items per page",
+          "desc_en": "Results per page used.",
+          "title_zh": "所用的每页结果数。"
+        },
+        {
+          "path": "resp.200.pagination.total_entries",
+          "src_en": "Total entries",
+          "desc_en": "Total number of deals across all pages.",
+          "title_zh": "所有页的商机总数。"
+        },
+        {
+          "path": "resp.200.pagination.total_pages",
+          "src_en": "Total pages",
+          "desc_en": "Total number of pages.",
+          "title_zh": "总页数。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_opportunities_opportunity_id",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "View a deal (opportunity) by ID. Requires a master API key.",
+          "desc_en": "Retrieve a single deal (opportunity) by its id. Requires a master API key.",
+          "title_zh": "按 id 获取单个商机。需主 API key。"
+        },
+        {
+          "path": "param:opportunity_id",
+          "src_en": "Opportunity ID",
+          "desc_en": "Apollo id of the deal to retrieve.",
+          "title_zh": "要查询的商机 Apollo id。"
+        },
+        {
+          "path": "resp.200.opportunity",
+          "src_en": "Opportunity object",
+          "desc_en": "The retrieved deal.",
+          "title_zh": "查询到的商机。"
+        },
+        {
+          "path": "resp.200.opportunity.id",
+          "src_en": "Opportunity ID",
+          "desc_en": "Apollo id of the deal.",
+          "title_zh": "商机的 Apollo id。"
+        },
+        {
+          "path": "resp.200.opportunity.owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "Apollo user id of the deal owner.",
+          "title_zh": "商机负责人的 Apollo 用户 id。"
+        },
+        {
+          "path": "resp.200.opportunity.account_id",
+          "src_en": "Account ID",
+          "desc_en": "Apollo id of the account the deal belongs to.",
+          "title_zh": "商机所属账户的 Apollo id。"
+        },
+        {
+          "path": "resp.200.opportunity.amount",
+          "src_en": "Amount",
+          "desc_en": "Monetary value of the deal.",
+          "title_zh": "商机的金额。"
+        },
+        {
+          "path": "resp.200.opportunity.name",
+          "src_en": "Name",
+          "desc_en": "Deal name.",
+          "title_zh": "商机名称。"
+        },
+        {
+          "path": "resp.200.opportunity.opportunity_stage_id",
+          "src_en": "Stage ID",
+          "desc_en": "Id of the deal's current stage.",
+          "title_zh": "商机当前阶段的 id。"
+        },
+        {
+          "path": "resp.200.opportunity.is_closed",
+          "src_en": "Is closed",
+          "desc_en": "Whether the deal has been closed (won or lost).",
+          "title_zh": "商机是否已关闭（赢单或输单）。"
+        },
+        {
+          "path": "resp.200.opportunity.is_won",
+          "src_en": "Is won",
+          "desc_en": "Whether the deal was won.",
+          "title_zh": "商机是否赢单。"
+        },
+        {
+          "path": "resp.200.opportunity.created_at",
+          "src_en": "Created timestamp",
+          "desc_en": "Timestamp when the deal was created.",
+          "title_zh": "商机创建时间。"
+        }
+      ]
+    },
+    {
+      "operation": "patch_apollo_opportunities_opportunity_id",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Update fields on an existing deal (opportunity). Requires a master API key.",
+          "desc_en": "Update fields on an existing deal (opportunity). Only the fields you send are changed. Requires a master API key.",
+          "title_zh": "更新已有商机的字段，仅修改你传入的字段。需主 API key。"
+        },
+        {
+          "path": "param:opportunity_id",
+          "src_en": "Opportunity ID",
+          "desc_en": "Apollo id of the deal to update.",
+          "title_zh": "要更新的商机 Apollo id。"
+        },
+        {
+          "path": "req.owner_id",
+          "src_en": "Owner ID",
+          "desc_en": "New deal owner's Apollo user id.",
+          "title_zh": "新的商机负责人 Apollo 用户 id。"
+        },
+        {
+          "path": "req.name",
+          "src_en": "Opportunity name",
+          "desc_en": "New deal name.",
+          "title_zh": "新的商机名称。"
+        },
+        {
+          "path": "req.amount",
+          "src_en": "Amount",
+          "desc_en": "New monetary value of the deal.",
+          "title_zh": "商机的新金额。"
+        },
+        {
+          "path": "req.opportunity_stage_id",
+          "src_en": "Stage ID",
+          "desc_en": "New stage id for the deal.",
+          "title_zh": "商机的新阶段 id。"
+        },
+        {
+          "path": "req.closed_date",
+          "src_en": "Closed date (date string)",
+          "desc_en": "New expected or actual close date.",
+          "title_zh": "新的预计或实际关闭日期。"
+        },
+        {
+          "path": "req.typed_custom_fields",
+          "src_en": "Typed custom fields object",
+          "desc_en": "Custom-field values to set, keyed by field id.",
+          "title_zh": "要设置的自定义字段值，以字段 id 为键。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_opportunity_stages",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "List deal stages (opportunity stages). Requires a master API key.",
+          "desc_en": "List all deal stages (opportunity stages) configured for your team. Use the returned ids to set or filter opportunity_stage_id elsewhere. Requires a master API key.",
+          "title_zh": "列出团队配置的所有商机阶段。返回的 id 可在别处用于设置或筛选 opportunity_stage_id。需主 API key。"
+        },
+        {
+          "path": "resp.200.opportunity_stages",
+          "src_en": "Opportunity stages list",
+          "desc_en": "The list of configured deal stages.",
+          "title_zh": "已配置的商机阶段列表。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].id",
+          "src_en": "Stage ID",
+          "desc_en": "Stage id; use it to set or filter opportunity_stage_id.",
+          "title_zh": "阶段 id；可用于设置或筛选 opportunity_stage_id。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].team_id",
+          "src_en": "Team ID",
+          "desc_en": "Id of the team that owns the stage.",
+          "title_zh": "拥有该阶段的团队 id。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].name",
+          "src_en": "Name",
+          "desc_en": "Stage name.",
+          "title_zh": "阶段名称。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].display_order",
+          "src_en": "Display order",
+          "desc_en": "Position of the stage in the ordered pipeline.",
+          "title_zh": "阶段在有序流程中的位置。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].forecast_category_cd",
+          "src_en": "Forecast category code",
+          "desc_en": "Forecast category this stage rolls up into.\n[⚠️Note:源码未声明该字段的取值集合，待研发确认。]",
+          "title_zh": "该阶段归入的预测类别。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].is_won",
+          "src_en": "Is won",
+          "desc_en": "Whether reaching this stage means the deal is won.",
+          "title_zh": "到达该阶段是否代表赢单。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].is_closed",
+          "src_en": "Is closed",
+          "desc_en": "Whether reaching this stage means the deal is closed.",
+          "title_zh": "到达该阶段是否代表关闭。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].probability",
+          "src_en": "Probability",
+          "desc_en": "Win probability associated with this stage.",
+          "title_zh": "与该阶段关联的赢单概率。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].description",
+          "src_en": "Description",
+          "desc_en": "Free-text description of the stage.",
+          "title_zh": "阶段的描述。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].opportunity_pipeline_id",
+          "src_en": "Opportunity pipeline ID",
+          "desc_en": "Id of the pipeline this stage belongs to.",
+          "title_zh": "该阶段所属流程的 id。"
+        },
+        {
+          "path": "resp.200.opportunity_stages[].type",
+          "src_en": "Type",
+          "desc_en": "Type of the stage.\n[⚠️Note:源码未声明该字段的取值集合，待研发确认。]",
+          "title_zh": "阶段的类型。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_emailer_campaigns_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search for sequences (emailer campaigns) in your Apollo account. Requires a master API key.",
+          "desc_en": "Search the sequences (emailer campaigns) in your Apollo account by name, with pagination. Requires a master API key.",
+          "title_zh": "按名称搜索 Apollo 账号中的序列（外联活动），支持分页。需主 API key。"
+        },
+        {
+          "path": "param:q_name",
+          "src_en": "Keywords to match sequence names.",
+          "desc_en": "Filter sequences by name.",
+          "title_zh": "按名称筛选序列。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "Page number.",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "Results per page.",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        },
+        {
+          "path": "resp.200.emailer_campaigns",
+          "src_en": "Sequence records (when returned).",
+          "desc_en": "The page of matching sequences.",
+          "title_zh": "当前页匹配到的序列。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Pagination metadata (when returned).",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_emailer_campaigns_sequence_id_add_contact_ids",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Add contacts to a sequence. Requires a master API key.",
+          "desc_en": "Add contacts to a sequence by contact ids and/or label names. Several flags let you override safety checks (e.g. allow contacts without email or already active in other sequences). Requires a master API key.",
+          "title_zh": "通过联系人 id 和/或标签名把联系人加入序列。多个开关可覆盖安全校验（如允许无邮箱、或已在其他序列中活跃的联系人）。需主 API key。"
+        },
+        {
+          "path": "param:sequence_id",
+          "src_en": "Sequence (emailer campaign) ID.",
+          "desc_en": "Id of the sequence to add contacts to.",
+          "title_zh": "要添加联系人的序列 id。"
+        },
+        {
+          "path": "param:emailer_campaign_id",
+          "src_en": "Sequence ID (same as sequence_id).",
+          "desc_en": "Same sequence id as in the path; provide as a body alias.",
+          "title_zh": "与路径相同的序列 id；作为请求体别名提供。"
+        },
+        {
+          "path": "param:contact_ids[]",
+          "src_en": "Contact IDs to add. Provide either contact_ids[] or label_names[] (or both).",
+          "desc_en": "Contact ids to add; supply this and/or label_names[].",
+          "title_zh": "要添加的联系人 id；与 label_names[] 二者可任选其一或同时提供。"
+        },
+        {
+          "path": "param:label_names[]",
+          "src_en": "Label names for contacts to add. Provide either label_names[] or contact_ids[] (or both).",
+          "desc_en": "Label names whose contacts should be added; supply this and/or contact_ids[].",
+          "title_zh": "要添加其联系人的标签名；与 contact_ids[] 二者可任选其一或同时提供。"
+        },
+        {
+          "path": "param:send_email_from_email_account_id",
+          "src_en": "Email account ID (or IDs) to send from.",
+          "desc_en": "Email account id(s) the sequence should send from.",
+          "title_zh": "序列发信所用的邮箱账户 id（可多个）。"
+        },
+        {
+          "path": "param:send_email_from_email_address",
+          "src_en": "Optional from-address alias.",
+          "desc_en": "Optional from-address alias to send under.",
+          "title_zh": "可选的发件地址别名。"
+        },
+        {
+          "path": "param:sequence_no_email",
+          "src_en": "Allow contacts without email.",
+          "desc_en": "Allow adding contacts that have no email address.",
+          "title_zh": "允许添加没有邮箱的联系人。"
+        },
+        {
+          "path": "param:sequence_unverified_email",
+          "src_en": "Allow contacts with unverified email.",
+          "desc_en": "Allow adding contacts whose email is unverified.",
+          "title_zh": "允许添加邮箱未验证的联系人。"
+        },
+        {
+          "path": "param:sequence_job_change",
+          "src_en": "Allow contacts with job change.",
+          "desc_en": "Allow adding contacts flagged as having changed jobs.",
+          "title_zh": "允许添加被标记为已换工作的联系人。"
+        },
+        {
+          "path": "param:sequence_active_in_other_campaigns",
+          "src_en": "Allow contacts active in other sequences.",
+          "desc_en": "Allow adding contacts already active in other sequences.",
+          "title_zh": "允许添加已在其他序列中活跃的联系人。"
+        },
+        {
+          "path": "param:sequence_finished_in_other_campaigns",
+          "src_en": "Allow contacts finished in other sequences.",
+          "desc_en": "Allow adding contacts already finished in other sequences.",
+          "title_zh": "允许添加已在其他序列中结束的联系人。"
+        },
+        {
+          "path": "resp.200.success",
+          "src_en": "Whether the add succeeded (when returned).",
+          "desc_en": "Whether the contacts were added successfully.",
+          "title_zh": "联系人是否添加成功。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_emailer_campaigns_remove_or_stop_contact_ids",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Update contact status in a sequence. Requires a master API key.",
+          "desc_en": "Remove or stop contacts in one or more sequences. The mode parameter selects whether to mark as finished, remove, or stop the contacts. Requires a master API key.",
+          "title_zh": "在一个或多个序列中移除或停止联系人。mode 参数决定是标记完成、移除还是停止。需主 API key。"
+        },
+        {
+          "path": "param:emailer_campaign_ids[]",
+          "src_en": "Sequence IDs.",
+          "desc_en": "Ids of the sequences to act on.",
+          "title_zh": "要操作的序列 id。"
+        },
+        {
+          "path": "param:contact_ids[]",
+          "src_en": "Contact IDs.",
+          "desc_en": "Ids of the contacts to remove or stop.",
+          "title_zh": "要移除或停止的联系人 id。"
+        },
+        {
+          "path": "param:mode",
+          "src_en": "One of: mark_as_finished, remove, stop.",
+          "desc_en": "Action to take on the contacts: mark them as finished, remove them, or stop them.",
+          "title_zh": "对联系人采取的动作：标记完成、移除或停止。"
+        },
+        {
+          "path": "resp.200.success",
+          "src_en": "Whether the update succeeded (when returned).",
+          "desc_en": "Whether the operation succeeded.",
+          "title_zh": "操作是否成功。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_emailer_campaigns_sequence_id_approve",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Activate a sequence. Requires a master API key.",
+          "desc_en": "Activate a sequence so it starts sending. Requires a master API key.",
+          "title_zh": "激活序列，使其开始发送。需主 API key。"
+        },
+        {
+          "path": "param:sequence_id",
+          "src_en": "Sequence ID.",
+          "desc_en": "Id of the sequence to act on.",
+          "title_zh": "要操作的序列 id。"
+        },
+        {
+          "path": "resp.200.emailer_campaign",
+          "src_en": "Sequence object (when returned).",
+          "desc_en": "The activated sequence.",
+          "title_zh": "已激活的序列。"
+        },
+        {
+          "path": "resp.200.emailer_steps",
+          "src_en": "Sequence steps (when returned).",
+          "desc_en": "The steps of the activated sequence.",
+          "title_zh": "已激活序列的各个步骤。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_emailer_campaigns_sequence_id_abort",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Deactivate a sequence. Requires a master API key.",
+          "desc_en": "Deactivate a sequence so it stops sending. Requires a master API key.",
+          "title_zh": "停用序列，使其停止发送。需主 API key。"
+        },
+        {
+          "path": "param:sequence_id",
+          "src_en": "Sequence ID.",
+          "desc_en": "Id of the sequence to act on.",
+          "title_zh": "要操作的序列 id。"
+        },
+        {
+          "path": "resp.200.emailer_campaign",
+          "src_en": "Sequence object (when returned).",
+          "desc_en": "The deactivated sequence.",
+          "title_zh": "已停用的序列。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_emailer_campaigns_sequence_id_archive",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Archive a sequence (marks it inactive and finishes contacts). Requires a master API key.",
+          "desc_en": "Archive a sequence: marks it inactive and finishes its contacts. Requires a master API key.",
+          "title_zh": "归档序列：将其标记为非活跃并结束其中的联系人。需主 API key。"
+        },
+        {
+          "path": "param:sequence_id",
+          "src_en": "Sequence ID.",
+          "desc_en": "Id of the sequence to act on.",
+          "title_zh": "要操作的序列 id。"
+        },
+        {
+          "path": "resp.200.emailer_campaign",
+          "src_en": "Archived sequence object (when returned).",
+          "desc_en": "The archived sequence.",
+          "title_zh": "已归档的序列。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_emailer_messages_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search for outreach emails. Requires a master API key.",
+          "desc_en": "Search outreach emails, filtered by message stats, reply class, user, email account, and sequence. Results are paginated. Requires a master API key.",
+          "title_zh": "搜索外联邮件，可按邮件统计、回复分类、用户、邮箱账户、序列筛选。结果分页。需主 API key。"
+        },
+        {
+          "path": "param:emailer_message_stats[]",
+          "src_en": "Filter by message stats (e.g., open, click).",
+          "desc_en": "Filter by message engagement stats such as opened or clicked.\n[⚠️Note:源码未声明完整的取值集合，待研发确认。]",
+          "title_zh": "按邮件互动统计筛选，如已打开、已点击。\n[⚠️批注:源码未声明完整的取值集合，待研发确认。]"
+        },
+        {
+          "path": "param:emailer_message_reply_classes[]",
+          "src_en": "Filter by reply classes.",
+          "desc_en": "Filter by reply classification, such as positive or out-of-office.\n[⚠️Note:源码未声明完整的取值集合，待研发确认。]",
+          "title_zh": "按回复分类筛选，如正面、休假自动回复等。\n[⚠️批注:源码未声明完整的取值集合，待研发确认。]"
+        },
+        {
+          "path": "param:user_ids[]",
+          "src_en": "Filter by user IDs.",
+          "desc_en": "Only include messages sent by these users.",
+          "title_zh": "仅纳入这些用户发出的邮件。"
+        },
+        {
+          "path": "param:email_account_id_and_aliases",
+          "src_en": "Filter by email account and aliases.",
+          "desc_en": "Filter by a sending email account and its aliases.",
+          "title_zh": "按发件邮箱账户及其别名筛选。"
+        },
+        {
+          "path": "param:emailer_campaign_ids[]",
+          "src_en": "Only include these sequence IDs.",
+          "desc_en": "Only include messages from these sequences.",
+          "title_zh": "仅纳入来自这些序列的邮件。"
+        },
+        {
+          "path": "param:not_emailer_campaign_ids[]",
+          "src_en": "Exclude these sequence IDs.",
+          "desc_en": "Exclude messages from these sequences.",
+          "title_zh": "排除来自这些序列的邮件。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "Page number.",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "Results per page.",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        },
+        {
+          "path": "resp.200.emailer_messages",
+          "src_en": "Outreach emails (when returned).",
+          "desc_en": "The page of matching outreach emails.",
+          "title_zh": "当前页匹配到的外联邮件。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Pagination metadata (when returned).",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_emailer_messages_id_activities",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Check email stats for a specific outreach email. Requires a master API key.",
+          "desc_en": "Retrieve the activity log (opens, clicks, replies, etc.) for one outreach email. Requires a master API key.",
+          "title_zh": "获取单封外联邮件的活动记录（打开、点击、回复等）。需主 API key。"
+        },
+        {
+          "path": "param:id",
+          "src_en": "Emailer message ID.",
+          "desc_en": "Id of the outreach email whose activity you want.",
+          "title_zh": "要查询活动记录的外联邮件 id。"
+        },
+        {
+          "path": "resp.200.emailer_message",
+          "src_en": "Email object (when returned).",
+          "desc_en": "The outreach email being inspected.",
+          "title_zh": "被查询的外联邮件。"
+        },
+        {
+          "path": "resp.200.activities",
+          "src_en": "Activity events (when returned).",
+          "desc_en": "Activity events for the email, such as opens, clicks, and replies.",
+          "title_zh": "该邮件的活动事件，如打开、点击、回复。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_tasks",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Create a task. Requires a master API key.",
+          "desc_en": "Create a single task assigned to a user and linked to a contact. Requires a master API key.",
+          "title_zh": "创建单个任务，指派给某用户并关联到联系人。需主 API key。"
+        },
+        {
+          "path": "req.user_id",
+          "src_en": "Task owner user ID.",
+          "desc_en": "Apollo user id to assign the task to.",
+          "title_zh": "要指派任务的 Apollo 用户 id。"
+        },
+        {
+          "path": "req.contact_id",
+          "src_en": "Contact ID.",
+          "desc_en": "Apollo id of the contact the task is about.",
+          "title_zh": "任务针对的联系人 Apollo id。"
+        },
+        {
+          "path": "req.type",
+          "src_en": "Task type.",
+          "desc_en": "Kind of task, such as a call or an email.\n[⚠️Note:源码未声明该字段的取值集合，待研发确认。]",
+          "title_zh": "任务类型，如电话或邮件。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+        },
+        {
+          "path": "req.priority",
+          "src_en": "Task priority (default: medium).",
+          "desc_en": "Task priority level.\n[⚠️Note:源码未声明优先级取值集合，待研发确认。]",
+          "title_zh": "任务优先级。\n[⚠️批注:源码未声明优先级取值集合，待研发确认。]"
+        },
+        {
+          "path": "req.status",
+          "src_en": "Task status.",
+          "desc_en": "Task status.\n[⚠️Note:源码未声明状态取值集合，待研发确认。]",
+          "title_zh": "任务状态。\n[⚠️批注:源码未声明状态取值集合，待研发确认。]"
+        },
+        {
+          "path": "req.due_at",
+          "src_en": "ISO 8601 due datetime.",
+          "desc_en": "When the task is due.",
+          "title_zh": "任务到期时间。"
+        },
+        {
+          "path": "req.title",
+          "src_en": "Optional title.",
+          "desc_en": "Task title.",
+          "title_zh": "任务标题。"
+        },
+        {
+          "path": "resp.200.task",
+          "src_en": "Created task (when returned).",
+          "desc_en": "The created task.",
+          "title_zh": "创建的任务。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_tasks_bulk_create",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Bulk create tasks. Requires a master API key.",
+          "desc_en": "Create one task for each of multiple contacts in a single call. Requires a master API key.",
+          "title_zh": "一次为多个联系人各创建一个任务。需主 API key。"
+        },
+        {
+          "path": "req.user_id",
+          "src_en": "Task owner user ID.",
+          "desc_en": "Apollo user id to assign all created tasks to.",
+          "title_zh": "要指派所有新建任务的 Apollo 用户 id。"
+        },
+        {
+          "path": "req.contact_ids",
+          "src_en": "Contact IDs.",
+          "desc_en": "Contact ids to create one task for each.",
+          "title_zh": "为其各创建一个任务的联系人 id。"
+        },
+        {
+          "path": "req.type",
+          "src_en": "Task type.",
+          "desc_en": "Kind of task applied to every created task.\n[⚠️Note:源码未声明该字段的取值集合，待研发确认。]",
+          "title_zh": "应用到每个新建任务的任务类型。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+        },
+        {
+          "path": "req.priority",
+          "src_en": "Task priority (default: medium).",
+          "desc_en": "Priority applied to every created task.\n[⚠️Note:源码未声明优先级取值集合，待研发确认。]",
+          "title_zh": "应用到每个新建任务的优先级。\n[⚠️批注:源码未声明优先级取值集合，待研发确认。]"
+        },
+        {
+          "path": "req.status",
+          "src_en": "Task status.",
+          "desc_en": "Status applied to every created task.\n[⚠️Note:源码未声明状态取值集合，待研发确认。]",
+          "title_zh": "应用到每个新建任务的状态。\n[⚠️批注:源码未声明状态取值集合，待研发确认。]"
+        },
+        {
+          "path": "req.due_at",
+          "src_en": "ISO 8601 due datetime.",
+          "desc_en": "Due time applied to every created task.",
+          "title_zh": "应用到每个新建任务的到期时间。"
+        },
+        {
+          "path": "req.title",
+          "src_en": "Optional title.",
+          "desc_en": "Title applied to every created task.",
+          "title_zh": "应用到每个新建任务的标题。"
+        },
+        {
+          "path": "resp.200.tasks",
+          "src_en": "Created tasks (when returned).",
+          "desc_en": "The created tasks.",
+          "title_zh": "创建的任务列表。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_tasks_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search tasks. Requires a master API key.",
+          "desc_en": "Search tasks with sorting and pagination. Requires a master API key.",
+          "title_zh": "搜索任务，支持排序与分页。需主 API key。"
+        },
+        {
+          "path": "param:sort_by_field",
+          "src_en": "Sort field.",
+          "desc_en": "Field to sort the tasks by.",
+          "title_zh": "任务排序所依据的字段。"
+        },
+        {
+          "path": "param:open_factor_names[]",
+          "src_en": "Optional open factors.",
+          "desc_en": "Optional open-factor names used to refine which tasks are returned.\n[⚠️Note:源码未声明该字段的取值集合，待研发确认。]",
+          "title_zh": "可选的 open factor 名称，用于进一步限定返回的任务。\n[⚠️批注:源码未声明该字段的取值集合，待研发确认。]"
+        },
+        {
+          "path": "param:page",
+          "src_en": "Page number.",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "Results per page.",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        },
+        {
+          "path": "resp.200.tasks",
+          "src_en": "Tasks (when returned).",
+          "desc_en": "The page of matching tasks.",
+          "title_zh": "当前页匹配到的任务。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Pagination metadata (when returned).",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_reports_sync_report",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Query analytics report. Requires a master API key.",
+          "desc_en": "Run an analytics report synchronously, specifying metrics, grouping dimensions, sorts, filters, and a date range. Requires a master API key.",
+          "title_zh": "同步查询分析报表，指定指标、分组维度、排序、筛选和时间范围。需主 API key。"
+        },
+        {
+          "path": "req.metrics",
+          "src_en": "Metrics to compute.",
+          "desc_en": "Metrics to compute in the report.",
+          "title_zh": "报表要计算的指标。"
+        },
+        {
+          "path": "req.group_by",
+          "src_en": "Dimensions to group by.",
+          "desc_en": "Dimensions to group the report rows by.",
+          "title_zh": "报表行所依据的分组维度。"
+        },
+        {
+          "path": "req.pivot_group_by",
+          "src_en": "Optional pivot dimensions.",
+          "desc_en": "Optional dimensions to pivot the report into columns.",
+          "title_zh": "可选的透视维度，将报表透视为列。"
+        },
+        {
+          "path": "req.sorts",
+          "src_en": "Sort specs.",
+          "desc_en": "Sort specifications for the report rows.",
+          "title_zh": "报表行的排序规格。"
+        },
+        {
+          "path": "req.filters",
+          "src_en": "Filter specs.",
+          "desc_en": "Filter specifications limiting which records are included.",
+          "title_zh": "限定纳入哪些记录的筛选规格。"
+        },
+        {
+          "path": "req.date_range",
+          "src_en": "Date range filter (when supported).",
+          "desc_en": "Date-range filter constraining the report window.",
+          "title_zh": "约束报表时间窗口的日期范围筛选。"
+        },
+        {
+          "path": "resp.200.report",
+          "src_en": "Report result (shape depends on request).",
+          "desc_en": "The computed report.",
+          "title_zh": "计算得到的报表。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_phone_calls",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Create call records. Requires a master API key.",
+          "desc_en": "Log one or more phone-call records against a contact and account. Requires a master API key.",
+          "title_zh": "为联系人与账户登记一条或多条通话记录。需主 API key。"
+        },
+        {
+          "path": "param:logged",
+          "src_en": "Whether to create an individual record.",
+          "desc_en": "Whether to create an individual logged record for the call.",
+          "title_zh": "是否为该通话创建单独的登记记录。"
+        },
+        {
+          "path": "param:user_id[]",
+          "src_en": "Caller user IDs.",
+          "desc_en": "Apollo user id(s) of the caller(s).",
+          "title_zh": "主叫方的 Apollo 用户 id（可多个）。"
+        },
+        {
+          "path": "param:contact_id",
+          "src_en": "Contact ID.",
+          "desc_en": "Apollo id of the contact involved in the call.",
+          "title_zh": "参与通话的联系人 Apollo id。"
+        },
+        {
+          "path": "param:account_id",
+          "src_en": "Account ID.",
+          "desc_en": "Apollo id of the account involved in the call.",
+          "title_zh": "参与通话的账户 Apollo id。"
+        },
+        {
+          "path": "param:to_number",
+          "src_en": "Dialed phone number.",
+          "desc_en": "Phone number that was dialed.",
+          "title_zh": "被拨打的电话号码。"
+        },
+        {
+          "path": "param:from_number",
+          "src_en": "Caller phone number.",
+          "desc_en": "Phone number the caller used.",
+          "title_zh": "主叫方使用的电话号码。"
+        },
+        {
+          "path": "param:status",
+          "src_en": "Call status.",
+          "desc_en": "Outcome status of the call.\n[⚠️Note:源码未声明状态取值集合，待研发确认。]",
+          "title_zh": "通话的结果状态。\n[⚠️批注:源码未声明状态取值集合，待研发确认。]"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "ISO 8601 start time.",
+          "desc_en": "When the call started.",
+          "title_zh": "通话开始时间。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "ISO 8601 end time.",
+          "desc_en": "When the call ended.",
+          "title_zh": "通话结束时间。"
+        },
+        {
+          "path": "param:duration",
+          "src_en": "Duration in seconds.",
+          "desc_en": "Call length in seconds.",
+          "title_zh": "通话时长，单位为秒。"
+        },
+        {
+          "path": "param:phone_call_purpose_id",
+          "src_en": "Purpose ID.",
+          "desc_en": "Id of the configured call purpose.",
+          "title_zh": "已配置的通话目的 id。"
+        },
+        {
+          "path": "param:phone_call_outcome_id",
+          "src_en": "Outcome ID.",
+          "desc_en": "Id of the configured call outcome.",
+          "title_zh": "已配置的通话结果 id。"
+        },
+        {
+          "path": "resp.200.phone_call",
+          "src_en": "Call record (when returned).",
+          "desc_en": "The created call record.",
+          "title_zh": "创建的通话记录。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_phone_calls_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search calls. Requires a master API key.",
+          "desc_en": "Search call records by date range, duration, direction, user, label, purpose, outcome, and keyword. Results are paginated. Requires a master API key.",
+          "title_zh": "按时间范围、时长、呼叫方向、用户、标签、目的、结果、关键词搜索通话记录。结果分页。需主 API key。"
+        },
+        {
+          "path": "param:date_range[max]",
+          "src_en": "Upper bound for call date range (YYYY-MM-DD).",
+          "desc_en": "Latest call date to include; pair with date_range[min].",
+          "title_zh": "纳入的最晚通话日期；与 date_range[min] 搭配。"
+        },
+        {
+          "path": "param:date_range[min]",
+          "src_en": "Lower bound for call date range (YYYY-MM-DD).",
+          "desc_en": "Earliest call date to include; pair with date_range[max].",
+          "title_zh": "纳入的最早通话日期；与 date_range[max] 搭配。"
+        },
+        {
+          "path": "param:duration[max]",
+          "src_en": "Upper bound for duration (seconds).",
+          "desc_en": "Maximum call duration in seconds; pair with duration[min].",
+          "title_zh": "最大通话时长（秒）；与 duration[min] 搭配。"
+        },
+        {
+          "path": "param:duration[min]",
+          "src_en": "Lower bound for duration (seconds).",
+          "desc_en": "Minimum call duration in seconds; pair with duration[max].",
+          "title_zh": "最小通话时长（秒）；与 duration[max] 搭配。"
+        },
+        {
+          "path": "param:inbound",
+          "src_en": "Inbound or outbound.",
+          "desc_en": "Filter to inbound calls when true, outbound when false.",
+          "title_zh": "为 true 时筛选呼入通话，false 时筛选呼出通话。"
+        },
+        {
+          "path": "param:user_ids[]",
+          "src_en": "User IDs.",
+          "desc_en": "Only include calls by these users.",
+          "title_zh": "仅纳入这些用户的通话。"
+        },
+        {
+          "path": "param:contact_label_ids[]",
+          "src_en": "Contact label IDs.",
+          "desc_en": "Only include calls with contacts carrying these labels.",
+          "title_zh": "仅纳入联系人带有这些标签的通话。"
+        },
+        {
+          "path": "param:phone_call_purpose_ids[]",
+          "src_en": "Purpose IDs.",
+          "desc_en": "Only include calls with these purposes.",
+          "title_zh": "仅纳入具有这些目的的通话。"
+        },
+        {
+          "path": "param:phone_call_outcome_ids[]",
+          "src_en": "Outcome IDs.",
+          "desc_en": "Only include calls with these outcomes.",
+          "title_zh": "仅纳入具有这些结果的通话。"
+        },
+        {
+          "path": "param:q_keywords",
+          "src_en": "Keyword filter.",
+          "desc_en": "Free-text keywords to filter calls by.",
+          "title_zh": "用于筛选通话的自由文本关键词。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "Page number.",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "Results per page.",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        },
+        {
+          "path": "resp.200.phone_calls",
+          "src_en": "Calls (when returned).",
+          "desc_en": "The page of matching call records.",
+          "title_zh": "当前页匹配到的通话记录。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Pagination metadata (when returned).",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        }
+      ]
+    },
+    {
+      "operation": "put_apollo_phone_calls_id",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Update call records. Requires a master API key.",
+          "desc_en": "Update an existing call record identified by id. Requires a master API key.",
+          "title_zh": "按 id 更新已有的通话记录。需主 API key。"
+        },
+        {
+          "path": "param:id",
+          "src_en": "Call record ID.",
+          "desc_en": "Apollo id of the call record to update.",
+          "title_zh": "要更新的通话记录 Apollo id。"
+        },
+        {
+          "path": "param:logged",
+          "src_en": "Whether to create an individual record.",
+          "desc_en": "Whether to create an individual logged record for the call.",
+          "title_zh": "是否为该通话创建单独的登记记录。"
+        },
+        {
+          "path": "param:user_id[]",
+          "src_en": "Caller user IDs.",
+          "desc_en": "Apollo user id(s) of the caller(s).",
+          "title_zh": "主叫方的 Apollo 用户 id（可多个）。"
+        },
+        {
+          "path": "param:contact_id",
+          "src_en": "Contact ID.",
+          "desc_en": "Apollo id of the contact involved in the call.",
+          "title_zh": "参与通话的联系人 Apollo id。"
+        },
+        {
+          "path": "param:account_id",
+          "src_en": "Account ID.",
+          "desc_en": "Apollo id of the account involved in the call.",
+          "title_zh": "参与通话的账户 Apollo id。"
+        },
+        {
+          "path": "param:to_number",
+          "src_en": "Dialed phone number.",
+          "desc_en": "Phone number that was dialed.",
+          "title_zh": "被拨打的电话号码。"
+        },
+        {
+          "path": "param:from_number",
+          "src_en": "Caller phone number.",
+          "desc_en": "Phone number the caller used.",
+          "title_zh": "主叫方使用的电话号码。"
+        },
+        {
+          "path": "param:status",
+          "src_en": "Call status.",
+          "desc_en": "Outcome status of the call.\n[⚠️Note:源码未声明状态取值集合，待研发确认。]",
+          "title_zh": "通话的结果状态。\n[⚠️批注:源码未声明状态取值集合，待研发确认。]"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "ISO 8601 start time.",
+          "desc_en": "When the call started.",
+          "title_zh": "通话开始时间。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "ISO 8601 end time.",
+          "desc_en": "When the call ended.",
+          "title_zh": "通话结束时间。"
+        },
+        {
+          "path": "param:duration",
+          "src_en": "Duration in seconds.",
+          "desc_en": "Call length in seconds.",
+          "title_zh": "通话时长，单位为秒。"
+        },
+        {
+          "path": "param:phone_call_purpose_id",
+          "src_en": "Purpose ID.",
+          "desc_en": "Id of the configured call purpose.",
+          "title_zh": "已配置的通话目的 id。"
+        },
+        {
+          "path": "param:phone_call_outcome_id",
+          "src_en": "Outcome ID.",
+          "desc_en": "Id of the configured call outcome.",
+          "title_zh": "已配置的通话结果 id。"
+        },
+        {
+          "path": "resp.200.phone_call",
+          "src_en": "Updated call record (when returned).",
+          "desc_en": "The updated call record.",
+          "title_zh": "已更新的通话记录。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_usage_stats_api_usage_stats",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "View API usage stats and rate limits. Requires a master API key.",
+          "desc_en": "Retrieve your API usage statistics and current rate-limit status. Requires a master API key.",
+          "title_zh": "获取你的 API 用量统计和当前限流状态。需主 API key。"
+        },
+        {
+          "path": "resp.200.api_usage_stats",
+          "src_en": "Usage stats and rate limits (when returned).",
+          "desc_en": "Your API usage statistics and current rate-limit status.",
+          "title_zh": "你的 API 用量统计与当前限流状态。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_users_search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get a list of users. Requires a master API key.",
+          "desc_en": "Get a paginated list of users on your team. Use the returned ids to populate owner_id / user_id elsewhere. Requires a master API key.",
+          "title_zh": "分页获取团队用户列表。返回的 id 可用于在别处填写 owner_id / user_id。需主 API key。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "Page number.",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "Results per page.",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        },
+        {
+          "path": "resp.200.users",
+          "src_en": "Users (when returned).",
+          "desc_en": "The page of users.",
+          "title_zh": "当前页的用户。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Pagination metadata (when returned).",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_email_accounts",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get a list of email accounts. Requires a master API key.",
+          "desc_en": "Get the list of email accounts connected for sending. Use the returned ids as send_email_from_email_account_id. Requires a master API key.",
+          "title_zh": "获取已连接用于发信的邮箱账户列表。返回的 id 可作为 send_email_from_email_account_id。需主 API key。"
+        },
+        {
+          "path": "resp.200.email_accounts",
+          "src_en": "Email accounts (when returned).",
+          "desc_en": "The list of connected sending email accounts.",
+          "title_zh": "已连接用于发信的邮箱账户列表。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_labels",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get a list of all lists (labels). Requires a master API key.",
+          "desc_en": "Get a list of all lists (labels) in your account. Requires a master API key.",
+          "title_zh": "获取账号中所有列表（标签）。需主 API key。"
+        },
+        {
+          "path": "resp.200.[]",
+          "src_en": "List objects (when returned).",
+          "desc_en": "The list of label (list) names in your account.",
+          "title_zh": "账号中标签（列表）名称的集合。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_typed_custom_fields",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get a list of all custom fields. Requires a master API key.",
+          "desc_en": "Get all typed custom fields defined for your team. Requires a master API key.",
+          "title_zh": "获取团队定义的所有带类型自定义字段。需主 API key。"
+        },
+        {
+          "path": "resp.200.typed_custom_fields",
+          "src_en": "Custom field definitions (when returned).",
+          "desc_en": "The list of typed custom fields defined for your team.",
+          "title_zh": "团队定义的带类型自定义字段列表。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_fields",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get a list of fields. Requires a master API key.",
+          "desc_en": "Get the list of fields available on your team's records. Requires a master API key.",
+          "title_zh": "获取团队记录上可用的字段列表。需主 API key。"
+        },
+        {
+          "path": "resp.200.fields",
+          "src_en": "Field definitions (when returned).",
+          "desc_en": "The list of fields available on your records.",
+          "title_zh": "记录上可用的字段列表。"
+        }
+      ]
+    },
+    {
+      "operation": "post_apollo_fields",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Create a custom field. Requires a master API key.",
+          "desc_en": "Create a custom field on a given entity modality (e.g. contact). Requires a master API key.",
+          "title_zh": "在指定实体类型（如 contact）上创建自定义字段。需主 API key。"
+        },
+        {
+          "path": "req.label",
+          "src_en": "Field label.",
+          "desc_en": "Display label of the custom field to create.",
+          "title_zh": "要创建的自定义字段的显示标签。"
+        },
+        {
+          "path": "req.modality",
+          "src_en": "Entity modality (e.g., contact).",
+          "desc_en": "Entity type the field applies to, such as contact or account.",
+          "title_zh": "字段适用的实体类型，如 contact 或 account。"
+        },
+        {
+          "path": "req.type",
+          "src_en": "Field type (e.g., textarea).",
+          "desc_en": "Data type of the custom field, such as a text area.\n[⚠️Note:源码未声明完整的类型取值集合，待研发确认。]",
+          "title_zh": "自定义字段的数据类型，如文本域。\n[⚠️批注:源码未声明完整的类型取值集合，待研发确认。]"
+        },
+        {
+          "path": "req.meta",
+          "src_en": "Additional field config.",
+          "desc_en": "Additional configuration for the field, such as allowed options.",
+          "title_zh": "字段的附加配置，如可选项等。"
+        },
+        {
+          "path": "resp.200.typed_custom_fields",
+          "src_en": "Created field(s) (when returned).",
+          "desc_en": "The custom fields after the new one is created.",
+          "title_zh": "创建新字段后的自定义字段列表。"
+        }
+      ]
+    },
+    {
+      "operation": "get_apollo_notes",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get a list of notes. Requires a master API key.",
+          "desc_en": "Get a list of notes, optionally filtered by the record they are attached to (contact, account, opportunity, calendar event, conversation). Requires a master API key.",
+          "title_zh": "获取备注列表，可按所附记录（联系人、账户、商机、日历事件、会话）筛选。需主 API key。"
+        },
+        {
+          "path": "param:contact_id",
+          "src_en": "Filter by a contact ID.",
+          "desc_en": "Only include notes attached to this contact.",
+          "title_zh": "仅纳入附在该联系人上的备注。"
+        },
+        {
+          "path": "param:account_id",
+          "src_en": "Filter by an account ID.",
+          "desc_en": "Only include notes attached to this account.",
+          "title_zh": "仅纳入附在该账户上的备注。"
+        },
+        {
+          "path": "param:opportunity_id",
+          "src_en": "Filter by an opportunity ID.",
+          "desc_en": "Only include notes attached to this deal.",
+          "title_zh": "仅纳入附在该商机上的备注。"
+        },
+        {
+          "path": "param:calendar_event_id",
+          "src_en": "Filter by a calendar event ID.",
+          "desc_en": "Only include notes attached to this calendar event.",
+          "title_zh": "仅纳入附在该日历事件上的备注。"
+        },
+        {
+          "path": "param:conversation_id",
+          "src_en": "Filter by a conversation ID.",
+          "desc_en": "Only include notes attached to this conversation.",
+          "title_zh": "仅纳入附在该会话上的备注。"
+        },
+        {
+          "path": "param:conversation_ids",
+          "src_en": "Filter by conversation IDs.",
+          "desc_en": "Only include notes attached to these conversations.",
+          "title_zh": "仅纳入附在这些会话上的备注。"
+        },
+        {
+          "path": "param:contact_ids",
+          "src_en": "Filter by contact IDs.",
+          "desc_en": "Only include notes attached to these contacts.",
+          "title_zh": "仅纳入附在这些联系人上的备注。"
+        },
+        {
+          "path": "param:start_date",
+          "src_en": "Only include notes created on/after this date (when supported).",
+          "desc_en": "Only include notes created on or after this date, where supported.",
+          "title_zh": "仅纳入在该日期当天或之后创建的备注（在支持时）。"
+        },
+        {
+          "path": "param:page",
+          "src_en": "Page number (when supported).",
+          "desc_en": "Page number to retrieve.",
+          "title_zh": "要获取的页码。"
+        },
+        {
+          "path": "param:per_page",
+          "src_en": "Results per page (when supported).",
+          "desc_en": "Number of results per page.",
+          "title_zh": "每页结果数。"
+        },
+        {
+          "path": "resp.200.notes",
+          "src_en": "Notes (when returned).",
+          "desc_en": "The page of matching notes.",
+          "title_zh": "当前页匹配到的备注。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Pagination metadata (when returned).",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元数据。"
+        }
+      ]
+    }
+  ],
+  "total": 506,
+  "missing": []
+}

@@ -1,0 +1,654 @@
+{
+  "operations": {
+    "post_perplexity-sonar": {
+      "heading_zh": "调用 Sonar 轻量搜索问答 post_perplexity-sonar",
+      "desc_en": "Run a single-turn chat completion against the lightweight `sonar` model, which performs a live web search and returns an AI-written answer with source citations. Optimized for quick, low-cost factual lookups.",
+      "description_zh": "对轻量的 `sonar` 模型发起一次对话补全：模型实时联网检索后，返回带来源引用的 AI 回答。适合快速、低成本的事实型查询。"
+    },
+    "post_perplexity-sonar-pro": {
+      "heading_zh": "调用 Sonar Pro 进阶搜索问答 post_perplexity-sonar-pro",
+      "desc_en": "Run a chat completion against the `sonar-pro` model, which handles more complex, multi-step queries and follow-up reasoning while grounding the answer in live web search and citations.",
+      "description_zh": "对 `sonar-pro` 模型发起对话补全：在实时联网检索并附带引用的基础上，处理更复杂、需要多步推进与追问的查询。"
+    },
+    "post_perplexity-sonar-reasoning-pro": {
+      "heading_zh": "调用 Sonar Reasoning Pro 推理问答 post_perplexity-sonar-reasoning-pro",
+      "desc_en": "Run a chat completion against the `sonar-reasoning-pro` model, which applies chain-of-thought reasoning over live web search results for step-by-step analytical answers.",
+      "description_zh": "对 `sonar-reasoning-pro` 模型发起对话补全：在实时联网检索结果之上运用思维链推理，给出逐步推导的分析型回答。"
+    },
+    "post_perplexity-sonar-deep-research": {
+      "heading_zh": "调用 Sonar Deep Research 深度研究 post_perplexity-sonar-deep-research",
+      "desc_en": "Run a chat completion against the `sonar-deep-research` model, which performs exhaustive multi-step web research and produces a comprehensive report. Requests can take noticeably longer than other Sonar models.",
+      "description_zh": "对 `sonar-deep-research` 模型发起对话补全：执行穷尽式的多步联网研究并生成综合报告。相比其他 Sonar 模型，此类请求耗时明显更长。"
+    }
+  },
+  "fields": {
+    "post_perplexity-sonar": {
+      "request": {
+        "model": {
+          "desc_en": "Selects which Sonar model handles the request, trading off speed, depth, and cost. Should match the model implied by the endpoint path.",
+          "title_zh": "选择处理本次请求的 Sonar 模型，在速度、深度与成本之间权衡；通常应与所调用端点路径对应的模型一致。"
+        },
+        "messages": {
+          "desc_en": "Ordered conversation history sent to the model; the last user message is the query to answer, while earlier turns provide context.",
+          "title_zh": "发送给模型的有序对话历史：最后一条 user 消息是待回答的问题，靠前的消息提供上下文。"
+        },
+        "messages.role": {
+          "desc_en": "Identifies who authored the message: `system` sets behavior, `user` is the asker, `assistant` is a prior model reply.",
+          "title_zh": "标识消息的发出方：`system` 设定行为，`user` 为提问者，`assistant` 为模型先前的回复。"
+        },
+        "messages.content": {
+          "desc_en": "The text body of this message turn.",
+          "title_zh": "本条消息的文本内容。"
+        },
+        "max_tokens": {
+          "desc_en": "Upper bound on tokens generated in the answer; the model stops once this limit is reached. Leave unset to use the model default.",
+          "title_zh": "回答可生成的 token 数上限，达到上限即停止生成；不设置则使用模型默认值。"
+        },
+        "temperature": {
+          "desc_en": "Sampling randomness: lower values yield more focused, deterministic answers; higher values increase diversity.",
+          "title_zh": "采样随机度：值越低回答越聚焦、越确定，值越高则越发散多样。"
+        },
+        "top_p": {
+          "desc_en": "Nucleus sampling: the model only samples from the smallest set of tokens whose cumulative probability reaches this threshold. Usually tune either this or temperature, not both.",
+          "title_zh": "核采样：模型仅从累积概率达到该阈值的最小 token 集合中采样。通常只调本参数或 temperature 之一，不同时调。"
+        },
+        "top_k": {
+          "desc_en": "Restricts sampling to the K highest-probability tokens at each step; a value of 0 disables this filter.",
+          "title_zh": "将采样限制在每一步概率最高的 K 个 token 内；取 0 表示关闭该过滤。"
+        },
+        "stream": {
+          "desc_en": "When enabled, the answer is pushed incrementally as server-sent events instead of returned in a single response.",
+          "title_zh": "开启后，回答以 server-sent events 增量推送，而非一次性整体返回。"
+        },
+        "search_context": {
+          "desc_en": "How much web search context the model pulls in before answering; more context can improve thoroughness but raises per-request cost.",
+          "title_zh": "模型回答前引入的联网检索上下文量：上下文越多通常越全面，但单次请求成本也越高。"
+        },
+        "frequency_penalty": {
+          "desc_en": "Discourages reusing tokens in proportion to how often they already appeared, reducing verbatim repetition.",
+          "title_zh": "按 token 已出现的频率施加惩罚，抑制逐字重复。"
+        },
+        "presence_penalty": {
+          "desc_en": "Discourages tokens that have appeared at all, nudging the model toward introducing new topics.",
+          "title_zh": "对已出现过的 token 施加惩罚，促使模型转向新的话题。"
+        },
+        "return_citations": {
+          "desc_en": "Whether the response should include the source citations and search results backing the answer.",
+          "title_zh": "响应是否包含支撑回答的来源引用与检索结果。"
+        },
+        "search_recency_filter": {
+          "desc_en": "Restricts web search to results published within the given recency window (e.g. past hour/day/week/month), useful for time-sensitive queries.",
+          "title_zh": "将联网检索限制在指定的时间新鲜度窗口内（如近 1 小时 / 天 / 周 / 月），适合对时效性敏感的查询。"
+        },
+        "search_domain_filter": {
+          "desc_en": "Whitelist of domains the web search is confined to; only sources from these domains are considered.",
+          "title_zh": "联网检索的域名白名单：仅采纳来自这些域名的来源。"
+        }
+      },
+      "response": {
+        "200": {
+          "id": {
+            "desc_en": "Unique identifier of this completion, useful for logging and tracing.",
+            "title_zh": "本次补全的唯一标识，便于日志记录与问题追踪。"
+          },
+          "model": {
+            "desc_en": "The Sonar model that actually produced this completion.",
+            "title_zh": "实际生成本次补全的 Sonar 模型。"
+          },
+          "object": {
+            "desc_en": "Type tag of the returned object, marking it as a chat completion result.",
+            "title_zh": "返回对象的类型标记，表明这是一条对话补全结果。"
+          },
+          "created": {
+            "desc_en": "When the completion was generated, as a Unix timestamp in seconds.",
+            "title_zh": "补全生成的时间，Unix 时间戳（秒）。"
+          },
+          "choices": {
+            "desc_en": "The generated answer candidates; typically contains a single entry holding the model's reply.",
+            "title_zh": "生成的回答候选项，通常仅含一条，承载模型的回复。"
+          },
+          "choices.index": {
+            "desc_en": "Position of this candidate within the choices list.",
+            "title_zh": "该候选项在 choices 列表中的序号。"
+          },
+          "choices.message": {
+            "desc_en": "The reply message produced by the model for this candidate.",
+            "title_zh": "该候选项中模型生成的回复消息。"
+          },
+          "choices.message.role": {
+            "desc_en": "Author role of the reply, which is the assistant.",
+            "title_zh": "回复消息的发出方角色，即助手。"
+          },
+          "choices.message.content": {
+            "desc_en": "The AI-generated answer text, containing inline citation markers such as [1][2] that map to the citations list.",
+            "title_zh": "AI 生成的回答正文，内含 [1][2] 等行内引用标记，与 citations 列表对应。"
+          },
+          "choices.finish_reason": {
+            "desc_en": "Why generation stopped: `stop` for a natural end, `length` when the token limit was hit.",
+            "title_zh": "生成结束的原因：`stop` 表示自然结束，`length` 表示触及 token 上限。"
+          },
+          "citations": {
+            "desc_en": "Source URLs cited in the answer, indexed to match the inline [n] markers in the answer text.",
+            "title_zh": "回答中引用的来源 URL，其下标与正文中的行内 [n] 标记对应。"
+          },
+          "search_results": {
+            "desc_en": "The web search results the answer was grounded in, each with metadata about the source.",
+            "title_zh": "回答所依据的联网检索结果，每条附带来源的元信息。"
+          },
+          "search_results.title": {
+            "desc_en": "Title of the search result page.",
+            "title_zh": "检索结果页面的标题。"
+          },
+          "search_results.url": {
+            "desc_en": "Link to the search result source.",
+            "title_zh": "检索结果来源的链接。"
+          },
+          "search_results.snippet": {
+            "desc_en": "Excerpt of the source text relevant to the query.",
+            "title_zh": "与查询相关的来源文本摘录。"
+          },
+          "search_results.date": {
+            "desc_en": "Publication date of the source.",
+            "title_zh": "来源的发布日期。",
+            "annotation": "源码未声明日期格式，待研发确认。"
+          },
+          "search_results.source": {
+            "desc_en": "Name of the publisher or site the result came from.",
+            "title_zh": "结果所属的发布方或站点名称。"
+          },
+          "usage": {
+            "desc_en": "Token consumption and search usage accounting for this request.",
+            "title_zh": "本次请求的 token 消耗与检索用量统计。"
+          },
+          "usage.prompt_tokens": {
+            "desc_en": "Number of tokens in the input messages.",
+            "title_zh": "输入消息所占的 token 数。"
+          },
+          "usage.completion_tokens": {
+            "desc_en": "Number of tokens in the generated answer.",
+            "title_zh": "生成回答所占的 token 数。"
+          },
+          "usage.total_tokens": {
+            "desc_en": "Sum of prompt and completion tokens for the request.",
+            "title_zh": "本次请求 prompt 与 completion token 之和。"
+          },
+          "usage.search_context_size": {
+            "desc_en": "The effective amount of search context applied, reflecting the search_context setting used.",
+            "title_zh": "实际生效的检索上下文量，反映本次采用的 search_context 设置。"
+          }
+        }
+      }
+    },
+    "post_perplexity-sonar-pro": {
+      "request": {
+        "model": {
+          "desc_en": "Selects which Sonar model handles the request, trading off speed, depth, and cost. Should match the model implied by the endpoint path.",
+          "title_zh": "选择处理本次请求的 Sonar 模型，在速度、深度与成本之间权衡；通常应与所调用端点路径对应的模型一致。"
+        },
+        "messages": {
+          "desc_en": "Ordered conversation history sent to the model; the last user message is the query to answer, while earlier turns provide context.",
+          "title_zh": "发送给模型的有序对话历史：最后一条 user 消息是待回答的问题，靠前的消息提供上下文。"
+        },
+        "messages.role": {
+          "desc_en": "Identifies who authored the message: `system` sets behavior, `user` is the asker, `assistant` is a prior model reply.",
+          "title_zh": "标识消息的发出方：`system` 设定行为，`user` 为提问者，`assistant` 为模型先前的回复。"
+        },
+        "messages.content": {
+          "desc_en": "The text body of this message turn.",
+          "title_zh": "本条消息的文本内容。"
+        },
+        "max_tokens": {
+          "desc_en": "Upper bound on tokens generated in the answer; the model stops once this limit is reached. Leave unset to use the model default.",
+          "title_zh": "回答可生成的 token 数上限，达到上限即停止生成；不设置则使用模型默认值。"
+        },
+        "temperature": {
+          "desc_en": "Sampling randomness: lower values yield more focused, deterministic answers; higher values increase diversity.",
+          "title_zh": "采样随机度：值越低回答越聚焦、越确定，值越高则越发散多样。"
+        },
+        "top_p": {
+          "desc_en": "Nucleus sampling: the model only samples from the smallest set of tokens whose cumulative probability reaches this threshold. Usually tune either this or temperature, not both.",
+          "title_zh": "核采样：模型仅从累积概率达到该阈值的最小 token 集合中采样。通常只调本参数或 temperature 之一，不同时调。"
+        },
+        "top_k": {
+          "desc_en": "Restricts sampling to the K highest-probability tokens at each step; a value of 0 disables this filter.",
+          "title_zh": "将采样限制在每一步概率最高的 K 个 token 内；取 0 表示关闭该过滤。"
+        },
+        "stream": {
+          "desc_en": "When enabled, the answer is pushed incrementally as server-sent events instead of returned in a single response.",
+          "title_zh": "开启后，回答以 server-sent events 增量推送，而非一次性整体返回。"
+        },
+        "search_context": {
+          "desc_en": "How much web search context the model pulls in before answering; more context can improve thoroughness but raises per-request cost.",
+          "title_zh": "模型回答前引入的联网检索上下文量：上下文越多通常越全面，但单次请求成本也越高。"
+        },
+        "frequency_penalty": {
+          "desc_en": "Discourages reusing tokens in proportion to how often they already appeared, reducing verbatim repetition.",
+          "title_zh": "按 token 已出现的频率施加惩罚，抑制逐字重复。"
+        },
+        "presence_penalty": {
+          "desc_en": "Discourages tokens that have appeared at all, nudging the model toward introducing new topics.",
+          "title_zh": "对已出现过的 token 施加惩罚，促使模型转向新的话题。"
+        },
+        "return_citations": {
+          "desc_en": "Whether the response should include the source citations and search results backing the answer.",
+          "title_zh": "响应是否包含支撑回答的来源引用与检索结果。"
+        },
+        "search_recency_filter": {
+          "desc_en": "Restricts web search to results published within the given recency window (e.g. past hour/day/week/month), useful for time-sensitive queries.",
+          "title_zh": "将联网检索限制在指定的时间新鲜度窗口内（如近 1 小时 / 天 / 周 / 月），适合对时效性敏感的查询。"
+        },
+        "search_domain_filter": {
+          "desc_en": "Whitelist of domains the web search is confined to; only sources from these domains are considered.",
+          "title_zh": "联网检索的域名白名单：仅采纳来自这些域名的来源。"
+        }
+      },
+      "response": {
+        "200": {
+          "id": {
+            "desc_en": "Unique identifier of this completion, useful for logging and tracing.",
+            "title_zh": "本次补全的唯一标识，便于日志记录与问题追踪。"
+          },
+          "model": {
+            "desc_en": "The Sonar model that actually produced this completion.",
+            "title_zh": "实际生成本次补全的 Sonar 模型。"
+          },
+          "object": {
+            "desc_en": "Type tag of the returned object, marking it as a chat completion result.",
+            "title_zh": "返回对象的类型标记，表明这是一条对话补全结果。"
+          },
+          "created": {
+            "desc_en": "When the completion was generated, as a Unix timestamp in seconds.",
+            "title_zh": "补全生成的时间，Unix 时间戳（秒）。"
+          },
+          "choices": {
+            "desc_en": "The generated answer candidates; typically contains a single entry holding the model's reply.",
+            "title_zh": "生成的回答候选项，通常仅含一条，承载模型的回复。"
+          },
+          "choices.index": {
+            "desc_en": "Position of this candidate within the choices list.",
+            "title_zh": "该候选项在 choices 列表中的序号。"
+          },
+          "choices.message": {
+            "desc_en": "The reply message produced by the model for this candidate.",
+            "title_zh": "该候选项中模型生成的回复消息。"
+          },
+          "choices.message.role": {
+            "desc_en": "Author role of the reply, which is the assistant.",
+            "title_zh": "回复消息的发出方角色，即助手。"
+          },
+          "choices.message.content": {
+            "desc_en": "The AI-generated answer text, containing inline citation markers such as [1][2] that map to the citations list.",
+            "title_zh": "AI 生成的回答正文，内含 [1][2] 等行内引用标记，与 citations 列表对应。"
+          },
+          "choices.finish_reason": {
+            "desc_en": "Why generation stopped: `stop` for a natural end, `length` when the token limit was hit.",
+            "title_zh": "生成结束的原因：`stop` 表示自然结束，`length` 表示触及 token 上限。"
+          },
+          "citations": {
+            "desc_en": "Source URLs cited in the answer, indexed to match the inline [n] markers in the answer text.",
+            "title_zh": "回答中引用的来源 URL，其下标与正文中的行内 [n] 标记对应。"
+          },
+          "search_results": {
+            "desc_en": "The web search results the answer was grounded in, each with metadata about the source.",
+            "title_zh": "回答所依据的联网检索结果，每条附带来源的元信息。"
+          },
+          "search_results.title": {
+            "desc_en": "Title of the search result page.",
+            "title_zh": "检索结果页面的标题。"
+          },
+          "search_results.url": {
+            "desc_en": "Link to the search result source.",
+            "title_zh": "检索结果来源的链接。"
+          },
+          "search_results.snippet": {
+            "desc_en": "Excerpt of the source text relevant to the query.",
+            "title_zh": "与查询相关的来源文本摘录。"
+          },
+          "search_results.date": {
+            "desc_en": "Publication date of the source.",
+            "title_zh": "来源的发布日期。",
+            "annotation": "源码未声明日期格式，待研发确认。"
+          },
+          "search_results.source": {
+            "desc_en": "Name of the publisher or site the result came from.",
+            "title_zh": "结果所属的发布方或站点名称。"
+          },
+          "usage": {
+            "desc_en": "Token consumption and search usage accounting for this request.",
+            "title_zh": "本次请求的 token 消耗与检索用量统计。"
+          },
+          "usage.prompt_tokens": {
+            "desc_en": "Number of tokens in the input messages.",
+            "title_zh": "输入消息所占的 token 数。"
+          },
+          "usage.completion_tokens": {
+            "desc_en": "Number of tokens in the generated answer.",
+            "title_zh": "生成回答所占的 token 数。"
+          },
+          "usage.total_tokens": {
+            "desc_en": "Sum of prompt and completion tokens for the request.",
+            "title_zh": "本次请求 prompt 与 completion token 之和。"
+          },
+          "usage.search_context_size": {
+            "desc_en": "The effective amount of search context applied, reflecting the search_context setting used.",
+            "title_zh": "实际生效的检索上下文量，反映本次采用的 search_context 设置。"
+          }
+        }
+      }
+    },
+    "post_perplexity-sonar-reasoning-pro": {
+      "request": {
+        "model": {
+          "desc_en": "Selects which Sonar model handles the request, trading off speed, depth, and cost. Should match the model implied by the endpoint path.",
+          "title_zh": "选择处理本次请求的 Sonar 模型，在速度、深度与成本之间权衡；通常应与所调用端点路径对应的模型一致。"
+        },
+        "messages": {
+          "desc_en": "Ordered conversation history sent to the model; the last user message is the query to answer, while earlier turns provide context.",
+          "title_zh": "发送给模型的有序对话历史：最后一条 user 消息是待回答的问题，靠前的消息提供上下文。"
+        },
+        "messages.role": {
+          "desc_en": "Identifies who authored the message: `system` sets behavior, `user` is the asker, `assistant` is a prior model reply.",
+          "title_zh": "标识消息的发出方：`system` 设定行为，`user` 为提问者，`assistant` 为模型先前的回复。"
+        },
+        "messages.content": {
+          "desc_en": "The text body of this message turn.",
+          "title_zh": "本条消息的文本内容。"
+        },
+        "max_tokens": {
+          "desc_en": "Upper bound on tokens generated in the answer; the model stops once this limit is reached. Leave unset to use the model default.",
+          "title_zh": "回答可生成的 token 数上限，达到上限即停止生成；不设置则使用模型默认值。"
+        },
+        "temperature": {
+          "desc_en": "Sampling randomness: lower values yield more focused, deterministic answers; higher values increase diversity.",
+          "title_zh": "采样随机度：值越低回答越聚焦、越确定，值越高则越发散多样。"
+        },
+        "top_p": {
+          "desc_en": "Nucleus sampling: the model only samples from the smallest set of tokens whose cumulative probability reaches this threshold. Usually tune either this or temperature, not both.",
+          "title_zh": "核采样：模型仅从累积概率达到该阈值的最小 token 集合中采样。通常只调本参数或 temperature 之一，不同时调。"
+        },
+        "top_k": {
+          "desc_en": "Restricts sampling to the K highest-probability tokens at each step; a value of 0 disables this filter.",
+          "title_zh": "将采样限制在每一步概率最高的 K 个 token 内；取 0 表示关闭该过滤。"
+        },
+        "stream": {
+          "desc_en": "When enabled, the answer is pushed incrementally as server-sent events instead of returned in a single response.",
+          "title_zh": "开启后，回答以 server-sent events 增量推送，而非一次性整体返回。"
+        },
+        "search_context": {
+          "desc_en": "How much web search context the model pulls in before answering; more context can improve thoroughness but raises per-request cost.",
+          "title_zh": "模型回答前引入的联网检索上下文量：上下文越多通常越全面，但单次请求成本也越高。"
+        },
+        "frequency_penalty": {
+          "desc_en": "Discourages reusing tokens in proportion to how often they already appeared, reducing verbatim repetition.",
+          "title_zh": "按 token 已出现的频率施加惩罚，抑制逐字重复。"
+        },
+        "presence_penalty": {
+          "desc_en": "Discourages tokens that have appeared at all, nudging the model toward introducing new topics.",
+          "title_zh": "对已出现过的 token 施加惩罚，促使模型转向新的话题。"
+        },
+        "return_citations": {
+          "desc_en": "Whether the response should include the source citations and search results backing the answer.",
+          "title_zh": "响应是否包含支撑回答的来源引用与检索结果。"
+        },
+        "search_recency_filter": {
+          "desc_en": "Restricts web search to results published within the given recency window (e.g. past hour/day/week/month), useful for time-sensitive queries.",
+          "title_zh": "将联网检索限制在指定的时间新鲜度窗口内（如近 1 小时 / 天 / 周 / 月），适合对时效性敏感的查询。"
+        },
+        "search_domain_filter": {
+          "desc_en": "Whitelist of domains the web search is confined to; only sources from these domains are considered.",
+          "title_zh": "联网检索的域名白名单：仅采纳来自这些域名的来源。"
+        }
+      },
+      "response": {
+        "200": {
+          "id": {
+            "desc_en": "Unique identifier of this completion, useful for logging and tracing.",
+            "title_zh": "本次补全的唯一标识，便于日志记录与问题追踪。"
+          },
+          "model": {
+            "desc_en": "The Sonar model that actually produced this completion.",
+            "title_zh": "实际生成本次补全的 Sonar 模型。"
+          },
+          "object": {
+            "desc_en": "Type tag of the returned object, marking it as a chat completion result.",
+            "title_zh": "返回对象的类型标记，表明这是一条对话补全结果。"
+          },
+          "created": {
+            "desc_en": "When the completion was generated, as a Unix timestamp in seconds.",
+            "title_zh": "补全生成的时间，Unix 时间戳（秒）。"
+          },
+          "choices": {
+            "desc_en": "The generated answer candidates; typically contains a single entry holding the model's reply.",
+            "title_zh": "生成的回答候选项，通常仅含一条，承载模型的回复。"
+          },
+          "choices.index": {
+            "desc_en": "Position of this candidate within the choices list.",
+            "title_zh": "该候选项在 choices 列表中的序号。"
+          },
+          "choices.message": {
+            "desc_en": "The reply message produced by the model for this candidate.",
+            "title_zh": "该候选项中模型生成的回复消息。"
+          },
+          "choices.message.role": {
+            "desc_en": "Author role of the reply, which is the assistant.",
+            "title_zh": "回复消息的发出方角色，即助手。"
+          },
+          "choices.message.content": {
+            "desc_en": "The AI-generated answer text, containing inline citation markers such as [1][2] that map to the citations list.",
+            "title_zh": "AI 生成的回答正文，内含 [1][2] 等行内引用标记，与 citations 列表对应。"
+          },
+          "choices.finish_reason": {
+            "desc_en": "Why generation stopped: `stop` for a natural end, `length` when the token limit was hit.",
+            "title_zh": "生成结束的原因：`stop` 表示自然结束，`length` 表示触及 token 上限。"
+          },
+          "citations": {
+            "desc_en": "Source URLs cited in the answer, indexed to match the inline [n] markers in the answer text.",
+            "title_zh": "回答中引用的来源 URL，其下标与正文中的行内 [n] 标记对应。"
+          },
+          "search_results": {
+            "desc_en": "The web search results the answer was grounded in, each with metadata about the source.",
+            "title_zh": "回答所依据的联网检索结果，每条附带来源的元信息。"
+          },
+          "search_results.title": {
+            "desc_en": "Title of the search result page.",
+            "title_zh": "检索结果页面的标题。"
+          },
+          "search_results.url": {
+            "desc_en": "Link to the search result source.",
+            "title_zh": "检索结果来源的链接。"
+          },
+          "search_results.snippet": {
+            "desc_en": "Excerpt of the source text relevant to the query.",
+            "title_zh": "与查询相关的来源文本摘录。"
+          },
+          "search_results.date": {
+            "desc_en": "Publication date of the source.",
+            "title_zh": "来源的发布日期。",
+            "annotation": "源码未声明日期格式，待研发确认。"
+          },
+          "search_results.source": {
+            "desc_en": "Name of the publisher or site the result came from.",
+            "title_zh": "结果所属的发布方或站点名称。"
+          },
+          "usage": {
+            "desc_en": "Token consumption and search usage accounting for this request.",
+            "title_zh": "本次请求的 token 消耗与检索用量统计。"
+          },
+          "usage.prompt_tokens": {
+            "desc_en": "Number of tokens in the input messages.",
+            "title_zh": "输入消息所占的 token 数。"
+          },
+          "usage.completion_tokens": {
+            "desc_en": "Number of tokens in the generated answer.",
+            "title_zh": "生成回答所占的 token 数。"
+          },
+          "usage.total_tokens": {
+            "desc_en": "Sum of prompt and completion tokens for the request.",
+            "title_zh": "本次请求 prompt 与 completion token 之和。"
+          },
+          "usage.search_context_size": {
+            "desc_en": "The effective amount of search context applied, reflecting the search_context setting used.",
+            "title_zh": "实际生效的检索上下文量，反映本次采用的 search_context 设置。"
+          }
+        }
+      }
+    },
+    "post_perplexity-sonar-deep-research": {
+      "request": {
+        "model": {
+          "desc_en": "Selects which Sonar model handles the request, trading off speed, depth, and cost. Should match the model implied by the endpoint path.",
+          "title_zh": "选择处理本次请求的 Sonar 模型，在速度、深度与成本之间权衡；通常应与所调用端点路径对应的模型一致。"
+        },
+        "messages": {
+          "desc_en": "Ordered conversation history sent to the model; the last user message is the query to answer, while earlier turns provide context.",
+          "title_zh": "发送给模型的有序对话历史：最后一条 user 消息是待回答的问题，靠前的消息提供上下文。"
+        },
+        "messages.role": {
+          "desc_en": "Identifies who authored the message: `system` sets behavior, `user` is the asker, `assistant` is a prior model reply.",
+          "title_zh": "标识消息的发出方：`system` 设定行为，`user` 为提问者，`assistant` 为模型先前的回复。"
+        },
+        "messages.content": {
+          "desc_en": "The text body of this message turn.",
+          "title_zh": "本条消息的文本内容。"
+        },
+        "max_tokens": {
+          "desc_en": "Upper bound on tokens generated in the answer; the model stops once this limit is reached. Leave unset to use the model default.",
+          "title_zh": "回答可生成的 token 数上限，达到上限即停止生成；不设置则使用模型默认值。"
+        },
+        "temperature": {
+          "desc_en": "Sampling randomness: lower values yield more focused, deterministic answers; higher values increase diversity.",
+          "title_zh": "采样随机度：值越低回答越聚焦、越确定，值越高则越发散多样。"
+        },
+        "top_p": {
+          "desc_en": "Nucleus sampling: the model only samples from the smallest set of tokens whose cumulative probability reaches this threshold. Usually tune either this or temperature, not both.",
+          "title_zh": "核采样：模型仅从累积概率达到该阈值的最小 token 集合中采样。通常只调本参数或 temperature 之一，不同时调。"
+        },
+        "top_k": {
+          "desc_en": "Restricts sampling to the K highest-probability tokens at each step; a value of 0 disables this filter.",
+          "title_zh": "将采样限制在每一步概率最高的 K 个 token 内；取 0 表示关闭该过滤。"
+        },
+        "stream": {
+          "desc_en": "When enabled, the answer is pushed incrementally as server-sent events instead of returned in a single response.",
+          "title_zh": "开启后，回答以 server-sent events 增量推送，而非一次性整体返回。"
+        },
+        "search_context": {
+          "desc_en": "How much web search context the model pulls in before answering; more context can improve thoroughness but raises per-request cost.",
+          "title_zh": "模型回答前引入的联网检索上下文量：上下文越多通常越全面，但单次请求成本也越高。"
+        },
+        "frequency_penalty": {
+          "desc_en": "Discourages reusing tokens in proportion to how often they already appeared, reducing verbatim repetition.",
+          "title_zh": "按 token 已出现的频率施加惩罚，抑制逐字重复。"
+        },
+        "presence_penalty": {
+          "desc_en": "Discourages tokens that have appeared at all, nudging the model toward introducing new topics.",
+          "title_zh": "对已出现过的 token 施加惩罚，促使模型转向新的话题。"
+        },
+        "return_citations": {
+          "desc_en": "Whether the response should include the source citations and search results backing the answer.",
+          "title_zh": "响应是否包含支撑回答的来源引用与检索结果。"
+        },
+        "search_recency_filter": {
+          "desc_en": "Restricts web search to results published within the given recency window (e.g. past hour/day/week/month), useful for time-sensitive queries.",
+          "title_zh": "将联网检索限制在指定的时间新鲜度窗口内（如近 1 小时 / 天 / 周 / 月），适合对时效性敏感的查询。"
+        },
+        "search_domain_filter": {
+          "desc_en": "Whitelist of domains the web search is confined to; only sources from these domains are considered.",
+          "title_zh": "联网检索的域名白名单：仅采纳来自这些域名的来源。"
+        }
+      },
+      "response": {
+        "200": {
+          "id": {
+            "desc_en": "Unique identifier of this completion, useful for logging and tracing.",
+            "title_zh": "本次补全的唯一标识，便于日志记录与问题追踪。"
+          },
+          "model": {
+            "desc_en": "The Sonar model that actually produced this completion.",
+            "title_zh": "实际生成本次补全的 Sonar 模型。"
+          },
+          "object": {
+            "desc_en": "Type tag of the returned object, marking it as a chat completion result.",
+            "title_zh": "返回对象的类型标记，表明这是一条对话补全结果。"
+          },
+          "created": {
+            "desc_en": "When the completion was generated, as a Unix timestamp in seconds.",
+            "title_zh": "补全生成的时间，Unix 时间戳（秒）。"
+          },
+          "choices": {
+            "desc_en": "The generated answer candidates; typically contains a single entry holding the model's reply.",
+            "title_zh": "生成的回答候选项，通常仅含一条，承载模型的回复。"
+          },
+          "choices.index": {
+            "desc_en": "Position of this candidate within the choices list.",
+            "title_zh": "该候选项在 choices 列表中的序号。"
+          },
+          "choices.message": {
+            "desc_en": "The reply message produced by the model for this candidate.",
+            "title_zh": "该候选项中模型生成的回复消息。"
+          },
+          "choices.message.role": {
+            "desc_en": "Author role of the reply, which is the assistant.",
+            "title_zh": "回复消息的发出方角色，即助手。"
+          },
+          "choices.message.content": {
+            "desc_en": "The AI-generated answer text, containing inline citation markers such as [1][2] that map to the citations list.",
+            "title_zh": "AI 生成的回答正文，内含 [1][2] 等行内引用标记，与 citations 列表对应。"
+          },
+          "choices.finish_reason": {
+            "desc_en": "Why generation stopped: `stop` for a natural end, `length` when the token limit was hit.",
+            "title_zh": "生成结束的原因：`stop` 表示自然结束，`length` 表示触及 token 上限。"
+          },
+          "citations": {
+            "desc_en": "Source URLs cited in the answer, indexed to match the inline [n] markers in the answer text.",
+            "title_zh": "回答中引用的来源 URL，其下标与正文中的行内 [n] 标记对应。"
+          },
+          "search_results": {
+            "desc_en": "The web search results the answer was grounded in, each with metadata about the source.",
+            "title_zh": "回答所依据的联网检索结果，每条附带来源的元信息。"
+          },
+          "search_results.title": {
+            "desc_en": "Title of the search result page.",
+            "title_zh": "检索结果页面的标题。"
+          },
+          "search_results.url": {
+            "desc_en": "Link to the search result source.",
+            "title_zh": "检索结果来源的链接。"
+          },
+          "search_results.snippet": {
+            "desc_en": "Excerpt of the source text relevant to the query.",
+            "title_zh": "与查询相关的来源文本摘录。"
+          },
+          "search_results.date": {
+            "desc_en": "Publication date of the source.",
+            "title_zh": "来源的发布日期。",
+            "annotation": "源码未声明日期格式，待研发确认。"
+          },
+          "search_results.source": {
+            "desc_en": "Name of the publisher or site the result came from.",
+            "title_zh": "结果所属的发布方或站点名称。"
+          },
+          "usage": {
+            "desc_en": "Token consumption and search usage accounting for this request.",
+            "title_zh": "本次请求的 token 消耗与检索用量统计。"
+          },
+          "usage.prompt_tokens": {
+            "desc_en": "Number of tokens in the input messages.",
+            "title_zh": "输入消息所占的 token 数。"
+          },
+          "usage.completion_tokens": {
+            "desc_en": "Number of tokens in the generated answer.",
+            "title_zh": "生成回答所占的 token 数。"
+          },
+          "usage.total_tokens": {
+            "desc_en": "Sum of prompt and completion tokens for the request.",
+            "title_zh": "本次请求 prompt 与 completion token 之和。"
+          },
+          "usage.search_context_size": {
+            "desc_en": "The effective amount of search context applied, reflecting the search_context setting used.",
+            "title_zh": "实际生效的检索上下文量，反映本次采用的 search_context 设置。"
+          }
+        }
+      }
+    }
+  }
+}

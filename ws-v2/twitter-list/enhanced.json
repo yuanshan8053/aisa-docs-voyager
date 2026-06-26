@@ -1,0 +1,1076 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Twitter API Aggregated Documentation",
+    "version": "1.0.0",
+    "description": "This OpenAPI specification aggregates multiple Twitter API endpoints for list followers and list members."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "ListTweetsTimelineResponse": {
+        "type": "object",
+        "properties": {
+          "tweets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tweet"
+            },
+            "description": "Array of tweets from the list",
+            "x-doc": {
+              "desc_en": "Tweets returned for this page of the list timeline.",
+              "title_zh": "本页列表时间线返回的推文集合。",
+              "source": "ai",
+              "src_hash": "sha256:de94e6041187",
+              "doc_version": "2.0.0"
+            }
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Indicates if there are more results available",
+            "x-doc": {
+              "desc_en": "Whether more pages remain; if true, call again with next_cursor to fetch them.",
+              "title_zh": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。",
+              "source": "ai",
+              "src_hash": "sha256:2fd5bc98fb1a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor for fetching the next page of results",
+            "x-doc": {
+              "desc_en": "Cursor to pass as the cursor parameter on the next call to fetch the following page.",
+              "title_zh": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。",
+              "source": "ai",
+              "src_hash": "sha256:f06b1ec4c403",
+              "doc_version": "2.0.0"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "example": "success",
+            "description": "Status of the request",
+            "x-doc": {
+              "desc_en": "Outcome marker of the request: success when the timeline was returned, error otherwise.",
+              "title_zh": "请求结果标记：成功返回时间线为 success，否则为 error。",
+              "source": "ai",
+              "src_hash": "sha256:b72414e0fa3a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message of the request, error message if status is error",
+            "x-doc": {
+              "desc_en": "Human-readable message; carries the error detail when status is error.",
+              "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。",
+              "source": "ai",
+              "src_hash": "sha256:175485755297",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "Tweet": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Object type tag identifying the entry as a tweet.",
+              "title_zh": "对象类型标记，标识该条目为推文。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "The ID of the tweet",
+            "x-doc": {
+              "desc_en": "Unique identifier of the tweet.",
+              "title_zh": "推文的唯一标识。",
+              "source": "ai",
+              "src_hash": "sha256:7ba8051085b1",
+              "doc_version": "2.0.0"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "The URL of the tweet",
+            "x-doc": {
+              "desc_en": "Web link to the tweet on X/Twitter.",
+              "title_zh": "推文在 X/Twitter 上的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:46fdb23cf227",
+              "doc_version": "2.0.0"
+            }
+          },
+          "text": {
+            "type": "string",
+            "description": "The text of the tweet",
+            "x-doc": {
+              "desc_en": "Full text content of the tweet.",
+              "title_zh": "推文的完整正文内容。",
+              "source": "ai",
+              "src_hash": "sha256:a5878aec245a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "source": {
+            "type": "string",
+            "description": "The source client of the tweet",
+            "x-doc": {
+              "desc_en": "Name of the client application used to post the tweet, such as the web or a mobile app.",
+              "title_zh": "发布该推文所用的客户端应用名称，如网页或某款手机应用。",
+              "source": "ai",
+              "src_hash": "sha256:bce7bf1686df",
+              "doc_version": "2.0.0"
+            }
+          },
+          "retweetCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of times the tweet has been retweeted.",
+              "title_zh": "推文被转发的次数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "replyCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of replies to the tweet.",
+              "title_zh": "推文收到的回复数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "likeCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of likes on the tweet.",
+              "title_zh": "推文获得的点赞数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "quoteCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of quote tweets referencing this tweet.",
+              "title_zh": "引用该推文的引用推文数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "viewCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of times the tweet has been viewed.",
+              "title_zh": "推文的浏览次数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date and time the tweet was created",
+            "x-doc": {
+              "desc_en": "Timestamp when the tweet was created.",
+              "title_zh": "推文的创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:5e09099f6bde",
+              "doc_version": "2.0.0"
+            }
+          },
+          "lang": {
+            "type": "string",
+            "description": "The language of the tweet",
+            "x-doc": {
+              "desc_en": "Detected language of the tweet text, as a language code.",
+              "title_zh": "推文正文被识别出的语言，以语言代码表示。",
+              "source": "ai",
+              "src_hash": "sha256:d43ad9b20c3e",
+              "doc_version": "2.0.0"
+            }
+          },
+          "bookmarkCount": {
+            "type": "integer",
+            "x-doc": {
+              "desc_en": "Number of times the tweet has been bookmarked.",
+              "title_zh": "推文被收藏的次数。",
+              "source": "ai",
+              "src_hash": "sha256:644595857f56",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isReply": {
+            "type": "boolean",
+            "x-doc": {
+              "desc_en": "Whether the tweet is a reply to another tweet.",
+              "title_zh": "该推文是否为对另一条推文的回复。",
+              "source": "ai",
+              "src_hash": "sha256:8e2bc3398639",
+              "doc_version": "2.0.0"
+            }
+          },
+          "inReplyToId": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Identifier of the tweet this one directly replies to; present only when isReply is true.",
+              "title_zh": "该推文直接回复的目标推文标识；仅当 isReply 为真时存在。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "conversationId": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Identifier of the root tweet that started the conversation thread this tweet belongs to.",
+              "title_zh": "该推文所属对话线程的起始推文标识。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "inReplyToUserId": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Identifier of the user being replied to.",
+              "title_zh": "被回复用户的标识。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "inReplyToUsername": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Username of the user being replied to.",
+              "title_zh": "被回复用户的用户名。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          },
+          "author": {
+            "$ref": "#/components/schemas/TwitterUser",
+            "x-doc": {
+              "desc_en": "Profile of the user who posted the tweet.",
+              "title_zh": "发布该推文的用户资料。",
+              "source": "ai",
+              "src_hash": "sha256:e05864a6e153",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "TwitterListFollowersResponse": {
+        "type": "object",
+        "properties": {
+          "followers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TwitterUser"
+            },
+            "x-doc": {
+              "desc_en": "Users following the list, returned for this page.",
+              "title_zh": "本页返回的关注该列表的用户。",
+              "source": "ai",
+              "src_hash": "sha256:47957d41b439",
+              "doc_version": "2.0.0"
+            }
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Indicates if there are more results available",
+            "x-doc": {
+              "desc_en": "Whether more pages remain; if true, call again with next_cursor to fetch them.",
+              "title_zh": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。",
+              "source": "ai",
+              "src_hash": "sha256:2fd5bc98fb1a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor for fetching the next page of results",
+            "x-doc": {
+              "desc_en": "Cursor to pass as the cursor parameter on the next call to fetch the following page.",
+              "title_zh": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。",
+              "source": "ai",
+              "src_hash": "sha256:f06b1ec4c403",
+              "doc_version": "2.0.0"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Status of the request",
+            "x-doc": {
+              "desc_en": "Outcome marker of the request: success when followers were returned, error otherwise.",
+              "title_zh": "请求结果标记：成功返回关注者为 success，否则为 error。",
+              "source": "ai",
+              "src_hash": "sha256:f547cd4fcb9b",
+              "doc_version": "2.0.0"
+            }
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message of the request, error message if status is error",
+            "x-doc": {
+              "desc_en": "Human-readable message; carries the error detail when status is error.",
+              "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。",
+              "source": "ai",
+              "src_hash": "sha256:175485755297",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "TwitterListMembersResponse": {
+        "type": "object",
+        "properties": {
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TwitterUser"
+            },
+            "x-doc": {
+              "desc_en": "Member users of the list, returned for this page.",
+              "title_zh": "本页返回的列表成员用户。",
+              "source": "ai",
+              "src_hash": "sha256:47957d41b439",
+              "doc_version": "2.0.0"
+            }
+          },
+          "has_next_page": {
+            "type": "boolean",
+            "description": "Indicates if there are more results available",
+            "x-doc": {
+              "desc_en": "Whether more pages remain; if true, call again with next_cursor to fetch them.",
+              "title_zh": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。",
+              "source": "ai",
+              "src_hash": "sha256:2fd5bc98fb1a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "next_cursor": {
+            "type": "string",
+            "description": "Cursor for fetching the next page of results",
+            "x-doc": {
+              "desc_en": "Cursor to pass as the cursor parameter on the next call to fetch the following page.",
+              "title_zh": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。",
+              "source": "ai",
+              "src_hash": "sha256:f06b1ec4c403",
+              "doc_version": "2.0.0"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "error"
+            ],
+            "description": "Status of the request",
+            "x-doc": {
+              "desc_en": "Outcome marker of the request: success when members were returned, error otherwise.",
+              "title_zh": "请求结果标记：成功返回成员为 success，否则为 error。",
+              "source": "ai",
+              "src_hash": "sha256:f547cd4fcb9b",
+              "doc_version": "2.0.0"
+            }
+          },
+          "msg": {
+            "type": "string",
+            "description": "Message of the request, error message if status is error",
+            "x-doc": {
+              "desc_en": "Human-readable message; carries the error detail when status is error.",
+              "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。",
+              "source": "ai",
+              "src_hash": "sha256:175485755297",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "TwitterUser": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Type of the user",
+            "x-doc": {
+              "desc_en": "Object type tag identifying the entry as a user.",
+              "title_zh": "对象类型标记，标识该条目为用户。",
+              "source": "ai",
+              "src_hash": "sha256:b3a1254a8ba4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "userName": {
+            "type": "string",
+            "description": "Username of the user",
+            "x-doc": {
+              "desc_en": "The user's @handle, unique across X/Twitter and used in profile URLs.",
+              "title_zh": "用户的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。",
+              "source": "ai",
+              "src_hash": "sha256:58683c0052f6",
+              "doc_version": "2.0.0"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the user's profile",
+            "x-doc": {
+              "desc_en": "Web link to the user's profile page.",
+              "title_zh": "用户资料页的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:332827a9598e",
+              "doc_version": "2.0.0"
+            }
+          },
+          "id": {
+            "type": "string",
+            "description": "ID of the user",
+            "x-doc": {
+              "desc_en": "Unique identifier of the user.",
+              "title_zh": "用户的唯一标识。",
+              "source": "ai",
+              "src_hash": "sha256:39f5e702f387",
+              "doc_version": "2.0.0"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the user",
+            "x-doc": {
+              "desc_en": "The user's display name shown on the profile.",
+              "title_zh": "用户在资料页展示的昵称。",
+              "source": "ai",
+              "src_hash": "sha256:21fa54935edf",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isBlueVerified": {
+            "type": "boolean",
+            "description": "Indicates if the user is blue verified",
+            "x-doc": {
+              "desc_en": "Whether the user holds a paid X (Twitter) Blue verification.",
+              "title_zh": "用户是否拥有付费的 X（Twitter）Blue 认证。",
+              "source": "ai",
+              "src_hash": "sha256:656730472e12",
+              "doc_version": "2.0.0"
+            }
+          },
+          "verifiedType": {
+            "type": "string",
+            "description": "Type of verification",
+            "x-doc": {
+              "desc_en": "The user's verification category, such as a business or government account.",
+              "title_zh": "用户的认证类别，如企业或政府账号。",
+              "source": "ai",
+              "src_hash": "sha256:e0c8c0cf5327",
+              "doc_version": "2.0.0"
+            }
+          },
+          "profilePicture": {
+            "type": "string",
+            "description": "URL of the profile picture",
+            "x-doc": {
+              "desc_en": "Web link to the user's avatar image.",
+              "title_zh": "用户头像图片的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:77015f778dc9",
+              "doc_version": "2.0.0"
+            }
+          },
+          "coverPicture": {
+            "type": "string",
+            "description": "URL of the cover picture",
+            "x-doc": {
+              "desc_en": "Web link to the user's profile banner image.",
+              "title_zh": "用户资料页横幅图片的网页链接。",
+              "source": "ai",
+              "src_hash": "sha256:6e291af2b779",
+              "doc_version": "2.0.0"
+            }
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the user",
+            "x-doc": {
+              "desc_en": "The user's profile bio text.",
+              "title_zh": "用户资料页的个人简介文字。",
+              "source": "ai",
+              "src_hash": "sha256:55f93d0c593c",
+              "doc_version": "2.0.0"
+            }
+          },
+          "location": {
+            "type": "string",
+            "description": "Location of the user",
+            "x-doc": {
+              "desc_en": "Free-text location the user lists on their profile.",
+              "title_zh": "用户在资料页填写的所在地（自由文本）。",
+              "source": "ai",
+              "src_hash": "sha256:226f1769a20b",
+              "doc_version": "2.0.0"
+            }
+          },
+          "followers": {
+            "type": "integer",
+            "description": "Number of followers",
+            "x-doc": {
+              "desc_en": "Number of accounts following the user.",
+              "title_zh": "关注该用户的账号数。",
+              "source": "ai",
+              "src_hash": "sha256:02ba50c333a0",
+              "doc_version": "2.0.0"
+            }
+          },
+          "following": {
+            "type": "integer",
+            "description": "Number of followings",
+            "x-doc": {
+              "desc_en": "Number of accounts the user follows.",
+              "title_zh": "该用户关注的账号数。",
+              "source": "ai",
+              "src_hash": "sha256:91230461346b",
+              "doc_version": "2.0.0"
+            }
+          },
+          "canDm": {
+            "type": "boolean",
+            "description": "Indicates if the user can be direct messaged",
+            "x-doc": {
+              "desc_en": "Whether the user currently accepts direct messages from the requester.",
+              "title_zh": "该用户当前是否接受请求方的私信。",
+              "source": "ai",
+              "src_hash": "sha256:f6e1fc15db99",
+              "doc_version": "2.0.0"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Account creation date",
+            "x-doc": {
+              "desc_en": "Timestamp when the user's account was created.",
+              "title_zh": "该用户账号的创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:cfc619d3ccbb",
+              "doc_version": "2.0.0"
+            }
+          },
+          "favouritesCount": {
+            "type": "integer",
+            "description": "Number of favorites",
+            "x-doc": {
+              "desc_en": "Number of tweets the user has liked.",
+              "title_zh": "该用户点赞过的推文数。",
+              "source": "ai",
+              "src_hash": "sha256:fa8dd1ca84b9",
+              "doc_version": "2.0.0"
+            }
+          },
+          "hasCustomTimelines": {
+            "type": "boolean",
+            "description": "Indicates if the user has custom timelines",
+            "x-doc": {
+              "desc_en": "Whether the user has created custom timelines.",
+              "title_zh": "该用户是否创建过自定义时间线。",
+              "source": "ai",
+              "src_hash": "sha256:d6a00cb8eef5",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isTranslator": {
+            "type": "boolean",
+            "description": "Indicates if the user is a translator",
+            "x-doc": {
+              "desc_en": "Whether the user participates in the Twitter translation program.",
+              "title_zh": "该用户是否参与 Twitter 翻译计划。",
+              "source": "ai",
+              "src_hash": "sha256:1d996f2bd06c",
+              "doc_version": "2.0.0"
+            }
+          },
+          "mediaCount": {
+            "type": "integer",
+            "description": "Number of media items",
+            "x-doc": {
+              "desc_en": "Number of media items the user has posted.",
+              "title_zh": "该用户发布过的媒体条目数。",
+              "source": "ai",
+              "src_hash": "sha256:5c5c678aa469",
+              "doc_version": "2.0.0"
+            }
+          },
+          "statusesCount": {
+            "type": "integer",
+            "description": "Number of statuses",
+            "x-doc": {
+              "desc_en": "Total number of tweets the user has posted.",
+              "title_zh": "该用户发布过的推文总数。",
+              "source": "ai",
+              "src_hash": "sha256:c03536d9e408",
+              "doc_version": "2.0.0"
+            }
+          },
+          "withheldInCountries": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of countries where the user is withheld",
+            "x-doc": {
+              "desc_en": "Country codes where the user's account is withheld for legal reasons.",
+              "title_zh": "因法律原因屏蔽该用户账号的国家／地区代码列表。",
+              "source": "ai",
+              "src_hash": "sha256:306887958e42",
+              "doc_version": "2.0.0"
+            }
+          },
+          "possiblySensitive": {
+            "type": "boolean",
+            "description": "Indicates if the user has sensitive content",
+            "x-doc": {
+              "desc_en": "Whether the user's posts are flagged as potentially sensitive.",
+              "title_zh": "该用户的内容是否被标记为可能含敏感信息。",
+              "source": "ai",
+              "src_hash": "sha256:a394e5178028",
+              "doc_version": "2.0.0"
+            }
+          },
+          "pinnedTweetIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of pinned tweet IDs",
+            "x-doc": {
+              "desc_en": "Identifiers of tweets the user has pinned to the top of their profile.",
+              "title_zh": "该用户置顶在资料页顶部的推文标识列表。",
+              "source": "ai",
+              "src_hash": "sha256:e02bfb894339",
+              "doc_version": "2.0.0"
+            }
+          },
+          "isAutomated": {
+            "type": "boolean",
+            "description": "Indicates if the account is automated",
+            "x-doc": {
+              "desc_en": "Whether the account is labeled as an automated (bot) account.",
+              "title_zh": "该账号是否被标记为自动化（机器人）账号。",
+              "source": "ai",
+              "src_hash": "sha256:c51cc61f02d4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "automatedBy": {
+            "type": "string",
+            "description": "Indicates who automated the account",
+            "x-doc": {
+              "desc_en": "Username of the person or entity managing the automated account.",
+              "title_zh": "管理该自动化账号的个人或机构的用户名。",
+              "source": "ai",
+              "src_hash": "sha256:ada1d30bc6a6",
+              "doc_version": "2.0.0"
+            }
+          },
+          "unavailable": {
+            "type": "boolean",
+            "description": "Indicates if the account is unavailable",
+            "x-doc": {
+              "desc_en": "Whether the user's account is currently unavailable, for example suspended or deactivated.",
+              "title_zh": "该用户账号当前是否不可用，例如被封禁或停用。",
+              "source": "ai",
+              "src_hash": "sha256:99c09ab60fae",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "Message about the account",
+            "x-doc": {
+              "desc_en": "Explanatory message returned when the account is unavailable.",
+              "title_zh": "账号不可用时返回的说明信息。",
+              "source": "ai",
+              "src_hash": "sha256:3d52965877a7",
+              "doc_version": "2.0.0"
+            }
+          },
+          "unavailableReason": {
+            "type": "string",
+            "description": "Reason for unavailability",
+            "x-doc": {
+              "desc_en": "Reason code or text describing why the account is unavailable.",
+              "title_zh": "描述账号不可用原因的代码或文字。",
+              "source": "ai",
+              "src_hash": "sha256:e392948b70f8",
+              "doc_version": "2.0.0"
+            }
+          },
+          "profile_bio": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Bio description",
+                "x-doc": {
+                  "desc_en": "Raw bio text exactly as shown on the profile.",
+                  "title_zh": "资料页展示的简介原文。",
+                  "source": "ai",
+                  "src_hash": "sha256:b67fb265f469",
+                  "doc_version": "2.0.0"
+                }
+              },
+              "entities": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TwitterUrl"
+                        },
+                        "x-doc": {
+                          "desc_en": "List of links found in the bio description.",
+                          "title_zh": "简介正文中找到的链接列表。",
+                          "source": "ai",
+                          "src_hash": "sha256:5ff6ad290c54",
+                          "doc_version": "2.0.0"
+                        }
+                      }
+                    },
+                    "x-doc": {
+                      "desc_en": "Links detected within the bio description text.",
+                      "title_zh": "在简介正文中检测到的链接。",
+                      "source": "ai",
+                      "src_hash": "sha256:eeb7f18e9e76",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "url": {
+                    "type": "object",
+                    "properties": {
+                      "urls": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/TwitterUrl"
+                        },
+                        "x-doc": {
+                          "desc_en": "List of links found in the profile website field.",
+                          "title_zh": "资料网址字段中找到的链接列表。",
+                          "source": "ai",
+                          "src_hash": "sha256:5ff6ad290c54",
+                          "doc_version": "2.0.0"
+                        }
+                      }
+                    },
+                    "x-doc": {
+                      "desc_en": "Links detected in the profile's dedicated website field.",
+                      "title_zh": "在资料页专门的网址字段中检测到的链接。",
+                      "source": "ai",
+                      "src_hash": "sha256:eeb7f18e9e76",
+                      "doc_version": "2.0.0"
+                    }
+                  }
+                },
+                "x-doc": {
+                  "desc_en": "Entities parsed from the bio, grouping links found in the description text and in the profile's website field.",
+                  "title_zh": "从简介中解析出的实体，分别归类简介正文中的链接与资料网址字段中的链接。",
+                  "source": "ai",
+                  "src_hash": "sha256:3cc5033c50a6",
+                  "doc_version": "2.0.0"
+                }
+              }
+            },
+            "x-doc": {
+              "desc_en": "Structured profile bio, including the raw description text and the entities parsed out of it.",
+              "title_zh": "结构化的资料简介，包含简介原文及从中解析出的实体。",
+              "source": "ai",
+              "src_hash": "sha256:80e8c13ad617",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "TwitterUrl": {
+        "type": "object",
+        "properties": {
+          "display_url": {
+            "type": "string",
+            "description": "Display URL",
+            "x-doc": {
+              "desc_en": "Shortened, human-readable form of the website link as displayed.",
+              "title_zh": "显示的网址链接的短化、易读形式。",
+              "source": "ai",
+              "src_hash": "sha256:0c37ea0d5ea8",
+              "doc_version": "2.0.0"
+            }
+          },
+          "expanded_url": {
+            "type": "string",
+            "description": "Expanded URL",
+            "x-doc": {
+              "desc_en": "Full destination URL the website link resolves to.",
+              "title_zh": "网址链接最终指向的完整目标地址。",
+              "source": "ai",
+              "src_hash": "sha256:9a9929f86655",
+              "doc_version": "2.0.0"
+            }
+          },
+          "indices": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Indices of the URL",
+            "x-doc": {
+              "desc_en": "Start and end character offsets of the link within the website field.",
+              "title_zh": "该链接在网址字段中的起止字符位置。",
+              "source": "ai",
+              "src_hash": "sha256:0a4e08db6ec5",
+              "doc_version": "2.0.0"
+            }
+          },
+          "url": {
+            "type": "string",
+            "description": "URL",
+            "x-doc": {
+              "desc_en": "The t.co shortened URL as it literally appears in the website field.",
+              "title_zh": "网址字段中实际出现的 t.co 短链接。",
+              "source": "ai",
+              "src_hash": "sha256:a91bdc8793e3",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/twitter/list/tweets_timeline": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/list_timeline"
+        ],
+        "summary": "Get List Tweet Timeline",
+        "description": "Get timeline tweets from a list. Each page returns up to 20 tweets. Use cursor for pagination.",
+        "parameters": [
+          {
+            "name": "listId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The list ID to get tweets from. e.g. 1846987139428634858",
+            "x-doc": {
+              "desc_en": "Identifier of the Twitter list whose member tweets you want to read.",
+              "title_zh": "要读取其成员推文的 Twitter 列表标识。",
+              "source": "ai",
+              "src_hash": "sha256:18c1f1ec13af",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor for paginating through results. Leave empty for the first page.",
+            "x-doc": {
+              "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+              "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。",
+              "source": "ai",
+              "src_hash": "sha256:194593f5cd71",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List tweet timeline response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListTweetsTimelineResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "获取列表时间线推文 GET /twitter/list/tweets_timeline",
+          "desc_en": "Fetch the reverse-chronological tweets posted by members of a given Twitter list, one page at a time. Pass the cursor returned by the previous call to walk through older tweets.",
+          "description_zh": "按时间倒序获取某个 Twitter 列表内成员发布的推文，每次返回一页。把上一次返回的游标传入即可继续翻看更早的推文。",
+          "source": "ai",
+          "src_hash": "sha256:a755d351fdc4",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/twitter/list/followers": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_list_followers"
+        ],
+        "summary": "Get List Followers",
+        "description": "Get followers of a list. Page size is 20.",
+        "parameters": [
+          {
+            "name": "list_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the list",
+            "x-doc": {
+              "desc_en": "Identifier of the Twitter list whose followers you want to read.",
+              "title_zh": "要读取其关注者的 Twitter 列表标识。",
+              "source": "ai",
+              "src_hash": "sha256:d1f6f9ba94c6",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor of the page",
+            "x-doc": {
+              "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+              "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。",
+              "source": "ai",
+              "src_hash": "sha256:94d95dcd136b",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List followers of the list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwitterListFollowersResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "获取列表关注者 GET /twitter/list/followers",
+          "desc_en": "List the users who follow a given Twitter list, one page at a time, paginating with the cursor from the previous response.",
+          "description_zh": "分页获取关注某个 Twitter 列表的用户，使用上一次响应返回的游标继续翻页。",
+          "source": "ai",
+          "src_hash": "sha256:ae2fdc53b609",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/twitter/list/members": {
+      "get": {
+        "tags": [
+          "https://docs.twitterapi.io/api-reference/endpoint/get_list_members"
+        ],
+        "summary": "Get List Members",
+        "description": "Get members of a list. Page size is 20.",
+        "parameters": [
+          {
+            "name": "list_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the list",
+            "x-doc": {
+              "desc_en": "Identifier of the Twitter list whose members you want to read.",
+              "title_zh": "要读取其成员的 Twitter 列表标识。",
+              "source": "ai",
+              "src_hash": "sha256:d1f6f9ba94c6",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Cursor of the page",
+            "x-doc": {
+              "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+              "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。",
+              "source": "ai",
+              "src_hash": "sha256:94d95dcd136b",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List members response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TwitterListMembersResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "获取列表成员 GET /twitter/list/members",
+          "desc_en": "List the users who are members of a given Twitter list, one page at a time, paginating with the cursor from the previous response.",
+          "description_zh": "分页获取某个 Twitter 列表的成员用户，使用上一次响应返回的游标继续翻页。",
+          "source": "ai",
+          "src_hash": "sha256:956d9deb5236",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  }
+}

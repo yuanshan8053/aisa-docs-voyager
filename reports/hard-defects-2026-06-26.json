@@ -1,0 +1,126 @@
+{
+  "tool": "checks/src_consistency.py",
+  "repo": "/home/mira/files/aisa-team-docs",
+  "generated": "2026-06-26",
+  "truth": {
+    "spec_paths": 645,
+    "spec_operations": 663,
+    "spec_schemas": 321,
+    "spec_tags_declared": 14,
+    "spec_tags_with_ops": [
+      "AI Models",
+      "Agent Email",
+      "Crypto Data",
+      "Financial Data",
+      "Image Generation",
+      "Prediction Markets",
+      "Reddit",
+      "SEO & Search Data",
+      "Sales Intelligence",
+      "Scholar Search",
+      "Twitter / X",
+      "Video Generation",
+      "Web & News Search",
+      "YouTube Search"
+    ],
+    "spec_tag_op_counts": {
+      "AI Models": 6,
+      "Agent Email": 46,
+      "Crypto Data": 21,
+      "Financial Data": 22,
+      "Image Generation": 2,
+      "Prediction Markets": 16,
+      "Reddit": 5,
+      "SEO & Search Data": 445,
+      "Sales Intelligence": 54,
+      "Scholar Search": 4,
+      "Twitter / X": 35,
+      "Video Generation": 2,
+      "Web & News Search": 4,
+      "YouTube Search": 1
+    },
+    "total_mdx": 743,
+    "agent_skills_count": 43,
+    "zh_pages_count": 11
+  },
+  "summary": {
+    "blocker": 3,
+    "info": 2,
+    "total": 5
+  },
+  "findings": [
+    {
+      "rule": "spec_stat_claims",
+      "severity": "BLOCKER",
+      "title": "spec schema 数断言与产物矛盾：写 121，实为 321",
+      "file": "guides/agent-discovery.mdx",
+      "line": 16,
+      "claimed": 121,
+      "actual": 321,
+      "evidence": "| **OpenAPI Spec** | OpenAPI 3.1.0 | `https://aisa.one/openapi.yaml` | Machine-readable specification covering 111+ API paths and 121 schemas |",
+      "reproduce": "python3 -c \"import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['components']['schemas']))\""
+    },
+    {
+      "rule": "spec_stat_claims",
+      "severity": "BLOCKER",
+      "title": "spec category 数断言与产物矛盾：写 10，实为 14",
+      "file": "guides/agent-discovery.mdx",
+      "line": 127,
+      "claimed": 10,
+      "actual": 14,
+      "evidence": "The consolidated OpenAPI spec at `/openapi.yaml` covers all 111+ AIsa API paths organized into 10 categories. It is the authoritative machine-readable contract for constructing API requests.",
+      "reproduce": "python3 -c \"import yaml;d=yaml.safe_load(open('openapi.yaml'));t=set();[t.add(x) for p in d['paths'].values() for m,o in p.items() if m in ('get','post','put','patch','delete') and isinstance(o,dict) for x in o.get('tags',[])];print(len(t))\""
+    },
+    {
+      "rule": "category_table_coverage",
+      "severity": "BLOCKER",
+      "title": "API 分类表不完整：列出 10 类，spec 实有 14 个承载操作的分类，遗漏 4 个",
+      "file": "guides/agent-discovery.mdx",
+      "line": 163,
+      "claimed": 10,
+      "actual": 14,
+      "missing": [
+        {
+          "tag": "Agent Email",
+          "operations": 46
+        },
+        {
+          "tag": "Reddit",
+          "operations": 5
+        },
+        {
+          "tag": "SEO & Search Data",
+          "operations": 445
+        },
+        {
+          "tag": "Sales Intelligence",
+          "operations": 54
+        }
+      ],
+      "evidence": "Agent Email(46 ops); Reddit(5 ops); SEO & Search Data(445 ops); Sales Intelligence(54 ops)",
+      "reproduce": "python3 -c \"import yaml;d=yaml.safe_load(open('openapi.yaml'));t=set();[t.add(x) for p in d['paths'].values() for m,o in p.items() if m in ('get','post','put','patch','delete') and isinstance(o,dict) for x in o.get('tags',[])];print(len(t))\""
+    },
+    {
+      "rule": "localization_coverage",
+      "severity": "INFO",
+      "title": "中文覆盖率 1.5%（11/743）",
+      "file": ".",
+      "line": 0,
+      "claimed": null,
+      "actual": 11,
+      "evidence": "agent-skills/cn-llm.mdx；agent-skills/last30days-zh.mdx；agent-skills/prediction-market-arbitrage-zh.mdx；agent-skills/prediction-market-data-zh.mdx；guides/chinese-llms.mdx；guides/chinese-llms/bytedance.mdx；guides/chinese-llms/deepseek.mdx；guides/chinese-llms/glm.mdx；guides/chinese-llms/kimi.mdx；guides/chinese-llms/minimax.mdx；guides/chinese-llms/qwen.mdx",
+      "reproduce": "find . -name '*.mdx' | grep -iE 'zh|chinese|/cn' | wc -l  # 分子\nfind . -name '*.mdx' | wc -l  # 分母"
+    },
+    {
+      "rule": "spec_stat_claims",
+      "severity": "INFO",
+      "title": "spec path/endpoint 数严重低估：写 111+，实为 645",
+      "file": "guides/agent-discovery.mdx",
+      "line": 16,
+      "claimed": 111,
+      "actual": 645,
+      "evidence": "| **OpenAPI Spec** | OpenAPI 3.1.0 | `https://aisa.one/openapi.yaml` | Machine-readable specification covering 111+ API paths and 121 schemas |",
+      "reproduce": "python3 -c \"import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['paths']))\""
+    }
+  ]
+}

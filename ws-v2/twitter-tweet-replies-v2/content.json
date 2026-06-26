@@ -1,0 +1,129 @@
+{
+  "operations": {
+    "GET /twitter/tweet/replies/v2": {
+      "heading_zh": "获取推文回复 GET /twitter/tweet/replies/v2",
+      "desc_en": "Fetch the replies to a given tweet, returned one page at a time and ordered by relevance, recency, or like count. Read-only; use the returned cursor to walk through subsequent pages.",
+      "description_zh": "拉取某条推文下的回复,分页返回,可按相关性、时间或点赞数排序。只读接口,借响应中返回的游标逐页向后翻。",
+      "resp_section_intro": "成功时返回本页回复列表、翻页游标与请求状态。",
+      "errors_source": "spec 仅声明 200,无错误码定义"
+    }
+  },
+  "fields": {
+    "GET /twitter/tweet/replies/v2": {
+      "parameters": {
+        "tweetId": {
+          "desc_en": "Identifier of the tweet whose replies you want to retrieve. It is the numeric ID found in the tweet's URL.",
+          "title_zh": "要获取回复的目标推文标识,即推文 URL 中的那串数字 ID。"
+        },
+        "cursor": {
+          "desc_en": "Pagination token pointing at the next batch of replies. Take it from the `next_cursor` of a previous response; leave it unset to start from the first page.",
+          "title_zh": "指向下一批回复的翻页令牌。取自上一次响应的 `next_cursor`;首次请求留空即从第一页开始。"
+        },
+        "queryType": {
+          "desc_en": "Ordering applied to the returned replies: `Relevance` surfaces the replies the platform deems most relevant, `Latest` orders by most recent first, and `Likes` orders by most-liked first.",
+          "title_zh": "返回回复的排序方式:`Relevance` 优先展示平台判定最相关的回复,`Latest` 按时间从新到旧,`Likes` 按点赞数从高到低。"
+        }
+      },
+      "response": {
+        "200": {
+          "replies": {
+            "desc_en": "The replies on this page, each a full tweet object.",
+            "title_zh": "本页的回复,每个元素是一条完整的推文对象。"
+          },
+          "replies.type": {
+            "desc_en": "Object kind of the record, distinguishing a tweet from other entities the API may return.",
+            "title_zh": "记录的对象类型,用于区分推文与接口可能返回的其他实体。"
+          },
+          "replies.id": {
+            "desc_en": "The reply tweet's unique identifier; use it to fetch this reply's own replies or to build its URL.",
+            "title_zh": "该回复推文的唯一标识;可用于获取这条回复下的下级回复,或拼接其 URL。"
+          },
+          "replies.url": {
+            "desc_en": "Direct, clickable link to the reply tweet.",
+            "title_zh": "该回复推文的可直接点击链接。"
+          },
+          "replies.text": {
+            "desc_en": "Full body text of the reply.",
+            "title_zh": "回复的正文文本。"
+          },
+          "replies.source": {
+            "desc_en": "The client application from which the reply was posted, such as a web or mobile app.",
+            "title_zh": "发布该回复所用的客户端应用,例如网页端或移动端 App。"
+          },
+          "replies.retweetCount": {
+            "desc_en": "Number of times the reply has been retweeted.",
+            "title_zh": "该回复被转推的次数。"
+          },
+          "replies.replyCount": {
+            "desc_en": "Number of replies this reply itself has received.",
+            "title_zh": "该回复自身收到的回复数。"
+          },
+          "replies.likeCount": {
+            "desc_en": "Number of likes the reply has received.",
+            "title_zh": "该回复收到的点赞数。"
+          },
+          "replies.quoteCount": {
+            "desc_en": "Number of times the reply has been quote-tweeted.",
+            "title_zh": "该回复被引用转推的次数。"
+          },
+          "replies.viewCount": {
+            "desc_en": "Number of times the reply has been viewed.",
+            "title_zh": "该回复的浏览次数。"
+          },
+          "replies.createdAt": {
+            "desc_en": "Timestamp of when the reply was posted.",
+            "title_zh": "该回复的发布时间。"
+          },
+          "replies.lang": {
+            "desc_en": "Detected language of the reply text, as a language code.",
+            "title_zh": "回复文本经识别得到的语言,以语言代码表示。"
+          },
+          "replies.bookmarkCount": {
+            "desc_en": "Number of times the reply has been bookmarked.",
+            "title_zh": "该回复被加入书签的次数。"
+          },
+          "replies.isReply": {
+            "desc_en": "Whether this tweet is itself a reply to another tweet.",
+            "title_zh": "该推文本身是否为对另一条推文的回复。"
+          },
+          "replies.inReplyToId": {
+            "desc_en": "Identifier of the tweet this reply is responding to.",
+            "title_zh": "该回复所回应的那条推文的标识。"
+          },
+          "replies.conversationId": {
+            "desc_en": "Identifier of the conversation thread the reply belongs to; typically the ID of the original tweet that started the thread.",
+            "title_zh": "该回复所属对话串的标识,通常为开启该对话的原始推文 ID。"
+          },
+          "replies.inReplyToUserId": {
+            "desc_en": "Identifier of the user being replied to.",
+            "title_zh": "被回复用户的标识。"
+          },
+          "replies.inReplyToUsername": {
+            "desc_en": "Handle of the user being replied to.",
+            "title_zh": "被回复用户的用户名。"
+          },
+          "replies.isLimitedReply": {
+            "desc_en": "Whether replying to this tweet is restricted by the author's reply settings.",
+            "title_zh": "该推文是否因作者的回复设置而受限,无法自由回复。"
+          },
+          "has_next_page": {
+            "desc_en": "Whether more replies remain beyond the current page.",
+            "title_zh": "当前页之后是否还有更多回复。"
+          },
+          "next_cursor": {
+            "desc_en": "Token to pass back as `cursor` to retrieve the next page of replies.",
+            "title_zh": "用于取回下一页回复的令牌,回传给 `cursor` 参数即可。"
+          },
+          "status": {
+            "desc_en": "Outcome of the request: `success` for a normal result, `error` when the request failed.",
+            "title_zh": "请求结果:`success` 表示正常返回,`error` 表示请求失败。"
+          },
+          "message": {
+            "desc_en": "Human-readable error detail, populated only when the request failed.",
+            "title_zh": "可读的错误说明,仅在请求失败时才有内容。"
+          }
+        }
+      }
+    }
+  }
+}

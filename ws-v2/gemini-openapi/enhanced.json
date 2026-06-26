@@ -1,0 +1,325 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Google Gemini Generate Content API",
+    "version": "v1beta",
+    "description": "Google Gemini API for content generation (text, image, audio) based on official documentation."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/v1",
+      "description": "Gemini API base URL"
+    }
+  ],
+  "paths": {
+    "/models/{model}:generateContent": {
+      "post": {
+        "summary": "Generate content using the specified Gemini model",
+        "operationId": "generateContent",
+        "parameters": [
+          {
+            "name": "model",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The name of the model to use, format: models/{model}",
+            "x-doc": {
+              "desc_en": "Which Gemini model to run, given in the path as `models/{model}`.",
+              "title_zh": "本次调用使用的 Gemini 模型,在路径中以 `models/{model}` 形式给出。",
+              "source": "ai",
+              "src_hash": "sha256:1d89fee1ec1a",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateContentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful content generation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateContentResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-doc": {
+          "heading_zh": "生成内容 generateContent",
+          "desc_en": "Invoke a Gemini model to generate content from a multi-turn conversation. Drive the output with tools, safety settings, a system instruction, and generation parameters, and optionally reuse previously cached context.",
+          "description_zh": "调用指定 Gemini 模型,基于多轮对话生成内容。可通过工具、安全设置、系统指令与生成参数控制输出,并可选择复用此前缓存的上下文。",
+          "resp_section_intro": "成功时返回模型生成的候选内容列表。",
+          "errors_source": "spec 以 default 响应承载错误体(ErrorResponse),未声明具体 HTTP 状态码",
+          "source": "ai",
+          "src_hash": "sha256:5c0b17eb1690",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Key"
+      }
+    },
+    "schemas": {
+      "GenerateContentRequest": {
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Content"
+            },
+            "description": "Content of the conversation, required",
+            "x-doc": {
+              "desc_en": "The ordered conversation turns sent to the model; each turn carries its content parts and the role that produced them. This is the primary input the model responds to.",
+              "title_zh": "发送给模型的有序对话轮次,每一轮携带其内容片段以及产生它的角色。这是模型据以应答的主要输入。",
+              "source": "ai",
+              "src_hash": "sha256:95795e100f2f",
+              "doc_version": "2.0.0"
+            }
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tool"
+            },
+            "description": "Optional tools the model can use",
+            "x-doc": {
+              "desc_en": "Tools the model is allowed to call during generation, enabling capabilities such as function calling.",
+              "title_zh": "允许模型在生成过程中调用的工具,用于开启函数调用等能力。",
+              "source": "ai",
+              "src_hash": "sha256:eee8e64fbe86",
+              "doc_version": "2.0.0"
+            }
+          },
+          "toolConfig": {
+            "type": "object",
+            "description": "Optional tool configuration",
+            "x-doc": {
+              "desc_en": "Configuration that governs how the model selects and invokes the provided tools.",
+              "title_zh": "约束模型如何选择并调用上述工具的配置。",
+              "source": "ai",
+              "src_hash": "sha256:2877aed0f81c",
+              "doc_version": "2.0.0"
+            }
+          },
+          "safetySettings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SafetySetting"
+            },
+            "x-doc": {
+              "desc_en": "Per-request safety controls that adjust how generated content is filtered against harm categories.",
+              "title_zh": "本次请求的安全控制项,用于调整生成内容针对各类风险类别的过滤策略。",
+              "source": "ai",
+              "src_hash": "sha256:d4b2ac576934",
+              "doc_version": "2.0.0"
+            }
+          },
+          "systemInstruction": {
+            "$ref": "#/components/schemas/Content",
+            "x-doc": {
+              "desc_en": "A top-level instruction that sets the model's persona, rules, or task framing, applied across the whole conversation.",
+              "title_zh": "顶层系统指令,用于设定模型的人设、规则或任务框架,对整段对话统一生效。",
+              "source": "ai",
+              "src_hash": "sha256:cde88481a41f",
+              "doc_version": "2.0.0"
+            }
+          },
+          "generationConfig": {
+            "$ref": "#/components/schemas/GenerationConfig",
+            "x-doc": {
+              "desc_en": "Parameters that shape the generation itself, such as sampling and output-length controls.",
+              "title_zh": "塑造本次生成过程的参数,例如采样与输出长度等控制项。",
+              "source": "ai",
+              "src_hash": "sha256:c30d5394dd18",
+              "doc_version": "2.0.0"
+            }
+          },
+          "cachedContent": {
+            "type": "string",
+            "description": "Optional cached content ID",
+            "x-doc": {
+              "desc_en": "Reference to previously cached context to reuse, avoiding resending large shared content on each call.\n[⚠️Note:源码未声明该缓存 ID 的获取接口与生效条件,待研发确认。]",
+              "title_zh": "指向此前已缓存上下文的引用,可复用以避免每次调用都重传大体量的共享内容。\n[⚠️批注:源码未声明该缓存 ID 的获取接口与生效条件,待研发确认。]",
+              "source": "ai",
+              "src_hash": "sha256:3edd629232a9",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "contents"
+        ]
+      },
+      "Content": {
+        "type": "object",
+        "properties": {
+          "parts": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "x-doc": {
+                        "desc_en": "The text payload of a part, used when the part carries written content.",
+                        "title_zh": "片段的文本内容,当该片段承载文字时使用。",
+                        "source": "ai",
+                        "src_hash": "sha256:38a346cadbd3",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "inline_data": {
+                      "type": "object"
+                    }
+                  }
+                }
+              ]
+            },
+            "x-doc": {
+              "desc_en": "The pieces that make up one conversation turn. A part is either a text segment or inline binary data (such as an image), letting a single turn mix modalities.",
+              "title_zh": "构成一个对话轮次的若干片段。每个片段要么是一段文本,要么是内联的二进制数据(如图像),从而让单轮内容可以混合多种模态。",
+              "source": "ai",
+              "src_hash": "sha256:526ad2002c42",
+              "doc_version": "2.0.0"
+            }
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "system",
+              "user",
+              "assistant"
+            ],
+            "x-doc": {
+              "desc_en": "Who authored this turn, distinguishing system guidance, end-user input, and prior model output so the model reads the dialogue in the right voice.",
+              "title_zh": "该轮内容的作者身份,用于区分系统引导、终端用户输入与模型既往输出,使模型以正确的视角解读对话。",
+              "source": "ai",
+              "src_hash": "sha256:61d0177b44bc",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "Tool": {
+        "type": "object"
+      },
+      "SafetySetting": {
+        "type": "object"
+      },
+      "GenerationConfig": {
+        "type": "object"
+      },
+      "GenerateContentResponse": {
+        "type": "object",
+        "properties": {
+          "candidates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Content"
+            },
+            "x-doc": {
+              "desc_en": "The content the model generated; each candidate is one self-contained response made up of content parts and its role.",
+              "title_zh": "模型生成的内容;每个候选是一份自包含的应答,由内容片段及其角色组成。",
+              "source": "ai",
+              "src_hash": "sha256:dddf576b6b57",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "integer",
+                "x-doc": {
+                  "desc_en": "Numeric error code identifying the failure category.",
+                  "title_zh": "标识失败类别的数字错误码。",
+                  "source": "ai",
+                  "src_hash": "sha256:644595857f56",
+                  "doc_version": "2.0.0"
+                }
+              },
+              "message": {
+                "type": "string",
+                "x-doc": {
+                  "desc_en": "Human-readable explanation of what went wrong.",
+                  "title_zh": "对出错原因的可读说明。",
+                  "source": "ai",
+                  "src_hash": "sha256:38a346cadbd3",
+                  "doc_version": "2.0.0"
+                }
+              },
+              "status": {
+                "type": "string",
+                "x-doc": {
+                  "desc_en": "Symbolic status string for the error, suitable for programmatic branching.",
+                  "title_zh": "错误的符号化状态字符串,便于程序按状态分支处理。",
+                  "source": "ai",
+                  "src_hash": "sha256:38a346cadbd3",
+                  "doc_version": "2.0.0"
+                }
+              }
+            },
+            "x-doc": {
+              "desc_en": "The error payload returned when generation fails, carrying a code, a human-readable message, and a symbolic status.",
+              "title_zh": "生成失败时返回的错误载荷,携带错误码、可读消息与符号化状态。",
+              "source": "ai",
+              "src_hash": "sha256:136f4ba27bbd",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ]
+}

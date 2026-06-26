@@ -1,0 +1,80 @@
+{
+  "operations": {
+    "createChatCompletion": {
+      "heading_zh": "创建对话补全 createChatCompletion",
+      "desc_en": "Generate a model response to a conversation. Beyond plain text, it supports image inputs in the message content, token-by-token streaming, function calling, and per-token log probabilities — letting one endpoint cover chat, multimodal analysis, and tool orchestration.",
+      "description_zh": "为一段对话生成模型回复。除纯文本外,支持在消息内容中传入图像、逐 token 流式输出、函数调用,以及逐 token 的对数概率 —— 让单个接口覆盖对话、多模态分析与工具编排。",
+      "errors_source": "spec 仅声明 200,未声明错误码,故不杜撰错误体"
+    }
+  },
+  "fields": {
+    "createChatCompletion": {
+      "request": {
+        "model": {
+          "desc_en": "Identifier of the model to run the completion against. Picks the capability tier and pricing for the call; the available identifiers come from the model catalog rather than this field.",
+          "title_zh": "本次补全所用模型的标识。它决定调用的能力档位与计费;可选标识取自模型目录,而非本字段自身。"
+        },
+        "messages": {
+          "desc_en": "The conversation so far, as an ordered list of turns. The model reads them in order and continues from the last one, so sequence carries the dialogue state.",
+          "title_zh": "至今为止的对话,按轮次有序排列。模型按顺序读取并从最后一轮续写,因此顺序本身承载了对话状态。"
+        },
+        "messages.role": {
+          "desc_en": "Who is speaking in this turn — typically the system (instructions), the user, or the assistant (the model's prior replies). It tells the model how to weigh the turn.",
+          "title_zh": "本轮的说话方 —— 通常是 system(指令)、user 或 assistant(模型先前的回复)。它告诉模型该如何权衡这一轮。"
+        },
+        "messages.content": {
+          "desc_en": "The payload of the turn. Pass a plain string for a text-only message, or an array of typed parts to mix text with image inputs for multimodal analysis.",
+          "title_zh": "本轮的内容载荷。纯文本消息传字符串;若要图文混排做多模态分析,则传一个带类型的分块数组。"
+        },
+        "messages.content.type": {
+          "desc_en": "Marks what kind of part this is within a multimodal content array, so each block is interpreted as text or as an image reference.",
+          "title_zh": "在多模态内容数组中标记该分块的种类,使每块被分别解读为文本或图像引用。"
+        },
+        "messages.content.text": {
+          "desc_en": "The text of a text-type content part.",
+          "title_zh": "文本类型分块的文字内容。"
+        },
+        "messages.content.image_url": {
+          "desc_en": "Location of the image for an image-type content part; the model fetches and analyzes it alongside the text parts.",
+          "title_zh": "图像类型分块的图片地址;模型会拉取它并与文本分块一同分析。"
+        },
+        "stream": {
+          "desc_en": "When on, the response is delivered as a stream of incremental chunks instead of one final payload — useful for showing output as it is generated. When off, the full reply returns in a single response.",
+          "title_zh": "开启后,回复以增量分块的流式形式陆续返回,而非一次性整段返回 —— 适合边生成边展示。关闭则在单次响应中返回完整回复。"
+        },
+        "logprobs": {
+          "desc_en": "When on, the response includes the log probability of each returned token, letting you gauge the model's confidence at each step.",
+          "title_zh": "开启后,响应附带每个返回 token 的对数概率,可借此衡量模型在每一步的置信度。"
+        },
+        "top_logprobs": {
+          "desc_en": "How many of the most likely alternative tokens to report at each position, each with its log probability. Requires logprobs to be on.",
+          "title_zh": "每个位置上报多少个最可能的备选 token,并各带其对数概率。需先开启 logprobs。"
+        },
+        "functions": {
+          "desc_en": "Declares the functions the model may call. The model never runs them itself; it returns a structured request naming a function and its arguments, which your code then executes.",
+          "title_zh": "声明模型可以调用的函数。模型自身从不执行它们,而是返回一个指明函数名与入参的结构化请求,再由你的代码去执行。"
+        },
+        "functions.name": {
+          "desc_en": "The function's name, used by the model to refer to it when requesting a call and matched by your code when dispatching.",
+          "title_zh": "函数名。模型请求调用时以此指代,你的代码派发时以此匹配。"
+        },
+        "functions.description": {
+          "desc_en": "What the function does, written for the model. A clear description is the main signal the model uses to decide when this function fits the user's intent.",
+          "title_zh": "函数的功能说明,写给模型看。清晰的描述是模型判断「何时该用这个函数」的主要依据。"
+        },
+        "functions.parameters": {
+          "desc_en": "A JSON Schema describing the function's arguments. The model generates argument values that conform to it when it requests the call.",
+          "title_zh": "描述函数入参的 JSON Schema。模型请求调用时会据此生成符合该结构的参数值。"
+        },
+        "function_call": {
+          "desc_en": "Controls function-calling behavior: pass a string mode such as `auto` to let the model decide whether to call, or an object naming one function to force that specific call.",
+          "title_zh": "控制函数调用行为:传 `auto` 这类字符串模式让模型自行决定是否调用,或传一个指名某函数的对象以强制调用该函数。"
+        },
+        "function_call.name": {
+          "desc_en": "When forcing a call via the object form, the name of the function the model must invoke.",
+          "title_zh": "以对象形式强制调用时,模型必须调用的函数名。"
+        }
+      }
+    }
+  }
+}

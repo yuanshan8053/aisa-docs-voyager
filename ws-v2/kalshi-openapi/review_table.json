@@ -1,0 +1,524 @@
+{
+  "sections": [
+    {
+      "operation": "get_kalshi-markets",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches Kalshi market data with optional filtering by market ticker, event ticker, status, and volume. Returns markets with details including pricing, volume, and status information.",
+          "desc_en": "List Kalshi prediction markets with their pricing, volume and status, optionally filtered by market ticker, event ticker, keyword search, status or minimum volume. Results are cursor-paginated.",
+          "title_zh": "列出 Kalshi 预测市场及其价格、成交量与状态，可按 market ticker、event ticker、关键词、状态或最小成交量筛选。结果采用游标分页。"
+        },
+        {
+          "path": "param:market_ticker",
+          "src_en": "Filter markets by market ticker(s). Can provide multiple values.",
+          "desc_en": "Restrict results to one or more specific Kalshi markets by their market ticker.",
+          "title_zh": "按一个或多个 Kalshi 市场的 market ticker 限定返回结果。"
+        },
+        {
+          "path": "param:event_ticker",
+          "src_en": "Filter markets by event ticker(s). Can provide multiple values.",
+          "desc_en": "Restrict results to markets belonging to one or more events, identified by event ticker.",
+          "title_zh": "按一个或多个 event ticker 限定返回属于这些事件的市场。"
+        },
+        {
+          "path": "param:search",
+          "src_en": "Search markets by keywords in title and description. Must be URL encoded (e.g., 'bitcoin%20price' for 'bitcoin price').",
+          "desc_en": "Keyword query matched against market title and description; the value must be URL-encoded.",
+          "title_zh": "针对市场标题与描述的关键词检索，取值需经 URL 编码。"
+        },
+        {
+          "path": "param:status",
+          "src_en": "Filter markets by status (whether they're open or closed)",
+          "desc_en": "Filter by trading state: `open` markets still accept trades, `closed` markets no longer do.",
+          "title_zh": "按交易状态筛选：`open` 表示仍可交易，`closed` 表示已停止交易。"
+        },
+        {
+          "path": "param:min_volume",
+          "src_en": "Filter markets with total trading volume greater than or equal to this amount (in dollars)",
+          "desc_en": "Keep only markets whose total trading volume is at least this amount, in dollars.",
+          "title_zh": "仅保留总成交量不低于该金额的市场，单位为美元。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Number of markets to return (1-100). Default: 10.",
+          "desc_en": "Number of markets to return per page.",
+          "title_zh": "每页返回的市场数量。"
+        },
+        {
+          "path": "param:pagination_key",
+          "src_en": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object.",
+          "desc_en": "Opaque cursor for fetching the next page; take it from the pagination object of the previous response.",
+          "title_zh": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。"
+        },
+        {
+          "path": "resp.200.markets",
+          "src_en": "",
+          "desc_en": "List of matching Kalshi markets.",
+          "title_zh": "匹配的 Kalshi 市场列表。"
+        },
+        {
+          "path": "resp.200.markets.event_ticker",
+          "src_en": "The Kalshi event ticker",
+          "desc_en": "Ticker of the event this market belongs to.",
+          "title_zh": "该市场所属事件的 ticker。"
+        },
+        {
+          "path": "resp.200.markets.market_ticker",
+          "src_en": "The Kalshi market ticker",
+          "desc_en": "Ticker uniquely identifying this market; use it to query price, trades or order book.",
+          "title_zh": "唯一标识该市场的 ticker，可用于查询价格、成交记录或订单簿。"
+        },
+        {
+          "path": "resp.200.markets.title",
+          "src_en": "Market question/title",
+          "desc_en": "Human-readable question the market resolves.",
+          "title_zh": "市场所裁决问题的可读标题。"
+        },
+        {
+          "path": "resp.200.markets.start_time",
+          "src_en": "Unix timestamp in seconds when the market opens",
+          "desc_en": "When trading on the market opens.",
+          "title_zh": "市场开放交易的时间。"
+        },
+        {
+          "path": "resp.200.markets.end_time",
+          "src_en": "Unix timestamp in seconds when the market is scheduled to end",
+          "desc_en": "Scheduled time at which the market is expected to end.",
+          "title_zh": "市场预计结束的计划时间。"
+        },
+        {
+          "path": "resp.200.markets.close_time",
+          "src_en": "Unix timestamp in seconds when the market actually resolves/closes (may be before end_time if market finishes early, null if not yet closed)",
+          "desc_en": "When the market actually resolved and closed; may precede end_time if it finished early, and is null while still open.",
+          "title_zh": "市场实际裁决并关闭的时间；若提前结束可能早于 end_time，仍开放时为 null。"
+        },
+        {
+          "path": "resp.200.markets.status",
+          "src_en": "Market status",
+          "desc_en": "Current trading state: `open` still accepts trades, `closed` no longer does.",
+          "title_zh": "当前交易状态：`open` 仍可交易，`closed` 已停止交易。"
+        },
+        {
+          "path": "resp.200.markets.last_price",
+          "src_en": "Last traded price in cents",
+          "desc_en": "Price of the most recent trade.",
+          "title_zh": "最近一笔成交的价格。"
+        },
+        {
+          "path": "resp.200.markets.volume",
+          "src_en": "Total trading volume in dollars",
+          "desc_en": "Cumulative trading volume since the market opened.",
+          "title_zh": "自市场开放以来的累计成交量。"
+        },
+        {
+          "path": "resp.200.markets.volume_24h",
+          "src_en": "24-hour trading volume in dollars",
+          "desc_en": "Trading volume over the trailing 24 hours.",
+          "title_zh": "过去 24 小时的成交量。"
+        },
+        {
+          "path": "resp.200.markets.result",
+          "src_en": "Market result (null if unresolved)",
+          "desc_en": "Final outcome of the market once resolved; null while unresolved.\n[⚠️Note:已裁决时 result 的具体取值集合源码未说明，待研发确认。]",
+          "title_zh": "市场裁决后的最终结果；未裁决时为 null。\n[⚠️批注:已裁决时 result 的具体取值集合源码未说明，待研发确认。]"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "",
+          "desc_en": "Page size that was applied to this response.",
+          "title_zh": "本次响应实际采用的每页数量。"
+        },
+        {
+          "path": "resp.200.pagination.total",
+          "src_en": "Total number of markets matching the filters",
+          "desc_en": "Total number of markets matching the filters across all pages.",
+          "title_zh": "在所有分页中匹配筛选条件的市场总数。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more markets available",
+          "desc_en": "Whether further pages of results remain.",
+          "title_zh": "是否还有更多分页结果。"
+        },
+        {
+          "path": "resp.200.pagination.pagination_key",
+          "src_en": "Base64-encoded cursor for the next page. Only present when there are more results.",
+          "desc_en": "Cursor to pass as pagination_key on the next request; present only when more results remain.",
+          "title_zh": "下次请求作为 pagination_key 传入的游标，仅在还有更多结果时出现。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short machine-readable error code for the failed request.",
+          "title_zh": "请求失败时的简短机器可读错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of why the request was rejected.",
+          "title_zh": "对请求被拒原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_kalshi-trades",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches historical trade data for Kalshi markets with optional filtering by ticker and time range. Returns executed trades with pricing, volume, and taker side information. All timestamps are in seconds.",
+          "desc_en": "List historical executed trades for Kalshi markets, optionally filtered by market ticker and a time window, returning per-trade price, contract count and taker side. Results are cursor-paginated.",
+          "title_zh": "列出 Kalshi 市场的历史成交记录，可按 market ticker 与时间区间筛选，返回每笔成交的价格、合约数量与吃单方向。结果采用游标分页。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The Kalshi market ticker to filter trades",
+          "desc_en": "Restrict trades to a single Kalshi market by its ticker.",
+          "title_zh": "按 market ticker 将成交记录限定到单个 Kalshi 市场。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Start time in Unix timestamp (seconds)",
+          "desc_en": "Lower bound of the trade time window; only trades at or after this moment are returned.",
+          "title_zh": "成交时间窗的下界，仅返回该时刻及之后的成交。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "End time in Unix timestamp (seconds)",
+          "desc_en": "Upper bound of the trade time window; only trades at or before this moment are returned.",
+          "title_zh": "成交时间窗的上界，仅返回该时刻及之前的成交。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Maximum number of trades to return (default: 100)",
+          "desc_en": "Maximum number of trades to return per page.",
+          "title_zh": "每页返回的成交记录数量上限。"
+        },
+        {
+          "path": "param:pagination_key",
+          "src_en": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object.",
+          "desc_en": "Opaque cursor for fetching the next page; take it from the pagination object of the previous response.",
+          "title_zh": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。"
+        },
+        {
+          "path": "resp.200.trades",
+          "src_en": "Array of executed trades",
+          "desc_en": "List of executed trades matching the filters.",
+          "title_zh": "匹配筛选条件的成交记录列表。"
+        },
+        {
+          "path": "resp.200.trades.trade_id",
+          "src_en": "Unique identifier for the trade",
+          "desc_en": "Identifier uniquely referencing this individual trade.",
+          "title_zh": "唯一引用该笔成交的标识。"
+        },
+        {
+          "path": "resp.200.trades.market_ticker",
+          "src_en": "The Kalshi market ticker",
+          "desc_en": "Ticker of the market on which the trade executed.",
+          "title_zh": "该笔成交所属市场的 ticker。"
+        },
+        {
+          "path": "resp.200.trades.count",
+          "src_en": "Number of contracts traded",
+          "desc_en": "Number of contracts exchanged in this trade.",
+          "title_zh": "该笔成交中交换的合约数量。"
+        },
+        {
+          "path": "resp.200.trades.yes_price",
+          "src_en": "Yes side price in cents",
+          "desc_en": "Execution price of the yes side, expressed in cents.",
+          "title_zh": "yes 一侧的成交价格，以分计。"
+        },
+        {
+          "path": "resp.200.trades.no_price",
+          "src_en": "No side price in cents",
+          "desc_en": "Execution price of the no side, expressed in cents.",
+          "title_zh": "no 一侧的成交价格，以分计。"
+        },
+        {
+          "path": "resp.200.trades.yes_price_dollars",
+          "src_en": "Yes side price in dollars",
+          "desc_en": "Execution price of the yes side, expressed in dollars.",
+          "title_zh": "yes 一侧的成交价格，以美元计。"
+        },
+        {
+          "path": "resp.200.trades.no_price_dollars",
+          "src_en": "No side price in dollars",
+          "desc_en": "Execution price of the no side, expressed in dollars.",
+          "title_zh": "no 一侧的成交价格，以美元计。"
+        },
+        {
+          "path": "resp.200.trades.taker_side",
+          "src_en": "Which side was the taker (yes or no)",
+          "desc_en": "Which side initiated the trade by crossing the spread: `yes` or `no`.",
+          "title_zh": "主动吃单成交的一方：`yes` 或 `no`。"
+        },
+        {
+          "path": "resp.200.trades.created_time",
+          "src_en": "Timestamp of the trade in seconds (Unix timestamp)",
+          "desc_en": "Moment at which the trade was executed.",
+          "title_zh": "该笔成交发生的时间。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "",
+          "desc_en": "Page size that was applied to this response.",
+          "title_zh": "本次响应实际采用的每页数量。"
+        },
+        {
+          "path": "resp.200.pagination.total",
+          "src_en": "Total number of trades matching the filters",
+          "desc_en": "Total number of trades matching the filters across all pages.",
+          "title_zh": "在所有分页中匹配筛选条件的成交总数。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more trades available",
+          "desc_en": "Whether further pages of results remain.",
+          "title_zh": "是否还有更多分页结果。"
+        },
+        {
+          "path": "resp.200.pagination.pagination_key",
+          "src_en": "Base64-encoded cursor for the next page. Only present when there are more results.",
+          "desc_en": "Cursor to pass as pagination_key on the next request; present only when more results remain.",
+          "title_zh": "下次请求作为 pagination_key 传入的游标，仅在还有更多结果时出现。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short machine-readable error code for the failed request.",
+          "title_zh": "请求失败时的简短机器可读错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of why the request was rejected.",
+          "title_zh": "对请求被拒原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_kalshi-market-price",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches the current market price for a Kalshi market by `market_ticker`. When `at_time` is not provided, returns the most real-time price available. When `at_time` is provided, returns the historical market price at that specific timestamp. Returns prices for both yes and no sides.\n\n**Example Request (with historical timestamp):**\n```bash\ncurl 'https://api.domeapi.io/v1/kalshi/market-price/KXNFLGAME-25AUG16ARIDEN-ARI?at_time=1762164600' \\\n  -H 'Authorization: Bearer YOUR_TOKEN'\n```\n\n**Example Request (real-time price):**\n```bash\ncurl 'https://api.domeapi.io/v1/kalshi/market-price/KXNFLGAME-25AUG16ARIDEN-ARI' \\\n  -H 'Authorization: Bearer YOUR_TOKEN'\n```",
+          "desc_en": "Get the price of a single Kalshi market identified by its market ticker, for both the yes and no sides. Returns the latest available price by default, or the historical price at a given timestamp when at_time is supplied.",
+          "title_zh": "查询由 market ticker 指定的单个 Kalshi 市场价格，包含 yes 与 no 两侧。默认返回最新可得价格；传入 at_time 时返回该时间点的历史价格。"
+        },
+        {
+          "path": "param:at_time",
+          "src_en": "Optional Unix timestamp (in seconds) to fetch a historical market price. If not provided, returns the most real-time price available.",
+          "desc_en": "Fetch the historical price as of this moment; omit to get the latest available price.",
+          "title_zh": "查询截至该时刻的历史价格；省略则返回最新可得价格。"
+        },
+        {
+          "path": "resp.200.yes",
+          "src_en": "Yes side price information",
+          "desc_en": "Price information for the yes side of the market.",
+          "title_zh": "市场 yes 一侧的价格信息。"
+        },
+        {
+          "path": "resp.200.yes.price",
+          "src_en": "The yes side price in dollars (between 0 and 1)",
+          "desc_en": "Yes-side price, expressed in dollars as a probability-like value between 0 and 1.",
+          "title_zh": "yes 一侧价格，以美元计，取值介于 0 与 1 之间，类似概率。"
+        },
+        {
+          "path": "resp.200.yes.at_time",
+          "src_en": "The timestamp for which the price was fetched (Unix timestamp in seconds)",
+          "desc_en": "Moment the returned yes-side price corresponds to.",
+          "title_zh": "所返回 yes 一侧价格对应的时间点。"
+        },
+        {
+          "path": "resp.200.no",
+          "src_en": "No side price information",
+          "desc_en": "Price information for the no side of the market.",
+          "title_zh": "市场 no 一侧的价格信息。"
+        },
+        {
+          "path": "resp.200.no.price",
+          "src_en": "The no side price in dollars (between 0 and 1)",
+          "desc_en": "No-side price, expressed in dollars as a probability-like value between 0 and 1.",
+          "title_zh": "no 一侧价格，以美元计，取值介于 0 与 1 之间，类似概率。"
+        },
+        {
+          "path": "resp.200.no.at_time",
+          "src_en": "The timestamp for which the price was fetched (Unix timestamp in seconds)",
+          "desc_en": "Moment the returned no-side price corresponds to.",
+          "title_zh": "所返回 no 一侧价格对应的时间点。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short machine-readable error code for the failed request.",
+          "title_zh": "请求失败时的简短机器可读错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of why the request was rejected.",
+          "title_zh": "对请求被拒原因的可读说明。"
+        },
+        {
+          "path": "resp.404.error",
+          "src_en": "",
+          "desc_en": "Short machine-readable error code indicating the market was not found.",
+          "title_zh": "表示未找到该市场的简短机器可读错误码。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation that no price data exists for the requested market.",
+          "title_zh": "对所请求市场不存在价格数据的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_kalshi-orderbooks",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches historical orderbook snapshots for a specific Kalshi market (ticker) over a specified time range. If no start_time and end_time are provided, returns the latest orderbook snapshot for the market. Returns snapshots of the order book including yes/no bids and asks with prices in both cents and dollars. All timestamps are in milliseconds. Orderbook data has history starting from October 29th, 2025. Note: When fetching the latest orderbook (without start/end times), the limit parameter is ignored.",
+          "desc_en": "Get historical order book snapshots for a single Kalshi market over a time window, returning yes/no bid levels in both cents and dollars. When no time window is given, returns only the latest snapshot. Results are cursor-paginated.",
+          "title_zh": "查询单个 Kalshi 市场在某时间区间内的历史订单簿快照，返回 yes/no 两侧的报价档位（同时给出以分和以美元计的价格）。未指定时间区间时仅返回最新一条快照。结果采用游标分页。"
+        },
+        {
+          "path": "param:ticker",
+          "src_en": "The Kalshi market ticker",
+          "desc_en": "Kalshi market ticker whose order book history is requested.",
+          "title_zh": "要查询订单簿历史的 Kalshi 市场 ticker。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Start time in Unix timestamp (milliseconds). Optional - if not provided along with end_time, returns the latest orderbook snapshot.",
+          "desc_en": "Lower bound of the snapshot time window; omit together with end_time to get only the latest snapshot.",
+          "title_zh": "快照时间窗的下界；与 end_time 一并省略则只返回最新一条快照。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "End time in Unix timestamp (milliseconds). Optional - if not provided along with start_time, returns the latest orderbook snapshot.",
+          "desc_en": "Upper bound of the snapshot time window; omit together with start_time to get only the latest snapshot.",
+          "title_zh": "快照时间窗的上界；与 start_time 一并省略则只返回最新一条快照。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Maximum number of snapshots to return (default: 100, max: 200). Ignored when fetching the latest orderbook without start_time and end_time.",
+          "desc_en": "Maximum number of snapshots to return per page; ignored when fetching only the latest snapshot.",
+          "title_zh": "每页返回的快照数量上限；仅取最新快照时该参数被忽略。"
+        },
+        {
+          "path": "param:paginationKey",
+          "src_en": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object.",
+          "desc_en": "Opaque cursor for fetching the next page; take it from the pagination object of the previous response.",
+          "title_zh": "用于翻到下一页的不透明游标，取自上一次响应的 pagination 对象。"
+        },
+        {
+          "path": "resp.200.snapshots",
+          "src_en": "Array of orderbook snapshots at different points in time",
+          "desc_en": "Order book snapshots ordered through the requested time window.",
+          "title_zh": "在所请求时间窗内排列的订单簿快照。"
+        },
+        {
+          "path": "resp.200.snapshots.orderbook",
+          "src_en": "",
+          "desc_en": "The bid levels of the order book at this snapshot, split by side and price unit.",
+          "title_zh": "该快照时刻订单簿的报价档位，按方向与价格单位拆分。"
+        },
+        {
+          "path": "resp.200.snapshots.orderbook.yes",
+          "src_en": "Yes side orders with prices in cents",
+          "desc_en": "Resting yes-side orders, each as a [price, contract count] pair with price in cents.",
+          "title_zh": "yes 一侧的挂单，每项为 [价格, 合约数量] 对，价格以分计。"
+        },
+        {
+          "path": "resp.200.snapshots.orderbook.no",
+          "src_en": "No side orders with prices in cents",
+          "desc_en": "Resting no-side orders, each as a [price, contract count] pair with price in cents.",
+          "title_zh": "no 一侧的挂单，每项为 [价格, 合约数量] 对，价格以分计。"
+        },
+        {
+          "path": "resp.200.snapshots.orderbook.yes_dollars",
+          "src_en": "Yes side orders with prices in dollars",
+          "desc_en": "Resting yes-side orders, each as a [price, contract count] pair with price in dollars.",
+          "title_zh": "yes 一侧的挂单，每项为 [价格, 合约数量] 对，价格以美元计。"
+        },
+        {
+          "path": "resp.200.snapshots.orderbook.no_dollars",
+          "src_en": "No side orders with prices in dollars",
+          "desc_en": "Resting no-side orders, each as a [price, contract count] pair with price in dollars.",
+          "title_zh": "no 一侧的挂单，每项为 [价格, 合约数量] 对，价格以美元计。"
+        },
+        {
+          "path": "resp.200.snapshots.timestamp",
+          "src_en": "Timestamp of the snapshot in milliseconds",
+          "desc_en": "Moment this order book snapshot was captured.",
+          "title_zh": "该订单簿快照的采集时间。"
+        },
+        {
+          "path": "resp.200.snapshots.ticker",
+          "src_en": "The Kalshi market ticker",
+          "desc_en": "Ticker of the market this snapshot belongs to.",
+          "title_zh": "该快照所属市场的 ticker。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "",
+          "desc_en": "Page size that was applied to this response.",
+          "title_zh": "本次响应实际采用的每页数量。"
+        },
+        {
+          "path": "resp.200.pagination.count",
+          "src_en": "Number of snapshots returned",
+          "desc_en": "Number of snapshots returned in this page.",
+          "title_zh": "本页返回的快照数量。"
+        },
+        {
+          "path": "resp.200.pagination.paginationKey",
+          "src_en": "Base64-encoded cursor for fetching the next page of results. Only present when has_more is true.",
+          "desc_en": "Cursor to pass as paginationKey on the next request; present only when more results remain.",
+          "title_zh": "下次请求作为 paginationKey 传入的游标，仅在还有更多结果时出现。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more snapshots available",
+          "desc_en": "Whether further pages of snapshots remain.",
+          "title_zh": "是否还有更多分页快照。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short machine-readable error code for the failed request.",
+          "title_zh": "请求失败时的简短机器可读错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of why the request was rejected.",
+          "title_zh": "对请求被拒原因的可读说明。"
+        }
+      ]
+    }
+  ],
+  "total": 79,
+  "missing": []
+}

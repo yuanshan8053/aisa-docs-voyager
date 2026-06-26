@@ -1,0 +1,313 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OpenAPI Plant Store",
+    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://sandbox.mintlify.com"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/plants": {
+      "get": {
+        "description": "Returns all plants from the system that the user has access to",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of results to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-doc": {
+              "desc_en": "Caps how many plants are returned in one response. Omit it to let the server apply its own default ceiling.",
+              "title_zh": "限制单次响应返回的植物数量。留空则由服务端套用其默认上限。",
+              "source": "ai",
+              "src_hash": "sha256:c6b46fbe98aa",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plant response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Plant"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "列出植物 GET /plants",
+          "desc_en": "List the plants in the store that the caller is allowed to see. This is a read-only listing; cap the result size with `limit`. Typical use is browsing or populating a catalog view.",
+          "description_zh": "列出当前调用方有权查看的店内植物。这是只读列表查询,可用 `limit` 限制返回数量。典型场景为浏览或填充目录视图。",
+          "resp_section_intro": "成功时返回植物对象数组。",
+          "errors": [
+            {
+              "code": "400",
+              "message_zh": "请求出错,返回错误码与说明。"
+            }
+          ],
+          "errors_source": "spec 已声明 400,错误体为 Error(error + message)",
+          "source": "ai",
+          "src_hash": "sha256:a20c8eb695e3",
+          "doc_version": "2.0.0"
+        }
+      },
+      "post": {
+        "description": "Creates a new plant in the store",
+        "requestBody": {
+          "description": "Plant to add to the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPlant"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "plant response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plant"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "新建植物 POST /plants",
+          "desc_en": "Create a new plant in the store from the supplied plant details and return the stored record. Typical use is adding inventory.",
+          "description_zh": "用提交的植物信息在店内新建一条植物记录,并返回入库后的对象。典型场景为新增库存。",
+          "resp_section_intro": "成功时返回新建的植物对象。",
+          "errors": [
+            {
+              "code": "400",
+              "message_zh": "请求出错,返回错误码与说明。"
+            }
+          ],
+          "errors_source": "spec 已声明 400,错误体为 Error(error + message)",
+          "source": "ai",
+          "src_hash": "sha256:327aa3fc6671",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/plants/{id}": {
+      "delete": {
+        "description": "Deletes a single plant based on the ID supplied",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of plant to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-doc": {
+              "desc_en": "Identifier of the plant to delete. The plant with this ID is removed from the store.",
+              "title_zh": "要删除的植物的标识。该 ID 对应的植物将从店内移除。",
+              "source": "ai",
+              "src_hash": "sha256:aab09ed36ccc",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Plant deleted",
+            "content": {}
+          },
+          "400": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "删除植物 DELETE /plants/{id}",
+          "desc_en": "Delete a single plant identified by its path `id`. On success the store returns no body. Typical use is removing inventory.",
+          "description_zh": "按路径中的 `id` 删除单条植物记录。成功时不返回响应体。典型场景为下架库存。",
+          "errors": [
+            {
+              "code": "400",
+              "message_zh": "请求出错,返回错误码与说明。"
+            }
+          ],
+          "errors_source": "spec 已声明 400,错误体为 Error(error + message)",
+          "source": "ai",
+          "src_hash": "sha256:bb9ebce93d24",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  },
+  "webhooks": {
+    "/plant/webhook": {
+      "post": {
+        "description": "Information about a new plant added to the store",
+        "requestBody": {
+          "description": "Plant added to the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPlant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Plant": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the plant",
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Display name of the created plant, echoing what was stored.",
+              "title_zh": "新建植物的展示名称,回显入库内容。",
+              "source": "ai",
+              "src_hash": "sha256:808d4e9f2af4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "tag": {
+            "description": "Tag to specify the type",
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Free-text tag of the created plant.",
+              "title_zh": "新建植物的自由文本标签。",
+              "source": "ai",
+              "src_hash": "sha256:a349b7744581",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      },
+      "NewPlant": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Plant"
+          },
+          {
+            "required": [
+              "id"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "Identification number of the plant",
+                "type": "integer",
+                "format": "int64",
+                "x-doc": {
+                  "desc_en": "Caller-assigned identification number for the new plant, distinguishing it from existing records.",
+                  "title_zh": "为新植物指定的标识编号,用于与现有记录区分。",
+                  "source": "ai",
+                  "src_hash": "sha256:0f69667c2475",
+                  "doc_version": "2.0.0"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Error": {
+        "required": [
+          "error",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "integer",
+            "format": "int32",
+            "x-doc": {
+              "desc_en": "Numeric error code identifying the failure.",
+              "title_zh": "标识本次失败的数字错误码。",
+              "source": "ai",
+              "src_hash": "sha256:5c341a71df70",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message": {
+            "type": "string",
+            "x-doc": {
+              "desc_en": "Human-readable detail describing the error.",
+              "title_zh": "对错误的可读详细说明。",
+              "source": "ai",
+              "src_hash": "sha256:38a346cadbd3",
+              "doc_version": "2.0.0"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

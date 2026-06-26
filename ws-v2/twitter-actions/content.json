@@ -1,0 +1,130 @@
+{
+  "operations": {
+    "authTwitterUser": {
+      "heading_zh": "关联 X/Twitter 账号 authTwitterUser",
+      "desc_en": "Start the OAuth flow that links a user's X/Twitter account to your AIsa API key, returning an authorization URL for the user to approve. Once linked, AIsa reuses that session automatically for every subsequent Twitter write call.",
+      "description_zh": "发起 OAuth 流程，把用户的 X/Twitter 账号关联到你的 AIsa API Key，返回供用户授权的链接。关联完成后，AIsa 会在后续每次 Twitter 写操作中自动复用该会话。"
+    },
+    "unlikeTwitter": {
+      "heading_zh": "取消点赞推文 unlikeTwitter",
+      "desc_en": "Remove the authenticated source user's like from a tweet. Unliking a tweet that was never liked is a no-op and still succeeds.",
+      "description_zh": "移除已授权来源用户对某条推文的点赞。对本就未点赞的推文取消点赞是空操作，仍会成功。"
+    },
+    "likeTwitter": {
+      "heading_zh": "点赞推文 likeTwitter",
+      "desc_en": "Like a tweet on behalf of the authenticated source user. Liking an already-liked tweet is a no-op and still succeeds.",
+      "description_zh": "代表已授权来源用户点赞某条推文。对已点赞的推文再次点赞是空操作，仍会成功。"
+    },
+    "postTwitter": {
+      "heading_zh": "发布或编辑推文 postTwitter",
+      "desc_en": "Publish a new tweet on behalf of the authenticated source user, or edit an existing one. At most one of `media`, `poll`, `quote_tweet_id`, and `card_uri` may be set in a single request.",
+      "description_zh": "代表已授权来源用户发布新推文，或编辑已有推文。media、poll、quote_tweet_id、card_uri 在同一次请求中至多只能设置其一。"
+    },
+    "unfollowTwitterUser": {
+      "heading_zh": "取消关注用户 unfollowTwitterUser",
+      "desc_en": "Make the authenticated source user unfollow a target user on X/Twitter. Unfollowing someone not currently followed is a no-op and still succeeds.",
+      "description_zh": "让已授权来源用户取消关注 X/Twitter 上的目标用户。取消关注本就未关注的用户是空操作，仍会成功。"
+    },
+    "followTwitterUser": {
+      "heading_zh": "关注用户 followTwitterUser",
+      "desc_en": "Make the authenticated source user follow a target user on X/Twitter. Following a protected account yields a pending follow request awaiting approval.",
+      "description_zh": "让已授权来源用户关注 X/Twitter 上的目标用户。关注受保护账号时会产生待对方批准的关注请求。"
+    }
+  },
+  "fields": {
+    "authTwitterUser": {
+      "request": {
+        "scopes": {"desc_en": "X OAuth 2.0 scopes to request for the link; omit to use the default set covering all of AIsa's Twitter write endpoints.", "title_zh": "本次关联要申请的 X OAuth 2.0 权限范围；省略则使用覆盖 AIsa 全部 Twitter 写接口的默认集合。"}
+      },
+      "response": {
+        "200": {
+          "auth_url": {"desc_en": "Short-lived X authorization URL; open it in a browser so the source user can approve the requested scopes. Generate a fresh one each time a (re-)link is needed.", "title_zh": "有效期短的 X 授权链接；在浏览器打开它，让来源用户批准所申请的权限。每次需要（重新）关联都应重新生成。"},
+          "state": {"desc_en": "Opaque CSRF token AIsa validates when X redirects back; store it client-side if you need to correlate the flow.", "title_zh": "用于防 CSRF 的不透明令牌，X 回跳时 AIsa 会校验它；若需关联本次流程可在客户端保存。"},
+          "expires_at": {"desc_en": "When the authorization URL stops working; request a new one if the user hasn't finished authorizing by then.", "title_zh": "授权链接失效的时间；用户若未在此前完成授权需重新申请。"}
+        }
+      }
+    },
+    "unlikeTwitter": {
+      "request": {
+        "tweet_id": {"desc_en": "Identifier of the tweet to unlike.", "title_zh": "要取消点赞的推文标识。"}
+      },
+      "response": {
+        "200": {
+          "data": {"desc_en": "Container for the resulting like state.", "title_zh": "点赞结果状态的容器。"},
+          "data.liked": {"desc_en": "Whether the source user currently likes the tweet; `false` confirms the like was removed.", "title_zh": "来源用户当前是否仍点赞该推文；为 false 表示点赞已移除。"}
+        }
+      }
+    },
+    "likeTwitter": {
+      "request": {
+        "tweet_id": {"desc_en": "Identifier of the tweet to like.", "title_zh": "要点赞的推文标识。"}
+      },
+      "response": {
+        "200": {
+          "data": {"desc_en": "Container for the resulting like state.", "title_zh": "点赞结果状态的容器。"},
+          "data.liked": {"desc_en": "Whether the source user currently likes the tweet; `true` confirms the like is in place.", "title_zh": "来源用户当前是否点赞该推文；为 true 表示已点赞。"}
+        }
+      }
+    },
+    "postTwitter": {
+      "request": {
+        "text": {"desc_en": "Body text of the tweet; optional when posting media, a poll, or a quote, otherwise required.", "title_zh": "推文正文；发布媒体、投票或引用时可省略，否则必填。"},
+        "reply": {"desc_en": "Settings that turn this tweet into a reply to another tweet.", "title_zh": "把本推文设为对另一条推文回复的相关设置。"},
+        "reply.in_reply_to_tweet_id": {"desc_en": "Identifier of the tweet being replied to.", "title_zh": "被回复推文的标识。"},
+        "reply.auto_populate_reply_metadata": {"desc_en": "Whether to automatically @-mention the participants of the original tweet in the reply.", "title_zh": "是否在回复中自动 @ 原推文的参与者。"},
+        "reply.exclude_reply_user_ids": {"desc_en": "User IDs to leave out of the auto-generated reply mentions.", "title_zh": "从自动生成的回复 @ 名单中排除的用户 ID。"},
+        "quote_tweet_id": {"desc_en": "Identifier of the tweet to quote; mutually exclusive with `media`, `poll`, and `card_uri`.", "title_zh": "要引用的推文标识；与 media、poll、card_uri 互斥。"},
+        "media": {"desc_en": "Attaches uploaded media to the tweet; mutually exclusive with `poll`, `quote_tweet_id`, and `card_uri`.", "title_zh": "为推文附加上传的媒体；与 poll、quote_tweet_id、card_uri 互斥。"},
+        "media.media_ids": {"desc_en": "Identifiers of media to attach, obtained beforehand from X's media-upload API.", "title_zh": "要附加的媒体标识，需事先通过 X 的媒体上传接口获取。"},
+        "media.tagged_user_ids": {"desc_en": "User IDs to tag in the attached media.", "title_zh": "在所附媒体中标记的用户 ID。"},
+        "poll": {"desc_en": "Attaches a poll to the tweet; mutually exclusive with `media`, `quote_tweet_id`, and `card_uri`.", "title_zh": "为推文附加投票；与 media、quote_tweet_id、card_uri 互斥。"},
+        "poll.options": {"desc_en": "The poll's choices.", "title_zh": "投票的选项。"},
+        "poll.duration_minutes": {"desc_en": "How long the poll stays open, in minutes.", "title_zh": "投票开放的时长，单位为分钟。"},
+        "poll.reply_settings": {"desc_en": "Restricts who may reply to the tweet that carries this poll.", "title_zh": "限制谁可以回复这条带投票的推文。"},
+        "card_uri": {"desc_en": "URI of a card to attach; mutually exclusive with `media`, `poll`, `quote_tweet_id`, and `direct_message_deep_link`.", "title_zh": "要附加的卡片 URI；与 media、poll、quote_tweet_id、direct_message_deep_link 互斥。"},
+        "direct_message_deep_link": {"desc_en": "Deep link that routes the conversation into a private direct message.", "title_zh": "将对话引导进入私信的深度链接。"},
+        "geo": {"desc_en": "Attaches a place to the tweet.", "title_zh": "为推文附加地点。"},
+        "geo.place_id": {"desc_en": "Identifier of the X place to attach.", "title_zh": "要附加的 X 地点标识。"},
+        "reply_settings": {"desc_en": "Restricts who is allowed to reply to the tweet.", "title_zh": "限制谁可以回复该推文。"},
+        "for_super_followers_only": {"desc_en": "Whether to make the tweet visible only to super followers.", "title_zh": "是否让该推文仅对超级粉丝可见。"},
+        "nullcast": {"desc_en": "Whether to post as a nullcast (promoted-only) tweet that does not appear in the public timeline or to followers.", "title_zh": "是否发布为 nullcast（仅推广）推文，不出现在公开时间线或粉丝处。"},
+        "paid_partnership": {"desc_en": "Whether to mark the tweet as a paid partnership.", "title_zh": "是否将该推文标记为付费合作。"},
+        "made_with_ai": {"desc_en": "Whether to flag the tweet as containing AI-generated media.", "title_zh": "是否标记该推文含 AI 生成的媒体。"},
+        "community_id": {"desc_en": "Identifier of the community to post into.", "title_zh": "要发布到的社区标识。"},
+        "share_with_followers": {"desc_en": "Whether to also surface the community post to your followers.", "title_zh": "是否同时把社区帖子展示给你的粉丝。"},
+        "edit_options": {"desc_en": "Switches the call to edit an existing tweet rather than create a new one, subject to X's edit window.", "title_zh": "将本次调用切换为编辑已有推文而非新建，受 X 的编辑时限约束。"},
+        "edit_options.previous_post_id": {"desc_en": "Identifier of the existing tweet to edit.", "title_zh": "要编辑的已有推文标识。"}
+      },
+      "response": {
+        "201": {
+          "data": {"desc_en": "Container for the created or edited tweet.", "title_zh": "已创建或已编辑推文的容器。"},
+          "data.id": {"desc_en": "Identifier of the resulting tweet.", "title_zh": "生成推文的标识。"},
+          "data.text": {"desc_en": "Final text of the tweet as stored by X.", "title_zh": "X 实际保存的推文最终文本。"}
+        }
+      }
+    },
+    "unfollowTwitterUser": {
+      "request": {
+        "target_user_id": {"desc_en": "Identifier of the X/Twitter user to unfollow.", "title_zh": "要取消关注的 X/Twitter 用户标识。"}
+      },
+      "response": {
+        "200": {
+          "data": {"desc_en": "Container for the resulting follow state.", "title_zh": "关注结果状态的容器。"},
+          "data.following": {"desc_en": "Whether the source user still follows the target; `false` confirms the unfollow.", "title_zh": "来源用户是否仍关注目标用户；为 false 表示已取消关注。"}
+        }
+      }
+    },
+    "followTwitterUser": {
+      "request": {
+        "target_user_id": {"desc_en": "Identifier of the X/Twitter user to follow.", "title_zh": "要关注的 X/Twitter 用户标识。"}
+      },
+      "response": {
+        "200": {
+          "data": {"desc_en": "Container for the resulting follow state.", "title_zh": "关注结果状态的容器。"},
+          "data.following": {"desc_en": "Whether the source user now follows the target user.", "title_zh": "来源用户当前是否已关注目标用户。"},
+          "data.pending_follow": {"desc_en": "Whether a follow request was sent to a protected account and is awaiting the target's approval.", "title_zh": "是否已向受保护账号发出关注请求并等待对方批准。"}
+        }
+      }
+    }
+  }
+}

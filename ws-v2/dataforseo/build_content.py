@@ -1,0 +1,569 @@
+# -*- coding: utf-8 -*-
+"""Assemble serp_rest.content.json from hand-authored dual-field dictionaries.
+
+Each unique field/param/op is authored once (desc_en + title_zh per METHODOLOGY)
+and mapped across ops that share an identical request/response shape. Identical
+fields legitimately get identical docs; this is deduplicated authoring, not
+template generation.
+"""
+import json
+
+spec = json.load(open("slices/serp_rest.json"))
+
+
+def deref(s, sch, seen=None):
+    seen = seen or set()
+    if isinstance(sch, dict) and "$ref" in sch:
+        r = sch["$ref"]
+        if r in seen:
+            return {}
+        seen.add(r)
+        if r.startswith("#/components/schemas/"):
+            n = r.split("/")[-1]
+            return deref(s, s["components"]["schemas"].get(n, {}), seen)
+    return sch
+
+
+def resp_keys(op):
+    out = {}
+    for code, resp in op.get("responses", {}).items():
+        sch = resp.get("content", {}).get("application/json", {}).get("schema")
+        if sch:
+            d = deref(spec, sch)
+            out[code] = list((d.get("properties") or {}).keys())
+    return out
+
+
+def req_keys(op):
+    rb = op.get("requestBody", {}).get("content", {}).get("application/json", {}).get("schema")
+    if not rb:
+        return []
+    d = deref(spec, rb)
+    return list((d.get("properties") or {}).keys())
+
+
+# ---------------------------------------------------------------------------
+# Shared response-envelope fields (identical native desc across all 9 shapes).
+# ---------------------------------------------------------------------------
+ENVELOPE = {
+    "version": {
+        "desc_en": "API version that produced this response, useful when reporting issues or pinning behavior across releases.",
+        "title_zh": "生成该响应的 API 版本，便于上报问题或在版本迭代中锁定行为。",
+    },
+    "status_code": {
+        "desc_en": "Top-level status code for the whole API call. `20000` indicates the call was accepted and processed; non-20xxx values signal a request-level failure that applies before any per-task processing.",
+        "title_zh": "整次 API 调用的总状态码。`20000` 表示调用被受理并处理成功；非 20xxx 值代表在进入单任务处理之前就发生的请求级失败。",
+    },
+    "status_message": {
+        "desc_en": "Human-readable message accompanying `status_code`; read it when `status_code` is not a success value to learn the cause.",
+        "title_zh": "与 `status_code` 配套的可读说明；当 `status_code` 非成功值时，读取此字段定位原因。",
+    },
+    "time": {
+        "desc_en": "Server-side execution time for the whole call, in seconds.",
+        "title_zh": "整次调用的服务端执行耗时，单位为秒。",
+    },
+    "cost": {
+        "desc_en": "Total amount charged for this call across all tasks, in USD. Reads-only listing endpoints (locations/languages) return 0.",
+        "title_zh": "本次调用所有任务合计扣费，单位为美元；locations/languages 等只读列表接口返回 0。",
+    },
+    "tasks_count": {
+        "desc_en": "Number of entries in the `tasks` array.",
+        "title_zh": "`tasks` 数组中的条目数量。",
+    },
+    "tasks_error": {
+        "desc_en": "How many of the entries in `tasks` finished with an error; if non-zero, inspect each task's own `status_code`.",
+        "title_zh": "`tasks` 中以错误结束的条目数量；若非 0，需逐个检查任务自身的 `status_code`。",
+    },
+    "tasks": {
+        "desc_en": "Container for the individual task results of this call. Because the gateway sends one task per call, expect a single entry.",
+        "title_zh": "本次调用各任务结果的容器；由于网关每次仅提交一个任务，通常只含一个条目。",
+    },
+}
+
+# Per-task common fields (appear in task_post / ai_summary / screenshot shapes).
+TASK_COMMON = {
+    "tasks[].id": {
+        "desc_en": "UUID of this task. Pass it to the matching `task_get` endpoint to collect results later, and reuse it as `task_id` for the AI Summary and Screenshot endpoints.",
+        "title_zh": "该任务的 UUID。稍后用它调用对应的 `task_get` 接口取回结果，也可作为 `task_id` 复用于 AI Summary 与 Screenshot 接口。",
+    },
+    "tasks[].status_code": {
+        "desc_en": "Per-task status code. `20000` means done; `20100` typically means the task was accepted and is still being processed.",
+        "title_zh": "单任务状态码。`20000` 表示已完成；`20100` 通常表示任务已受理、仍在处理中。",
+    },
+    "tasks[].status_message": {
+        "desc_en": "Human-readable message for this task's status; consult it when the task code is not a success value.",
+        "title_zh": "该任务状态的可读说明；当任务状态码非成功值时据此排查。",
+    },
+    "tasks[].cost": {
+        "desc_en": "Amount charged for this individual task, in USD.",
+        "title_zh": "该单任务的扣费金额，单位为美元。",
+    },
+    "tasks[].result_count": {
+        "desc_en": "Number of entries in this task's `result` array.",
+        "title_zh": "该任务 `result` 数组中的条目数量。",
+    },
+}
+
+# ---------------------------------------------------------------------------
+# Response shapes keyed by their full property list signature.
+# ---------------------------------------------------------------------------
+RESP_FIELDS = {}
+
+
+def add_resp(keys, extra):
+    d = {}
+    for k in keys:
+        if k in ENVELOPE:
+            d[k] = ENVELOPE[k]
+        elif k in TASK_COMMON:
+            d[k] = TASK_COMMON[k]
+        elif k in extra:
+            d[k] = extra[k]
+        else:
+            raise KeyError("unmapped resp field: " + k)
+    return d
+
+
+# SET 0: locations
+LOC_EXTRA = {
+    "tasks[].result": {
+        "desc_en": "List of locations supported for this search engine's SERP. Use a returned `location_code` (or `location_name`) when posting tasks to target that locale.",
+        "title_zh": "该搜索引擎 SERP 支持的地区列表。提交任务时用其中的 `location_code`（或 `location_name`）来锁定目标地区。",
+    },
+    "tasks[].result[].location_code": {
+        "desc_en": "Numeric code identifying the location; pass it as the `location_code` request field to geo-target a task.",
+        "title_zh": "标识地区的数字代码；作为请求字段 `location_code` 传入以对任务做地域定位。",
+    },
+    "tasks[].result[].location_name": {
+        "desc_en": "Human-readable full name of the location; corresponds to the `location_name` request field.",
+        "title_zh": "地区的可读全名；对应请求字段 `location_name`。",
+    },
+    "tasks[].result[].location_code_parent": {
+        "desc_en": "Code of the enclosing (parent) location, e.g. the country a city belongs to; helps build a location hierarchy.",
+        "title_zh": "上级（父）地区的代码，例如城市所属的国家，可用于构建地区层级。",
+    },
+    "tasks[].result[].country_iso_code": {
+        "desc_en": "ISO 3166-1 country code of the location, e.g. `US`.",
+        "title_zh": "该地区所属国家的 ISO 3166-1 代码，如 `US`。",
+    },
+}
+# SET 1: languages
+LANG_EXTRA = {
+    "tasks[].result": {
+        "desc_en": "List of languages supported for this search engine's SERP. Use a returned `language_code` (or `language_name`) when posting tasks.",
+        "title_zh": "该搜索引擎 SERP 支持的语言列表。提交任务时使用其中的 `language_code`（或 `language_name`）。",
+    },
+    "tasks[].result[].language_name": {
+        "desc_en": "Human-readable full name of the language; corresponds to the `language_name` request field.",
+        "title_zh": "语言的可读全名；对应请求字段 `language_name`。",
+    },
+    "tasks[].result[].language_code": {
+        "desc_en": "Code identifying the language; pass it as the `language_code` request field.",
+        "title_zh": "标识语言的代码；作为请求字段 `language_code` 传入。",
+    },
+}
+# SET 2: task_post ack (only TASK_COMMON + envelope, no extra unique)
+TASKPOST_EXTRA = {}
+# SET 3: tasks_ready (regular/advanced/html endpoints)
+READY3_EXTRA = {
+    "tasks[].result": {
+        "desc_en": "List of completed-but-uncollected tasks. Each entry exposes the URLs to fetch its results.",
+        "title_zh": "已完成但尚未领取的任务列表；每个条目给出领取结果的 URL。",
+    },
+    "tasks[].result[].id": {
+        "desc_en": "UUID of a completed task ready for collection; feed it to the matching `task_get` endpoint.",
+        "title_zh": "可领取的已完成任务的 UUID；传给对应的 `task_get` 接口。",
+    },
+    "tasks[].result[].endpoint_regular": {
+        "desc_en": "Relative API path for collecting this task's regular results.",
+        "title_zh": "领取该任务 regular 结果的相对 API 路径。",
+    },
+    "tasks[].result[].endpoint_advanced": {
+        "desc_en": "Relative API path for collecting this task's advanced results.",
+        "title_zh": "领取该任务 advanced 结果的相对 API 路径。",
+    },
+    "tasks[].result[].endpoint_html": {
+        "desc_en": "Relative API path for collecting this task's HTML results.",
+        "title_zh": "领取该任务 HTML 结果的相对 API 路径。",
+    },
+}
+# SET 6: youtube tasks_ready (advanced-only endpoint)
+READY6_EXTRA = {
+    "tasks[].result": READY3_EXTRA["tasks[].result"],
+    "tasks[].result[].id": READY3_EXTRA["tasks[].result[].id"],
+    "tasks[].result[].endpoint_advanced": READY3_EXTRA["tasks[].result[].endpoint_advanced"],
+}
+# SET 4: task_get (opaque result payload)
+GET4_EXTRA = {
+    "tasks[].result": {
+        "desc_en": "The collected SERP payload for the requested task. Its inner shape depends on the result type (regular / advanced / html) and the search engine, so it is returned as an open array; parse according to the endpoint you called.",
+        "title_zh": "所请求任务领取到的 SERP 结果数据。其内部结构取决于结果类型（regular / advanced / html）与搜索引擎，故以开放数组返回；请按调用的接口类型解析。",
+    },
+}
+# SET 5: live (opaque result)
+LIVE5_EXTRA = {
+    "tasks[].result": {
+        "desc_en": "The SERP payload generated in real time for this Live request. Its inner shape depends on the result type and search engine, so it is returned as an open array.",
+        "title_zh": "本次 Live 请求实时生成的 SERP 结果数据。其内部结构取决于结果类型与搜索引擎，故以开放数组返回。",
+    },
+}
+# SET 7: ai_summary
+AISUM_EXTRA = {
+    "tasks[].path": {
+        "desc_en": "API path segments that were called, echoing how the request was routed.",
+        "title_zh": "本次调用的 API 路径分段，回显请求的路由方式。",
+    },
+    "tasks[].data": {
+        "desc_en": "Echo of the parameters supplied in the POST request, useful for correlating the response with its input.",
+        "title_zh": "回显 POST 请求中提交的参数，便于将响应与其输入对应。",
+    },
+    "tasks[].result": {
+        "desc_en": "Array holding the AI summary output for the request.",
+        "title_zh": "承载本次请求 AI 摘要输出的数组。",
+    },
+    "tasks[].result[].items_count": {
+        "desc_en": "Number of entries in the `items` array.",
+        "title_zh": "`items` 数组中的条目数量。",
+    },
+    "tasks[].result[].items": {
+        "desc_en": "Array of generated summary items.",
+        "title_zh": "生成的摘要条目数组。",
+    },
+    "tasks[].result[].items[].summary": {
+        "desc_en": "The AI-generated summary text answering the prompt against the SERP content.",
+        "title_zh": "针对 SERP 内容并结合 prompt 生成的 AI 摘要文本。",
+    },
+}
+# SET 8: screenshot
+SHOT_EXTRA = {
+    "tasks[].path": AISUM_EXTRA["tasks[].path"],
+    "tasks[].data": AISUM_EXTRA["tasks[].data"],
+    "tasks[].result": {
+        "desc_en": "Array holding the screenshot output for the request.",
+        "title_zh": "承载本次请求截图输出的数组。",
+    },
+    "tasks[].result[].items_count": AISUM_EXTRA["tasks[].result[].items_count"],
+    "tasks[].result[].items": {
+        "desc_en": "Array of screenshot items.",
+        "title_zh": "截图条目数组。",
+    },
+    "tasks[].result[].items[].image": {
+        "desc_en": "URL of the captured SERP page screenshot hosted on DataForSEO storage.",
+        "title_zh": "截取的 SERP 页面截图地址，托管于 DataForSEO 存储。",
+    },
+}
+
+EXTRA_BY_FIRST = {}  # map signature -> extra dict
+
+
+def resolve_extra(keys):
+    s = set(keys)
+    if "tasks[].result[].location_code" in s:
+        return LOC_EXTRA
+    if "tasks[].result[].language_name" in s:
+        return LANG_EXTRA
+    if "tasks[].result[].endpoint_regular" in s:
+        return READY3_EXTRA
+    if "tasks[].result[].endpoint_advanced" in s and "tasks[].result[].id" in s and "tasks[].cost" not in s:
+        return READY6_EXTRA
+    if "tasks[].result[].items[].summary" in s:
+        return AISUM_EXTRA
+    if "tasks[].result[].items[].image" in s:
+        return SHOT_EXTRA
+    if "tasks[].id" in s and "tasks[].cost" in s:
+        return TASKPOST_EXTRA
+    if "tasks[].result" in s and "tasks_count" in s:
+        return GET4_EXTRA
+    if "tasks[].result" in s and "tasks_count" not in s:
+        return LIVE5_EXTRA
+    raise KeyError("cannot resolve shape: " + str(keys))
+
+
+# ---------------------------------------------------------------------------
+# Request fields (authored per unique property; native desc respected).
+# ---------------------------------------------------------------------------
+REQ = {
+    "keyword": {
+        "desc_en": "Search query to run on the search engine, exactly as a user would type it. This is the only required field for keyword-based endpoints.",
+        "title_zh": "要在搜索引擎上执行的查询词，按用户实际输入的样子填写；关键词类接口中这是唯一必填字段。",
+    },
+    "video_id": {
+        "desc_en": "Identifier of the target YouTube video (the `v` value in a watch URL). Required to fetch info, organic, subtitle, or comment data for that video.",
+        "title_zh": "目标 YouTube 视频的标识（观看链接中的 `v` 值）。获取该视频的信息、自然结果、字幕或评论时必填。",
+    },
+    "location_name": {
+        "desc_en": "Full location name to geo-target the search; obtain valid values from the engine's locations endpoint. Provide either this or `location_code`.",
+        "title_zh": "用于地域定位搜索的地区全名；有效取值见对应引擎的 locations 接口。与 `location_code` 二选一提供。",
+    },
+    "location_code": {
+        "desc_en": "Numeric location code to geo-target the search; obtain valid values from the engine's locations endpoint. Provide either this or `location_name`.",
+        "title_zh": "用于地域定位搜索的数字地区代码；有效取值见对应引擎的 locations 接口。与 `location_name` 二选一提供。",
+    },
+    "language_name": {
+        "desc_en": "Full language name for the search; obtain valid values from the engine's languages endpoint. Provide either this or `language_code`.",
+        "title_zh": "搜索使用的语言全名；有效取值见对应引擎的 languages 接口。与 `language_code` 二选一提供。",
+    },
+    "language_code": {
+        "desc_en": "Language code for the search; obtain valid values from the engine's languages endpoint. Provide either this or `language_name`.",
+        "title_zh": "搜索使用的语言代码；有效取值见对应引擎的 languages 接口。与 `language_name` 二选一提供。",
+    },
+    "language_code_sub": {  # subtitle variant
+        "desc_en": "Language code of the subtitle track to retrieve for the video.",
+        "title_zh": "要获取的视频字幕轨道的语言代码。",
+    },
+    "device": {
+        "desc_en": "Device profile to emulate for the search, which can change how results are ranked and rendered.",
+        "title_zh": "搜索时模拟的设备类型，会影响结果的排序与呈现方式。",
+    },
+    "device_yt": {  # device restricted to desktop
+        "desc_en": "Device profile to emulate. Only desktop is supported for this endpoint.",
+        "title_zh": "搜索时模拟的设备类型；本接口仅支持 desktop。",
+    },
+    "os": {
+        "desc_en": "Operating system to emulate together with `device`.",
+        "title_zh": "与 `device` 搭配模拟的操作系统。",
+    },
+    "depth": {
+        "desc_en": "How many SERP results to parse; higher values return more results and may affect task cost.",
+        "title_zh": "解析的 SERP 结果条数；值越大返回结果越多，并可能影响任务费用。",
+    },
+    "priority": {
+        "desc_en": "Execution priority of the queued task; a higher priority makes the task run sooner and may cost more.",
+        "title_zh": "排队任务的执行优先级；优先级越高任务越早执行，费用可能更高。",
+    },
+    "postback_url": {
+        "desc_en": "Your endpoint that DataForSEO calls with the task result once it is ready, so you do not have to poll.",
+        "title_zh": "任务完成后由 DataForSEO 主动回推结果的你方接收地址，从而无需轮询。",
+    },
+    "pingback_url": {
+        "desc_en": "Your endpoint that DataForSEO pings to notify that the task is complete (without the payload); you then collect results via `task_get`.",
+        "title_zh": "任务完成时由 DataForSEO 回调通知（不含结果数据）的你方地址；收到通知后再用 `task_get` 领取结果。",
+    },
+    "postback_data": {
+        "desc_en": "Result format to deliver to `postback_url`; choose the result type that matches how you will consume the data.",
+        "title_zh": "回推到 `postback_url` 的结果格式；选择与你消费方式相匹配的结果类型。",
+    },
+    "postback_data_adv": {  # only advanced
+        "desc_en": "Result format to deliver to `postback_url`. Only the advanced result type is available for this endpoint.",
+        "title_zh": "回推到 `postback_url` 的结果格式；本接口仅提供 advanced 结果类型。",
+    },
+    # ai_summary
+    "task_id_ai": {
+        "desc_en": "UUID of an existing SERP task whose content the summary is built from; returned as `tasks[].id` when you posted the task and valid for 30 days.",
+        "title_zh": "用于生成摘要的已有 SERP 任务的 UUID；提交任务时由 `tasks[].id` 返回，有效期 30 天。",
+    },
+    "prompt": {
+        "desc_en": "Extra instruction steering how the AI summarizes the SERP content.",
+        "title_zh": "用于引导 AI 如何总结 SERP 内容的附加指令。",
+    },
+    "support_extra": {
+        "desc_en": "When enabled, the summary also takes extra SERP features (such as `answer_box`, `knowledge_graph`, and `featured_snippet`) into account.",
+        "title_zh": "开启后，摘要会同时纳入额外的 SERP 特性（如 `answer_box`、`knowledge_graph`、`featured_snippet`）。",
+    },
+    "fetch_content": {
+        "desc_en": "When enabled, the page content behind the SERP results is fetched and fed into the summary for richer answers.",
+        "title_zh": "开启后，会抓取 SERP 结果背后的页面内容并纳入摘要，以获得更充实的回答。",
+    },
+    "include_links": {
+        "desc_en": "When enabled, the summary cites the source links it drew from.",
+        "title_zh": "开启后，摘要会附带其引用的来源链接。",
+    },
+    # screenshot
+    "task_id_shot": {
+        "desc_en": "UUID of an existing SERP task whose page is screenshotted; returned as `tasks[].id` when you posted the task and valid for 7 days.",
+        "title_zh": "用于截图的已有 SERP 任务的 UUID；提交任务时由 `tasks[].id` 返回，有效期 7 天。",
+    },
+    "browser_preset": {
+        "desc_en": "Predefined viewport profile (desktop, tablet, or mobile) controlling the rendered screen size.",
+        "title_zh": "预设视口配置（desktop、tablet 或 mobile），决定渲染的屏幕尺寸。",
+    },
+    "browser_screen_width": {
+        "desc_en": "Custom viewport width in pixels, overriding the preset; valid range 240-9999.",
+        "title_zh": "自定义视口宽度（像素），覆盖预设；有效范围 240-9999。",
+    },
+    "browser_screen_height": {
+        "desc_en": "Custom viewport height in pixels, overriding the preset; valid range 240-9999.",
+        "title_zh": "自定义视口高度（像素），覆盖预设；有效范围 240-9999。",
+    },
+    "browser_screen_scale_factor": {
+        "desc_en": "Device pixel ratio applied when rendering, controlling screenshot sharpness; valid range 0.5-3.",
+        "title_zh": "渲染时应用的设备像素比，控制截图清晰度；有效范围 0.5-3。",
+    },
+    "page": {
+        "desc_en": "Which SERP page to capture (1 is the first results page).",
+        "title_zh": "要截取的 SERP 页码（1 为第一页结果）。",
+    },
+}
+
+
+def req_field(name, op_id):
+    # disambiguate context-sensitive variants by native description
+    if name == "language_code" and "subtitles" in op_id:
+        return REQ["language_code_sub"]
+    if name == "device" and ("youtube" in op_id and "video_info" in op_id):
+        return REQ["device_yt"]
+    if name == "postback_data" and "youtube" in op_id:
+        return REQ["postback_data_adv"]
+    if name == "task_id" and "ai_summary" in op_id:
+        return REQ["task_id_ai"]
+    if name == "task_id" and "screenshot" in op_id:
+        return REQ["task_id_shot"]
+    return REQ[name]
+
+
+# ---------------------------------------------------------------------------
+# Operation-level docs.
+# ---------------------------------------------------------------------------
+ENGINE_LABEL = {"bing": "Bing", "youtube": "YouTube", "baidu": "Baidu",
+                "yahoo": "Yahoo", "seznam": "Seznam", "naver": "Naver"}
+ENGINE_ZH = {"bing": "Bing", "youtube": "YouTube", "baidu": "百度",
+             "yahoo": "Yahoo", "seznam": "Seznam", "naver": "Naver"}
+
+
+def engine_of(op_id):
+    for e in ENGINE_LABEL:
+        if "_" + e + "_" in op_id or op_id.endswith("_" + e):
+            return e
+    return None
+
+
+def op_doc(op_id, summary, path):
+    e = engine_of(op_id)
+    en = ENGINE_LABEL.get(e, "")
+    zh = ENGINE_ZH.get(e, "")
+    if op_id.endswith("_locations"):
+        return ("List the locations supported for %s SERP requests; use a returned code or name to geo-target tasks. This endpoint is free." % en,
+                "列出 %s SERP 请求支持的地区；用返回的代码或名称对任务做地域定位。该接口免费。" % zh,
+                "查询 %s 地区列表 %s" % (zh, op_id))
+    if op_id.endswith("_languages"):
+        return ("List the languages supported for %s SERP requests; use a returned code or name when posting tasks. This endpoint is free." % en,
+                "列出 %s SERP 请求支持的语言；提交任务时使用返回的代码或名称。该接口免费。" % zh,
+                "查询 %s 语言列表 %s" % (zh, op_id))
+    if "video_info_task_post" in op_id:
+        return ("Queue a task to fetch detailed metadata for a YouTube video; you are charged only for posting and collect results later by task id.",
+                "提交任务以获取某 YouTube 视频的详细元数据；仅在提交时计费，稍后按任务 id 领取结果。",
+                "提交 YouTube 视频信息任务 %s" % op_id)
+    if "video_subtitles_task_post" in op_id:
+        return ("Queue a task to retrieve subtitles for a YouTube video; you are charged only for posting and collect results later by task id.",
+                "提交任务以获取某 YouTube 视频的字幕；仅在提交时计费，稍后按任务 id 领取结果。",
+                "提交 YouTube 字幕任务 %s" % op_id)
+    if "video_comments_task_post" in op_id:
+        return ("Queue a task to retrieve comments for a YouTube video; you are charged only for posting and collect results later by task id.",
+                "提交任务以获取某 YouTube 视频的评论；仅在提交时计费，稍后按任务 id 领取结果。",
+                "提交 YouTube 评论任务 %s" % op_id)
+    if "organic_task_post" in op_id and e == "youtube":
+        return ("Queue a task to fetch YouTube organic search results for a keyword; you are charged only for posting and collect results later by task id.",
+                "提交任务以按关键词获取 YouTube 自然搜索结果；仅在提交时计费，稍后按任务 id 领取结果。",
+                "提交 YouTube 自然搜索任务 %s" % op_id)
+    if "organic_task_post" in op_id:
+        return ("Queue an organic SERP task for %s; you are charged only for posting, can send up to 100 tasks per call, and collect results later by task id or via postback/pingback." % en,
+                "提交 %s 自然搜索 SERP 任务；仅在提交时计费，每次调用最多 100 个任务，稍后按任务 id 或通过 postback/pingback 领取结果。" % zh,
+                "提交 %s 自然搜索任务 %s" % (zh, op_id))
+    if "tasks_ready" in op_id:
+        return ("List %s tasks that have finished but have not yet been collected, with the URLs to fetch each result." % en,
+                "列出 %s 已完成但尚未领取的任务，并给出领取各结果的 URL。" % zh,
+                "查询 %s 已完成待领取任务 %s" % (zh, op_id))
+    if "task_get" in op_id:
+        rt = "HTML" if "_html_" in op_id else ("advanced" if "advanced" in op_id else "regular")
+        return ("Collect the %s results of a previously posted %s task by its id." % (rt, en),
+                "按任务 id 领取此前提交的 %s 任务的 %s 结果。" % (zh, rt),
+                "领取 %s 任务结果（%s） %s" % (zh, rt, op_id))
+    if op_id.endswith("_live_html"):
+        return ("Return raw HTML of %s organic SERP results synchronously in one call; each Live call carries exactly one task." % en,
+                "在一次调用中同步返回 %s 自然搜索 SERP 的原始 HTML；每个 Live 调用仅含一个任务。" % zh,
+                "实时获取 %s SERP HTML %s" % (zh, op_id))
+    if op_id.endswith("_live_regular"):
+        return ("Return regular %s organic SERP results synchronously in one call; each Live call carries exactly one task." % en,
+                "在一次调用中同步返回 %s 自然搜索 SERP 的 regular 结果；每个 Live 调用仅含一个任务。" % zh,
+                "实时获取 %s SERP（regular） %s" % (zh, op_id))
+    if "video_info_live_advanced" in op_id:
+        return ("Return detailed YouTube video metadata synchronously in one call; each Live call carries exactly one task.",
+                "在一次调用中同步返回 YouTube 视频的详细元数据；每个 Live 调用仅含一个任务。",
+                "实时获取 YouTube 视频信息 %s" % op_id)
+    if "video_subtitles_live_advanced" in op_id:
+        return ("Return YouTube video subtitles synchronously in one call; each Live call carries exactly one task.",
+                "在一次调用中同步返回 YouTube 视频字幕；每个 Live 调用仅含一个任务。",
+                "实时获取 YouTube 字幕 %s" % op_id)
+    if "video_comments_live_advanced" in op_id:
+        return ("Return YouTube video comments synchronously in one call; each Live call carries exactly one task.",
+                "在一次调用中同步返回 YouTube 视频评论；每个 Live 调用仅含一个任务。",
+                "实时获取 YouTube 评论 %s" % op_id)
+    if op_id.endswith("_live_advanced") and e == "youtube":
+        return ("Return YouTube organic search results synchronously in one call; each Live call carries exactly one task.",
+                "在一次调用中同步返回 YouTube 自然搜索结果；每个 Live 调用仅含一个任务。",
+                "实时获取 YouTube 自然搜索（advanced） %s" % op_id)
+    if op_id.endswith("_live_advanced"):
+        return ("Return advanced %s organic SERP results synchronously in one call; each Live call carries exactly one task." % en,
+                "在一次调用中同步返回 %s 自然搜索 SERP 的 advanced 结果；每个 Live 调用仅含一个任务。" % zh,
+                "实时获取 %s SERP（advanced） %s" % (zh, op_id))
+    if op_id.endswith("_ai_summary"):
+        return ("Generate an AI summary of the content found on a previously fetched SERP, answering an optional prompt. Charged per request.",
+                "对此前抓取的某个 SERP 内容生成 AI 摘要，并可按可选 prompt 作答。按次计费。",
+                "生成 SERP AI 摘要 %s" % op_id)
+    if op_id.endswith("_screenshot"):
+        return ("Capture a screenshot of a previously fetched SERP page by rendering its HTML. Charged per request.",
+                "通过渲染此前抓取的某个 SERP 页面的 HTML 来截取页面截图。按次计费。",
+                "截取 SERP 页面截图 %s" % op_id)
+    raise KeyError("no op_doc for " + op_id)
+
+
+# ---------------------------------------------------------------------------
+# Assemble.
+# ---------------------------------------------------------------------------
+operations = {}
+fields = {}
+
+for p, methods in spec["paths"].items():
+    for m, op in methods.items():
+        if m.lower() not in ("get", "post"):
+            continue
+        op_id = op.get("operationId") or (m.upper() + " " + p)
+        de, dz, head = op_doc(op_id, op.get("summary"), p)
+        operations[op_id] = {"heading_zh": head, "desc_en": de, "description_zh": dz}
+
+        fblock = {}
+        # parameters
+        params = op.get("parameters", [])
+        if params:
+            pdict = {}
+            for prm in params:
+                if prm.get("name") == "id":
+                    pdict["id"] = {
+                        "desc_en": "UUID of the task to collect, as returned in `tasks[].id` when the task was posted or listed by the matching tasks_ready endpoint.",
+                        "title_zh": "要领取的任务的 UUID；提交任务时由 `tasks[].id` 返回，或可从对应 tasks_ready 接口列出。",
+                    }
+            if pdict:
+                fblock["parameters"] = pdict
+        # request body
+        rk = req_keys(op)
+        if rk:
+            rdict = {}
+            for name in rk:
+                rdict[name] = req_field(name, op_id)
+            fblock["request"] = rdict
+        # responses
+        rsp = {}
+        for code, resp in op.get("responses", {}).items():
+            sch = resp.get("content", {}).get("application/json", {}).get("schema")
+            if not sch:
+                continue
+            d = deref(spec, sch)
+            keys = list((d.get("properties") or {}).keys())
+            if not keys:
+                continue
+            extra = resolve_extra(keys)
+            rsp[code] = add_resp(keys, extra)
+        if rsp:
+            fblock["response"] = rsp
+        fields[op_id] = fblock
+
+out = {"operations": operations, "fields": fields}
+json.dump(out, open("parts/serp_rest.content.json", "w"), ensure_ascii=False, indent=2)
+print("ops:", len(operations))
+nf = 0
+for k, b in fields.items():
+    nf += len(b.get("parameters", {}))
+    nf += len(b.get("request", {}))
+    for c, rr in b.get("response", {}).items():
+        nf += len(rr)
+print("field/param entries:", nf)

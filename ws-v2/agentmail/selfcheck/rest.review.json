@@ -1,0 +1,1709 @@
+{
+  "sections": [
+    {
+      "operation": "get",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail threads get --thread-id <thread_id>\n```",
+          "desc_en": "Fetch a single resource by its ID. This operationId is shared by three endpoints: get a thread (with its full message list) by `thread_id`, get a draft by `draft_id`, and get one allow/block list entry by `direction`/`type`/`entry`. The path determines which resource and response shape you receive.",
+          "title_zh": "按 ID 获取单个资源。该 operationId 由三个端点共用：按 `thread_id` 获取对话（含完整消息列表）、按 `draft_id` 获取草稿、按 `direction`/`type`/`entry` 获取单条允许/拦截名单条目。具体取哪种资源及返回结构由请求路径决定。"
+        },
+        {
+          "path": "param:thread_id",
+          "src_en": "",
+          "desc_en": "ID of the thread to fetch. Obtain it from the `thread_id` field of a list-threads result or a send/reply response.",
+          "title_zh": "要获取的对话 ID。可从列出对话的结果或发送/回复响应的 `thread_id` 字段获得。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret; never log it in plaintext.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密，切勿明文记录。"
+        },
+        {
+          "path": "resp.200.inbox_id",
+          "src_en": "",
+          "desc_en": "ID of the inbox that owns this resource.",
+          "title_zh": "拥有该资源的收件箱 ID。"
+        },
+        {
+          "path": "resp.200.thread_id",
+          "src_en": "",
+          "desc_en": "ID of the thread, usable as the path parameter for thread operations.",
+          "title_zh": "对话 ID，可用作对话相关操作的路径参数。"
+        },
+        {
+          "path": "resp.200.labels",
+          "src_en": "",
+          "desc_en": "Labels currently applied, including both system labels and your custom labels.",
+          "title_zh": "当前应用的标签，含系统标签与自定义标签。"
+        },
+        {
+          "path": "resp.200.timestamp",
+          "src_en": "",
+          "desc_en": "When the last message was sent or received in the thread.",
+          "title_zh": "对话中最近一次发送或接收消息的时间。"
+        },
+        {
+          "path": "resp.200.received_timestamp",
+          "src_en": "",
+          "desc_en": "When the last message was received in the thread.",
+          "title_zh": "对话中最近一次接收消息的时间。"
+        },
+        {
+          "path": "resp.200.sent_timestamp",
+          "src_en": "",
+          "desc_en": "When the last message was sent in the thread.",
+          "title_zh": "对话中最近一次发送消息的时间。"
+        },
+        {
+          "path": "resp.200.senders",
+          "src_en": "",
+          "desc_en": "Distinct sender addresses appearing in the thread.",
+          "title_zh": "对话中出现过的不同发件人地址。"
+        },
+        {
+          "path": "resp.200.recipients",
+          "src_en": "",
+          "desc_en": "Distinct recipient addresses appearing in the thread.",
+          "title_zh": "对话中出现过的不同收件人地址。"
+        },
+        {
+          "path": "resp.200.subject",
+          "src_en": "",
+          "desc_en": "Subject line.",
+          "title_zh": "主题。"
+        },
+        {
+          "path": "resp.200.preview",
+          "src_en": "",
+          "desc_en": "Short plain-text snippet of the content, for list-style display.",
+          "title_zh": "内容的纯文本短摘要，用于列表展示。"
+        },
+        {
+          "path": "resp.200.attachments",
+          "src_en": "",
+          "desc_en": "Attachments belonging to this resource.",
+          "title_zh": "该资源包含的附件。"
+        },
+        {
+          "path": "resp.200.attachments.attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment, used as the path parameter for the get-attachment endpoint.",
+          "title_zh": "附件 ID，作为获取附件端点的路径参数。"
+        },
+        {
+          "path": "resp.200.attachments.filename",
+          "src_en": "",
+          "desc_en": "Original filename of the attachment.",
+          "title_zh": "附件的原始文件名。"
+        },
+        {
+          "path": "resp.200.attachments.size",
+          "src_en": "",
+          "desc_en": "Attachment size in bytes.",
+          "title_zh": "附件大小（字节）。"
+        },
+        {
+          "path": "resp.200.attachments.content_type",
+          "src_en": "",
+          "desc_en": "MIME content type of the attachment (e.g. `application/pdf`).",
+          "title_zh": "附件的 MIME 内容类型（如 `application/pdf`）。"
+        },
+        {
+          "path": "resp.200.attachments.content_disposition",
+          "src_en": "",
+          "desc_en": "How the attachment is presented: `inline` (rendered within the body, e.g. an embedded image) or `attachment` (a downloadable file).",
+          "title_zh": "附件呈现方式：`inline`（随正文内嵌，如内嵌图片）或 `attachment`（可下载的文件）。"
+        },
+        {
+          "path": "resp.200.attachments.content_id",
+          "src_en": "",
+          "desc_en": "Content-ID used to reference an inline attachment from within the HTML body (via `cid:`).",
+          "title_zh": "Content-ID，用于在 HTML 正文中以 `cid:` 引用内嵌附件。"
+        },
+        {
+          "path": "resp.200.last_message_id",
+          "src_en": "",
+          "desc_en": "ID of the most recent message in the thread.",
+          "title_zh": "对话中最新一条消息的 ID。"
+        },
+        {
+          "path": "resp.200.message_count",
+          "src_en": "",
+          "desc_en": "Number of messages in the thread.",
+          "title_zh": "对话中的消息数量。"
+        },
+        {
+          "path": "resp.200.size",
+          "src_en": "",
+          "desc_en": "Total size of the thread in bytes.",
+          "title_zh": "对话的总大小（字节）。"
+        },
+        {
+          "path": "resp.200.updated_at",
+          "src_en": "",
+          "desc_en": "When the resource was last updated.",
+          "title_zh": "资源最后更新时间。"
+        },
+        {
+          "path": "resp.200.created_at",
+          "src_en": "",
+          "desc_en": "When the resource was created.",
+          "title_zh": "资源创建时间。"
+        },
+        {
+          "path": "resp.200.messages",
+          "src_en": "Messages in thread. Ordered by `timestamp` ascending.",
+          "desc_en": "Full messages of the thread in chronological order, each with bodies and attachments.",
+          "title_zh": "对话内的完整消息，按时间先后排列，每条含正文与附件。"
+        },
+        {
+          "path": "resp.200.messages.inbox_id",
+          "src_en": "",
+          "desc_en": "ID of the inbox that owns this message.",
+          "title_zh": "拥有该消息的收件箱 ID。"
+        },
+        {
+          "path": "resp.200.messages.thread_id",
+          "src_en": "",
+          "desc_en": "ID of the thread this message belongs to.",
+          "title_zh": "该消息所属的对话 ID。"
+        },
+        {
+          "path": "resp.200.messages.message_id",
+          "src_en": "",
+          "desc_en": "ID of the message.",
+          "title_zh": "消息 ID。"
+        },
+        {
+          "path": "resp.200.messages.labels",
+          "src_en": "",
+          "desc_en": "Labels applied to this message.",
+          "title_zh": "应用于该消息的标签。"
+        },
+        {
+          "path": "resp.200.messages.timestamp",
+          "src_en": "",
+          "desc_en": "When the message was sent or drafted.",
+          "title_zh": "消息发送或起草的时间。"
+        },
+        {
+          "path": "resp.200.messages.from",
+          "src_en": "",
+          "desc_en": "Sender address of the message.",
+          "title_zh": "消息发件人地址。"
+        },
+        {
+          "path": "resp.200.messages.reply_to",
+          "src_en": "Reply-to addresses. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+          "desc_en": "Reply-To addresses for this message.",
+          "title_zh": "该消息的回复目标地址。"
+        },
+        {
+          "path": "resp.200.messages.to",
+          "src_en": "",
+          "desc_en": "Primary recipient addresses of the message.",
+          "title_zh": "消息的主要收件人地址。"
+        },
+        {
+          "path": "resp.200.messages.cc",
+          "src_en": "",
+          "desc_en": "CC recipient addresses of the message.",
+          "title_zh": "消息的抄送收件人地址。"
+        },
+        {
+          "path": "resp.200.messages.bcc",
+          "src_en": "",
+          "desc_en": "BCC recipient addresses of the message.",
+          "title_zh": "消息的密送收件人地址。"
+        },
+        {
+          "path": "resp.200.messages.subject",
+          "src_en": "",
+          "desc_en": "Subject of the message.",
+          "title_zh": "消息主题。"
+        },
+        {
+          "path": "resp.200.messages.preview",
+          "src_en": "",
+          "desc_en": "Short plain-text snippet of the message.",
+          "title_zh": "消息的纯文本短摘要。"
+        },
+        {
+          "path": "resp.200.messages.text",
+          "src_en": "",
+          "desc_en": "Plain-text body of the message, including any quoted history.",
+          "title_zh": "消息的纯文本正文，含引用的历史内容。"
+        },
+        {
+          "path": "resp.200.messages.html",
+          "src_en": "",
+          "desc_en": "HTML body of the message, including any quoted history.",
+          "title_zh": "消息的 HTML 正文，含引用的历史内容。"
+        },
+        {
+          "path": "resp.200.messages.extracted_text",
+          "src_en": "Extracted new text content.",
+          "desc_en": "Just the newly written plain text of the message, with quoted reply history stripped out.",
+          "title_zh": "仅该消息新写入的纯文本，已剔除引用的回复历史。"
+        },
+        {
+          "path": "resp.200.messages.extracted_html",
+          "src_en": "Extracted new HTML content.",
+          "desc_en": "Just the newly written HTML of the message, with quoted reply history stripped out.",
+          "title_zh": "仅该消息新写入的 HTML，已剔除引用的回复历史。"
+        },
+        {
+          "path": "resp.200.messages.attachments",
+          "src_en": "",
+          "desc_en": "Attachments of this message.",
+          "title_zh": "该消息的附件。"
+        },
+        {
+          "path": "resp.200.messages.attachments.attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment, used as the path parameter for the get-attachment endpoint.",
+          "title_zh": "附件 ID，作为获取附件端点的路径参数。"
+        },
+        {
+          "path": "resp.200.messages.attachments.filename",
+          "src_en": "",
+          "desc_en": "Original filename of the attachment.",
+          "title_zh": "附件的原始文件名。"
+        },
+        {
+          "path": "resp.200.messages.attachments.size",
+          "src_en": "",
+          "desc_en": "Attachment size in bytes.",
+          "title_zh": "附件大小（字节）。"
+        },
+        {
+          "path": "resp.200.messages.attachments.content_type",
+          "src_en": "",
+          "desc_en": "MIME content type of the attachment (e.g. `application/pdf`).",
+          "title_zh": "附件的 MIME 内容类型（如 `application/pdf`）。"
+        },
+        {
+          "path": "resp.200.messages.attachments.content_disposition",
+          "src_en": "",
+          "desc_en": "How the attachment is presented: `inline` (rendered within the body, e.g. an embedded image) or `attachment` (a downloadable file).",
+          "title_zh": "附件呈现方式：`inline`（随正文内嵌，如内嵌图片）或 `attachment`（可下载的文件）。"
+        },
+        {
+          "path": "resp.200.messages.attachments.content_id",
+          "src_en": "",
+          "desc_en": "Content-ID used to reference an inline attachment from within the HTML body (via `cid:`).",
+          "title_zh": "Content-ID，用于在 HTML 正文中以 `cid:` 引用内嵌附件。"
+        },
+        {
+          "path": "resp.200.messages.in_reply_to",
+          "src_en": "",
+          "desc_en": "ID of the message this one replies to.",
+          "title_zh": "该消息所回复的目标消息 ID。"
+        },
+        {
+          "path": "resp.200.messages.references",
+          "src_en": "",
+          "desc_en": "IDs of earlier messages in the thread, forming the reply chain.",
+          "title_zh": "对话中较早消息的 ID，构成回复链。"
+        },
+        {
+          "path": "resp.200.messages.headers",
+          "src_en": "",
+          "desc_en": "Raw email headers of the message as key-value pairs.",
+          "title_zh": "消息的原始邮件头，以键值对表示。"
+        },
+        {
+          "path": "resp.200.messages.size",
+          "src_en": "",
+          "desc_en": "Message size in bytes.",
+          "title_zh": "消息大小（字节）。"
+        },
+        {
+          "path": "resp.200.messages.updated_at",
+          "src_en": "",
+          "desc_en": "When the message was last updated.",
+          "title_zh": "消息最后更新时间。"
+        },
+        {
+          "path": "resp.200.messages.created_at",
+          "src_en": "",
+          "desc_en": "When the message was created.",
+          "title_zh": "消息创建时间。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "delete",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Moves the thread to trash by adding a trash label to all messages. If the thread is already in trash, it will be permanently deleted. Use `permanent=true` to force permanent deletion.\n\n**CLI:**\n```bash\nagentmail threads delete --thread-id <thread_id>\n```",
+          "desc_en": "Delete a resource by its ID. Shared by two endpoints: delete a thread (moves it to trash, or permanently removes it when already trashed or when `permanent=true`) and delete one allow/block list entry. Read-only system entries cannot be deleted.",
+          "title_zh": "按 ID 删除资源。由两个端点共用：删除对话（移入回收站；若已在回收站或 `permanent=true` 则永久删除）、删除单条允许/拦截名单条目。只读的系统条目无法删除。"
+        },
+        {
+          "path": "param:thread_id",
+          "src_en": "",
+          "desc_en": "ID of the thread to delete (trash, or permanently delete if already trashed or `permanent=true`).",
+          "title_zh": "要删除的对话 ID（移入回收站；若已在回收站或 `permanent=true` 则永久删除）。"
+        },
+        {
+          "path": "param:permanent",
+          "src_en": "If true, permanently delete the thread instead of moving to trash.",
+          "desc_en": "When true, permanently delete the thread immediately instead of moving it to trash.",
+          "title_zh": "为 true 时立即永久删除对话，而非移入回收站。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "update",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Updates thread labels. Cannot add or remove system labels (sent, received, bounced, etc.). Rejects requests with a `422` for threads with 100 or more messages.",
+          "desc_en": "Update a thread's labels by adding and/or removing custom labels. System labels (sent, received, bounced, etc.) cannot be changed, and threads with 100 or more messages are rejected with 422.",
+          "title_zh": "更新对话标签：增加和/或移除自定义标签。系统标签（sent、received、bounced 等）不可改动；消息数达 100 条及以上的对话会以 422 拒绝。"
+        },
+        {
+          "path": "param:thread_id",
+          "src_en": "",
+          "desc_en": "ID of the thread whose labels are being updated.",
+          "title_zh": "要更新标签的对话 ID。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "req.add_labels",
+          "src_en": "Labels to add to thread. Cannot be system labels.",
+          "desc_en": "Custom labels to apply to the thread. System labels are not allowed.",
+          "title_zh": "要为对话添加的自定义标签。不允许使用系统标签。"
+        },
+        {
+          "path": "req.remove_labels",
+          "src_en": "Labels to remove from thread. Cannot be system labels. Takes priority over `add_labels` (in the event of duplicate labels passed in).",
+          "desc_en": "Custom labels to remove from the thread. System labels are not allowed. If the same label appears in both lists, removal wins.",
+          "title_zh": "要从对话移除的自定义标签。不允许使用系统标签。若同一标签同时出现在两个列表，以移除为准。"
+        },
+        {
+          "path": "resp.200.thread_id",
+          "src_en": "",
+          "desc_en": "ID of the updated thread.",
+          "title_zh": "已更新对话的 ID。"
+        },
+        {
+          "path": "resp.200.labels",
+          "src_en": "",
+          "desc_en": "The thread's complete label set after the update.",
+          "title_zh": "更新后对话的完整标签集合。"
+        },
+        {
+          "path": "resp.400.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the validation failure.",
+          "title_zh": "标识本次校验失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.400.errors",
+          "src_en": "Validation errors.",
+          "desc_en": "Details of the validation problems with the query parameters.",
+          "title_zh": "查询参数校验问题的明细。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        },
+        {
+          "path": "resp.422.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.422.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "list",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail lists list --direction <direction> --type <type>\n```",
+          "desc_en": "List resources with cursor pagination. This operationId is shared by three endpoints: list threads, list drafts, and list allow/block list entries. Supports time/label filters where applicable; iterate with `next_page_token` to walk all pages.",
+          "title_zh": "分页列出资源（基于游标）。该 operationId 由三个端点共用：列出对话、列出草稿、列出允许/拦截名单条目。在适用处支持时间与标签筛选；通过 `next_page_token` 翻页可遍历全部结果。"
+        },
+        {
+          "path": "param:direction",
+          "src_en": "",
+          "desc_en": "Traffic direction of the list to read: `send`, `receive`, or `reply`. (List-entries endpoint only.)",
+          "title_zh": "要读取的名单流量方向：`send`、`receive` 或 `reply`。（仅名单条目端点）"
+        },
+        {
+          "path": "param:type",
+          "src_en": "",
+          "desc_en": "Whether to read the `allow` or `block` list. (List-entries endpoint only.)",
+          "title_zh": "读取 `allow` 还是 `block` 名单。（仅名单条目端点）"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "",
+          "desc_en": "Maximum number of items to return in this page.",
+          "title_zh": "本页返回的最大条目数。"
+        },
+        {
+          "path": "param:page_token",
+          "src_en": "",
+          "desc_en": "Pagination cursor. Pass the `next_page_token` from the previous response to fetch the next page; omit for the first page.",
+          "title_zh": "分页游标。传入上一次响应的 `next_page_token` 以取下一页；首页可不传。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "resp.200.count",
+          "src_en": "",
+          "desc_en": "Number of items returned in this page.",
+          "title_zh": "本页返回的条目数。"
+        },
+        {
+          "path": "resp.200.limit",
+          "src_en": "",
+          "desc_en": "The limit that was applied to this page.",
+          "title_zh": "本页实际生效的数量上限。"
+        },
+        {
+          "path": "resp.200.next_page_token",
+          "src_en": "",
+          "desc_en": "Cursor for the next page; pass it back as `page_token`. Absent or empty when there are no more pages.",
+          "title_zh": "下一页的游标；作为 `page_token` 回传。无更多页时缺省或为空。"
+        },
+        {
+          "path": "resp.200.entries",
+          "src_en": "Ordered by entry ascending.",
+          "desc_en": "The page of allow/block list entries, ordered by entry ascending.",
+          "title_zh": "本页允许/拦截名单条目，按条目升序排列。"
+        },
+        {
+          "path": "resp.200.entries.entry",
+          "src_en": "Email address or domain of list entry.",
+          "desc_en": "The email address or domain of the list entry.",
+          "title_zh": "名单条目的邮箱地址或域名。"
+        },
+        {
+          "path": "resp.200.entries.organization_id",
+          "src_en": "",
+          "desc_en": "ID of the organization the list entry belongs to.",
+          "title_zh": "名单条目所属的组织 ID。"
+        },
+        {
+          "path": "resp.200.entries.reason",
+          "src_en": "Reason for adding the entry.",
+          "desc_en": "Free-text reason recorded when the entry was added.",
+          "title_zh": "添加该条目时记录的自由文本原因。"
+        },
+        {
+          "path": "resp.200.entries.direction",
+          "src_en": "",
+          "desc_en": "Traffic direction the entry governs: `send`, `receive`, or `reply`.",
+          "title_zh": "条目作用的流量方向：`send`、`receive` 或 `reply`。"
+        },
+        {
+          "path": "resp.200.entries.list_type",
+          "src_en": "",
+          "desc_en": "Whether this is an `allow` or `block` list entry.",
+          "title_zh": "该条目属于 `allow` 还是 `block` 名单。"
+        },
+        {
+          "path": "resp.200.entries.entry_type",
+          "src_en": "",
+          "desc_en": "Whether the entry matches a single `email` address or an entire `domain`.",
+          "title_zh": "条目匹配单个 `email` 地址还是整个 `domain`。"
+        },
+        {
+          "path": "resp.200.entries.created_at",
+          "src_en": "Time at which entry was created.",
+          "desc_en": "When the resource was created.",
+          "title_zh": "资源创建时间。"
+        },
+        {
+          "path": "resp.200.entries.read_only",
+          "src_en": "Whether the entry is read-only and cannot be deleted via the API.",
+          "desc_en": "When true, the entry is system-managed and cannot be deleted through the API.",
+          "title_zh": "为 true 时，条目由系统管理，不能通过 API 删除。"
+        }
+      ]
+    },
+    {
+      "operation": "create",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail lists create --direction <direction> --type <type> --entry user@example.com\n```",
+          "desc_en": "Add an email address or domain to an allow/block list, scoped by the `direction` and `type` path parameters. Returns the created entry.",
+          "title_zh": "向允许/拦截名单新增一个邮箱地址或域名，作用范围由路径参数 `direction` 与 `type` 决定。返回新建的条目。"
+        },
+        {
+          "path": "param:direction",
+          "src_en": "",
+          "desc_en": "Traffic direction the new entry should govern: `send`, `receive`, or `reply`.",
+          "title_zh": "新条目作用的流量方向：`send`、`receive` 或 `reply`。"
+        },
+        {
+          "path": "param:type",
+          "src_en": "",
+          "desc_en": "Whether to add the entry to the `allow` or `block` list.",
+          "title_zh": "将条目加入 `allow` 还是 `block` 名单。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "req.entry",
+          "src_en": "Email address or domain to add.",
+          "desc_en": "Email address or domain to add to the list.",
+          "title_zh": "要加入名单的邮箱地址或域名。"
+        },
+        {
+          "path": "req.reason",
+          "src_en": "Reason for adding the entry.",
+          "desc_en": "Optional free-text note recording why the entry was added.",
+          "title_zh": "可选的自由文本备注，记录添加该条目的原因。"
+        },
+        {
+          "path": "resp.200.entry",
+          "src_en": "Email address or domain of list entry.",
+          "desc_en": "The email address or domain of the list entry.",
+          "title_zh": "名单条目的邮箱地址或域名。"
+        },
+        {
+          "path": "resp.200.organization_id",
+          "src_en": "",
+          "desc_en": "ID of the organization the list entry belongs to.",
+          "title_zh": "名单条目所属的组织 ID。"
+        },
+        {
+          "path": "resp.200.reason",
+          "src_en": "Reason for adding the entry.",
+          "desc_en": "Free-text reason recorded when the entry was added.",
+          "title_zh": "添加该条目时记录的自由文本原因。"
+        },
+        {
+          "path": "resp.200.direction",
+          "src_en": "",
+          "desc_en": "Traffic direction the entry governs: `send`, `receive`, or `reply`.",
+          "title_zh": "条目作用的流量方向：`send`、`receive` 或 `reply`。"
+        },
+        {
+          "path": "resp.200.list_type",
+          "src_en": "",
+          "desc_en": "Whether this is an `allow` or `block` list entry.",
+          "title_zh": "该条目属于 `allow` 还是 `block` 名单。"
+        },
+        {
+          "path": "resp.200.entry_type",
+          "src_en": "",
+          "desc_en": "Whether the entry matches a single `email` address or an entire `domain`.",
+          "title_zh": "条目匹配单个 `email` 地址还是整个 `domain`。"
+        },
+        {
+          "path": "resp.200.created_at",
+          "src_en": "Time at which entry was created.",
+          "desc_en": "When the resource was created.",
+          "title_zh": "资源创建时间。"
+        },
+        {
+          "path": "resp.200.read_only",
+          "src_en": "Whether the entry is read-only and cannot be deleted via the API.",
+          "desc_en": "When true, the entry is system-managed and cannot be deleted through the API.",
+          "title_zh": "为 true 时，条目由系统管理，不能通过 API 删除。"
+        },
+        {
+          "path": "resp.400.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the validation failure.",
+          "title_zh": "标识本次校验失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.400.errors",
+          "src_en": "Validation errors.",
+          "desc_en": "Details of the validation problems with the query parameters.",
+          "title_zh": "查询参数校验问题的明细。"
+        }
+      ]
+    },
+    {
+      "operation": "list",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail threads list\n```",
+          "desc_en": "List resources with cursor pagination. This operationId is shared by three endpoints: list threads, list drafts, and list allow/block list entries. Supports time/label filters where applicable; iterate with `next_page_token` to walk all pages.",
+          "title_zh": "分页列出资源（基于游标）。该 operationId 由三个端点共用：列出对话、列出草稿、列出允许/拦截名单条目。在适用处支持时间与标签筛选；通过 `next_page_token` 翻页可遍历全部结果。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "",
+          "desc_en": "Maximum number of items to return in this page.",
+          "title_zh": "本页返回的最大条目数。"
+        },
+        {
+          "path": "param:page_token",
+          "src_en": "",
+          "desc_en": "Pagination cursor. Pass the `next_page_token` from the previous response to fetch the next page; omit for the first page.",
+          "title_zh": "分页游标。传入上一次响应的 `next_page_token` 以取下一页；首页可不传。"
+        },
+        {
+          "path": "param:labels",
+          "src_en": "",
+          "desc_en": "Restrict results to items carrying all of these labels.",
+          "title_zh": "仅返回带有全部这些标签的条目。"
+        },
+        {
+          "path": "param:before",
+          "src_en": "",
+          "desc_en": "Only return items with a timestamp before this moment.",
+          "title_zh": "仅返回时间戳早于该时刻的条目。"
+        },
+        {
+          "path": "param:after",
+          "src_en": "",
+          "desc_en": "Only return items with a timestamp after this moment.",
+          "title_zh": "仅返回时间戳晚于该时刻的条目。"
+        },
+        {
+          "path": "param:ascending",
+          "src_en": "",
+          "desc_en": "When true, return items in ascending time order instead of the default newest-first.",
+          "title_zh": "为 true 时按时间升序返回，而非默认的最新优先。"
+        },
+        {
+          "path": "param:include_spam",
+          "src_en": "",
+          "desc_en": "When true, include items labeled spam in the results.",
+          "title_zh": "为 true 时在结果中包含被标记为垃圾邮件（spam）的条目。"
+        },
+        {
+          "path": "param:include_blocked",
+          "src_en": "",
+          "desc_en": "When true, include items labeled blocked in the results.",
+          "title_zh": "为 true 时在结果中包含被标记为拦截（blocked）的条目。"
+        },
+        {
+          "path": "param:include_unauthenticated",
+          "src_en": "",
+          "desc_en": "When true, include items from unauthenticated senders in the results.",
+          "title_zh": "为 true 时在结果中包含来自未通过认证发件人的条目。"
+        },
+        {
+          "path": "param:include_trash",
+          "src_en": "",
+          "desc_en": "When true, include items in trash in the results.",
+          "title_zh": "为 true 时在结果中包含回收站（trash）内的条目。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "resp.200.count",
+          "src_en": "",
+          "desc_en": "Number of items returned in this page.",
+          "title_zh": "本页返回的条目数。"
+        },
+        {
+          "path": "resp.200.limit",
+          "src_en": "",
+          "desc_en": "The limit that was applied to this page.",
+          "title_zh": "本页实际生效的数量上限。"
+        },
+        {
+          "path": "resp.200.next_page_token",
+          "src_en": "",
+          "desc_en": "Cursor for the next page; pass it back as `page_token`. Absent or empty when there are no more pages.",
+          "title_zh": "下一页的游标；作为 `page_token` 回传。无更多页时缺省或为空。"
+        },
+        {
+          "path": "resp.200.threads",
+          "src_en": "Ordered by `timestamp` descending.",
+          "desc_en": "The page of threads, newest first.",
+          "title_zh": "本页对话列表，最新优先。"
+        },
+        {
+          "path": "resp.200.threads.inbox_id",
+          "src_en": "",
+          "desc_en": "ID of the inbox that owns the thread.",
+          "title_zh": "拥有该对话的收件箱 ID。"
+        },
+        {
+          "path": "resp.200.threads.thread_id",
+          "src_en": "",
+          "desc_en": "ID of the thread, usable as the path parameter for thread operations.",
+          "title_zh": "对话 ID，可用作对话相关操作的路径参数。"
+        },
+        {
+          "path": "resp.200.threads.labels",
+          "src_en": "",
+          "desc_en": "Labels applied to the thread.",
+          "title_zh": "应用于该对话的标签。"
+        },
+        {
+          "path": "resp.200.threads.timestamp",
+          "src_en": "",
+          "desc_en": "When the last message was sent or received.",
+          "title_zh": "最近一次发送或接收消息的时间。"
+        },
+        {
+          "path": "resp.200.threads.received_timestamp",
+          "src_en": "",
+          "desc_en": "When the last message was received.",
+          "title_zh": "最近一次接收消息的时间。"
+        },
+        {
+          "path": "resp.200.threads.sent_timestamp",
+          "src_en": "",
+          "desc_en": "When the last message was sent.",
+          "title_zh": "最近一次发送消息的时间。"
+        },
+        {
+          "path": "resp.200.threads.senders",
+          "src_en": "",
+          "desc_en": "Distinct sender addresses in the thread.",
+          "title_zh": "对话中出现过的不同发件人地址。"
+        },
+        {
+          "path": "resp.200.threads.recipients",
+          "src_en": "",
+          "desc_en": "Distinct recipient addresses in the thread.",
+          "title_zh": "对话中出现过的不同收件人地址。"
+        },
+        {
+          "path": "resp.200.threads.subject",
+          "src_en": "",
+          "desc_en": "Subject of the thread.",
+          "title_zh": "对话主题。"
+        },
+        {
+          "path": "resp.200.threads.preview",
+          "src_en": "",
+          "desc_en": "Plain-text snippet of the last message.",
+          "title_zh": "最后一条消息的纯文本短摘要。"
+        },
+        {
+          "path": "resp.200.threads.attachments",
+          "src_en": "",
+          "desc_en": "Attachments present in the thread.",
+          "title_zh": "对话中包含的附件。"
+        },
+        {
+          "path": "resp.200.threads.attachments.attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment, used as the path parameter for the get-attachment endpoint.",
+          "title_zh": "附件 ID，作为获取附件端点的路径参数。"
+        },
+        {
+          "path": "resp.200.threads.attachments.filename",
+          "src_en": "",
+          "desc_en": "Original filename of the attachment.",
+          "title_zh": "附件的原始文件名。"
+        },
+        {
+          "path": "resp.200.threads.attachments.size",
+          "src_en": "",
+          "desc_en": "Attachment size in bytes.",
+          "title_zh": "附件大小（字节）。"
+        },
+        {
+          "path": "resp.200.threads.attachments.content_type",
+          "src_en": "",
+          "desc_en": "MIME content type of the attachment (e.g. `application/pdf`).",
+          "title_zh": "附件的 MIME 内容类型（如 `application/pdf`）。"
+        },
+        {
+          "path": "resp.200.threads.attachments.content_disposition",
+          "src_en": "",
+          "desc_en": "How the attachment is presented: `inline` (rendered within the body, e.g. an embedded image) or `attachment` (a downloadable file).",
+          "title_zh": "附件呈现方式：`inline`（随正文内嵌，如内嵌图片）或 `attachment`（可下载的文件）。"
+        },
+        {
+          "path": "resp.200.threads.attachments.content_id",
+          "src_en": "",
+          "desc_en": "Content-ID used to reference an inline attachment from within the HTML body (via `cid:`).",
+          "title_zh": "Content-ID，用于在 HTML 正文中以 `cid:` 引用内嵌附件。"
+        },
+        {
+          "path": "resp.200.threads.last_message_id",
+          "src_en": "",
+          "desc_en": "ID of the most recent message in the thread.",
+          "title_zh": "对话中最新一条消息的 ID。"
+        },
+        {
+          "path": "resp.200.threads.message_count",
+          "src_en": "",
+          "desc_en": "Number of messages in the thread.",
+          "title_zh": "对话中的消息数量。"
+        },
+        {
+          "path": "resp.200.threads.size",
+          "src_en": "",
+          "desc_en": "Total size of the thread in bytes.",
+          "title_zh": "对话的总大小（字节）。"
+        },
+        {
+          "path": "resp.200.threads.updated_at",
+          "src_en": "",
+          "desc_en": "When the thread was last updated.",
+          "title_zh": "对话最后更新时间。"
+        },
+        {
+          "path": "resp.200.threads.created_at",
+          "src_en": "",
+          "desc_en": "When the thread was created.",
+          "title_zh": "对话创建时间。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "get-attachment",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail drafts get-attachment --draft-id <draft_id> --attachment-id <attachment_id>\n```",
+          "desc_en": "Get attachment metadata together with a time-limited presigned download URL. Shared by two endpoints: fetch an attachment from a draft (`draft_id`) or from a thread (`thread_id`), in both cases by `attachment_id`.",
+          "title_zh": "获取附件元数据及一个限时的预签名下载链接。由两个端点共用：从草稿（`draft_id`）或从对话（`thread_id`）按 `attachment_id` 获取附件。"
+        },
+        {
+          "path": "param:draft_id",
+          "src_en": "",
+          "desc_en": "ID of the draft that contains the attachment. (Draft attachment endpoint only.)",
+          "title_zh": "包含该附件的草稿 ID。（仅草稿附件端点）"
+        },
+        {
+          "path": "param:attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment to fetch. Obtain it from the `attachment_id` field of a message/thread/draft attachment.",
+          "title_zh": "要获取的附件 ID。可从消息/对话/草稿附件的 `attachment_id` 字段获得。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "resp.200.attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment.",
+          "title_zh": "附件 ID。"
+        },
+        {
+          "path": "resp.200.filename",
+          "src_en": "",
+          "desc_en": "Original filename of the attachment.",
+          "title_zh": "附件的原始文件名。"
+        },
+        {
+          "path": "resp.200.size",
+          "src_en": "",
+          "desc_en": "Attachment size in bytes.",
+          "title_zh": "附件大小（字节）。"
+        },
+        {
+          "path": "resp.200.content_type",
+          "src_en": "",
+          "desc_en": "MIME content type of the attachment.",
+          "title_zh": "附件的 MIME 内容类型。"
+        },
+        {
+          "path": "resp.200.content_disposition",
+          "src_en": "",
+          "desc_en": "How the attachment is presented: `inline` or `attachment`.",
+          "title_zh": "附件呈现方式：`inline` 或 `attachment`。"
+        },
+        {
+          "path": "resp.200.content_id",
+          "src_en": "",
+          "desc_en": "Content-ID for referencing an inline attachment from the HTML body.",
+          "title_zh": "Content-ID，用于在 HTML 正文中引用内嵌附件。"
+        },
+        {
+          "path": "resp.200.download_url",
+          "src_en": "URL to download the attachment.",
+          "desc_en": "Time-limited presigned URL to download the attachment binary. Fetch the file before `expires_at`.",
+          "title_zh": "限时预签名下载链接，用于下载附件二进制内容。请在 `expires_at` 之前完成下载。"
+        },
+        {
+          "path": "resp.200.expires_at",
+          "src_en": "Time at which the download URL expires.",
+          "desc_en": "When the download URL expires and stops working.",
+          "title_zh": "下载链接失效的时间。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "get-attachment",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail threads get-attachment --thread-id <thread_id> --attachment-id <attachment_id>\n```",
+          "desc_en": "Get attachment metadata together with a time-limited presigned download URL. Shared by two endpoints: fetch an attachment from a draft (`draft_id`) or from a thread (`thread_id`), in both cases by `attachment_id`.",
+          "title_zh": "获取附件元数据及一个限时的预签名下载链接。由两个端点共用：从草稿（`draft_id`）或从对话（`thread_id`）按 `attachment_id` 获取附件。"
+        },
+        {
+          "path": "param:thread_id",
+          "src_en": "",
+          "desc_en": "ID of the thread that contains the attachment. (Thread attachment endpoint only.)",
+          "title_zh": "包含该附件的对话 ID。（仅对话附件端点）"
+        },
+        {
+          "path": "param:attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment to fetch. Obtain it from the `attachment_id` field of a message/thread/draft attachment.",
+          "title_zh": "要获取的附件 ID。可从消息/对话/草稿附件的 `attachment_id` 字段获得。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "resp.200.attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment.",
+          "title_zh": "附件 ID。"
+        },
+        {
+          "path": "resp.200.filename",
+          "src_en": "",
+          "desc_en": "Original filename of the attachment.",
+          "title_zh": "附件的原始文件名。"
+        },
+        {
+          "path": "resp.200.size",
+          "src_en": "",
+          "desc_en": "Attachment size in bytes.",
+          "title_zh": "附件大小（字节）。"
+        },
+        {
+          "path": "resp.200.content_type",
+          "src_en": "",
+          "desc_en": "MIME content type of the attachment.",
+          "title_zh": "附件的 MIME 内容类型。"
+        },
+        {
+          "path": "resp.200.content_disposition",
+          "src_en": "",
+          "desc_en": "How the attachment is presented: `inline` or `attachment`.",
+          "title_zh": "附件呈现方式：`inline` 或 `attachment`。"
+        },
+        {
+          "path": "resp.200.content_id",
+          "src_en": "",
+          "desc_en": "Content-ID for referencing an inline attachment from the HTML body.",
+          "title_zh": "Content-ID，用于在 HTML 正文中引用内嵌附件。"
+        },
+        {
+          "path": "resp.200.download_url",
+          "src_en": "URL to download the attachment.",
+          "desc_en": "Time-limited presigned URL to download the attachment binary. Fetch the file before `expires_at`.",
+          "title_zh": "限时预签名下载链接，用于下载附件二进制内容。请在 `expires_at` 之前完成下载。"
+        },
+        {
+          "path": "resp.200.expires_at",
+          "src_en": "Time at which the download URL expires.",
+          "desc_en": "When the download URL expires and stops working.",
+          "title_zh": "下载链接失效的时间。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "query",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail metrics list\n```",
+          "desc_en": "Query email delivery metrics aggregated into time buckets. Results are grouped by event type (sent, delivered, bounced, etc.) over the requested time window and bucket period.",
+          "title_zh": "查询邮件投递指标，按时间桶聚合。结果按事件类型（sent、delivered、bounced 等）分组，覆盖请求指定的时间窗口与桶周期。"
+        },
+        {
+          "path": "param:event_types",
+          "src_en": "",
+          "desc_en": "Which metric event types to include, e.g. `message.sent`, `message.delivered`, `message.bounced`. Omit to query the default set.",
+          "title_zh": "要纳入统计的指标事件类型，如 `message.sent`、`message.delivered`、`message.bounced`。不传则查询默认集合。"
+        },
+        {
+          "path": "param:start",
+          "src_en": "",
+          "desc_en": "Start of the time window to query (inclusive).",
+          "title_zh": "查询时间窗口的起点（含）。"
+        },
+        {
+          "path": "param:end",
+          "src_en": "",
+          "desc_en": "End of the time window to query (exclusive).",
+          "title_zh": "查询时间窗口的终点（不含）。"
+        },
+        {
+          "path": "param:period",
+          "src_en": "",
+          "desc_en": "Width of each time bucket, expressed as a number of seconds. Determines the granularity of the aggregation.",
+          "title_zh": "每个时间桶的宽度，以秒数表示，决定聚合的粒度。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "",
+          "desc_en": "Maximum number of time buckets to return.",
+          "title_zh": "返回的时间桶最大数量。"
+        },
+        {
+          "path": "param:descending",
+          "src_en": "",
+          "desc_en": "When true, return buckets in descending time order (newest first).",
+          "title_zh": "为 true 时按时间降序返回桶（最新优先）。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "resp.400.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the validation failure.",
+          "title_zh": "标识本次校验失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.400.errors",
+          "src_en": "Validation errors.",
+          "desc_en": "Details of the validation problems with the query parameters.",
+          "title_zh": "查询参数校验问题的明细。"
+        }
+      ]
+    },
+    {
+      "operation": "get",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail lists get --direction <direction> --type <type> --entry <entry>\n```",
+          "desc_en": "Fetch a single resource by its ID. This operationId is shared by three endpoints: get a thread (with its full message list) by `thread_id`, get a draft by `draft_id`, and get one allow/block list entry by `direction`/`type`/`entry`. The path determines which resource and response shape you receive.",
+          "title_zh": "按 ID 获取单个资源。该 operationId 由三个端点共用：按 `thread_id` 获取对话（含完整消息列表）、按 `draft_id` 获取草稿、按 `direction`/`type`/`entry` 获取单条允许/拦截名单条目。具体取哪种资源及返回结构由请求路径决定。"
+        },
+        {
+          "path": "param:direction",
+          "src_en": "",
+          "desc_en": "Which traffic direction the list entry governs: `send` (your outbound), `receive` (inbound to you), or `reply`. Combined with `type` it selects exactly one list.",
+          "title_zh": "名单条目作用的流量方向：`send`（出站）、`receive`（入站）或 `reply`（回复）。与 `type` 组合可精确定位一份名单。"
+        },
+        {
+          "path": "param:type",
+          "src_en": "",
+          "desc_en": "Whether to address the allow list or the block list. `allow` permits the entry; `block` denies it. Combined with `direction` it selects exactly one list.",
+          "title_zh": "操作允许名单还是拦截名单：`allow` 放行、`block` 拦截。与 `direction` 组合可精确定位一份名单。"
+        },
+        {
+          "path": "param:entry",
+          "src_en": "Email address or domain.",
+          "desc_en": "The exact email address or domain identifying the list entry to fetch.",
+          "title_zh": "标识要获取的名单条目的邮箱地址或域名（需精确匹配）。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret; never log it in plaintext.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密，切勿明文记录。"
+        },
+        {
+          "path": "resp.200.entry",
+          "src_en": "Email address or domain of list entry.",
+          "desc_en": "The email address or domain of the list entry.",
+          "title_zh": "名单条目的邮箱地址或域名。"
+        },
+        {
+          "path": "resp.200.organization_id",
+          "src_en": "",
+          "desc_en": "ID of the organization the list entry belongs to.",
+          "title_zh": "名单条目所属的组织 ID。"
+        },
+        {
+          "path": "resp.200.reason",
+          "src_en": "Reason for adding the entry.",
+          "desc_en": "Free-text reason recorded when the entry was added.",
+          "title_zh": "添加该条目时记录的自由文本原因。"
+        },
+        {
+          "path": "resp.200.direction",
+          "src_en": "",
+          "desc_en": "Traffic direction the entry governs: `send`, `receive`, or `reply`.",
+          "title_zh": "条目作用的流量方向：`send`、`receive` 或 `reply`。"
+        },
+        {
+          "path": "resp.200.list_type",
+          "src_en": "",
+          "desc_en": "Whether this is an `allow` or `block` list entry.",
+          "title_zh": "该条目属于 `allow` 还是 `block` 名单。"
+        },
+        {
+          "path": "resp.200.entry_type",
+          "src_en": "",
+          "desc_en": "Whether the entry matches a single `email` address or an entire `domain`.",
+          "title_zh": "条目匹配单个 `email` 地址还是整个 `domain`。"
+        },
+        {
+          "path": "resp.200.created_at",
+          "src_en": "Time at which entry was created.",
+          "desc_en": "When the resource was created.",
+          "title_zh": "资源创建时间。"
+        },
+        {
+          "path": "resp.200.read_only",
+          "src_en": "Whether the entry is read-only and cannot be deleted via the API.",
+          "desc_en": "When true, the entry is system-managed and cannot be deleted through the API.",
+          "title_zh": "为 true 时，条目由系统管理，不能通过 API 删除。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "delete",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail lists delete --direction <direction> --type <type> --entry <entry>\n```",
+          "desc_en": "Delete a resource by its ID. Shared by two endpoints: delete a thread (moves it to trash, or permanently removes it when already trashed or when `permanent=true`) and delete one allow/block list entry. Read-only system entries cannot be deleted.",
+          "title_zh": "按 ID 删除资源。由两个端点共用：删除对话（移入回收站；若已在回收站或 `permanent=true` 则永久删除）、删除单条允许/拦截名单条目。只读的系统条目无法删除。"
+        },
+        {
+          "path": "param:direction",
+          "src_en": "",
+          "desc_en": "Traffic direction of the list entry to delete: `send`, `receive`, or `reply`.",
+          "title_zh": "要删除的名单条目的流量方向：`send`、`receive` 或 `reply`。"
+        },
+        {
+          "path": "param:type",
+          "src_en": "",
+          "desc_en": "Whether the entry is on the `allow` or `block` list.",
+          "title_zh": "条目位于 `allow` 还是 `block` 名单。"
+        },
+        {
+          "path": "param:entry",
+          "src_en": "Email address or domain.",
+          "desc_en": "The exact email address or domain of the list entry to delete. System (read-only) entries cannot be removed.",
+          "title_zh": "要删除的名单条目的邮箱地址或域名（需精确匹配）。系统（只读）条目不可删除。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "list",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail drafts list\n```",
+          "desc_en": "List resources with cursor pagination. This operationId is shared by three endpoints: list threads, list drafts, and list allow/block list entries. Supports time/label filters where applicable; iterate with `next_page_token` to walk all pages.",
+          "title_zh": "分页列出资源（基于游标）。该 operationId 由三个端点共用：列出对话、列出草稿、列出允许/拦截名单条目。在适用处支持时间与标签筛选；通过 `next_page_token` 翻页可遍历全部结果。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "",
+          "desc_en": "Maximum number of items to return in this page.",
+          "title_zh": "本页返回的最大条目数。"
+        },
+        {
+          "path": "param:page_token",
+          "src_en": "",
+          "desc_en": "Pagination cursor. Pass the `next_page_token` from the previous response to fetch the next page; omit for the first page.",
+          "title_zh": "分页游标。传入上一次响应的 `next_page_token` 以取下一页；首页可不传。"
+        },
+        {
+          "path": "param:labels",
+          "src_en": "",
+          "desc_en": "Restrict results to items carrying all of these labels.",
+          "title_zh": "仅返回带有全部这些标签的条目。"
+        },
+        {
+          "path": "param:before",
+          "src_en": "",
+          "desc_en": "Only return items with a timestamp before this moment.",
+          "title_zh": "仅返回时间戳早于该时刻的条目。"
+        },
+        {
+          "path": "param:after",
+          "src_en": "",
+          "desc_en": "Only return items with a timestamp after this moment.",
+          "title_zh": "仅返回时间戳晚于该时刻的条目。"
+        },
+        {
+          "path": "param:ascending",
+          "src_en": "",
+          "desc_en": "When true, return items in ascending time order instead of the default newest-first.",
+          "title_zh": "为 true 时按时间升序返回，而非默认的最新优先。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。"
+        },
+        {
+          "path": "resp.200.count",
+          "src_en": "",
+          "desc_en": "Number of items returned in this page.",
+          "title_zh": "本页返回的条目数。"
+        },
+        {
+          "path": "resp.200.limit",
+          "src_en": "",
+          "desc_en": "The limit that was applied to this page.",
+          "title_zh": "本页实际生效的数量上限。"
+        },
+        {
+          "path": "resp.200.next_page_token",
+          "src_en": "",
+          "desc_en": "Cursor for the next page; pass it back as `page_token`. Absent or empty when there are no more pages.",
+          "title_zh": "下一页的游标；作为 `page_token` 回传。无更多页时缺省或为空。"
+        },
+        {
+          "path": "resp.200.drafts",
+          "src_en": "Ordered by `updated_at` descending.",
+          "desc_en": "The page of drafts, most recently updated first.",
+          "title_zh": "本页草稿列表，按最近更新优先。"
+        },
+        {
+          "path": "resp.200.drafts.inbox_id",
+          "src_en": "",
+          "desc_en": "ID of the inbox that owns the draft.",
+          "title_zh": "拥有该草稿的收件箱 ID。"
+        },
+        {
+          "path": "resp.200.drafts.draft_id",
+          "src_en": "",
+          "desc_en": "ID of the draft, usable as the path parameter for draft operations.",
+          "title_zh": "草稿 ID，可用作草稿相关操作的路径参数。"
+        },
+        {
+          "path": "resp.200.drafts.labels",
+          "src_en": "",
+          "desc_en": "Labels applied to the draft.",
+          "title_zh": "应用于该草稿的标签。"
+        },
+        {
+          "path": "resp.200.drafts.to",
+          "src_en": "",
+          "desc_en": "Primary recipient addresses of the draft.",
+          "title_zh": "草稿的主要收件人地址。"
+        },
+        {
+          "path": "resp.200.drafts.cc",
+          "src_en": "",
+          "desc_en": "CC recipient addresses of the draft.",
+          "title_zh": "草稿的抄送收件人地址。"
+        },
+        {
+          "path": "resp.200.drafts.bcc",
+          "src_en": "",
+          "desc_en": "BCC recipient addresses of the draft.",
+          "title_zh": "草稿的密送收件人地址。"
+        },
+        {
+          "path": "resp.200.drafts.subject",
+          "src_en": "",
+          "desc_en": "Subject of the draft.",
+          "title_zh": "草稿主题。"
+        },
+        {
+          "path": "resp.200.drafts.preview",
+          "src_en": "",
+          "desc_en": "Plain-text snippet of the draft body.",
+          "title_zh": "草稿正文的纯文本短摘要。"
+        },
+        {
+          "path": "resp.200.drafts.attachments",
+          "src_en": "",
+          "desc_en": "Attachments present in the draft.",
+          "title_zh": "草稿中包含的附件。"
+        },
+        {
+          "path": "resp.200.drafts.attachments.attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment, used as the path parameter for the get-attachment endpoint.",
+          "title_zh": "附件 ID，作为获取附件端点的路径参数。"
+        },
+        {
+          "path": "resp.200.drafts.attachments.filename",
+          "src_en": "",
+          "desc_en": "Original filename of the attachment.",
+          "title_zh": "附件的原始文件名。"
+        },
+        {
+          "path": "resp.200.drafts.attachments.size",
+          "src_en": "",
+          "desc_en": "Attachment size in bytes.",
+          "title_zh": "附件大小（字节）。"
+        },
+        {
+          "path": "resp.200.drafts.attachments.content_type",
+          "src_en": "",
+          "desc_en": "MIME content type of the attachment (e.g. `application/pdf`).",
+          "title_zh": "附件的 MIME 内容类型（如 `application/pdf`）。"
+        },
+        {
+          "path": "resp.200.drafts.attachments.content_disposition",
+          "src_en": "",
+          "desc_en": "How the attachment is presented: `inline` (rendered within the body, e.g. an embedded image) or `attachment` (a downloadable file).",
+          "title_zh": "附件呈现方式：`inline`（随正文内嵌，如内嵌图片）或 `attachment`（可下载的文件）。"
+        },
+        {
+          "path": "resp.200.drafts.attachments.content_id",
+          "src_en": "",
+          "desc_en": "Content-ID used to reference an inline attachment from within the HTML body (via `cid:`).",
+          "title_zh": "Content-ID，用于在 HTML 正文中以 `cid:` 引用内嵌附件。"
+        },
+        {
+          "path": "resp.200.drafts.in_reply_to",
+          "src_en": "",
+          "desc_en": "ID of the message the draft replies to, if any.",
+          "title_zh": "草稿所回复的目标消息 ID（如有）。"
+        },
+        {
+          "path": "resp.200.drafts.send_status",
+          "src_en": "",
+          "desc_en": "Scheduled-send state of the draft: `scheduled`, `sending`, or `failed`.",
+          "title_zh": "草稿的定时发送状态：`scheduled`、`sending` 或 `failed`。"
+        },
+        {
+          "path": "resp.200.drafts.send_at",
+          "src_en": "",
+          "desc_en": "When the draft is scheduled to be sent.",
+          "title_zh": "草稿计划发送的时间。"
+        },
+        {
+          "path": "resp.200.drafts.updated_at",
+          "src_en": "",
+          "desc_en": "When the draft was last updated.",
+          "title_zh": "草稿最后更新时间。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    },
+    {
+      "operation": "get",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "**CLI:**\n```bash\nagentmail drafts get --draft-id <draft_id>\n```",
+          "desc_en": "Fetch a single resource by its ID. This operationId is shared by three endpoints: get a thread (with its full message list) by `thread_id`, get a draft by `draft_id`, and get one allow/block list entry by `direction`/`type`/`entry`. The path determines which resource and response shape you receive.",
+          "title_zh": "按 ID 获取单个资源。该 operationId 由三个端点共用：按 `thread_id` 获取对话（含完整消息列表）、按 `draft_id` 获取草稿、按 `direction`/`type`/`entry` 获取单条允许/拦截名单条目。具体取哪种资源及返回结构由请求路径决定。"
+        },
+        {
+          "path": "param:draft_id",
+          "src_en": "",
+          "desc_en": "ID of the draft to fetch. Obtain it from the `draft_id` field of a list-drafts result or a create-draft response.",
+          "title_zh": "要获取的草稿 ID。可从列出草稿的结果或创建草稿响应的 `draft_id` 字段获得。"
+        },
+        {
+          "path": "param:Authorization",
+          "src_en": "Bearer authentication",
+          "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret; never log it in plaintext.",
+          "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密，切勿明文记录。"
+        },
+        {
+          "path": "resp.200.inbox_id",
+          "src_en": "",
+          "desc_en": "ID of the inbox that owns this resource.",
+          "title_zh": "拥有该资源的收件箱 ID。"
+        },
+        {
+          "path": "resp.200.draft_id",
+          "src_en": "",
+          "desc_en": "ID of the draft, usable as the path parameter for draft operations.",
+          "title_zh": "草稿 ID，可用作草稿相关操作的路径参数。"
+        },
+        {
+          "path": "resp.200.client_id",
+          "src_en": "",
+          "desc_en": "Caller-supplied client ID echoed back, useful for correlating the draft with your own records.",
+          "title_zh": "回显的调用方自定义 client ID，便于将草稿与你自己的记录关联。"
+        },
+        {
+          "path": "resp.200.labels",
+          "src_en": "",
+          "desc_en": "Labels currently applied, including both system labels and your custom labels.",
+          "title_zh": "当前应用的标签，含系统标签与自定义标签。"
+        },
+        {
+          "path": "resp.200.reply_to",
+          "src_en": "",
+          "desc_en": "Reply-To addresses recipients should reply to instead of the From address.",
+          "title_zh": "回复目标地址，收件人应回复到此处而非 From 地址。"
+        },
+        {
+          "path": "resp.200.to",
+          "src_en": "",
+          "desc_en": "Primary recipient addresses.",
+          "title_zh": "主要收件人地址。"
+        },
+        {
+          "path": "resp.200.cc",
+          "src_en": "",
+          "desc_en": "CC (carbon copy) recipient addresses.",
+          "title_zh": "抄送（CC）收件人地址。"
+        },
+        {
+          "path": "resp.200.bcc",
+          "src_en": "",
+          "desc_en": "BCC (blind carbon copy) recipient addresses, not visible to other recipients.",
+          "title_zh": "密送（BCC）收件人地址，其他收件人不可见。"
+        },
+        {
+          "path": "resp.200.subject",
+          "src_en": "",
+          "desc_en": "Subject line.",
+          "title_zh": "主题。"
+        },
+        {
+          "path": "resp.200.preview",
+          "src_en": "",
+          "desc_en": "Short plain-text snippet of the content, for list-style display.",
+          "title_zh": "内容的纯文本短摘要，用于列表展示。"
+        },
+        {
+          "path": "resp.200.text",
+          "src_en": "",
+          "desc_en": "Plain-text body.",
+          "title_zh": "纯文本正文。"
+        },
+        {
+          "path": "resp.200.html",
+          "src_en": "",
+          "desc_en": "HTML body.",
+          "title_zh": "HTML 正文。"
+        },
+        {
+          "path": "resp.200.attachments",
+          "src_en": "",
+          "desc_en": "Attachments belonging to this resource.",
+          "title_zh": "该资源包含的附件。"
+        },
+        {
+          "path": "resp.200.attachments.attachment_id",
+          "src_en": "",
+          "desc_en": "ID of the attachment, used as the path parameter for the get-attachment endpoint.",
+          "title_zh": "附件 ID，作为获取附件端点的路径参数。"
+        },
+        {
+          "path": "resp.200.attachments.filename",
+          "src_en": "",
+          "desc_en": "Original filename of the attachment.",
+          "title_zh": "附件的原始文件名。"
+        },
+        {
+          "path": "resp.200.attachments.size",
+          "src_en": "",
+          "desc_en": "Attachment size in bytes.",
+          "title_zh": "附件大小（字节）。"
+        },
+        {
+          "path": "resp.200.attachments.content_type",
+          "src_en": "",
+          "desc_en": "MIME content type of the attachment (e.g. `application/pdf`).",
+          "title_zh": "附件的 MIME 内容类型（如 `application/pdf`）。"
+        },
+        {
+          "path": "resp.200.attachments.content_disposition",
+          "src_en": "",
+          "desc_en": "How the attachment is presented: `inline` (rendered within the body, e.g. an embedded image) or `attachment` (a downloadable file).",
+          "title_zh": "附件呈现方式：`inline`（随正文内嵌，如内嵌图片）或 `attachment`（可下载的文件）。"
+        },
+        {
+          "path": "resp.200.attachments.content_id",
+          "src_en": "",
+          "desc_en": "Content-ID used to reference an inline attachment from within the HTML body (via `cid:`).",
+          "title_zh": "Content-ID，用于在 HTML 正文中以 `cid:` 引用内嵌附件。"
+        },
+        {
+          "path": "resp.200.in_reply_to",
+          "src_en": "",
+          "desc_en": "ID of the message this draft/thread is replying to, if any.",
+          "title_zh": "本草稿/对话所回复的目标消息 ID（如有）。"
+        },
+        {
+          "path": "resp.200.references",
+          "src_en": "IDs of previous messages in thread.",
+          "desc_en": "IDs of earlier messages in the thread, forming the reply chain.",
+          "title_zh": "对话中较早消息的 ID 列表，构成回复链。"
+        },
+        {
+          "path": "resp.200.send_status",
+          "src_en": "",
+          "desc_en": "Scheduled-send state of the draft: `scheduled` (queued for `send_at`), `sending`, or `failed`. Absent for drafts with no scheduled send.",
+          "title_zh": "草稿的定时发送状态：`scheduled`（已排期到 `send_at`）、`sending`、`failed`。未设定时发送的草稿无此字段。"
+        },
+        {
+          "path": "resp.200.send_at",
+          "src_en": "",
+          "desc_en": "When the draft is scheduled to be sent.",
+          "title_zh": "草稿计划发送的时间。"
+        },
+        {
+          "path": "resp.200.updated_at",
+          "src_en": "",
+          "desc_en": "When the resource was last updated.",
+          "title_zh": "资源最后更新时间。"
+        },
+        {
+          "path": "resp.200.created_at",
+          "src_en": "Time at which draft was created.",
+          "desc_en": "When the resource was created.",
+          "title_zh": "资源创建时间。"
+        },
+        {
+          "path": "resp.404.name",
+          "src_en": "",
+          "desc_en": "Machine-readable error name identifying the failure.",
+          "title_zh": "标识此次失败的机器可读错误名。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable description of the error.",
+          "title_zh": "面向人类的错误描述。"
+        }
+      ]
+    }
+  ],
+  "total": 260,
+  "missing": []
+}

@@ -1,0 +1,1595 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Tavily API",
+    "version": "1.0.0",
+    "description": "Unified API documentation for Tavily endpoints including Search, Extract, Crawl, and Map."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/tavily/search": {
+      "post": {
+        "tags": [
+          "https://docs.tavily.com/documentation/api-reference/endpoint/search"
+        ],
+        "summary": "Execute a search query using Tavily Search.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "description": "The search query to execute with Tavily.",
+                    "example": "Who is Leo Messi?",
+                    "x-doc": {
+                      "desc_en": "Natural-language search query to run against the web.",
+                      "title_zh": "要在网络上检索的自然语言查询。",
+                      "source": "ai",
+                      "src_hash": "sha256:17ff044b5580",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "search_depth": {
+                    "type": "string",
+                    "enum": [
+                      "advanced",
+                      "basic",
+                      "fast",
+                      "ultra-fast"
+                    ],
+                    "default": "basic",
+                    "description": "Controls the latency vs. relevance tradeoff.",
+                    "x-doc": {
+                      "desc_en": "Latency vs. relevance tradeoff: lighter modes return faster but shallower results, heavier modes search more thoroughly at higher latency and cost.\n[⚠️Note:各枚举值与延迟/成本的具体对应关系源码未说明，待研发确认。]",
+                      "title_zh": "延迟与相关度的取舍：较轻量的模式返回更快但更浅，较重的模式检索更彻底，但延迟和成本更高。\n[⚠️批注:各枚举值与延迟/成本的具体对应关系源码未说明，待研发确认。]",
+                      "source": "ai",
+                      "src_hash": "sha256:4f80d240db7f",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "chunks_per_source": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "Maximum number of relevant chunks returned per source.",
+                    "minimum": 1,
+                    "maximum": 3,
+                    "x-doc": {
+                      "desc_en": "How many of the most relevant text chunks to keep from each matched source.",
+                      "title_zh": "每个命中来源保留的最相关文本片段数量。",
+                      "source": "ai",
+                      "src_hash": "sha256:44b1ed2a53a2",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "max_results": {
+                    "type": "integer",
+                    "default": 5,
+                    "description": "Maximum number of search results to return.",
+                    "minimum": 0,
+                    "maximum": 20,
+                    "x-doc": {
+                      "desc_en": "Upper bound on the number of search results returned.",
+                      "title_zh": "返回搜索结果数量的上限。",
+                      "source": "ai",
+                      "src_hash": "sha256:159a41455c2b",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "topic": {
+                    "type": "string",
+                    "enum": [
+                      "general",
+                      "news",
+                      "finance"
+                    ],
+                    "default": "general",
+                    "description": "Category of the search.",
+                    "x-doc": {
+                      "desc_en": "Search category that biases ranking and freshness: `general` for broad web, `news` for recent journalism, `finance` for financial sources.",
+                      "title_zh": "搜索类别，会影响排序与时效偏好：`general` 面向通用网页，`news` 面向时事新闻，`finance` 面向金融来源。",
+                      "source": "ai",
+                      "src_hash": "sha256:fb848dc63b12",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "time_range": {
+                    "type": "string",
+                    "enum": [
+                      "day",
+                      "week",
+                      "month",
+                      "year",
+                      "d",
+                      "w",
+                      "m",
+                      "y"
+                    ],
+                    "description": "Time range to filter results based on publish date.",
+                    "x-doc": {
+                      "desc_en": "Restrict results to content published within a recent window relative to now; both full words and single-letter aliases are accepted.",
+                      "title_zh": "将结果限制在相对当前的近期时间窗内发布的内容；支持完整单词与单字母简写两种写法。",
+                      "source": "ai",
+                      "src_hash": "sha256:76b0448d7b4b",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "start_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Return results after the specified start date.",
+                    "example": "2025-02-09",
+                    "x-doc": {
+                      "desc_en": "Keep only results published on or after this date.",
+                      "title_zh": "仅保留在该日期当天或之后发布的结果。",
+                      "source": "ai",
+                      "src_hash": "sha256:196ff0ff93ee",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "end_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Return results before the specified end date.",
+                    "example": "2025-12-29",
+                    "x-doc": {
+                      "desc_en": "Keep only results published on or before this date.",
+                      "title_zh": "仅保留在该日期当天或之前发布的结果。",
+                      "source": "ai",
+                      "src_hash": "sha256:f23ed7a1d73b",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_answer": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include an LLM-generated answer to the query.",
+                    "x-doc": {
+                      "desc_en": "When enabled, attach a concise LLM-generated answer to the query in the response.",
+                      "title_zh": "开启后，响应中附带一段由 LLM 生成的简洁问题答案。",
+                      "source": "ai",
+                      "src_hash": "sha256:05213fc88f3e",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_raw_content": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include cleaned and parsed HTML content of each search result.",
+                    "x-doc": {
+                      "desc_en": "When enabled, attach the cleaned, parsed page content of each result rather than just a snippet.",
+                      "title_zh": "开启后，为每条结果附带清洗解析后的完整页面内容，而不仅是摘要片段。",
+                      "source": "ai",
+                      "src_hash": "sha256:97e381d68d63",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_images": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Perform an image search and include results.",
+                    "x-doc": {
+                      "desc_en": "When enabled, also run an image search and return matching images.",
+                      "title_zh": "开启后，额外执行图片搜索并返回匹配的图片。",
+                      "source": "ai",
+                      "src_hash": "sha256:7644a698606d",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_image_descriptions": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Add descriptive text for each image when include_images is true.",
+                    "x-doc": {
+                      "desc_en": "When enabled, add a descriptive caption to each returned image; only takes effect when image results are requested.",
+                      "title_zh": "开启后，为每张返回的图片附加描述文字；仅在请求图片结果时生效。",
+                      "source": "ai",
+                      "src_hash": "sha256:b7cf5a2b1a3f",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_favicon": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include the favicon URL for each result.",
+                    "x-doc": {
+                      "desc_en": "When enabled, include the favicon URL of each result's source site.",
+                      "title_zh": "开启后，为每条结果附带来源站点的 favicon URL。",
+                      "source": "ai",
+                      "src_hash": "sha256:6e12796480ff",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of domains to specifically include in the search results.",
+                    "maxItems": 300,
+                    "x-doc": {
+                      "desc_en": "Restrict the search to only these domains; results from other sites are dropped.",
+                      "title_zh": "将搜索限定在这些域名内，其他站点的结果会被剔除。",
+                      "source": "ai",
+                      "src_hash": "sha256:cce4a27a0a3b",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "exclude_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of domains to specifically exclude from the search results.",
+                    "maxItems": 150,
+                    "x-doc": {
+                      "desc_en": "Drop any results coming from these domains.",
+                      "title_zh": "剔除来自这些域名的结果。",
+                      "source": "ai",
+                      "src_hash": "sha256:87ae14b4fdda",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Boost search results from a specific country.",
+                    "enum": [
+                      "afghanistan",
+                      "albania",
+                      "algeria",
+                      "andorra",
+                      "angola",
+                      "argentina",
+                      "armenia",
+                      "australia",
+                      "austria",
+                      "azerbaijan",
+                      "bahamas",
+                      "bahrain",
+                      "bangladesh",
+                      "barbados",
+                      "belarus",
+                      "belgium",
+                      "belize",
+                      "benin",
+                      "bhutan",
+                      "bolivia",
+                      "bosnia and herzegovina",
+                      "botswana",
+                      "brazil",
+                      "brunei",
+                      "bulgaria",
+                      "burkina faso",
+                      "burundi",
+                      "cambodia",
+                      "cameroon",
+                      "canada",
+                      "cape verde",
+                      "central african republic",
+                      "chad",
+                      "chile",
+                      "china",
+                      "colombia",
+                      "comoros",
+                      "congo",
+                      "costa rica",
+                      "croatia",
+                      "cuba",
+                      "cyprus",
+                      "czech republic",
+                      "denmark",
+                      "djibouti",
+                      "dominican republic",
+                      "ecuador",
+                      "egypt",
+                      "el salvador",
+                      "equatorial guinea",
+                      "eritrea",
+                      "estonia",
+                      "ethiopia",
+                      "fiji",
+                      "finland",
+                      "france",
+                      "gabon",
+                      "gambia",
+                      "georgia",
+                      "germany",
+                      "ghana",
+                      "greece",
+                      "guatemala",
+                      "guinea",
+                      "haiti",
+                      "honduras",
+                      "hungary",
+                      "iceland",
+                      "india",
+                      "indonesia",
+                      "iran",
+                      "iraq",
+                      "ireland",
+                      "israel",
+                      "italy",
+                      "jamaica",
+                      "japan",
+                      "jordan",
+                      "kazakhstan",
+                      "kenya",
+                      "kuwait",
+                      "kyrgyzstan",
+                      "latvia",
+                      "lebanon",
+                      "lesotho",
+                      "liberia",
+                      "libya",
+                      "liechtenstein",
+                      "lithuania",
+                      "luxembourg",
+                      "madagascar",
+                      "malawi",
+                      "malaysia",
+                      "maldives",
+                      "mali",
+                      "malta",
+                      "mauritania",
+                      "mauritius",
+                      "mexico",
+                      "moldova",
+                      "monaco",
+                      "mongolia",
+                      "montenegro",
+                      "morocco",
+                      "mozambique",
+                      "myanmar",
+                      "namibia",
+                      "nepal",
+                      "netherlands",
+                      "new zealand",
+                      "nicaragua",
+                      "niger",
+                      "nigeria",
+                      "north korea",
+                      "north macedonia",
+                      "norway",
+                      "oman",
+                      "pakistan",
+                      "panama",
+                      "papua new guinea",
+                      "paraguay",
+                      "peru",
+                      "philippines",
+                      "poland",
+                      "portugal",
+                      "qatar",
+                      "romania",
+                      "russia",
+                      "rwanda",
+                      "saudi arabia",
+                      "senegal",
+                      "serbia",
+                      "singapore",
+                      "slovakia",
+                      "slovenia",
+                      "somalia",
+                      "south africa",
+                      "south korea",
+                      "south sudan",
+                      "spain",
+                      "sri lanka",
+                      "sudan",
+                      "sweden",
+                      "switzerland",
+                      "syria",
+                      "taiwan",
+                      "tajikistan",
+                      "tanzania",
+                      "thailand",
+                      "togo",
+                      "trinidad and tobago",
+                      "tunisia",
+                      "turkey",
+                      "turkmenistan",
+                      "uganda",
+                      "ukraine",
+                      "united arab emirates",
+                      "united kingdom",
+                      "united states",
+                      "uruguay",
+                      "uzbekistan",
+                      "venezuela",
+                      "vietnam",
+                      "yemen",
+                      "zambia",
+                      "zimbabwe"
+                    ],
+                    "x-doc": {
+                      "desc_en": "Boost results originating from the given country; most effective for region-specific queries.",
+                      "title_zh": "提升来自指定国家的结果权重，对地域性查询效果最明显。",
+                      "source": "ai",
+                      "src_hash": "sha256:0cdca19a5f09",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "auto_parameters": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically configure search parameters based on query content.",
+                    "x-doc": {
+                      "desc_en": "When enabled, let Tavily infer and set search parameters automatically from the query content.",
+                      "title_zh": "开启后，由 Tavily 依据查询内容自动推断并设置搜索参数。",
+                      "source": "ai",
+                      "src_hash": "sha256:ed6efa579ecc",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_usage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include credit usage information in the response.",
+                    "x-doc": {
+                      "desc_en": "When enabled, include credit usage details for this request in the response.",
+                      "title_zh": "开启后，在响应中包含本次请求的积分用量明细。",
+                      "source": "ai",
+                      "src_hash": "sha256:6e2fd5f50ed5",
+                      "doc_version": "2.0.0"
+                    }
+                  }
+                },
+                "required": [
+                  "query"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "query": {
+                      "type": "string",
+                      "description": "The search query that was executed.",
+                      "x-doc": {
+                        "desc_en": "Echo of the search query that was executed.",
+                        "title_zh": "本次实际执行的搜索查询回显。",
+                        "source": "ai",
+                        "src_hash": "sha256:94105e563e98",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "answer": {
+                      "type": "string",
+                      "description": "A short answer to the user's query, generated by an LLM.",
+                      "x-doc": {
+                        "desc_en": "Short LLM-generated answer to the query; present only when an answer was requested.",
+                        "title_zh": "针对查询由 LLM 生成的简短答案，仅在请求答案时出现。",
+                        "source": "ai",
+                        "src_hash": "sha256:b14f90b52144",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "images": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "Image URL.",
+                            "x-doc": {
+                              "desc_en": "Direct URL of the matched image.",
+                              "title_zh": "匹配图片的直接 URL。",
+                              "source": "ai",
+                              "src_hash": "sha256:7c3e683757dc",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Image description.",
+                            "x-doc": {
+                              "desc_en": "Caption describing the image; present only when image descriptions were requested.",
+                              "title_zh": "描述该图片的文字说明，仅在请求图片描述时出现。",
+                              "source": "ai",
+                              "src_hash": "sha256:26543764e57a",
+                              "doc_version": "2.0.0"
+                            }
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Images matched by the query; present only when image search was requested.",
+                        "title_zh": "与查询匹配的图片，仅在请求图片搜索时出现。",
+                        "source": "ai",
+                        "src_hash": "sha256:92ee4cdceda8",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string",
+                            "description": "Title of the search result.",
+                            "x-doc": {
+                              "desc_en": "Title of the result page.",
+                              "title_zh": "结果页面的标题。",
+                              "source": "ai",
+                              "src_hash": "sha256:3dc8c0425cf0",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "URL of the search result.",
+                            "x-doc": {
+                              "desc_en": "URL of the result page.",
+                              "title_zh": "结果页面的 URL。",
+                              "source": "ai",
+                              "src_hash": "sha256:40b0f092647d",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "content": {
+                            "type": "string",
+                            "description": "Content snippet of the search result.",
+                            "x-doc": {
+                              "desc_en": "Most relevant text snippet extracted from the result page.",
+                              "title_zh": "从结果页面中提取的最相关文本片段。",
+                              "source": "ai",
+                              "src_hash": "sha256:271f1b670252",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "score": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Relevance score of the search result.",
+                            "x-doc": {
+                              "desc_en": "Relevance score of the result to the query; higher means more relevant.",
+                              "title_zh": "该结果与查询的相关度评分，越高越相关。",
+                              "source": "ai",
+                              "src_hash": "sha256:2176c0657231",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "favicon": {
+                            "type": "string",
+                            "description": "Favicon URL of the search result.",
+                            "x-doc": {
+                              "desc_en": "Favicon URL of the result's source site; present only when favicons were requested.",
+                              "title_zh": "结果来源站点的 favicon URL，仅在请求 favicon 时出现。",
+                              "source": "ai",
+                              "src_hash": "sha256:80f867bb9f15",
+                              "doc_version": "2.0.0"
+                            }
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Ranked list of web search results.",
+                        "title_zh": "按相关度排序的网页搜索结果列表。",
+                        "source": "ai",
+                        "src_hash": "sha256:fd0ca8114fda",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "response_time": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "Time in seconds it took to complete the request.",
+                      "x-doc": {
+                        "desc_en": "Server-side time taken to complete the request, in seconds.",
+                        "title_zh": "服务端完成本次请求所用的时间，单位为秒。",
+                        "source": "ai",
+                        "src_hash": "sha256:9e2a3e39575e",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "description": "Credit usage details for the request.",
+                          "x-doc": {
+                            "desc_en": "Number of credits consumed by this request.",
+                            "title_zh": "本次请求消耗的积分数。",
+                            "source": "ai",
+                            "src_hash": "sha256:27d8b6c5ddce",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Credit usage for this request; present only when usage reporting was requested.",
+                        "title_zh": "本次请求的积分用量，仅在请求用量信息时出现。",
+                        "source": "ai",
+                        "src_hash": "sha256:7ced8ef71564",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "Unique request identifier.",
+                      "x-doc": {
+                        "desc_en": "Unique identifier of this request, useful for tracing and support.",
+                        "title_zh": "本次请求的唯一标识，便于追踪与排障。",
+                        "source": "ai",
+                        "src_hash": "sha256:39a3a8f9957c",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "执行搜索 POST /tavily/search",
+          "desc_en": "Run a web search through Tavily and return ranked results, with optional LLM-generated answer, images, raw page content and credit usage. Tune relevance and latency via search_depth, and narrow scope with topic, time window, domain and country filters.",
+          "description_zh": "通过 Tavily 执行联网搜索，返回按相关度排序的结果，并可选附带 LLM 生成的答案、图片、原始网页内容与积分用量。可用 search_depth 在相关度与延迟间取舍，并以主题、时间窗、域名和国家等筛选缩小范围。",
+          "source": "ai",
+          "src_hash": "sha256:6f7bfa3ddfe5",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/tavily/extract": {
+      "post": {
+        "tags": [
+          "https://docs.tavily.com/documentation/api-reference/endpoint/extract"
+        ],
+        "summary": "Extract web page content from specified URLs using Tavily Extract.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "urls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "The URLs to extract content from.",
+                    "example": [
+                      "https://en.wikipedia.org/wiki/Artificial_intelligence"
+                    ],
+                    "x-doc": {
+                      "desc_en": "One or more web page URLs to extract content from.",
+                      "title_zh": "要提取内容的一个或多个网页 URL。",
+                      "source": "ai",
+                      "src_hash": "sha256:79c520ea7f06",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "query": {
+                    "type": "string",
+                    "description": "User intent for reranking extracted content chunks.",
+                    "x-doc": {
+                      "desc_en": "Statement of intent used to rerank the extracted content chunks so the most relevant ones surface first.",
+                      "title_zh": "用于对提取出的内容片段重排序的意图说明，使最相关的片段优先呈现。",
+                      "source": "ai",
+                      "src_hash": "sha256:3d9b2162fb96",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "chunks_per_source": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "Maximum number of relevant chunks returned per source.",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "x-doc": {
+                      "desc_en": "How many of the most relevant text chunks to keep from each URL.",
+                      "title_zh": "每个 URL 保留的最相关文本片段数量。",
+                      "source": "ai",
+                      "src_hash": "sha256:89c25732a109",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "extract_depth": {
+                    "type": "string",
+                    "enum": [
+                      "basic",
+                      "advanced"
+                    ],
+                    "default": "basic",
+                    "description": "Depth of the extraction process.",
+                    "x-doc": {
+                      "desc_en": "Extraction thoroughness: `basic` is faster and lighter, `advanced` parses more thoroughly at higher latency and cost.",
+                      "title_zh": "提取的彻底程度：`basic` 更快更轻量，`advanced` 解析更彻底，但延迟和成本更高。",
+                      "source": "ai",
+                      "src_hash": "sha256:1210939a1938",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_images": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include a list of images extracted from the URLs.",
+                    "x-doc": {
+                      "desc_en": "When enabled, also return images found on the extracted pages.",
+                      "title_zh": "开启后，额外返回从被提取页面中找到的图片。",
+                      "source": "ai",
+                      "src_hash": "sha256:3559a5e8e8e2",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_favicon": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include the favicon URL for each result.",
+                    "x-doc": {
+                      "desc_en": "When enabled, include the favicon URL of each extracted page.",
+                      "title_zh": "开启后，为每个被提取页面附带其 favicon URL。",
+                      "source": "ai",
+                      "src_hash": "sha256:6e12796480ff",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "markdown",
+                      "text"
+                    ],
+                    "default": "markdown",
+                    "description": "Format of the extracted web page content.",
+                    "x-doc": {
+                      "desc_en": "Output format of the extracted content: `markdown` preserves structure, `text` returns plain text.",
+                      "title_zh": "提取内容的输出格式：`markdown` 保留结构，`text` 返回纯文本。",
+                      "source": "ai",
+                      "src_hash": "sha256:f274d74972af",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "timeout": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Maximum time in seconds to wait for the URL extraction.",
+                    "minimum": 1,
+                    "maximum": 60,
+                    "x-doc": {
+                      "desc_en": "Maximum time to wait for a URL to be fetched and extracted, in seconds.",
+                      "title_zh": "等待单个 URL 抓取与提取完成的最长时间，单位为秒。",
+                      "source": "ai",
+                      "src_hash": "sha256:733a7b930c09",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_usage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include credit usage information in the response.",
+                    "x-doc": {
+                      "desc_en": "When enabled, include credit usage details for this request in the response.",
+                      "title_zh": "开启后，在响应中包含本次请求的积分用量明细。",
+                      "source": "ai",
+                      "src_hash": "sha256:6e2fd5f50ed5",
+                      "doc_version": "2.0.0"
+                    }
+                  }
+                },
+                "required": [
+                  "urls"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Extraction results returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "URL of the extracted content.",
+                            "x-doc": {
+                              "desc_en": "URL whose content was extracted.",
+                              "title_zh": "被提取内容的 URL。",
+                              "source": "ai",
+                              "src_hash": "sha256:d255ad82ad31",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "raw_content": {
+                            "type": "string",
+                            "description": "Extracted raw content from the URL.",
+                            "x-doc": {
+                              "desc_en": "Cleaned, parsed content of the page in the requested format.",
+                              "title_zh": "按所请求格式清洗解析后的页面内容。",
+                              "source": "ai",
+                              "src_hash": "sha256:8f4a23014726",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "favicon": {
+                            "type": "string",
+                            "description": "Favicon URL of the extracted content.",
+                            "x-doc": {
+                              "desc_en": "Favicon URL of the extracted page; present only when favicons were requested.",
+                              "title_zh": "被提取页面的 favicon URL，仅在请求 favicon 时出现。",
+                              "source": "ai",
+                              "src_hash": "sha256:72181a75d201",
+                              "doc_version": "2.0.0"
+                            }
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Successfully extracted pages, one entry per URL.",
+                        "title_zh": "成功提取的页面，每个 URL 对应一项。",
+                        "source": "ai",
+                        "src_hash": "sha256:d7b5a5d2cb89",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "failed_results": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "List of URLs that could not be processed.",
+                      "x-doc": {
+                        "desc_en": "URLs that could not be fetched or extracted.",
+                        "title_zh": "无法抓取或提取的 URL 列表。",
+                        "source": "ai",
+                        "src_hash": "sha256:1d4c8baaabb8",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "response_time": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "Time in seconds it took to complete the request.",
+                      "x-doc": {
+                        "desc_en": "Server-side time taken to complete the request, in seconds.",
+                        "title_zh": "服务端完成本次请求所用的时间，单位为秒。",
+                        "source": "ai",
+                        "src_hash": "sha256:9e2a3e39575e",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "description": "Credit usage details for the request.",
+                          "x-doc": {
+                            "desc_en": "Number of credits consumed by this request.",
+                            "title_zh": "本次请求消耗的积分数。",
+                            "source": "ai",
+                            "src_hash": "sha256:27d8b6c5ddce",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Credit usage for this request; present only when usage reporting was requested.",
+                        "title_zh": "本次请求的积分用量，仅在请求用量信息时出现。",
+                        "source": "ai",
+                        "src_hash": "sha256:7ced8ef71564",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "Unique request identifier.",
+                      "x-doc": {
+                        "desc_en": "Unique identifier of this request, useful for tracing and support.",
+                        "title_zh": "本次请求的唯一标识，便于追踪与排障。",
+                        "source": "ai",
+                        "src_hash": "sha256:39a3a8f9957c",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "提取网页内容 POST /tavily/extract",
+          "desc_en": "Fetch and clean the readable content of one or more URLs through Tavily Extract, returning parsed page text plus optional images and credit usage. Use query to rerank the extracted chunks by relevance to your intent.",
+          "description_zh": "通过 Tavily Extract 抓取并清洗一个或多个 URL 的可读正文，返回解析后的页面文本，并可选附带图片与积分用量。可用 query 按你的意图对提取出的片段重排序。",
+          "source": "ai",
+          "src_hash": "sha256:69ab76b3eca6",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/tavily/crawl": {
+      "post": {
+        "tags": [
+          "https://docs.tavily.com/documentation/api-reference/endpoint/crawl"
+        ],
+        "summary": "Graph-based website traversal tool using Tavily Crawl.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "The root URL to begin the crawl.",
+                    "example": "docs.tavily.com",
+                    "x-doc": {
+                      "desc_en": "Root URL where the crawl begins.",
+                      "title_zh": "爬取的起始根 URL。",
+                      "source": "ai",
+                      "src_hash": "sha256:214bab69a75f",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Natural language instructions for the crawler.",
+                    "x-doc": {
+                      "desc_en": "Natural-language guidance telling the crawler what content to prioritize while traversing links.",
+                      "title_zh": "用自然语言告诉爬虫在遍历链接时优先关注哪些内容。",
+                      "source": "ai",
+                      "src_hash": "sha256:74c2e91b9b2d",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "chunks_per_source": {
+                    "type": "integer",
+                    "default": 3,
+                    "description": "Maximum number of relevant chunks returned per source.",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "x-doc": {
+                      "desc_en": "How many of the most relevant text chunks to keep from each crawled page.",
+                      "title_zh": "每个被爬页面保留的最相关文本片段数量。",
+                      "source": "ai",
+                      "src_hash": "sha256:89c25732a109",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "max_depth": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "Max depth of the crawl.",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "x-doc": {
+                      "desc_en": "How many link hops away from the root URL the crawler may go.",
+                      "title_zh": "爬虫从根 URL 出发可跟进的链接跳数（层级深度）。",
+                      "source": "ai",
+                      "src_hash": "sha256:3d0e14700093",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "max_breadth": {
+                    "type": "integer",
+                    "default": 20,
+                    "description": "Max number of links to follow per level of the tree.",
+                    "minimum": 1,
+                    "maximum": 500,
+                    "x-doc": {
+                      "desc_en": "How many links the crawler may follow at each level of the link tree.",
+                      "title_zh": "在链接树每一层级上爬虫可跟进的链接数量。",
+                      "source": "ai",
+                      "src_hash": "sha256:2fb9d1864588",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "default": 50,
+                    "description": "Total number of links the crawler will process before stopping.",
+                    "minimum": 1,
+                    "x-doc": {
+                      "desc_en": "Total number of links the crawler will process before it stops.",
+                      "title_zh": "爬虫停止前总共处理的链接数量上限。",
+                      "source": "ai",
+                      "src_hash": "sha256:8a3addb36ae2",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "select_paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Regex patterns to select only URLs with specific path patterns.",
+                    "x-doc": {
+                      "desc_en": "Regex patterns; only URLs whose path matches are crawled.",
+                      "title_zh": "正则表达式模式；仅爬取路径匹配的 URL。",
+                      "source": "ai",
+                      "src_hash": "sha256:2a4d20741870",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "select_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Regex patterns to select crawling to specific domains or subdomains.",
+                    "x-doc": {
+                      "desc_en": "Regex patterns; crawling is restricted to matching domains or subdomains.",
+                      "title_zh": "正则表达式模式；将爬取范围限定在匹配的域名或子域名。",
+                      "source": "ai",
+                      "src_hash": "sha256:37758a8bea82",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "exclude_paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Regex patterns to exclude URLs with specific path patterns.",
+                    "x-doc": {
+                      "desc_en": "Regex patterns; URLs whose path matches are skipped.",
+                      "title_zh": "正则表达式模式；路径匹配的 URL 会被跳过。",
+                      "source": "ai",
+                      "src_hash": "sha256:fa01ad495f41",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "exclude_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Regex patterns to exclude specific domains or subdomains from crawling.",
+                    "x-doc": {
+                      "desc_en": "Regex patterns; matching domains or subdomains are skipped.",
+                      "title_zh": "正则表达式模式；匹配的域名或子域名会被跳过。",
+                      "source": "ai",
+                      "src_hash": "sha256:f177fdd34102",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "allow_external": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include external domain links in the final results list.",
+                    "x-doc": {
+                      "desc_en": "When enabled, links pointing to external domains are also kept in the results.",
+                      "title_zh": "开启后，指向外部域名的链接也会保留在结果中。",
+                      "source": "ai",
+                      "src_hash": "sha256:f9be1e209482",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_images": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include images in the crawl results.",
+                    "x-doc": {
+                      "desc_en": "When enabled, also return images found while crawling.",
+                      "title_zh": "开启后，额外返回爬取过程中找到的图片。",
+                      "source": "ai",
+                      "src_hash": "sha256:9da3a71a0ef3",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "extract_depth": {
+                    "type": "string",
+                    "enum": [
+                      "basic",
+                      "advanced"
+                    ],
+                    "default": "basic",
+                    "description": "Depth of the extraction process.",
+                    "x-doc": {
+                      "desc_en": "Extraction thoroughness for each crawled page: `basic` is faster and lighter, `advanced` parses more thoroughly at higher latency and cost.",
+                      "title_zh": "对每个被爬页面的提取彻底程度：`basic` 更快更轻量，`advanced` 解析更彻底，但延迟和成本更高。",
+                      "source": "ai",
+                      "src_hash": "sha256:1210939a1938",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "format": {
+                    "type": "string",
+                    "enum": [
+                      "markdown",
+                      "text"
+                    ],
+                    "default": "markdown",
+                    "description": "Format of the extracted web page content.",
+                    "x-doc": {
+                      "desc_en": "Output format of the extracted page content: `markdown` preserves structure, `text` returns plain text.",
+                      "title_zh": "提取页面内容的输出格式：`markdown` 保留结构，`text` 返回纯文本。",
+                      "source": "ai",
+                      "src_hash": "sha256:f274d74972af",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_favicon": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include the favicon URL for each result.",
+                    "x-doc": {
+                      "desc_en": "When enabled, include the favicon URL of each crawled page.",
+                      "title_zh": "开启后，为每个被爬页面附带其 favicon URL。",
+                      "source": "ai",
+                      "src_hash": "sha256:6e12796480ff",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "timeout": {
+                    "type": "number",
+                    "format": "float",
+                    "default": 150,
+                    "description": "Maximum time in seconds to wait for the crawl operation.",
+                    "minimum": 10,
+                    "maximum": 150,
+                    "x-doc": {
+                      "desc_en": "Maximum time to wait for the crawl operation to finish, in seconds.",
+                      "title_zh": "等待整个爬取操作完成的最长时间，单位为秒。",
+                      "source": "ai",
+                      "src_hash": "sha256:3461cee8a9bf",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_usage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include credit usage information in the response.",
+                    "x-doc": {
+                      "desc_en": "When enabled, include credit usage details for this request in the response.",
+                      "title_zh": "开启后，在响应中包含本次请求的积分用量明细。",
+                      "source": "ai",
+                      "src_hash": "sha256:6e2fd5f50ed5",
+                      "doc_version": "2.0.0"
+                    }
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Crawl results returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "base_url": {
+                      "type": "string",
+                      "description": "The base URL that was crawled.",
+                      "x-doc": {
+                        "desc_en": "Root URL that was crawled.",
+                        "title_zh": "实际被爬取的根 URL。",
+                        "source": "ai",
+                        "src_hash": "sha256:344643180681",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "description": "URL of the crawled page.",
+                            "x-doc": {
+                              "desc_en": "URL of the crawled page.",
+                              "title_zh": "被爬页面的 URL。",
+                              "source": "ai",
+                              "src_hash": "sha256:322c3bf4e764",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "raw_content": {
+                            "type": "string",
+                            "description": "Extracted raw content from the page.",
+                            "x-doc": {
+                              "desc_en": "Cleaned, parsed content of the crawled page in the requested format.",
+                              "title_zh": "按所请求格式清洗解析后的被爬页面内容。",
+                              "source": "ai",
+                              "src_hash": "sha256:b9116581813f",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "favicon": {
+                            "type": "string",
+                            "description": "Favicon URL of the crawled page.",
+                            "x-doc": {
+                              "desc_en": "Favicon URL of the crawled page; present only when favicons were requested.",
+                              "title_zh": "被爬页面的 favicon URL，仅在请求 favicon 时出现。",
+                              "source": "ai",
+                              "src_hash": "sha256:0599f817f5bd",
+                              "doc_version": "2.0.0"
+                            }
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Pages visited during the crawl, with their extracted content.",
+                        "title_zh": "爬取过程中访问的页面及其提取内容。",
+                        "source": "ai",
+                        "src_hash": "sha256:04bacaec7235",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "response_time": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "Time in seconds it took to complete the request.",
+                      "x-doc": {
+                        "desc_en": "Server-side time taken to complete the request, in seconds.",
+                        "title_zh": "服务端完成本次请求所用的时间，单位为秒。",
+                        "source": "ai",
+                        "src_hash": "sha256:9e2a3e39575e",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "description": "Credit usage details for the request.",
+                          "x-doc": {
+                            "desc_en": "Number of credits consumed by this request.",
+                            "title_zh": "本次请求消耗的积分数。",
+                            "source": "ai",
+                            "src_hash": "sha256:27d8b6c5ddce",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Credit usage for this request; present only when usage reporting was requested.",
+                        "title_zh": "本次请求的积分用量，仅在请求用量信息时出现。",
+                        "source": "ai",
+                        "src_hash": "sha256:7ced8ef71564",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "Unique request identifier.",
+                      "x-doc": {
+                        "desc_en": "Unique identifier of this request, useful for tracing and support.",
+                        "title_zh": "本次请求的唯一标识，便于追踪与排障。",
+                        "source": "ai",
+                        "src_hash": "sha256:39a3a8f9957c",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "爬取站点 POST /tavily/crawl",
+          "desc_en": "Traverse a website starting from a root URL, following links breadth- and depth-first within configurable limits, and return the extracted content of each visited page. Steer which links are followed with natural-language instructions and path/domain include or exclude filters.",
+          "description_zh": "从根 URL 出发遍历整站，在可配置的深度与广度上限内沿链接抓取，返回每个访问页面的提取内容。可用自然语言指令以及路径/域名的包含或排除筛选，控制跟进哪些链接。",
+          "source": "ai",
+          "src_hash": "sha256:425b16974121",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/tavily/map": {
+      "post": {
+        "tags": [
+          "https://docs.tavily.com/documentation/api-reference/endpoint/map"
+        ],
+        "summary": "Generate comprehensive site maps using Tavily Map.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "The root URL to begin the mapping.",
+                    "example": "docs.tavily.com",
+                    "x-doc": {
+                      "desc_en": "Root URL where the mapping begins.",
+                      "title_zh": "站点映射的起始根 URL。",
+                      "source": "ai",
+                      "src_hash": "sha256:f3fb65f1b494",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Natural language instructions for the crawler.",
+                    "x-doc": {
+                      "desc_en": "Natural-language guidance telling the crawler which links to prioritize while mapping the site.",
+                      "title_zh": "用自然语言告诉爬虫在映射站点时优先跟进哪些链接。",
+                      "source": "ai",
+                      "src_hash": "sha256:74c2e91b9b2d",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "max_depth": {
+                    "type": "integer",
+                    "default": 1,
+                    "description": "Max depth of the mapping.",
+                    "minimum": 1,
+                    "maximum": 5,
+                    "x-doc": {
+                      "desc_en": "How many link hops away from the root URL the mapping may go.",
+                      "title_zh": "映射从根 URL 出发可跟进的链接跳数（层级深度）。",
+                      "source": "ai",
+                      "src_hash": "sha256:0690920f0c8e",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "max_breadth": {
+                    "type": "integer",
+                    "default": 20,
+                    "description": "Max number of links to follow per level of the tree.",
+                    "minimum": 1,
+                    "maximum": 500,
+                    "x-doc": {
+                      "desc_en": "How many links may be followed at each level of the link tree.",
+                      "title_zh": "在链接树每一层级上可跟进的链接数量。",
+                      "source": "ai",
+                      "src_hash": "sha256:2fb9d1864588",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "default": 50,
+                    "description": "Total number of links the crawler will process before stopping.",
+                    "minimum": 1,
+                    "x-doc": {
+                      "desc_en": "Total number of links the crawler will process before it stops.",
+                      "title_zh": "爬虫停止前总共处理的链接数量上限。",
+                      "source": "ai",
+                      "src_hash": "sha256:8a3addb36ae2",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "select_paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Regex patterns to select only URLs with specific path patterns.",
+                    "x-doc": {
+                      "desc_en": "Regex patterns; only URLs whose path matches are mapped.",
+                      "title_zh": "正则表达式模式；仅映射路径匹配的 URL。",
+                      "source": "ai",
+                      "src_hash": "sha256:2a4d20741870",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "select_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Regex patterns to select crawling to specific domains or subdomains.",
+                    "x-doc": {
+                      "desc_en": "Regex patterns; mapping is restricted to matching domains or subdomains.",
+                      "title_zh": "正则表达式模式；将映射范围限定在匹配的域名或子域名。",
+                      "source": "ai",
+                      "src_hash": "sha256:37758a8bea82",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "exclude_paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Regex patterns to exclude URLs with specific path patterns.",
+                    "x-doc": {
+                      "desc_en": "Regex patterns; URLs whose path matches are skipped.",
+                      "title_zh": "正则表达式模式；路径匹配的 URL 会被跳过。",
+                      "source": "ai",
+                      "src_hash": "sha256:fa01ad495f41",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "exclude_domains": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Regex patterns to exclude specific domains or subdomains from mapping.",
+                    "x-doc": {
+                      "desc_en": "Regex patterns; matching domains or subdomains are skipped.",
+                      "title_zh": "正则表达式模式；匹配的域名或子域名会被跳过。",
+                      "source": "ai",
+                      "src_hash": "sha256:6f6344cccab6",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "allow_external": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Include external domain links in the final results list.",
+                    "x-doc": {
+                      "desc_en": "When enabled, links pointing to external domains are also kept in the results.",
+                      "title_zh": "开启后，指向外部域名的链接也会保留在结果中。",
+                      "source": "ai",
+                      "src_hash": "sha256:f9be1e209482",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "timeout": {
+                    "type": "number",
+                    "format": "float",
+                    "default": 150,
+                    "description": "Maximum time in seconds to wait for the map operation.",
+                    "minimum": 10,
+                    "maximum": 150,
+                    "x-doc": {
+                      "desc_en": "Maximum time to wait for the map operation to finish, in seconds.",
+                      "title_zh": "等待整个映射操作完成的最长时间，单位为秒。",
+                      "source": "ai",
+                      "src_hash": "sha256:ca006e45f10c",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "include_usage": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Include credit usage information in the response.",
+                    "x-doc": {
+                      "desc_en": "When enabled, include credit usage details for this request in the response.",
+                      "title_zh": "开启后，在响应中包含本次请求的积分用量明细。",
+                      "source": "ai",
+                      "src_hash": "sha256:6e2fd5f50ed5",
+                      "doc_version": "2.0.0"
+                    }
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Map results returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "base_url": {
+                      "type": "string",
+                      "description": "The base URL that was mapped.",
+                      "x-doc": {
+                        "desc_en": "Root URL that was mapped.",
+                        "title_zh": "实际被映射的根 URL。",
+                        "source": "ai",
+                        "src_hash": "sha256:de51c24877f6",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "URLs discovered during the mapping."
+                      },
+                      "x-doc": {
+                        "desc_en": "Flat list of URLs discovered while mapping the site.",
+                        "title_zh": "映射站点过程中发现的 URL 平铺列表。",
+                        "source": "ai",
+                        "src_hash": "sha256:ab4ab18fa336",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "response_time": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "Time in seconds it took to complete the request.",
+                      "x-doc": {
+                        "desc_en": "Server-side time taken to complete the request, in seconds.",
+                        "title_zh": "服务端完成本次请求所用的时间，单位为秒。",
+                        "source": "ai",
+                        "src_hash": "sha256:9e2a3e39575e",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "credits": {
+                          "type": "integer",
+                          "description": "Credit usage details for the request.",
+                          "x-doc": {
+                            "desc_en": "Number of credits consumed by this request.",
+                            "title_zh": "本次请求消耗的积分数。",
+                            "source": "ai",
+                            "src_hash": "sha256:27d8b6c5ddce",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Credit usage for this request; present only when usage reporting was requested.",
+                        "title_zh": "本次请求的积分用量，仅在请求用量信息时出现。",
+                        "source": "ai",
+                        "src_hash": "sha256:7ced8ef71564",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "request_id": {
+                      "type": "string",
+                      "description": "Unique request identifier.",
+                      "x-doc": {
+                        "desc_en": "Unique identifier of this request, useful for tracing and support.",
+                        "title_zh": "本次请求的唯一标识，便于追踪与排障。",
+                        "source": "ai",
+                        "src_hash": "sha256:39a3a8f9957c",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "生成站点地图 POST /tavily/map",
+          "desc_en": "Discover the link structure of a website starting from a root URL and return the list of reachable URLs, without extracting page content. Useful for mapping a site before deciding what to crawl or extract.",
+          "description_zh": "从根 URL 出发探测整站的链接结构，返回可达 URL 列表，但不提取页面正文。适合在决定爬取或提取之前先摸清站点结构。",
+          "source": "ai",
+          "src_hash": "sha256:6ddaa4d30177",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  }
+}

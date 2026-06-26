@@ -1,0 +1,1216 @@
+{
+  "operations": {
+    "coingeckoCoinsList": {
+      "heading_zh": "查询币种列表 coingeckoCoinsList",
+      "desc_en": "List every coin tracked by CoinGecko with its ID, symbol and name, optionally including the platforms and contract addresses it is deployed on. Use it to map a ticker symbol to the CoinGecko coin ID that the other endpoints require.",
+      "description_zh": "列出 CoinGecko 收录的全部币种及其 ID、symbol 与名称，可选附带其所在平台与合约地址。常用于把交易符号映射为其他接口所需的 CoinGecko 币种 ID。"
+    },
+    "coingeckoSupportedVsCurrencies": {
+      "heading_zh": "查询支持的计价货币 coingeckoSupportedVsCurrencies",
+      "desc_en": "List all fiat and crypto currencies that can be passed as the target currency in vs_currency / vs_currencies parameters.",
+      "description_zh": "列出所有可作为 vs_currency / vs_currencies 计价目标传入的法币与加密货币。"
+    },
+    "coingeckoCoinsMarkets": {
+      "heading_zh": "查询币种行情列表 coingeckoCoinsMarkets",
+      "desc_en": "List coins together with their market data (price, market cap, volume and related metrics) in a chosen currency, with sorting, paging, optional sparkline and price-change windows. Narrow the list by specific coin IDs or a category.",
+      "description_zh": "以指定计价货币列出币种及其行情数据（价格、市值、成交量等指标），支持排序、分页、可选迷你走势图与多档涨跌幅窗口。可按指定币种 ID 或分类缩小范围。"
+    },
+    "coingeckoCoinById": {
+      "heading_zh": "查询币种详情 coingeckoCoinById",
+      "desc_en": "Get the full profile of a single coin: price and market data, links, images, community and developer metrics. Toggle the heavier sections (tickers, market data, community, developer, localization, sparkline) on or off to control payload size.",
+      "description_zh": "获取单个币种的完整资料：价格与行情、链接、图标、社区与开发者指标。可分别开关各较重的数据块（行情、社区、开发者、本地化、迷你走势图等）以控制返回体积。"
+    },
+    "coingeckoSimplePrice": {
+      "heading_zh": "查询简单价格 coingeckoSimplePrice",
+      "desc_en": "Get the current price of one or more coins quoted in one or more currencies, with optional market cap, 24-hour volume, 24-hour change and last-updated timestamp.",
+      "description_zh": "查询一个或多个币种以一种或多种计价货币计的当前价格，并可选附带市值、24 小时成交量、24 小时涨跌与最后更新时间。"
+    },
+    "coingeckoCoinMarketChart": {
+      "heading_zh": "查询币种历史行情图 coingeckoCoinMarketChart",
+      "desc_en": "Get historical price, market cap and 24-hour volume series for a coin over a trailing number of days, with data granularity controlled by the days range and interval.",
+      "description_zh": "获取某币种在最近若干天内的历史价格、市值与 24 小时成交量序列，数据粒度由天数范围与 interval 共同决定。"
+    },
+    "coingeckoExchangesList": {
+      "heading_zh": "查询交易所列表 coingeckoExchangesList",
+      "desc_en": "List exchanges with their current trading volume and metadata, paginated.",
+      "description_zh": "分页列出各交易所及其当前成交量与元信息。"
+    },
+    "coingeckoTrendingSearch": {
+      "heading_zh": "查询热搜榜 coingeckoTrendingSearch",
+      "desc_en": "Get the coins most searched on CoinGecko over the last 24 hours.",
+      "description_zh": "获取过去 24 小时内 CoinGecko 上搜索量最高的币种。"
+    },
+    "coingeckoCategoriesList": {
+      "heading_zh": "查询分类列表 coingeckoCategoriesList",
+      "desc_en": "List all coin categories defined by CoinGecko; use the returned identifiers to filter other endpoints by category.",
+      "description_zh": "列出 CoinGecko 定义的全部币种分类；返回的标识可用于在其他接口中按分类筛选。"
+    },
+    "coingeckoCoinTickers": {
+      "heading_zh": "查询币种交易对 coingeckoCoinTickers",
+      "desc_en": "List the exchange trading pairs (tickers) for a coin, with sorting and paging, optionally filtered to specific exchanges and optionally including order-book depth.",
+      "description_zh": "列出某币种在各交易所的交易对（ticker），支持排序与分页，可限定到指定交易所，并可选附带订单簿深度。"
+    },
+    "coingeckoCoinHistory": {
+      "heading_zh": "查询币种历史快照 coingeckoCoinHistory",
+      "desc_en": "Get a one-day historical snapshot of a coin (price, market cap and volume) as of a specific calendar date.",
+      "description_zh": "获取某币种在指定日历日期当天的历史快照（价格、市值与成交量）。"
+    },
+    "coingeckoCoinOhlc": {
+      "heading_zh": "查询币种 OHLC coingeckoCoinOhlc",
+      "desc_en": "Get open/high/low/close candlestick data for a coin over a trailing number of days, in a chosen currency.",
+      "description_zh": "获取某币种在最近若干天内、以指定计价货币计的开高低收（OHLC）K 线数据。"
+    },
+    "coingeckoExchangesListIdMap": {
+      "heading_zh": "查询交易所 ID 映射 coingeckoExchangesListIdMap",
+      "desc_en": "List all exchange IDs and names; use it to resolve a human exchange name to the ID required by other exchange endpoints.",
+      "description_zh": "列出全部交易所 ID 与名称；用于把交易所名称解析为其他交易所接口所需的 ID。"
+    },
+    "coingeckoExchangeById": {
+      "heading_zh": "查询交易所详情 coingeckoExchangeById",
+      "desc_en": "Get detailed data for a single exchange, including volume, trust score and listed tickers.",
+      "description_zh": "获取单个交易所的详细数据，包含成交量、信任评分与挂牌交易对。"
+    },
+    "coingeckoCategoriesMarketData": {
+      "heading_zh": "查询分类行情 coingeckoCategoriesMarketData",
+      "desc_en": "List all coin categories with aggregated market data (market cap, volume and top coins), with sorting.",
+      "description_zh": "列出全部币种分类及其汇总行情数据（市值、成交量与代表币种），支持排序。"
+    },
+    "coingeckoNews": {
+      "heading_zh": "查询加密新闻 coingeckoNews",
+      "desc_en": "Get the latest crypto news articles aggregated by CoinGecko.",
+      "description_zh": "获取 CoinGecko 聚合的最新加密货币新闻。"
+    },
+    "coingeckoExchangeTickers": {
+      "heading_zh": "查询交易所交易对 coingeckoExchangeTickers",
+      "desc_en": "List the trading pairs (tickers) traded on a given exchange, with sorting and paging, optionally filtered to specific coins and optionally including order-book depth.",
+      "description_zh": "列出某交易所上交易的交易对（ticker），支持排序与分页，可限定到指定币种，并可选附带订单簿深度。"
+    },
+    "coingeckoTokenPriceByAddress": {
+      "heading_zh": "按合约地址查询代币价格 coingeckoTokenPriceByAddress",
+      "desc_en": "Get the current price of one or more tokens identified by their on-chain contract address on a given asset platform, quoted in one or more currencies, with optional market cap, 24-hour volume, 24-hour change and last-updated timestamp.",
+      "description_zh": "查询某资产平台上由链上合约地址标识的一个或多个代币的当前价格，以一种或多种计价货币计，并可选附带市值、24 小时成交量、24 小时涨跌与最后更新时间。"
+    },
+    "coingeckoCoinByTokenAddress": {
+      "heading_zh": "按合约地址查询币种详情 coingeckoCoinByTokenAddress",
+      "desc_en": "Get the full coin profile (metadata, links, contract address and market data) for a token identified by its asset platform and on-chain contract address, mirroring the data on its CoinGecko coin page.",
+      "description_zh": "通过资产平台与链上合约地址定位某代币，获取其完整资料（元信息、链接、合约地址与行情数据），内容与其 CoinGecko 币种页一致。"
+    },
+    "coingeckoCoinMarketChartByContract": {
+      "heading_zh": "按合约地址查询历史行情图 coingeckoCoinMarketChartByContract",
+      "desc_en": "Get historical price, market cap and 24-hour volume series for a token identified by its asset platform and contract address; the response has the same shape as coingeckoCoinMarketChart.",
+      "description_zh": "通过资产平台与合约地址定位某代币，获取其历史价格、市值与 24 小时成交量序列；返回结构与 coingeckoCoinMarketChart 相同。"
+    },
+    "coingeckoCoinMarketChartRange": {
+      "heading_zh": "按时间区间查询历史行情图 coingeckoCoinMarketChartRange",
+      "desc_en": "Get historical price, market cap and 24-hour volume series for a coin between an explicit start and end UNIX timestamp; the response has the same shape as coingeckoCoinMarketChart.",
+      "description_zh": "获取某币种在明确的起止 UNIX 时间戳之间的历史价格、市值与 24 小时成交量序列；返回结构与 coingeckoCoinMarketChart 相同。"
+    }
+  },
+  "fields": {
+    "coingeckoCoinsList": {
+      "parameters": {
+        "include_platform": {
+          "desc_en": "When enabled, each coin also lists the asset platforms it lives on and the corresponding contract addresses.",
+          "title_zh": "开启后，每个币种额外列出其所在的资产平台及对应合约地址。"
+        }
+      }
+    },
+    "coingeckoCoinsMarkets": {
+      "parameters": {
+        "ids": {
+          "desc_en": "Restrict the list to these CoinGecko coin IDs, given as a comma-separated string.",
+          "title_zh": "将列表限定为这些 CoinGecko 币种 ID，以逗号分隔的字符串给出。"
+        },
+        "category": {
+          "desc_en": "Restrict the list to coins in this category; category identifiers come from coingeckoCategoriesList.",
+          "title_zh": "将列表限定为该分类下的币种；分类标识取自 coingeckoCategoriesList。"
+        },
+        "order": {
+          "desc_en": "Sort order of the returned coins, by market cap, volume or ID, ascending or descending.",
+          "title_zh": "返回币种的排序方式，可按市值、成交量或 ID 升序或降序。"
+        },
+        "per_page": {
+          "desc_en": "Number of coins returned per page.",
+          "title_zh": "每页返回的币种数量。"
+        },
+        "page": {
+          "desc_en": "Which page of results to return.",
+          "title_zh": "返回结果的页码。"
+        },
+        "sparkline": {
+          "desc_en": "When enabled, include a 7-day price sparkline for each coin.",
+          "title_zh": "开启后，为每个币种附带 7 天价格迷你走势图。"
+        },
+        "price_change_percentage": {
+          "desc_en": "Comma-separated list of time windows for which to include price-change percentages.",
+          "title_zh": "以逗号分隔的时间窗列表，指定需要附带涨跌幅百分比的窗口。"
+        }
+      }
+    },
+    "coingeckoCoinById": {
+      "parameters": {
+        "localization": {
+          "desc_en": "When enabled, include localized (translated) name and description fields.",
+          "title_zh": "开启后，包含本地化（翻译后）的名称与描述字段。"
+        },
+        "tickers": {
+          "desc_en": "When enabled, include the coin's exchange trading pairs in the response.",
+          "title_zh": "开启后，在响应中包含该币种的交易所交易对。"
+        },
+        "market_data": {
+          "desc_en": "When enabled, include price and market data in the response.",
+          "title_zh": "开启后，在响应中包含价格与行情数据。"
+        },
+        "community_data": {
+          "desc_en": "When enabled, include community metrics such as social followers and activity.",
+          "title_zh": "开启后，包含社交关注与活跃度等社区指标。"
+        },
+        "developer_data": {
+          "desc_en": "When enabled, include developer metrics derived from the coin's code repositories.",
+          "title_zh": "开启后，包含基于该币种代码仓库的开发者指标。"
+        },
+        "sparkline": {
+          "desc_en": "When enabled, include a 7-day price sparkline.",
+          "title_zh": "开启后，附带 7 天价格迷你走势图。"
+        }
+      }
+    },
+    "coingeckoSimplePrice": {
+      "parameters": {
+        "ids": {
+          "desc_en": "Coins to price, given as comma-separated CoinGecko coin IDs.",
+          "title_zh": "需要查询价格的币种，以逗号分隔的 CoinGecko 币种 ID 给出。"
+        },
+        "vs_currencies": {
+          "desc_en": "Target currencies to quote prices in, given as a comma-separated list.",
+          "title_zh": "用于计价的目标货币，以逗号分隔的列表给出。"
+        },
+        "include_market_cap": {
+          "desc_en": "When enabled, also return each coin's market cap.",
+          "title_zh": "开启后，额外返回每个币种的市值。"
+        },
+        "include_24hr_vol": {
+          "desc_en": "When enabled, also return each coin's 24-hour trading volume.",
+          "title_zh": "开启后，额外返回每个币种的 24 小时成交量。"
+        },
+        "include_24hr_change": {
+          "desc_en": "When enabled, also return each coin's 24-hour price change.",
+          "title_zh": "开启后，额外返回每个币种的 24 小时价格变动。"
+        },
+        "include_last_updated_at": {
+          "desc_en": "When enabled, also return the timestamp at which each price was last updated.",
+          "title_zh": "开启后，额外返回每个价格的最后更新时间戳。"
+        },
+        "precision": {
+          "desc_en": "Number of decimal places to use for the returned price values.",
+          "title_zh": "返回价格数值所用的小数位数。",
+          "annotation": "该参数接受的具体取值集合源码未声明，待研发确认。"
+        }
+      }
+    },
+    "coingeckoCoinMarketChart": {
+      "parameters": {
+        "interval": {
+          "desc_en": "Data granularity of the returned series; when omitted, granularity is chosen automatically based on the days range.",
+          "title_zh": "返回序列的数据粒度；省略时按天数范围自动选择粒度。"
+        }
+      }
+    },
+    "coingeckoExchangesList": {
+      "parameters": {
+        "per_page": {
+          "desc_en": "Number of exchanges returned per page.",
+          "title_zh": "每页返回的交易所数量。"
+        },
+        "page": {
+          "desc_en": "Which page of results to return.",
+          "title_zh": "返回结果的页码。"
+        }
+      }
+    },
+    "coingeckoCoinTickers": {
+      "parameters": {
+        "exchange_ids": {
+          "desc_en": "Restrict tickers to these exchanges, given as comma-separated exchange IDs; IDs come from coingeckoExchangesListIdMap.",
+          "title_zh": "将交易对限定到这些交易所，以逗号分隔的交易所 ID 给出；ID 取自 coingeckoExchangesListIdMap。"
+        },
+        "page": {
+          "desc_en": "Which page of tickers to return.",
+          "title_zh": "返回交易对的页码。"
+        },
+        "order": {
+          "desc_en": "Sort order of the returned tickers, by trust score or volume.",
+          "title_zh": "返回交易对的排序方式，可按信任评分或成交量排序。"
+        },
+        "depth": {
+          "desc_en": "When enabled, include order-book depth (2% cost-to-move) for each ticker.",
+          "title_zh": "开启后，为每个交易对附带订单簿深度（2% 价位的成交成本）。"
+        }
+      }
+    },
+    "coingeckoCoinHistory": {
+      "parameters": {
+        "date": {
+          "desc_en": "Calendar date of the snapshot to retrieve, in day-month-year form.",
+          "title_zh": "要获取快照的日历日期，采用日-月-年格式。"
+        },
+        "localization": {
+          "desc_en": "When enabled, include localized (translated) name fields.",
+          "title_zh": "开启后，包含本地化（翻译后）的名称字段。"
+        }
+      }
+    },
+    "coingeckoCoinOhlc": {
+      "parameters": {
+        "days": {
+          "desc_en": "How many trailing days of candles to return.",
+          "title_zh": "返回最近多少天的 K 线数据。"
+        }
+      }
+    },
+    "coingeckoCategoriesMarketData": {
+      "parameters": {
+        "order": {
+          "desc_en": "Sort order of the returned categories, by market cap, name or 24-hour market-cap change.",
+          "title_zh": "返回分类的排序方式，可按市值、名称或 24 小时市值变动排序。"
+        }
+      }
+    },
+    "coingeckoExchangeTickers": {
+      "parameters": {
+        "coin_ids": {
+          "desc_en": "Restrict tickers to these coins, given as comma-separated CoinGecko coin IDs.",
+          "title_zh": "将交易对限定到这些币种，以逗号分隔的 CoinGecko 币种 ID 给出。"
+        },
+        "page": {
+          "desc_en": "Which page of tickers to return.",
+          "title_zh": "返回交易对的页码。"
+        },
+        "depth": {
+          "desc_en": "When enabled, include order-book depth (2% cost-to-move) for each ticker.",
+          "title_zh": "开启后，为每个交易对附带订单簿深度（2% 价位的成交成本）。"
+        },
+        "order": {
+          "desc_en": "Sort order of the returned tickers, by trust score or volume.",
+          "title_zh": "返回交易对的排序方式，可按信任评分或成交量排序。"
+        }
+      }
+    },
+    "coingeckoTokenPriceByAddress": {
+      "parameters": {
+        "id": {
+          "desc_en": "Asset platform on which the tokens live, given by its CoinGecko platform ID; valid IDs come from CoinGecko's asset platforms list.",
+          "title_zh": "代币所在的资产平台，以其 CoinGecko 平台 ID 给出；有效 ID 取自 CoinGecko 的资产平台列表。"
+        },
+        "contract_addresses": {
+          "desc_en": "On-chain contract addresses of the tokens to price, given as a comma-separated list.",
+          "title_zh": "要查询价格的代币链上合约地址，以逗号分隔的列表给出。"
+        },
+        "vs_currencies": {
+          "desc_en": "Target currencies to quote prices in, given as a comma-separated list.",
+          "title_zh": "用于计价的目标货币，以逗号分隔的列表给出。"
+        },
+        "include_market_cap": {
+          "desc_en": "When enabled, also return each token's market cap.",
+          "title_zh": "开启后，额外返回每个代币的市值。"
+        },
+        "include_24hr_vol": {
+          "desc_en": "When enabled, also return each token's 24-hour trading volume.",
+          "title_zh": "开启后，额外返回每个代币的 24 小时成交量。"
+        },
+        "include_24hr_change": {
+          "desc_en": "When enabled, also return each token's 24-hour price change.",
+          "title_zh": "开启后，额外返回每个代币的 24 小时价格变动。"
+        },
+        "include_last_updated_at": {
+          "desc_en": "When enabled, also return the timestamp at which each price was last updated.",
+          "title_zh": "开启后，额外返回每个价格的最后更新时间戳。"
+        }
+      }
+    },
+    "coingeckoCoinByTokenAddress": {
+      "parameters": {
+        "id": {
+          "desc_en": "Asset platform on which the token lives, given by its CoinGecko platform ID; valid IDs come from CoinGecko's asset platforms list.",
+          "title_zh": "代币所在的资产平台，以其 CoinGecko 平台 ID 给出；有效 ID 取自 CoinGecko 的资产平台列表。"
+        },
+        "contract_address": {
+          "desc_en": "On-chain contract address of the token to look up.",
+          "title_zh": "要查询代币的链上合约地址。"
+        }
+      },
+      "response": {
+        "200": {
+          "id": {
+            "desc_en": "CoinGecko coin ID for this token; use it to query other coin endpoints such as coingeckoCoinById.",
+            "title_zh": "该代币的 CoinGecko coin ID，可用于调用 coingeckoCoinById 等其他币种接口。"
+          },
+          "symbol": {
+            "desc_en": "Trading symbol of the coin.",
+            "title_zh": "币种的交易符号。"
+          },
+          "name": {
+            "desc_en": "Display name of the coin.",
+            "title_zh": "币种的展示名称。"
+          },
+          "web_slug": {
+            "desc_en": "URL slug used for the coin on CoinGecko's website.",
+            "title_zh": "该币种在 CoinGecko 网站上使用的 URL slug。"
+          },
+          "asset_platform_id": {
+            "desc_en": "CoinGecko platform ID of the chain the token is issued on.",
+            "title_zh": "代币发行所在链的 CoinGecko 平台 ID。"
+          },
+          "platforms": {
+            "desc_en": "Mapping of each asset platform the coin is available on to its contract address on that chain.",
+            "title_zh": "该币种所在各资产平台到其在对应链上合约地址的映射。"
+          },
+          "detail_platforms": {
+            "desc_en": "Per-platform contract details, including the contract address and token decimal places.",
+            "title_zh": "各平台的合约明细，含合约地址与代币精度（小数位数）。"
+          },
+          "block_time_in_minutes": {
+            "desc_en": "Average block time of the coin's blockchain, in minutes.",
+            "title_zh": "该币种所在区块链的平均出块时间，单位为分钟。"
+          },
+          "hashing_algorithm": {
+            "desc_en": "Hashing algorithm used by the coin's blockchain; null when not applicable.",
+            "title_zh": "该币种区块链所用的哈希算法；不适用时为 null。"
+          },
+          "categories": {
+            "desc_en": "CoinGecko categories the coin is classified under.",
+            "title_zh": "该币种所归属的 CoinGecko 分类。"
+          },
+          "preview_listing": {
+            "desc_en": "Whether the coin is a preview (pre-launch) listing rather than a fully listed asset.",
+            "title_zh": "标识该币种是否为预览（上线前）列表条目，而非已正式上线的资产。"
+          },
+          "public_notice": {
+            "desc_en": "Public notice shown for the coin, if any; null when none.",
+            "title_zh": "针对该币种展示的公开提示（如有）；无则为 null。"
+          },
+          "additional_notices": {
+            "desc_en": "Additional notices shown for the coin.",
+            "title_zh": "针对该币种展示的额外提示信息。"
+          },
+          "localization": {
+            "desc_en": "Map of locale code to the coin's localized name.",
+            "title_zh": "语言区域代码到该币种本地化名称的映射。"
+          },
+          "description": {
+            "desc_en": "Map of locale code to the coin's description text in that language.",
+            "title_zh": "语言区域代码到该币种对应语言描述文本的映射。"
+          },
+          "links": {
+            "desc_en": "Collection of the coin's external links and social handles.",
+            "title_zh": "该币种的各类外部链接与社交账号集合。"
+          },
+          "links.homepage": {
+            "desc_en": "Official website URLs of the coin.",
+            "title_zh": "该币种的官方网站 URL。"
+          },
+          "links.whitepaper": {
+            "desc_en": "Whitepaper URLs of the coin.",
+            "title_zh": "该币种的白皮书 URL。"
+          },
+          "links.blockchain_site": {
+            "desc_en": "Block explorer URLs for the coin.",
+            "title_zh": "该币种的区块浏览器 URL。"
+          },
+          "links.official_forum_url": {
+            "desc_en": "Official forum URLs of the coin.",
+            "title_zh": "该币种的官方论坛 URL。"
+          },
+          "links.chat_url": {
+            "desc_en": "Chat or community channel URLs of the coin.",
+            "title_zh": "该币种的聊天或社区频道 URL。"
+          },
+          "links.announcement_url": {
+            "desc_en": "Announcement page URLs of the coin.",
+            "title_zh": "该币种的公告页面 URL。"
+          },
+          "links.snapshot_url": {
+            "desc_en": "Snapshot governance page URL of the coin.",
+            "title_zh": "该币种的 Snapshot 治理页面 URL。"
+          },
+          "links.twitter_screen_name": {
+            "desc_en": "Twitter (X) handle of the coin.",
+            "title_zh": "该币种的 Twitter（X）账号。"
+          },
+          "links.facebook_username": {
+            "desc_en": "Facebook username of the coin.",
+            "title_zh": "该币种的 Facebook 用户名。"
+          },
+          "links.bitcointalk_thread_identifier": {
+            "desc_en": "Bitcointalk forum thread identifier of the coin.",
+            "title_zh": "该币种的 Bitcointalk 论坛帖子标识。"
+          },
+          "links.telegram_channel_identifier": {
+            "desc_en": "Telegram channel identifier of the coin.",
+            "title_zh": "该币种的 Telegram 频道标识。"
+          },
+          "links.subreddit_url": {
+            "desc_en": "Subreddit URL of the coin.",
+            "title_zh": "该币种的 subreddit URL。"
+          },
+          "links.repos_url": {
+            "desc_en": "Source code repository URLs of the coin, grouped by host.",
+            "title_zh": "该币种按托管平台分组的源代码仓库 URL。"
+          },
+          "links.repos_url.github": {
+            "desc_en": "GitHub repository URLs of the coin.",
+            "title_zh": "该币种的 GitHub 仓库 URL。"
+          },
+          "links.repos_url.bitbucket": {
+            "desc_en": "Bitbucket repository URLs of the coin.",
+            "title_zh": "该币种的 Bitbucket 仓库 URL。"
+          },
+          "image": {
+            "desc_en": "Coin logo image URLs in several sizes.",
+            "title_zh": "该币种不同尺寸的 logo 图片 URL。"
+          },
+          "image.thumb": {
+            "desc_en": "Thumbnail-size logo URL.",
+            "title_zh": "缩略图尺寸的 logo URL。"
+          },
+          "image.small": {
+            "desc_en": "Small-size logo URL.",
+            "title_zh": "小尺寸的 logo URL。"
+          },
+          "image.large": {
+            "desc_en": "Large-size logo URL.",
+            "title_zh": "大尺寸的 logo URL。"
+          },
+          "country_origin": {
+            "desc_en": "Country of origin of the coin's project.",
+            "title_zh": "该币种项目的来源国家。"
+          },
+          "genesis_date": {
+            "desc_en": "Genesis (launch) date of the coin as an ISO 8601 timestamp; null when unknown.",
+            "title_zh": "该币种的创世（上线）日期，ISO 8601 时间戳；未知时为 null。"
+          },
+          "contract_address": {
+            "desc_en": "On-chain contract address of the token.",
+            "title_zh": "该代币的链上合约地址。"
+          },
+          "sentiment_votes_up_percentage": {
+            "desc_en": "Percentage of community sentiment votes that are positive.",
+            "title_zh": "社区情绪投票中看涨（正面）票的占比百分比。"
+          },
+          "sentiment_votes_down_percentage": {
+            "desc_en": "Percentage of community sentiment votes that are negative.",
+            "title_zh": "社区情绪投票中看跌（负面）票的占比百分比。"
+          },
+          "watchlist_portfolio_users": {
+            "desc_en": "Number of users tracking this coin in their CoinGecko portfolio watchlist.",
+            "title_zh": "在 CoinGecko 投资组合关注列表中关注该币种的用户数。"
+          },
+          "market_cap_rank": {
+            "desc_en": "Rank of the coin by market capitalization.",
+            "title_zh": "该币种按市值排序的排名。"
+          },
+          "market_cap_rank_with_rehypothecated": {
+            "desc_en": "Rank of the coin by market capitalization, including rehypothecated tokens.",
+            "title_zh": "计入再抵押（rehypothecated）代币后，该币种按市值排序的排名。"
+          },
+          "market_data": {
+            "desc_en": "Market metrics for the coin: prices, market cap, volume, supply and price-change figures.",
+            "title_zh": "该币种的市场指标：价格、市值、交易量、供应量与价格涨跌幅等。"
+          },
+          "market_data.current_price": {
+            "desc_en": "Map of the coin's current price keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的该币种当前价格。"
+          },
+          "market_data.current_price.btc": {
+            "desc_en": "Current price denominated in BTC.",
+            "title_zh": "以 BTC 计价的当前价格。"
+          },
+          "market_data.current_price.eur": {
+            "desc_en": "Current price denominated in EUR.",
+            "title_zh": "以 EUR 计价的当前价格。"
+          },
+          "market_data.current_price.usd": {
+            "desc_en": "Current price denominated in USD.",
+            "title_zh": "以 USD 计价的当前价格。"
+          },
+          "market_data.total_value_locked": {
+            "desc_en": "Total value locked (TVL) in the coin's protocol; null when not applicable.",
+            "title_zh": "该币种协议的总锁仓价值（TVL）；不适用时为 null。"
+          },
+          "market_data.mcap_to_tvl_ratio": {
+            "desc_en": "Ratio of market cap to total value locked; null when not applicable.",
+            "title_zh": "市值与总锁仓价值（TVL）的比值；不适用时为 null。"
+          },
+          "market_data.fdv_to_tvl_ratio": {
+            "desc_en": "Ratio of fully diluted valuation to total value locked; null when not applicable.",
+            "title_zh": "完全稀释估值（FDV）与总锁仓价值（TVL）的比值；不适用时为 null。"
+          },
+          "market_data.roi": {
+            "desc_en": "Return on investment for the coin; null when not available.",
+            "title_zh": "该币种的投资回报率（ROI）；不可用时为 null。"
+          },
+          "market_data.ath": {
+            "desc_en": "Map of the coin's all-time-high price keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的该币种历史最高价（ATH）。"
+          },
+          "market_data.ath.btc": {
+            "desc_en": "All-time-high price denominated in BTC.",
+            "title_zh": "以 BTC 计价的历史最高价（ATH）。"
+          },
+          "market_data.ath.eur": {
+            "desc_en": "All-time-high price denominated in EUR.",
+            "title_zh": "以 EUR 计价的历史最高价（ATH）。"
+          },
+          "market_data.ath.usd": {
+            "desc_en": "All-time-high price denominated in USD.",
+            "title_zh": "以 USD 计价的历史最高价（ATH）。"
+          },
+          "market_data.ath_change_percentage": {
+            "desc_en": "Map of percentage change from the all-time high keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的相对历史最高价（ATH）的涨跌幅百分比。"
+          },
+          "market_data.ath_change_percentage.btc": {
+            "desc_en": "Percentage change from the all-time-high price denominated in BTC.",
+            "title_zh": "以 BTC 计价的相对历史最高价（ATH）的涨跌幅百分比。"
+          },
+          "market_data.ath_change_percentage.eur": {
+            "desc_en": "Percentage change from the all-time-high price denominated in EUR.",
+            "title_zh": "以 EUR 计价的相对历史最高价（ATH）的涨跌幅百分比。"
+          },
+          "market_data.ath_change_percentage.usd": {
+            "desc_en": "Percentage change from the all-time-high price denominated in USD.",
+            "title_zh": "以 USD 计价的相对历史最高价（ATH）的涨跌幅百分比。"
+          },
+          "market_data.ath_date": {
+            "desc_en": "Map of the all-time-high date keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的创下历史最高价（ATH）的日期。"
+          },
+          "market_data.ath_date.btc": {
+            "desc_en": "Date the all-time high was reached against BTC, as an ISO 8601 timestamp.",
+            "title_zh": "相对 BTC 的创下历史最高价（ATH）的日期，ISO 8601 时间戳。"
+          },
+          "market_data.ath_date.eur": {
+            "desc_en": "Date the all-time high was reached against EUR, as an ISO 8601 timestamp.",
+            "title_zh": "相对 EUR 的创下历史最高价（ATH）的日期，ISO 8601 时间戳。"
+          },
+          "market_data.ath_date.usd": {
+            "desc_en": "Date the all-time high was reached against USD, as an ISO 8601 timestamp.",
+            "title_zh": "相对 USD 的创下历史最高价（ATH）的日期，ISO 8601 时间戳。"
+          },
+          "market_data.atl": {
+            "desc_en": "Map of the coin's all-time-low price keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的该币种历史最低价（ATL）。"
+          },
+          "market_data.atl.btc": {
+            "desc_en": "All-time-low price denominated in BTC.",
+            "title_zh": "以 BTC 计价的历史最低价（ATL）。"
+          },
+          "market_data.atl.eur": {
+            "desc_en": "All-time-low price denominated in EUR.",
+            "title_zh": "以 EUR 计价的历史最低价（ATL）。"
+          },
+          "market_data.atl.usd": {
+            "desc_en": "All-time-low price denominated in USD.",
+            "title_zh": "以 USD 计价的历史最低价（ATL）。"
+          },
+          "market_data.atl_change_percentage": {
+            "desc_en": "Map of percentage change from the all-time low keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的相对历史最低价（ATL）的涨跌幅百分比。"
+          },
+          "market_data.atl_change_percentage.btc": {
+            "desc_en": "Percentage change from the all-time-low price denominated in BTC.",
+            "title_zh": "以 BTC 计价的相对历史最低价（ATL）的涨跌幅百分比。"
+          },
+          "market_data.atl_change_percentage.eur": {
+            "desc_en": "Percentage change from the all-time-low price denominated in EUR.",
+            "title_zh": "以 EUR 计价的相对历史最低价（ATL）的涨跌幅百分比。"
+          },
+          "market_data.atl_change_percentage.usd": {
+            "desc_en": "Percentage change from the all-time-low price denominated in USD.",
+            "title_zh": "以 USD 计价的相对历史最低价（ATL）的涨跌幅百分比。"
+          },
+          "market_data.atl_date": {
+            "desc_en": "Map of the all-time-low date keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的创下历史最低价（ATL）的日期。"
+          },
+          "market_data.atl_date.btc": {
+            "desc_en": "Date the all-time low was reached against BTC, as an ISO 8601 timestamp.",
+            "title_zh": "相对 BTC 的创下历史最低价（ATL）的日期，ISO 8601 时间戳。"
+          },
+          "market_data.atl_date.eur": {
+            "desc_en": "Date the all-time low was reached against EUR, as an ISO 8601 timestamp.",
+            "title_zh": "相对 EUR 的创下历史最低价（ATL）的日期，ISO 8601 时间戳。"
+          },
+          "market_data.atl_date.usd": {
+            "desc_en": "Date the all-time low was reached against USD, as an ISO 8601 timestamp.",
+            "title_zh": "相对 USD 的创下历史最低价（ATL）的日期，ISO 8601 时间戳。"
+          },
+          "market_data.market_cap": {
+            "desc_en": "Map of the coin's market capitalization keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的该币种市值。"
+          },
+          "market_data.market_cap.btc": {
+            "desc_en": "Market capitalization denominated in BTC.",
+            "title_zh": "以 BTC 计价的市值。"
+          },
+          "market_data.market_cap.eur": {
+            "desc_en": "Market capitalization denominated in EUR.",
+            "title_zh": "以 EUR 计价的市值。"
+          },
+          "market_data.market_cap.usd": {
+            "desc_en": "Market capitalization denominated in USD.",
+            "title_zh": "以 USD 计价的市值。"
+          },
+          "market_data.market_cap_rank": {
+            "desc_en": "Rank of the coin by market capitalization.",
+            "title_zh": "该币种按市值排序的排名。"
+          },
+          "market_data.outstanding_token_value_usd": {
+            "desc_en": "Value of outstanding tokens in USD; null when not available.",
+            "title_zh": "流通在外代币的美元价值；不可用时为 null。"
+          },
+          "market_data.market_cap_rank_with_rehypothecated": {
+            "desc_en": "Rank by market cap including rehypothecated tokens.",
+            "title_zh": "计入再抵押（rehypothecated）代币后按市值排序的排名。"
+          },
+          "market_data.fully_diluted_valuation": {
+            "desc_en": "Map of the coin's fully diluted valuation keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的该币种完全稀释估值（FDV）。"
+          },
+          "market_data.fully_diluted_valuation.btc": {
+            "desc_en": "Fully diluted valuation denominated in BTC.",
+            "title_zh": "以 BTC 计价的完全稀释估值（FDV）。"
+          },
+          "market_data.fully_diluted_valuation.eur": {
+            "desc_en": "Fully diluted valuation denominated in EUR.",
+            "title_zh": "以 EUR 计价的完全稀释估值（FDV）。"
+          },
+          "market_data.fully_diluted_valuation.usd": {
+            "desc_en": "Fully diluted valuation denominated in USD.",
+            "title_zh": "以 USD 计价的完全稀释估值（FDV）。"
+          },
+          "market_data.market_cap_fdv_ratio": {
+            "desc_en": "Ratio of market cap to fully diluted valuation.",
+            "title_zh": "市值与完全稀释估值（FDV）的比值。"
+          },
+          "market_data.total_volume": {
+            "desc_en": "Map of the coin's total trading volume keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的该币种总交易量。"
+          },
+          "market_data.total_volume.btc": {
+            "desc_en": "Total trading volume denominated in BTC.",
+            "title_zh": "以 BTC 计价的总交易量。"
+          },
+          "market_data.total_volume.eur": {
+            "desc_en": "Total trading volume denominated in EUR.",
+            "title_zh": "以 EUR 计价的总交易量。"
+          },
+          "market_data.total_volume.usd": {
+            "desc_en": "Total trading volume denominated in USD.",
+            "title_zh": "以 USD 计价的总交易量。"
+          },
+          "market_data.high_24h": {
+            "desc_en": "Map of the 24h high price keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的24 小时最高价。"
+          },
+          "market_data.high_24h.btc": {
+            "desc_en": "24-hour high price denominated in BTC.",
+            "title_zh": "以 BTC 计价的24 小时最高价。"
+          },
+          "market_data.high_24h.eur": {
+            "desc_en": "24-hour high price denominated in EUR.",
+            "title_zh": "以 EUR 计价的24 小时最高价。"
+          },
+          "market_data.high_24h.usd": {
+            "desc_en": "24-hour high price denominated in USD.",
+            "title_zh": "以 USD 计价的24 小时最高价。"
+          },
+          "market_data.low_24h": {
+            "desc_en": "Map of the 24h low price keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的24 小时最低价。"
+          },
+          "market_data.low_24h.btc": {
+            "desc_en": "24-hour low price denominated in BTC.",
+            "title_zh": "以 BTC 计价的24 小时最低价。"
+          },
+          "market_data.low_24h.eur": {
+            "desc_en": "24-hour low price denominated in EUR.",
+            "title_zh": "以 EUR 计价的24 小时最低价。"
+          },
+          "market_data.low_24h.usd": {
+            "desc_en": "24-hour low price denominated in USD.",
+            "title_zh": "以 USD 计价的24 小时最低价。"
+          },
+          "market_data.price_change_24h": {
+            "desc_en": "Absolute price change over the last 24 hours.",
+            "title_zh": "过去 24 小时的价格绝对变动。"
+          },
+          "market_data.price_change_percentage_24h": {
+            "desc_en": "Price change over the last 24 hours, in percent.",
+            "title_zh": "过去 24 小时的价格变动百分比。"
+          },
+          "market_data.price_change_percentage_7d": {
+            "desc_en": "Price change over the last 7 days, in percent.",
+            "title_zh": "过去 7 天的价格变动百分比。"
+          },
+          "market_data.price_change_percentage_14d": {
+            "desc_en": "Price change over the last 14 days, in percent.",
+            "title_zh": "过去 14 天的价格变动百分比。"
+          },
+          "market_data.price_change_percentage_30d": {
+            "desc_en": "Price change over the last 30 days, in percent.",
+            "title_zh": "过去 30 天的价格变动百分比。"
+          },
+          "market_data.price_change_percentage_60d": {
+            "desc_en": "Price change over the last 60 days, in percent.",
+            "title_zh": "过去 60 天的价格变动百分比。"
+          },
+          "market_data.price_change_percentage_200d": {
+            "desc_en": "Price change over the last 200 days, in percent.",
+            "title_zh": "过去 200 天的价格变动百分比。"
+          },
+          "market_data.price_change_percentage_1y": {
+            "desc_en": "Price change over the last year, in percent.",
+            "title_zh": "过去 1 年的价格变动百分比。"
+          },
+          "market_data.market_cap_change_24h": {
+            "desc_en": "Absolute market cap change over the last 24 hours.",
+            "title_zh": "过去 24 小时的市值绝对变动。"
+          },
+          "market_data.market_cap_change_percentage_24h": {
+            "desc_en": "Market cap change over the last 24 hours, in percent.",
+            "title_zh": "过去 24 小时的市值变动百分比。"
+          },
+          "market_data.price_change_24h_in_currency": {
+            "desc_en": "Map of 24h price change keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的24 小时价格变动。"
+          },
+          "market_data.price_change_24h_in_currency.btc": {
+            "desc_en": "24-hour price change denominated in BTC.",
+            "title_zh": "以 BTC 计价的24 小时价格变动。"
+          },
+          "market_data.price_change_24h_in_currency.eur": {
+            "desc_en": "24-hour price change denominated in EUR.",
+            "title_zh": "以 EUR 计价的24 小时价格变动。"
+          },
+          "market_data.price_change_24h_in_currency.usd": {
+            "desc_en": "24-hour price change denominated in USD.",
+            "title_zh": "以 USD 计价的24 小时价格变动。"
+          },
+          "market_data.price_change_percentage_1h_in_currency": {
+            "desc_en": "Map of 1h price change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的1 小时价格变动百分比。"
+          },
+          "market_data.price_change_percentage_1h_in_currency.btc": {
+            "desc_en": "1-hour price change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的1 小时价格变动百分比。"
+          },
+          "market_data.price_change_percentage_1h_in_currency.eur": {
+            "desc_en": "1-hour price change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的1 小时价格变动百分比。"
+          },
+          "market_data.price_change_percentage_1h_in_currency.usd": {
+            "desc_en": "1-hour price change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的1 小时价格变动百分比。"
+          },
+          "market_data.price_change_percentage_24h_in_currency": {
+            "desc_en": "Map of 24h price change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的24 小时价格变动百分比。"
+          },
+          "market_data.price_change_percentage_24h_in_currency.btc": {
+            "desc_en": "24-hour price change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的24 小时价格变动百分比。"
+          },
+          "market_data.price_change_percentage_24h_in_currency.eur": {
+            "desc_en": "24-hour price change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的24 小时价格变动百分比。"
+          },
+          "market_data.price_change_percentage_24h_in_currency.usd": {
+            "desc_en": "24-hour price change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的24 小时价格变动百分比。"
+          },
+          "market_data.price_change_percentage_7d_in_currency": {
+            "desc_en": "Map of 7d price change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的7 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_7d_in_currency.btc": {
+            "desc_en": "7-day price change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的7 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_7d_in_currency.eur": {
+            "desc_en": "7-day price change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的7 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_7d_in_currency.usd": {
+            "desc_en": "7-day price change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的7 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_14d_in_currency": {
+            "desc_en": "Map of 14d price change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的14 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_14d_in_currency.btc": {
+            "desc_en": "14-day price change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的14 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_14d_in_currency.eur": {
+            "desc_en": "14-day price change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的14 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_14d_in_currency.usd": {
+            "desc_en": "14-day price change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的14 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_30d_in_currency": {
+            "desc_en": "Map of 30d price change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的30 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_30d_in_currency.btc": {
+            "desc_en": "30-day price change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的30 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_30d_in_currency.eur": {
+            "desc_en": "30-day price change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的30 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_30d_in_currency.usd": {
+            "desc_en": "30-day price change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的30 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_60d_in_currency": {
+            "desc_en": "Map of 60d price change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的60 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_60d_in_currency.btc": {
+            "desc_en": "60-day price change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的60 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_60d_in_currency.eur": {
+            "desc_en": "60-day price change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的60 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_60d_in_currency.usd": {
+            "desc_en": "60-day price change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的60 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_200d_in_currency": {
+            "desc_en": "Map of 200d price change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的200 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_200d_in_currency.btc": {
+            "desc_en": "200-day price change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的200 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_200d_in_currency.eur": {
+            "desc_en": "200-day price change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的200 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_200d_in_currency.usd": {
+            "desc_en": "200-day price change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的200 天价格变动百分比。"
+          },
+          "market_data.price_change_percentage_1y_in_currency": {
+            "desc_en": "Map of 1y price change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的1 年价格变动百分比。"
+          },
+          "market_data.price_change_percentage_1y_in_currency.btc": {
+            "desc_en": "1-year price change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的1 年价格变动百分比。"
+          },
+          "market_data.price_change_percentage_1y_in_currency.eur": {
+            "desc_en": "1-year price change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的1 年价格变动百分比。"
+          },
+          "market_data.price_change_percentage_1y_in_currency.usd": {
+            "desc_en": "1-year price change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的1 年价格变动百分比。"
+          },
+          "market_data.market_cap_change_24h_in_currency": {
+            "desc_en": "Map of 24h market cap change keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的24 小时市值变动。"
+          },
+          "market_data.market_cap_change_24h_in_currency.btc": {
+            "desc_en": "24-hour market cap change denominated in BTC.",
+            "title_zh": "以 BTC 计价的24 小时市值变动。"
+          },
+          "market_data.market_cap_change_24h_in_currency.eur": {
+            "desc_en": "24-hour market cap change denominated in EUR.",
+            "title_zh": "以 EUR 计价的24 小时市值变动。"
+          },
+          "market_data.market_cap_change_24h_in_currency.usd": {
+            "desc_en": "24-hour market cap change denominated in USD.",
+            "title_zh": "以 USD 计价的24 小时市值变动。"
+          },
+          "market_data.market_cap_change_percentage_24h_in_currency": {
+            "desc_en": "Map of 24h market cap change percentage keyed by currency code (e.g. btc, eur, usd).",
+            "title_zh": "按货币代码（如 btc、eur、usd）分组的24 小时市值变动百分比。"
+          },
+          "market_data.market_cap_change_percentage_24h_in_currency.btc": {
+            "desc_en": "24-hour market cap change percentage denominated in BTC.",
+            "title_zh": "以 BTC 计价的24 小时市值变动百分比。"
+          },
+          "market_data.market_cap_change_percentage_24h_in_currency.eur": {
+            "desc_en": "24-hour market cap change percentage denominated in EUR.",
+            "title_zh": "以 EUR 计价的24 小时市值变动百分比。"
+          },
+          "market_data.market_cap_change_percentage_24h_in_currency.usd": {
+            "desc_en": "24-hour market cap change percentage denominated in USD.",
+            "title_zh": "以 USD 计价的24 小时市值变动百分比。"
+          },
+          "market_data.total_supply": {
+            "desc_en": "Total amount of the coin that exists.",
+            "title_zh": "该币种已存在的代币总量。"
+          },
+          "market_data.max_supply": {
+            "desc_en": "Maximum supply of the coin; null when unbounded or unknown.",
+            "title_zh": "该币种的最大供应量；无上限或未知时为 null。"
+          },
+          "market_data.max_supply_infinite": {
+            "desc_en": "Whether the coin's maximum supply is uncapped.",
+            "title_zh": "标识该币种最大供应量是否无上限。"
+          },
+          "market_data.circulating_supply": {
+            "desc_en": "Amount of the coin currently in circulation.",
+            "title_zh": "该币种当前流通的代币数量。"
+          },
+          "market_data.outstanding_supply": {
+            "desc_en": "Tokens outstanding in the market: circulated/tradable or planned for circulation; null when not available.",
+            "title_zh": "市场中流通在外的代币数量：已流通/可交易或计划流通的部分；不可用时为 null。"
+          },
+          "market_data.last_updated": {
+            "desc_en": "Timestamp when the market data was last refreshed, as an ISO 8601 timestamp.",
+            "title_zh": "市场数据最近一次刷新的时间，ISO 8601 时间戳。"
+          },
+          "community_data": {
+            "desc_en": "Community engagement metrics for the coin across social platforms.",
+            "title_zh": "该币种在各社交平台上的社区活跃度指标。"
+          },
+          "community_data.facebook_likes": {
+            "desc_en": "Number of Facebook likes for the coin's page.",
+            "title_zh": "该币种 Facebook 主页的点赞数。"
+          },
+          "community_data.reddit_average_posts_48h": {
+            "desc_en": "Average number of subreddit posts over the last 48 hours.",
+            "title_zh": "过去 48 小时 subreddit 的平均发帖数。"
+          },
+          "community_data.reddit_average_comments_48h": {
+            "desc_en": "Average number of subreddit comments over the last 48 hours.",
+            "title_zh": "过去 48 小时 subreddit 的平均评论数。"
+          },
+          "community_data.reddit_subscribers": {
+            "desc_en": "Number of subscribers to the coin's subreddit.",
+            "title_zh": "该币种 subreddit 的订阅者数量。"
+          },
+          "community_data.reddit_accounts_active_48h": {
+            "desc_en": "Number of subreddit accounts active over the last 48 hours.",
+            "title_zh": "过去 48 小时 subreddit 的活跃账号数。"
+          },
+          "community_data.telegram_channel_user_count": {
+            "desc_en": "Number of users in the coin's Telegram channel.",
+            "title_zh": "该币种 Telegram 频道的用户数。"
+          },
+          "developer_data": {
+            "desc_en": "Development activity metrics derived from the coin's source repositories.",
+            "title_zh": "基于该币种源代码仓库的开发活跃度指标。"
+          },
+          "developer_data.forks": {
+            "desc_en": "Number of forks of the coin's repositories.",
+            "title_zh": "该币种仓库的 fork 数。"
+          },
+          "developer_data.stars": {
+            "desc_en": "Number of stars on the coin's repositories.",
+            "title_zh": "该币种仓库的 star 数。"
+          },
+          "developer_data.subscribers": {
+            "desc_en": "Number of watchers/subscribers of the coin's repositories.",
+            "title_zh": "该币种仓库的关注（watch/subscribe）数。"
+          },
+          "developer_data.total_issues": {
+            "desc_en": "Total number of issues in the coin's repositories.",
+            "title_zh": "该币种仓库的 issue 总数。"
+          },
+          "developer_data.closed_issues": {
+            "desc_en": "Number of closed issues in the coin's repositories.",
+            "title_zh": "该币种仓库已关闭的 issue 数。"
+          },
+          "developer_data.pull_requests_merged": {
+            "desc_en": "Number of merged pull requests in the coin's repositories.",
+            "title_zh": "该币种仓库已合并的 pull request 数。"
+          },
+          "developer_data.pull_request_contributors": {
+            "desc_en": "Number of pull request contributors to the coin's repositories.",
+            "title_zh": "该币种仓库的 pull request 贡献者数。"
+          },
+          "developer_data.code_additions_deletions_4_weeks": {
+            "desc_en": "Lines of code added and removed over the last 4 weeks.",
+            "title_zh": "过去 4 周新增与删除的代码行数。"
+          },
+          "developer_data.code_additions_deletions_4_weeks.additions": {
+            "desc_en": "Lines of code added over the last 4 weeks.",
+            "title_zh": "过去 4 周新增的代码行数。"
+          },
+          "developer_data.code_additions_deletions_4_weeks.deletions": {
+            "desc_en": "Lines of code removed over the last 4 weeks.",
+            "title_zh": "过去 4 周删除的代码行数。"
+          },
+          "developer_data.commit_count_4_weeks": {
+            "desc_en": "Number of commits over the last 4 weeks.",
+            "title_zh": "过去 4 周的提交（commit）数。"
+          },
+          "developer_data.last_4_weeks_commit_activity_series": {
+            "desc_en": "Daily commit counts over the last 4 weeks.",
+            "title_zh": "过去 4 周每日提交（commit）数的序列。"
+          },
+          "status_updates": {
+            "desc_en": "Recent status updates published for the coin.",
+            "title_zh": "该币种近期发布的状态动态。"
+          },
+          "last_updated": {
+            "desc_en": "Timestamp when the coin record was last updated, as an ISO 8601 timestamp.",
+            "title_zh": "该币种记录最近一次更新的时间，ISO 8601 时间戳。"
+          },
+          "tickers": {
+            "desc_en": "Trading pairs (tickers) for the coin across exchanges.",
+            "title_zh": "该币种在各交易所上的交易对（ticker）。"
+          },
+          "tickers.base": {
+            "desc_en": "Base currency of the trading pair.",
+            "title_zh": "交易对的基础货币（base）。"
+          },
+          "tickers.target": {
+            "desc_en": "Target (quote) currency of the trading pair.",
+            "title_zh": "交易对的目标（计价）货币（target）。"
+          },
+          "tickers.market": {
+            "desc_en": "Exchange the ticker is traded on.",
+            "title_zh": "该 ticker 所在的交易所。"
+          },
+          "tickers.market.name": {
+            "desc_en": "Display name of the exchange.",
+            "title_zh": "交易所的展示名称。"
+          },
+          "tickers.market.identifier": {
+            "desc_en": "CoinGecko identifier of the exchange.",
+            "title_zh": "交易所的 CoinGecko 标识。"
+          },
+          "tickers.market.has_trading_incentive": {
+            "desc_en": "Whether the exchange offers trading incentives for this pair.",
+            "title_zh": "标识该交易所是否对此交易对提供交易激励。"
+          },
+          "tickers.last": {
+            "desc_en": "Last traded price of the pair.",
+            "title_zh": "该交易对的最新成交价。"
+          },
+          "tickers.volume": {
+            "desc_en": "Trading volume of the pair.",
+            "title_zh": "该交易对的交易量。"
+          },
+          "tickers.converted_last": {
+            "desc_en": "Last traded price converted into reference currencies.",
+            "title_zh": "换算为参考货币后的最新成交价。"
+          },
+          "tickers.converted_last.btc": {
+            "desc_en": "Last traded price denominated in BTC.",
+            "title_zh": "以 BTC 计价的最新成交价。"
+          },
+          "tickers.converted_last.eth": {
+            "desc_en": "Last traded price denominated in ETH.",
+            "title_zh": "以 ETH 计价的最新成交价。"
+          },
+          "tickers.converted_last.usd": {
+            "desc_en": "Last traded price denominated in USD.",
+            "title_zh": "以 USD 计价的最新成交价。"
+          },
+          "tickers.converted_volume": {
+            "desc_en": "Trading volume converted into reference currencies.",
+            "title_zh": "换算为参考货币后的交易量。"
+          },
+          "tickers.converted_volume.btc": {
+            "desc_en": "Trading volume denominated in BTC.",
+            "title_zh": "以 BTC 计价的交易量。"
+          },
+          "tickers.converted_volume.eth": {
+            "desc_en": "Trading volume denominated in ETH.",
+            "title_zh": "以 ETH 计价的交易量。"
+          },
+          "tickers.converted_volume.usd": {
+            "desc_en": "Trading volume denominated in USD.",
+            "title_zh": "以 USD 计价的交易量。"
+          },
+          "tickers.trust_score": {
+            "desc_en": "Trust score assigned to the ticker; null when unscored.",
+            "title_zh": "为该 ticker 评定的信任评分（trust score）；未评分时为 null。"
+          },
+          "tickers.bid_ask_spread_percentage": {
+            "desc_en": "Bid-ask spread of the pair, in percent.",
+            "title_zh": "该交易对的买卖价差（bid-ask spread）百分比。"
+          },
+          "tickers.timestamp": {
+            "desc_en": "Ticker timestamp as an ISO 8601 timestamp.",
+            "title_zh": "该 ticker 的时间，ISO 8601 时间戳。"
+          },
+          "tickers.last_traded_at": {
+            "desc_en": "Time of the last trade for the pair, as an ISO 8601 timestamp.",
+            "title_zh": "该交易对最近一次成交的时间，ISO 8601 时间戳。"
+          },
+          "tickers.last_fetch_at": {
+            "desc_en": "Time the ticker was last fetched, as an ISO 8601 timestamp.",
+            "title_zh": "该 ticker 最近一次抓取的时间，ISO 8601 时间戳。"
+          },
+          "tickers.is_anomaly": {
+            "desc_en": "Whether the ticker is flagged as anomalous.",
+            "title_zh": "标识该 ticker 是否被标记为异常。"
+          },
+          "tickers.is_stale": {
+            "desc_en": "Whether the ticker data is considered stale.",
+            "title_zh": "标识该 ticker 数据是否被视为陈旧（stale）。"
+          },
+          "tickers.trade_url": {
+            "desc_en": "URL to trade this pair on the exchange.",
+            "title_zh": "在该交易所交易此交易对的 URL。"
+          },
+          "tickers.token_info_url": {
+            "desc_en": "URL to token information for the pair on the exchange.",
+            "title_zh": "该交易所上此交易对代币信息的 URL。"
+          },
+          "tickers.coin_id": {
+            "desc_en": "CoinGecko coin ID of the base currency.",
+            "title_zh": "基础货币（base）的 CoinGecko coin ID。"
+          },
+          "tickers.target_coin_id": {
+            "desc_en": "CoinGecko coin ID of the target currency.",
+            "title_zh": "目标货币（target）的 CoinGecko coin ID。"
+          },
+          "tickers.coin_mcap_usd": {
+            "desc_en": "Market capitalization of the coin in USD.",
+            "title_zh": "该币种以美元计的市值。"
+          }
+        }
+      }
+    },
+    "coingeckoCoinMarketChartByContract": {
+      "parameters": {
+        "id": {
+          "desc_en": "Asset platform on which the token lives, given by its CoinGecko platform ID.",
+          "title_zh": "代币所在的资产平台，以其 CoinGecko 平台 ID 给出。"
+        },
+        "contract_address": {
+          "desc_en": "On-chain contract address of the token whose history is requested.",
+          "title_zh": "要查询历史数据的代币链上合约地址。"
+        }
+      }
+    },
+    "coingeckoCoinMarketChartRange": {
+      "parameters": {
+        "from": {
+          "desc_en": "Start of the historical window, as a UNIX timestamp in seconds.",
+          "title_zh": "历史数据窗口的起点，以秒为单位的 UNIX 时间戳。"
+        },
+        "to": {
+          "desc_en": "End of the historical window, as a UNIX timestamp in seconds.",
+          "title_zh": "历史数据窗口的终点，以秒为单位的 UNIX 时间戳。"
+        }
+      }
+    }
+  }
+}

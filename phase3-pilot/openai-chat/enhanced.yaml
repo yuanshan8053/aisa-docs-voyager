@@ -1,0 +1,162 @@
+openapi: 3.0.3
+info:
+  title: OpenAI Chat API
+  version: 1.0.0
+  description: OpenAI Chat Completion API including Image Analysis, Streaming, Function Calling, and Logprobs.
+servers:
+- url: https://api.aisa.one/v1
+security:
+- BearerAuth: []
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+paths:
+  /chat/completions:
+    post:
+      summary: Create chat completion
+      description: Generate chat responses with support for images, streaming, function calling, and logprobs.
+      operationId: createChatCompletion
+      x-doc:
+        profile: rest-crud
+        heading_zh: 创建对话补全 createChatCompletion
+        description_zh: 向指定模型发送一段对话消息并获取模型生成的补全回复,兼容 OpenAI Chat Completions 协议。支持纯文本对话、图文多模态输入、流式增量输出、函数调用(Function Calling)以及输出 token 的对数概率,适用于问答、多轮对话、智能体工具编排等场景。
+        req_section_intro: 请求体为一个 JSON 对象。最小可用请求只需 `model` 与 `messages` 两个字段;其余字段用于开启流式、函数调用、对数概率等增强能力。
+        resp_section_intro: "本接口 spec 仅声明 200 成功响应,响应体结构由所选模型与是否流式决定:非流式返回完整补全对象,流式经 SSE 分块推送增量。下列错误码依据 OpenAI 兼容网关通用约定整理,以服务端实际返回为准。\n[⚠️批注: spec 未声明错误响应结构与错误码,此处错误码为 OpenAI 兼容约定推断,待研发确认。]"
+        errors:
+        - code: '400'
+          message_zh: 请求体格式错误或字段不合法,例如 model 未开通、messages 为空或结构不符。
+        - code: '401'
+          message_zh: 鉴权失败,Bearer API Key 缺失、错误或已失效。
+        - code: '429'
+          message_zh: 请求频率或配额超限,需降低并发或稍后重试。
+        errors_source: OpenAI 兼容网关通用约定(spec 未声明)
+        source: ai
+        src_hash: sha256:a2cf74f36e7e
+        doc_version: 1.1.0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  example: gpt-4.1
+                  x-doc:
+                    title_zh: 指定生成本次补全所用的模型。不同模型在推理能力、上下文窗口和计费上存在差异,需传入当前账号下已开通的模型名称。
+                    source: ai
+                    src_hash: sha256:0638d55440be
+                    doc_version: 1.1.0
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        example: user
+                        x-doc:
+                          title_zh: 该条消息的发言角色,告诉模型这句话由谁说出。常见取值:`system` 设定系统级指令与人设;`user` 表示终端用户输入;`assistant` 表示模型在历史轮次中的回复。
+                          source: ai
+                          src_hash: sha256:a838a2379a99
+                          doc_version: 1.1.0
+                      content:
+                        description: Can be a text string or an array (for image inputs).
+                        oneOf:
+                        - type: string
+                        - type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                              text:
+                                type: string
+                              image_url:
+                                type: string
+                        x-doc:
+                          title_zh: 消息正文。既可传纯文本字符串完成普通对话,也可传结构化数组以在同一条消息中混合文本与图像,实现多模态输入。
+                          source: ai
+                          src_hash: sha256:2a958aab5877
+                          doc_version: 1.1.0
+                  x-doc:
+                    title_zh: 对话上下文消息列表,按时间先后顺序排列。模型基于整段历史生成下一条回复;典型用法是先用 system 设定角色与规则,再以 user / assistant 交替承接多轮对话。
+                    source: ai
+                    src_hash: sha256:fc896c0ede13
+                    doc_version: 1.1.0
+                stream:
+                  type: boolean
+                  example: false
+                  x-doc:
+                    title_zh: 是否以流式方式返回结果。开启后服务端通过 SSE 分块持续推送增量内容,适合打字机式实时展示;关闭则在生成完毕后一次性返回完整回复。
+                    source: ai
+                    src_hash: sha256:b61187d2333b
+                    doc_version: 1.1.0
+                logprobs:
+                  type: boolean
+                  x-doc:
+                    title_zh: 是否在返回中附带每个输出 token 的对数概率,可用于分析模型对所选 token 的置信度。
+                    source: ai
+                    src_hash: sha256:01d4d77a4b05
+                    doc_version: 1.1.0
+                top_logprobs:
+                  type: integer
+                  x-doc:
+                    title_zh: 为每个输出位置额外返回概率最高的若干候选 token 及其对数概率。需在 `logprobs` 开启时配合使用,用于观察模型在该位置的备选分布。
+                    source: ai
+                    src_hash: sha256:13f693335326
+                    doc_version: 1.1.0
+                functions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        x-doc:
+                          title_zh: 函数名称,模型决定调用时以此作为标识返回。建议使用简洁、语义明确的英文名。
+                          source: ai
+                          src_hash: sha256:71a05926aae1
+                          doc_version: 1.1.0
+                      description:
+                        type: string
+                        x-doc:
+                          title_zh: 函数用途说明。模型据此判断何时应当调用该函数,描述越清晰,触发越准确。
+                          source: ai
+                          src_hash: sha256:54801b0e6966
+                          doc_version: 1.1.0
+                      parameters:
+                        type: object
+                        properties: {}
+                        x-doc:
+                          title_zh: 函数入参的结构定义,以 JSON Schema 描述。模型生成调用请求时会按此结构填充参数。
+                          source: ai
+                          src_hash: sha256:4c7ed6a91f6b
+                          doc_version: 1.1.0
+                  x-doc:
+                    title_zh: 可供模型调用的函数声明列表(Function Calling)。模型会根据对话内容判断是否调用其中某个函数并生成符合其参数定义的调用请求,从而把模型与外部工具或接口对接。
+                    source: ai
+                    src_hash: sha256:998ac43a8bdb
+                    doc_version: 1.1.0
+                function_call:
+                  oneOf:
+                  - type: string
+                    example: auto
+                  - type: object
+                    properties:
+                      name:
+                        type: string
+                  x-doc:
+                    title_zh: 控制模型如何选择函数。可传字符串策略(如 `auto` 由模型自行决定是否调用、`none` 禁用调用),也可传对象 `{name}` 强制模型调用指定函数。
+                    source: ai
+                    src_hash: sha256:364c6ded852e
+                    doc_version: 1.1.0
+      responses:
+        '200':
+          description: Successful completion
+tags:
+- name: Examples

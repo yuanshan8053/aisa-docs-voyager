@@ -1,0 +1,64 @@
+{
+  "operations": {
+    "get /youtube/search": {
+      "profile": "simple-query",
+      "heading_zh": "YouTube 视频搜索 youtubeSearch",
+      "description_zh": "按关键词检索 YouTube 视频并返回结构化结果列表，底层经 SearchApi 聚合的 YouTube 搜索引擎完成。属只读查询接口，支持按地区、界面语言以及 YouTube 过滤令牌进一步收窄结果，适用于内容发现、竞品监测、素材采集等场景。鉴权采用 HTTP Bearer，需在 `Authorization` 头携带 AIsa 平台签发的 API Key。",
+      "resp_section_intro": "成功时（HTTP `200`）返回搜索结果载荷，包含本次检索的元信息与命中的视频列表。",
+      "errors": [
+        {"code": "400", "message_zh": "请求参数无效。常见于缺少必填的 `engine` 或 `q`、参数取值不合法。"},
+        {"code": "401", "message_zh": "鉴权失败。`Authorization` 头缺失，或 Bearer API Key 无效。"}
+      ],
+      "errors_source": "spec 已声明 400 / 401（无错误体结构）"
+    }
+  },
+  "inline": {
+    "get /youtube/search": {
+      "parameters": {
+        "engine": {
+          "title_zh": "搜索引擎标识，固定取值 `youtube`，表示本次走 YouTube 搜索通道。"
+        },
+        "q": {
+          "title_zh": "搜索关键词，即用户在 YouTube 搜索框中输入的查询词，直接决定返回哪些视频。"
+        },
+        "sp": {
+          "title_zh": "YouTube 过滤令牌，用于翻页或承载排序、时长、上传时间等高级筛选条件。该令牌通常取自上一次响应或 YouTube 前端，原样透传给搜索引擎。\n[⚠️批注:该令牌的具体编码格式与可承载的筛选维度由上游 YouTube 决定，spec 未列举，使用前建议结合实际响应验证。]"
+        },
+        "gl": {
+          "title_zh": "地区代码，按所在国家或地区定制搜索结果与排序，如 `us`、`jp`。不传时按引擎默认地区返回。"
+        },
+        "hl": {
+          "title_zh": "界面语言代码，影响结果中本地化文案的语言，如 `en`、`zh-CN`。不传时按引擎默认语言返回。"
+        }
+      },
+      "response": {
+        "200": {
+          "properties": {
+            "search_metadata": {
+              "title_zh": "本次搜索的元信息，记录检索状态、查询参数回显等维度的附加数据，便于排查与审计。"
+            },
+            "search_results": {
+              "title_zh": "命中的视频结果列表，按引擎相关性排序，每个元素是一条视频记录。",
+              "items": {
+                "properties": {
+                  "video_id": {
+                    "title_zh": "视频在 YouTube 上的唯一标识，可用于拼接播放地址或作为后续接口的入参。"
+                  },
+                  "title": {
+                    "title_zh": "视频标题。"
+                  },
+                  "link": {
+                    "title_zh": "视频的可点击播放链接。"
+                  },
+                  "channel_name": {
+                    "title_zh": "发布该视频的频道名称。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,539 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Image Generation via Chat Completions",
+    "version": "1.0.0",
+    "description": "Wan 2.7 image models (`wan2.7-image`, `wan2.7-image-pro`) are exposed through the standard `POST /v1/chat/completions` endpoint rather than `/v1/images/generations`. Send a chat request with a multimodal `content` array; AIsa returns `choices[].message.content[]` containing one or more `{type: \"image\"}` parts."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/v1"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "AISA API Key"
+      }
+    }
+  },
+  "paths": {
+    "/chat/completions": {
+      "post": {
+        "summary": "Generate images via Chat Completions (wan2.7 family)",
+        "description": "Generate images with the Wan 2.7 image models. Request shape matches OpenAI Chat Completions with multimodal content; the response contains `choices[].message.content[]` where each item is `{type: \"image\", image: \"<url or base64>\"}`.\n\n**Important:** `messages[].content` must be an **array of typed parts**, not a plain string. Passing a string returns `400 invalid_parameter_error` with `Input should be a valid list: messages[*].content`.\n\nBy default `wan2.7-image` returns **4 candidate images** (billed per image). Set `n` to request a different count.",
+        "operationId": "generateImageViaChat",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "model",
+                  "messages"
+                ],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "wan2.7-image",
+                      "wan2.7-image-pro"
+                    ],
+                    "description": "Image-generation model. `wan2.7-image` ($0.030/image) for standard quality, `wan2.7-image-pro` ($0.075/image) for higher fidelity.",
+                    "x-doc": {
+                      "desc_en": "Which image model to run. The two variants trade off quality against price, with the pro variant offering higher fidelity at a higher per-image cost.",
+                      "title_zh": "本次使用的图像模型。两个变体在画质与价格之间权衡,pro 变体以更高的单图成本换取更高的保真度。",
+                      "source": "ai",
+                      "src_hash": "sha256:a18c1a1bb7ab",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "messages": {
+                    "type": "array",
+                    "description": "Conversation messages. Image prompts go in the last user message's `content` array as `{type: \"text\"}` parts.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "role",
+                        "content"
+                      ],
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "system",
+                            "user",
+                            "assistant"
+                          ],
+                          "x-doc": {
+                            "desc_en": "Who authored the message, distinguishing system guidance, user input, and prior assistant output.",
+                            "title_zh": "该消息的作者身份,用于区分系统引导、用户输入与助手既往输出。",
+                            "source": "ai",
+                            "src_hash": "sha256:61d0177b44bc",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "content": {
+                          "type": "array",
+                          "description": "Multimodal parts. For image generation, include at least one `{type: \"text\"}` part with the prompt.",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "type"
+                            ],
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "text",
+                                  "image_url"
+                                ],
+                                "x-doc": {
+                                  "desc_en": "What kind of part this is: a text segment carrying the prompt, or an image-URL part supplying a reference image for image-to-image.",
+                                  "title_zh": "该片段的类别:承载提示词的文本片段,或为图生图提供参考图的图像 URL 片段。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:61371d883f2e",
+                                  "doc_version": "2.0.0"
+                                }
+                              },
+                              "text": {
+                                "type": "string",
+                                "description": "Used when `type: \"text\"`.",
+                                "x-doc": {
+                                  "desc_en": "The prompt text, used for a text-type part.",
+                                  "title_zh": "提示词文本,用于文本类型的片段。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:080f88603b6d",
+                                  "doc_version": "2.0.0"
+                                }
+                              },
+                              "image_url": {
+                                "type": "object",
+                                "description": "Used when `type: \"image_url\"` (image-to-image use cases).",
+                                "properties": {
+                                  "url": {
+                                    "type": "string",
+                                    "format": "uri",
+                                    "x-doc": {
+                                      "desc_en": "Location of the reference image.",
+                                      "title_zh": "参考图的地址。",
+                                      "source": "ai",
+                                      "src_hash": "sha256:d1a9fdf1292b",
+                                      "doc_version": "2.0.0"
+                                    }
+                                  }
+                                },
+                                "x-doc": {
+                                  "desc_en": "A reference image for image-to-image generation, supplied for an image-URL part.",
+                                  "title_zh": "用于图生图的参考图,在图像 URL 类型片段中提供。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:2565315c91bf",
+                                  "doc_version": "2.0.0"
+                                }
+                              }
+                            }
+                          },
+                          "x-doc": {
+                            "desc_en": "The typed parts making up one message. It must be an array of parts, not a plain string; for image generation include at least one text part holding the prompt, and add an image part for image-to-image.",
+                            "title_zh": "构成一条消息的带类型片段。它必须是片段数组而非纯字符串;做图像生成时至少包含一个携带提示词的文本片段,做图生图时再加入图像片段。",
+                            "source": "ai",
+                            "src_hash": "sha256:f2b6e9ea7f20",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      }
+                    },
+                    "x-doc": {
+                      "desc_en": "The conversation sent to the model. Put the image prompt in the last user message; each message carries a role and a content array of typed parts.",
+                      "title_zh": "发送给模型的对话。把图像提示词放进最后一条用户消息;每条消息带有角色,以及一个由带类型片段组成的 content 数组。",
+                      "source": "ai",
+                      "src_hash": "sha256:acea55d04749",
+                      "doc_version": "2.0.0"
+                    }
+                  },
+                  "n": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4,
+                    "default": 4,
+                    "description": "Number of images to generate. `wan2.7-image` returns 4 by default; pass `1` to save cost.",
+                    "x-doc": {
+                      "desc_en": "How many candidate images to generate in one call. Each image is billed separately, so request fewer to save cost.",
+                      "title_zh": "单次调用生成的候选图像数量。每张图单独计费,需要省成本时请减少数量。",
+                      "source": "ai",
+                      "src_hash": "sha256:c34899953c70",
+                      "doc_version": "2.0.0"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "basic": {
+                  "summary": "Single-image prompt (n=1)",
+                  "value": {
+                    "model": "wan2.7-image",
+                    "messages": [
+                      {
+                        "role": "user",
+                        "content": [
+                          {
+                            "type": "text",
+                            "text": "A cute red panda, ultra-detailed, cinematic lighting"
+                          }
+                        ]
+                      }
+                    ],
+                    "n": 1
+                  }
+                },
+                "four_variants": {
+                  "summary": "Default 4 candidates for selection",
+                  "value": {
+                    "model": "wan2.7-image",
+                    "messages": [
+                      {
+                        "role": "user",
+                        "content": [
+                          {
+                            "type": "text",
+                            "text": "A futuristic cyberpunk city, neon lights, rainy night, 8k"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "pro": {
+                  "summary": "Higher-fidelity pro model",
+                  "value": {
+                    "model": "wan2.7-image-pro",
+                    "messages": [
+                      {
+                        "role": "user",
+                        "content": [
+                          {
+                            "type": "text",
+                            "text": "Oil painting of a rolling hillside at sunset, artstation"
+                          }
+                        ]
+                      }
+                    ],
+                    "n": 1
+                  }
+                },
+                "image_to_image": {
+                  "summary": "Image-to-image (reference + prompt)",
+                  "value": {
+                    "model": "wan2.7-image-pro",
+                    "messages": [
+                      {
+                        "role": "user",
+                        "content": [
+                          {
+                            "type": "image_url",
+                            "image_url": {
+                              "url": "https://example.com/reference.jpg"
+                            }
+                          },
+                          {
+                            "type": "text",
+                            "text": "Transform into an oil painting in the style of Van Gogh"
+                          }
+                        ]
+                      }
+                    ],
+                    "n": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Images generated. Returned as Chat Completion with `message.content[]` image parts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "chatcmpl-fcc86dfd-9424-9523-b0bd-cdf07383bee2",
+                      "x-doc": {
+                        "desc_en": "Unique identifier of this generation response.",
+                        "title_zh": "本次生成响应的唯一标识。",
+                        "source": "ai",
+                        "src_hash": "sha256:dc719c0b0db1",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "object": {
+                      "type": "string",
+                      "example": "chat.completion",
+                      "x-doc": {
+                        "desc_en": "Object type of the payload, mirroring the chat-completions response shape.",
+                        "title_zh": "载荷的对象类型,沿用对话补全的响应结构。",
+                        "source": "ai",
+                        "src_hash": "sha256:b857647a409c",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "created": {
+                      "type": "integer",
+                      "example": 1776495713,
+                      "x-doc": {
+                        "desc_en": "When the response was produced.",
+                        "title_zh": "该响应的生成时间。",
+                        "source": "ai",
+                        "src_hash": "sha256:9e986ae17866",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "model": {
+                      "type": "string",
+                      "example": "wan2.7-image",
+                      "x-doc": {
+                        "desc_en": "The image model that actually served the request.",
+                        "title_zh": "实际处理本次请求的图像模型。",
+                        "source": "ai",
+                        "src_hash": "sha256:077df1aebfe1",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "choices": {
+                      "type": "array",
+                      "description": "One entry per generated image.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": {
+                            "type": "integer",
+                            "nullable": true,
+                            "x-doc": {
+                              "desc_en": "Position of this result within the choices list.",
+                              "title_zh": "该结果在 choices 列表中的位置。",
+                              "source": "ai",
+                              "src_hash": "sha256:e230114c5a5e",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "finish_reason": {
+                            "type": "string",
+                            "example": "stop",
+                            "x-doc": {
+                              "desc_en": "Why generation for this result stopped.",
+                              "title_zh": "该结果停止生成的原因。",
+                              "source": "ai",
+                              "src_hash": "sha256:e2d53fbcbbfb",
+                              "doc_version": "2.0.0"
+                            }
+                          },
+                          "message": {
+                            "type": "object",
+                            "properties": {
+                              "role": {
+                                "type": "string",
+                                "example": "assistant",
+                                "x-doc": {
+                                  "desc_en": "Author role of the generated message, always the assistant.",
+                                  "title_zh": "生成消息的作者角色,固定为助手。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:6fd14fd45440",
+                                  "doc_version": "2.0.0"
+                                }
+                              },
+                              "content": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "required": [
+                                    "type"
+                                  ],
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "image"
+                                      ],
+                                      "x-doc": {
+                                        "desc_en": "Part kind, marking the part as a generated image.",
+                                        "title_zh": "片段类别,标记该片段为生成图像。",
+                                        "source": "ai",
+                                        "src_hash": "sha256:9ee447a4eb6a",
+                                        "doc_version": "2.0.0"
+                                      }
+                                    },
+                                    "image": {
+                                      "type": "string",
+                                      "description": "Short-lived URL to the generated image (or base64-encoded data, depending on your account configuration).",
+                                      "x-doc": {
+                                        "desc_en": "The generated image itself, delivered either as a short-lived URL or as base64 data depending on account configuration.",
+                                        "title_zh": "生成的图像本身,依据账号配置以短时有效的 URL 或 base64 数据形式给出。",
+                                        "source": "ai",
+                                        "src_hash": "sha256:42671904580a",
+                                        "doc_version": "2.0.0"
+                                      }
+                                    }
+                                  }
+                                },
+                                "x-doc": {
+                                  "desc_en": "The message's parts; for this endpoint each part wraps one generated image.",
+                                  "title_zh": "该消息的片段;在本接口中每个片段包裹一张生成图像。",
+                                  "source": "ai",
+                                  "src_hash": "sha256:87479936296c",
+                                  "doc_version": "2.0.0"
+                                }
+                              }
+                            },
+                            "x-doc": {
+                              "desc_en": "The assistant message that holds the generated image.",
+                              "title_zh": "承载生成图像的助手消息。",
+                              "source": "ai",
+                              "src_hash": "sha256:f050665df617",
+                              "doc_version": "2.0.0"
+                            }
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "The generated results, one entry per image.",
+                        "title_zh": "生成结果,每张图像对应一个条目。",
+                        "source": "ai",
+                        "src_hash": "sha256:a8ba26e27eb1",
+                        "doc_version": "2.0.0"
+                      }
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "prompt_tokens": {
+                          "type": "integer",
+                          "x-doc": {
+                            "desc_en": "Tokens consumed by the input prompt.",
+                            "title_zh": "输入提示词消耗的 token 数。",
+                            "source": "ai",
+                            "src_hash": "sha256:644595857f56",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "completion_tokens": {
+                          "type": "integer",
+                          "x-doc": {
+                            "desc_en": "Tokens attributed to the generated output.",
+                            "title_zh": "归于生成输出的 token 数。",
+                            "source": "ai",
+                            "src_hash": "sha256:644595857f56",
+                            "doc_version": "2.0.0"
+                          }
+                        },
+                        "total_tokens": {
+                          "type": "integer",
+                          "x-doc": {
+                            "desc_en": "Combined input and output token count.",
+                            "title_zh": "输入与输出合计的 token 数。",
+                            "source": "ai",
+                            "src_hash": "sha256:644595857f56",
+                            "doc_version": "2.0.0"
+                          }
+                        }
+                      },
+                      "x-doc": {
+                        "desc_en": "Token accounting for the request.",
+                        "title_zh": "本次请求的 token 计量。",
+                        "source": "ai",
+                        "src_hash": "sha256:e748d4b3667c",
+                        "doc_version": "2.0.0"
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "id": "chatcmpl-fcc86dfd-9424-9523-b0bd-cdf07383bee2",
+                  "object": "chat.completion",
+                  "created": 1776495713,
+                  "model": "wan2.7-image",
+                  "choices": [
+                    {
+                      "index": 0,
+                      "finish_reason": "stop",
+                      "message": {
+                        "role": "assistant",
+                        "content": [
+                          {
+                            "type": "image",
+                            "image": "https://cdn.aisa.one/images/wan2.7/20260418-abc.png"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "usage": {
+                    "prompt_tokens": 104,
+                    "completion_tokens": 8,
+                    "total_tokens": 112
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request. Most common: `content` passed as a string instead of an array → `\"Input should be a valid list: messages[*].content\"`."
+          },
+          "401": {
+            "description": "Missing or invalid AIsa API key."
+          },
+          "429": {
+            "description": "Rate limit hit."
+          },
+          "500": {
+            "description": "Internal error."
+          },
+          "502": {
+            "description": "Upstream provider unreachable."
+          }
+        },
+        "x-doc": {
+          "heading_zh": "通过对话补全生成图像 generateImageViaChat",
+          "desc_en": "Generate images with the Wan 2.7 image models through the standard chat-completions endpoint. Send the prompt as typed parts inside the last user message, optionally with a reference image for image-to-image; generated images come back as image parts in the assistant message.",
+          "description_zh": "借助标准的对话补全端点,用 Wan 2.7 系列图像模型生成图像。将提示词以带类型的片段放入最后一条用户消息中,可选附参考图以做图生图;生成结果以图像片段形式回填在助手消息里。",
+          "resp_section_intro": "成功时以一条对话补全返回结果,每张生成图像对应一个 choice,图像内容位于助手消息的 content 片段中。",
+          "errors": [
+            {
+              "code": "400",
+              "message_zh": "请求无效。最常见原因是把 `content` 写成了字符串而非片段数组,会返回 `Input should be a valid list: messages[*].content`。"
+            },
+            {
+              "code": "401",
+              "message_zh": "AIsa API Key 缺失或无效。"
+            },
+            {
+              "code": "429",
+              "message_zh": "触发限流。"
+            },
+            {
+              "code": "500",
+              "message_zh": "服务内部错误。"
+            },
+            {
+              "code": "502",
+              "message_zh": "上游服务商不可达。"
+            }
+          ],
+          "errors_source": "spec 已声明 400/401/429/500/502(仅描述,无错误体结构)",
+          "source": "ai",
+          "src_hash": "sha256:91db9356beec",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  }
+}

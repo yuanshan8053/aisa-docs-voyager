@@ -1,0 +1,1147 @@
+{
+  "sections": [
+    {
+      "operation": "GET /twitter/user/followings",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get user followings. Each page returns exactly 200 followings. Use cursor for pagination.",
+          "desc_en": "List the accounts a given user follows, identified by screen name, with cursor pagination and a configurable page size.",
+          "title_zh": "按用户名获取某个用户所关注的账号列表，支持游标翻页与可配置的每页数量。"
+        },
+        {
+          "path": "param:userName",
+          "src_en": "Screen name of the user.",
+          "desc_en": "Screen name (@handle, without the @) of the user whose followings you want.",
+          "title_zh": "要查询其关注列表的用户名（@ 后的部分，不含 @）。"
+        },
+        {
+          "path": "param:cursor",
+          "src_en": "The cursor to paginate through the results. First page is empty.",
+          "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+          "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+        },
+        {
+          "path": "param:pageSize",
+          "src_en": "The number of followings to return per page.",
+          "desc_en": "How many followings to return per page.",
+          "title_zh": "每页返回的关注账号数量。"
+        },
+        {
+          "path": "resp.200.followings",
+          "src_en": "",
+          "desc_en": "Accounts the user follows, returned for this page.",
+          "title_zh": "本页返回的该用户所关注的账号。"
+        },
+        {
+          "path": "resp.200.followings.type",
+          "src_en": "",
+          "desc_en": "Object type tag identifying the entry as a user.",
+          "title_zh": "对象类型标记，标识该条目为用户。"
+        },
+        {
+          "path": "resp.200.followings.userName",
+          "src_en": "",
+          "desc_en": "The follower's @handle, unique across X/Twitter and used in profile URLs.",
+          "title_zh": "关注者的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。"
+        },
+        {
+          "path": "resp.200.followings.url",
+          "src_en": "",
+          "desc_en": "Web link to the follower's profile page.",
+          "title_zh": "关注者资料页的网页链接。"
+        },
+        {
+          "path": "resp.200.followings.id",
+          "src_en": "",
+          "desc_en": "Unique identifier of the follower.",
+          "title_zh": "关注者的唯一标识。"
+        },
+        {
+          "path": "resp.200.followings.name",
+          "src_en": "",
+          "desc_en": "The follower's display name shown on the profile.",
+          "title_zh": "关注者在资料页展示的昵称。"
+        },
+        {
+          "path": "resp.200.followings.isBlueVerified",
+          "src_en": "",
+          "desc_en": "Whether the follower holds a paid X (Twitter) Blue verification.",
+          "title_zh": "关注者是否拥有付费的 X（Twitter）Blue 认证。"
+        },
+        {
+          "path": "resp.200.followings.verifiedType",
+          "src_en": "",
+          "desc_en": "The follower's verification category, such as a business or government account.",
+          "title_zh": "关注者的认证类别，如企业或政府账号。"
+        },
+        {
+          "path": "resp.200.followings.profilePicture",
+          "src_en": "",
+          "desc_en": "Web link to the follower's avatar image.",
+          "title_zh": "关注者头像图片的网页链接。"
+        },
+        {
+          "path": "resp.200.followings.coverPicture",
+          "src_en": "",
+          "desc_en": "Web link to the follower's profile banner image.",
+          "title_zh": "关注者资料页横幅图片的网页链接。"
+        },
+        {
+          "path": "resp.200.followings.description",
+          "src_en": "",
+          "desc_en": "The follower's profile bio text.",
+          "title_zh": "关注者资料页的个人简介文字。"
+        },
+        {
+          "path": "resp.200.followings.location",
+          "src_en": "",
+          "desc_en": "Free-text location the follower lists on their profile.",
+          "title_zh": "关注者在资料页填写的所在地（自由文本）。"
+        },
+        {
+          "path": "resp.200.followings.followers",
+          "src_en": "",
+          "desc_en": "Number of accounts following the follower.",
+          "title_zh": "关注该关注者的账号数。"
+        },
+        {
+          "path": "resp.200.followings.following",
+          "src_en": "",
+          "desc_en": "Number of accounts the follower follows.",
+          "title_zh": "该关注者关注的账号数。"
+        },
+        {
+          "path": "resp.200.followings.canDm",
+          "src_en": "",
+          "desc_en": "Whether the follower currently accepts direct messages from the requester.",
+          "title_zh": "该关注者当前是否接受请求方的私信。"
+        },
+        {
+          "path": "resp.200.followings.createdAt",
+          "src_en": "",
+          "desc_en": "Timestamp when the follower's account was created.",
+          "title_zh": "该关注者账号的创建时间。"
+        },
+        {
+          "path": "resp.200.followings.favouritesCount",
+          "src_en": "",
+          "desc_en": "Number of tweets the follower has liked.",
+          "title_zh": "该关注者点赞过的推文数。"
+        },
+        {
+          "path": "resp.200.followings.hasCustomTimelines",
+          "src_en": "",
+          "desc_en": "Whether the follower has created custom timelines.",
+          "title_zh": "该关注者是否创建过自定义时间线。"
+        },
+        {
+          "path": "resp.200.followings.isTranslator",
+          "src_en": "",
+          "desc_en": "Whether the follower participates in the Twitter translation program.",
+          "title_zh": "该关注者是否参与 Twitter 翻译计划。"
+        },
+        {
+          "path": "resp.200.followings.mediaCount",
+          "src_en": "",
+          "desc_en": "Number of media items the follower has posted.",
+          "title_zh": "该关注者发布过的媒体条目数。"
+        },
+        {
+          "path": "resp.200.followings.statusesCount",
+          "src_en": "",
+          "desc_en": "Total number of tweets the follower has posted.",
+          "title_zh": "该关注者发布过的推文总数。"
+        },
+        {
+          "path": "resp.200.followings.withheldInCountries",
+          "src_en": "",
+          "desc_en": "Country codes where the follower's account is withheld for legal reasons.",
+          "title_zh": "因法律原因屏蔽该关注者账号的国家／地区代码列表。"
+        },
+        {
+          "path": "resp.200.followings.possiblySensitive",
+          "src_en": "",
+          "desc_en": "Whether the follower's posts are flagged as potentially sensitive.",
+          "title_zh": "该关注者的内容是否被标记为可能含敏感信息。"
+        },
+        {
+          "path": "resp.200.followings.pinnedTweetIds",
+          "src_en": "",
+          "desc_en": "Identifiers of tweets the follower has pinned to the top of their profile.",
+          "title_zh": "该关注者置顶在资料页顶部的推文标识列表。"
+        },
+        {
+          "path": "resp.200.followings.isAutomated",
+          "src_en": "",
+          "desc_en": "Whether the account is labeled as an automated (bot) account.",
+          "title_zh": "该账号是否被标记为自动化（机器人）账号。"
+        },
+        {
+          "path": "resp.200.followings.automatedBy",
+          "src_en": "",
+          "desc_en": "Username of the person or entity managing the automated account.",
+          "title_zh": "管理该自动化账号的个人或机构的用户名。"
+        },
+        {
+          "path": "resp.200.followings.unavailable",
+          "src_en": "",
+          "desc_en": "Whether the follower's account is currently unavailable, for example suspended or deactivated.",
+          "title_zh": "该关注者账号当前是否不可用，例如被封禁或停用。"
+        },
+        {
+          "path": "resp.200.followings.message",
+          "src_en": "",
+          "desc_en": "Explanatory message returned when the account is unavailable.",
+          "title_zh": "账号不可用时返回的说明信息。"
+        },
+        {
+          "path": "resp.200.followings.unavailableReason",
+          "src_en": "",
+          "desc_en": "Reason code or text describing why the account is unavailable.",
+          "title_zh": "描述账号不可用原因的代码或文字。"
+        },
+        {
+          "path": "resp.200.has_next_page",
+          "src_en": "",
+          "desc_en": "Whether more pages remain; if true, call again with next_cursor to fetch them.",
+          "title_zh": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+        },
+        {
+          "path": "resp.200.next_cursor",
+          "src_en": "",
+          "desc_en": "Cursor to pass as the cursor parameter on the next call to fetch the following page.",
+          "title_zh": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+        },
+        {
+          "path": "resp.200.status",
+          "src_en": "",
+          "desc_en": "Outcome marker of the request: success when followings were returned, error otherwise.",
+          "title_zh": "请求结果标记：成功返回关注列表为 success，否则为 error。"
+        },
+        {
+          "path": "resp.200.message",
+          "src_en": "",
+          "desc_en": "Human-readable message; carries the error detail when status is error.",
+          "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。"
+        }
+      ]
+    },
+    {
+      "operation": "GET /twitter/user/mentions",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get tweet mentions by user screen name. Each page returns exactly 20 mentions.",
+          "desc_en": "List tweets that mention a given user by screen name, in reverse-chronological order, optionally bounded by a time window and paginated with the cursor.",
+          "title_zh": "按用户名获取提及该用户的推文，按时间倒序排列，可选用时间窗口限定范围并通过游标翻页。"
+        },
+        {
+          "path": "param:userName",
+          "src_en": "The user screen name to get mentions for.",
+          "desc_en": "Screen name (@handle, without the @) of the user whose mentions you want.",
+          "title_zh": "要查询其被提及推文的用户名（@ 后的部分，不含 @）。"
+        },
+        {
+          "path": "param:sinceTime",
+          "src_en": "On or after a specified unix timestamp in seconds.",
+          "desc_en": "Only return mentions posted at or after this Unix timestamp in seconds.",
+          "title_zh": "仅返回在该 Unix 时间戳（秒）当时或之后发布的提及推文。"
+        },
+        {
+          "path": "param:untilTime",
+          "src_en": "Before a specified unix timestamp in seconds.",
+          "desc_en": "Only return mentions posted before this Unix timestamp in seconds.",
+          "title_zh": "仅返回在该 Unix 时间戳（秒）之前发布的提及推文。"
+        },
+        {
+          "path": "param:cursor",
+          "src_en": "The cursor to paginate through the results. First page is empty.",
+          "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+          "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+        },
+        {
+          "path": "resp.200.tweets",
+          "src_en": "",
+          "desc_en": "Tweets that mention the user, returned for this page.",
+          "title_zh": "本页返回的提及该用户的推文。"
+        },
+        {
+          "path": "resp.200.tweets.type",
+          "src_en": "",
+          "desc_en": "Object type tag identifying the entry as a tweet.",
+          "title_zh": "对象类型标记，标识该条目为推文。"
+        },
+        {
+          "path": "resp.200.tweets.id",
+          "src_en": "",
+          "desc_en": "Unique identifier of the tweet.",
+          "title_zh": "推文的唯一标识。"
+        },
+        {
+          "path": "resp.200.tweets.url",
+          "src_en": "",
+          "desc_en": "Web link to the tweet on X/Twitter.",
+          "title_zh": "推文在 X/Twitter 上的网页链接。"
+        },
+        {
+          "path": "resp.200.tweets.text",
+          "src_en": "",
+          "desc_en": "Full text content of the tweet.",
+          "title_zh": "推文的完整正文内容。"
+        },
+        {
+          "path": "resp.200.tweets.source",
+          "src_en": "",
+          "desc_en": "Name of the client application used to post the tweet.",
+          "title_zh": "发布该推文所用的客户端应用名称。"
+        },
+        {
+          "path": "resp.200.tweets.retweetCount",
+          "src_en": "",
+          "desc_en": "Number of times the tweet has been retweeted.",
+          "title_zh": "推文被转发的次数。"
+        },
+        {
+          "path": "resp.200.tweets.replyCount",
+          "src_en": "",
+          "desc_en": "Number of replies to the tweet.",
+          "title_zh": "推文收到的回复数。"
+        },
+        {
+          "path": "resp.200.tweets.likeCount",
+          "src_en": "",
+          "desc_en": "Number of likes on the tweet.",
+          "title_zh": "推文获得的点赞数。"
+        },
+        {
+          "path": "resp.200.tweets.quoteCount",
+          "src_en": "",
+          "desc_en": "Number of quote tweets referencing this tweet.",
+          "title_zh": "引用该推文的引用推文数。"
+        },
+        {
+          "path": "resp.200.tweets.viewCount",
+          "src_en": "",
+          "desc_en": "Number of times the tweet has been viewed.",
+          "title_zh": "推文的浏览次数。"
+        },
+        {
+          "path": "resp.200.tweets.createdAt",
+          "src_en": "",
+          "desc_en": "Timestamp when the tweet was created.",
+          "title_zh": "推文的创建时间。"
+        },
+        {
+          "path": "resp.200.tweets.lang",
+          "src_en": "",
+          "desc_en": "Detected language of the tweet text, as a language code.",
+          "title_zh": "推文正文被识别出的语言，以语言代码表示。"
+        },
+        {
+          "path": "resp.200.tweets.bookmarkCount",
+          "src_en": "",
+          "desc_en": "Number of times the tweet has been bookmarked.",
+          "title_zh": "推文被收藏的次数。"
+        },
+        {
+          "path": "resp.200.tweets.isReply",
+          "src_en": "",
+          "desc_en": "Whether the tweet is a reply to another tweet.",
+          "title_zh": "该推文是否为对另一条推文的回复。"
+        },
+        {
+          "path": "resp.200.tweets.inReplyToId",
+          "src_en": "",
+          "desc_en": "Identifier of the tweet this one directly replies to; present only when isReply is true.",
+          "title_zh": "该推文直接回复的目标推文标识；仅当 isReply 为真时存在。"
+        },
+        {
+          "path": "resp.200.tweets.conversationId",
+          "src_en": "",
+          "desc_en": "Identifier of the root tweet that started the conversation thread this tweet belongs to.",
+          "title_zh": "该推文所属对话线程的起始推文标识。"
+        },
+        {
+          "path": "resp.200.tweets.displayTextRange",
+          "src_en": "",
+          "desc_en": "Start and end character offsets marking the displayable portion of the tweet text.",
+          "title_zh": "标记推文正文中可显示部分的起止字符位置。"
+        },
+        {
+          "path": "resp.200.tweets.inReplyToUserId",
+          "src_en": "",
+          "desc_en": "Identifier of the user being replied to.",
+          "title_zh": "被回复用户的标识。"
+        },
+        {
+          "path": "resp.200.tweets.inReplyToUsername",
+          "src_en": "",
+          "desc_en": "Username of the user being replied to.",
+          "title_zh": "被回复用户的用户名。"
+        },
+        {
+          "path": "resp.200.tweets.author",
+          "src_en": "",
+          "desc_en": "Profile of the user who posted the tweet.",
+          "title_zh": "发布该推文的用户资料。"
+        },
+        {
+          "path": "resp.200.tweets.author.type",
+          "src_en": "",
+          "desc_en": "Object type tag identifying the entry as a user.",
+          "title_zh": "对象类型标记，标识该条目为用户。"
+        },
+        {
+          "path": "resp.200.tweets.author.userName",
+          "src_en": "",
+          "desc_en": "The follower's @handle, unique across X/Twitter and used in profile URLs.",
+          "title_zh": "关注者的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。"
+        },
+        {
+          "path": "resp.200.tweets.author.url",
+          "src_en": "",
+          "desc_en": "Web link to the follower's profile page.",
+          "title_zh": "关注者资料页的网页链接。"
+        },
+        {
+          "path": "resp.200.tweets.author.id",
+          "src_en": "",
+          "desc_en": "Unique identifier of the follower.",
+          "title_zh": "关注者的唯一标识。"
+        },
+        {
+          "path": "resp.200.tweets.author.name",
+          "src_en": "",
+          "desc_en": "The follower's display name shown on the profile.",
+          "title_zh": "关注者在资料页展示的昵称。"
+        },
+        {
+          "path": "resp.200.tweets.author.isBlueVerified",
+          "src_en": "",
+          "desc_en": "Whether the follower holds a paid X (Twitter) Blue verification.",
+          "title_zh": "关注者是否拥有付费的 X（Twitter）Blue 认证。"
+        },
+        {
+          "path": "resp.200.tweets.author.verifiedType",
+          "src_en": "",
+          "desc_en": "The follower's verification category, such as a business or government account.",
+          "title_zh": "关注者的认证类别，如企业或政府账号。"
+        },
+        {
+          "path": "resp.200.tweets.author.profilePicture",
+          "src_en": "",
+          "desc_en": "Web link to the follower's avatar image.",
+          "title_zh": "关注者头像图片的网页链接。"
+        },
+        {
+          "path": "resp.200.tweets.author.coverPicture",
+          "src_en": "",
+          "desc_en": "Web link to the follower's profile banner image.",
+          "title_zh": "关注者资料页横幅图片的网页链接。"
+        },
+        {
+          "path": "resp.200.tweets.author.description",
+          "src_en": "",
+          "desc_en": "The follower's profile bio text.",
+          "title_zh": "关注者资料页的个人简介文字。"
+        },
+        {
+          "path": "resp.200.tweets.author.location",
+          "src_en": "",
+          "desc_en": "Free-text location the follower lists on their profile.",
+          "title_zh": "关注者在资料页填写的所在地（自由文本）。"
+        },
+        {
+          "path": "resp.200.tweets.author.followers",
+          "src_en": "",
+          "desc_en": "Number of accounts following the follower.",
+          "title_zh": "关注该关注者的账号数。"
+        },
+        {
+          "path": "resp.200.tweets.author.following",
+          "src_en": "",
+          "desc_en": "Number of accounts the follower follows.",
+          "title_zh": "该关注者关注的账号数。"
+        },
+        {
+          "path": "resp.200.tweets.author.canDm",
+          "src_en": "",
+          "desc_en": "Whether the follower currently accepts direct messages from the requester.",
+          "title_zh": "该关注者当前是否接受请求方的私信。"
+        },
+        {
+          "path": "resp.200.tweets.author.createdAt",
+          "src_en": "",
+          "desc_en": "Timestamp when the follower's account was created.",
+          "title_zh": "该关注者账号的创建时间。"
+        },
+        {
+          "path": "resp.200.tweets.author.favouritesCount",
+          "src_en": "",
+          "desc_en": "Number of tweets the follower has liked.",
+          "title_zh": "该关注者点赞过的推文数。"
+        },
+        {
+          "path": "resp.200.tweets.author.hasCustomTimelines",
+          "src_en": "",
+          "desc_en": "Whether the follower has created custom timelines.",
+          "title_zh": "该关注者是否创建过自定义时间线。"
+        },
+        {
+          "path": "resp.200.tweets.author.isTranslator",
+          "src_en": "",
+          "desc_en": "Whether the follower participates in the Twitter translation program.",
+          "title_zh": "该关注者是否参与 Twitter 翻译计划。"
+        },
+        {
+          "path": "resp.200.tweets.author.mediaCount",
+          "src_en": "",
+          "desc_en": "Number of media items the follower has posted.",
+          "title_zh": "该关注者发布过的媒体条目数。"
+        },
+        {
+          "path": "resp.200.tweets.author.statusesCount",
+          "src_en": "",
+          "desc_en": "Total number of tweets the follower has posted.",
+          "title_zh": "该关注者发布过的推文总数。"
+        },
+        {
+          "path": "resp.200.tweets.author.withheldInCountries",
+          "src_en": "",
+          "desc_en": "Country codes where the follower's account is withheld for legal reasons.",
+          "title_zh": "因法律原因屏蔽该关注者账号的国家／地区代码列表。"
+        },
+        {
+          "path": "resp.200.tweets.author.possiblySensitive",
+          "src_en": "",
+          "desc_en": "Whether the follower's posts are flagged as potentially sensitive.",
+          "title_zh": "该关注者的内容是否被标记为可能含敏感信息。"
+        },
+        {
+          "path": "resp.200.tweets.author.pinnedTweetIds",
+          "src_en": "",
+          "desc_en": "Identifiers of tweets the follower has pinned to the top of their profile.",
+          "title_zh": "该关注者置顶在资料页顶部的推文标识列表。"
+        },
+        {
+          "path": "resp.200.tweets.author.isAutomated",
+          "src_en": "",
+          "desc_en": "Whether the account is labeled as an automated (bot) account.",
+          "title_zh": "该账号是否被标记为自动化（机器人）账号。"
+        },
+        {
+          "path": "resp.200.tweets.author.automatedBy",
+          "src_en": "",
+          "desc_en": "Username of the person or entity managing the automated account.",
+          "title_zh": "管理该自动化账号的个人或机构的用户名。"
+        },
+        {
+          "path": "resp.200.tweets.author.unavailable",
+          "src_en": "",
+          "desc_en": "Whether the follower's account is currently unavailable, for example suspended or deactivated.",
+          "title_zh": "该关注者账号当前是否不可用，例如被封禁或停用。"
+        },
+        {
+          "path": "resp.200.tweets.author.message",
+          "src_en": "",
+          "desc_en": "Explanatory message returned when the account is unavailable.",
+          "title_zh": "账号不可用时返回的说明信息。"
+        },
+        {
+          "path": "resp.200.tweets.author.unavailableReason",
+          "src_en": "",
+          "desc_en": "Reason code or text describing why the account is unavailable.",
+          "title_zh": "描述账号不可用原因的代码或文字。"
+        },
+        {
+          "path": "resp.200.tweets.entities",
+          "src_en": "",
+          "desc_en": "Structured entities parsed from the tweet text, such as hashtags, links, and user mentions.",
+          "title_zh": "从推文正文解析出的结构化实体，如话题标签、链接与用户提及。"
+        },
+        {
+          "path": "resp.200.tweets.entities.hashtags",
+          "src_en": "",
+          "desc_en": "Hashtags found in the tweet text.",
+          "title_zh": "推文正文中出现的话题标签。"
+        },
+        {
+          "path": "resp.200.tweets.entities.hashtags.indices",
+          "src_en": "",
+          "desc_en": "Start and end character offsets of the hashtag within the tweet text.",
+          "title_zh": "该话题标签在推文正文中的起止字符位置。"
+        },
+        {
+          "path": "resp.200.tweets.entities.hashtags.text",
+          "src_en": "",
+          "desc_en": "The hashtag word, without the leading # sign.",
+          "title_zh": "话题标签的文字，不含开头的 # 号。"
+        },
+        {
+          "path": "resp.200.tweets.entities.urls",
+          "src_en": "",
+          "desc_en": "Links found in the tweet text.",
+          "title_zh": "推文正文中出现的链接。"
+        },
+        {
+          "path": "resp.200.tweets.entities.urls.display_url",
+          "src_en": "",
+          "desc_en": "Shortened, human-readable form of the link as displayed in the tweet.",
+          "title_zh": "推文中显示的链接的短化、易读形式。"
+        },
+        {
+          "path": "resp.200.tweets.entities.urls.expanded_url",
+          "src_en": "",
+          "desc_en": "Full destination URL the displayed link resolves to.",
+          "title_zh": "显示链接最终指向的完整目标地址。"
+        },
+        {
+          "path": "resp.200.tweets.entities.urls.indices",
+          "src_en": "",
+          "desc_en": "Start and end character offsets of the link within the tweet text.",
+          "title_zh": "该链接在推文正文中的起止字符位置。"
+        },
+        {
+          "path": "resp.200.tweets.entities.urls.url",
+          "src_en": "",
+          "desc_en": "The t.co shortened URL as it literally appears in the tweet text.",
+          "title_zh": "推文正文中实际出现的 t.co 短链接。"
+        },
+        {
+          "path": "resp.200.tweets.entities.user_mentions",
+          "src_en": "",
+          "desc_en": "Users mentioned in the tweet text.",
+          "title_zh": "推文正文中提及的用户。"
+        },
+        {
+          "path": "resp.200.tweets.entities.user_mentions.id_str",
+          "src_en": "",
+          "desc_en": "Identifier of the mentioned user.",
+          "title_zh": "被提及用户的标识。"
+        },
+        {
+          "path": "resp.200.tweets.entities.user_mentions.name",
+          "src_en": "",
+          "desc_en": "Display name of the mentioned user.",
+          "title_zh": "被提及用户的昵称。"
+        },
+        {
+          "path": "resp.200.tweets.entities.user_mentions.screen_name",
+          "src_en": "",
+          "desc_en": "@handle of the mentioned user.",
+          "title_zh": "被提及用户的 @ 用户名。"
+        },
+        {
+          "path": "resp.200.has_next_page",
+          "src_en": "",
+          "desc_en": "Whether more pages remain; if true, call again with next_cursor to fetch them.",
+          "title_zh": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+        },
+        {
+          "path": "resp.200.next_cursor",
+          "src_en": "",
+          "desc_en": "Cursor to pass as the cursor parameter on the next call to fetch the following page.",
+          "title_zh": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+        },
+        {
+          "path": "resp.200.status",
+          "src_en": "",
+          "desc_en": "Outcome marker of the request: success when mentions were returned, error otherwise.",
+          "title_zh": "请求结果标记：成功返回提及推文为 success，否则为 error。"
+        },
+        {
+          "path": "resp.200.message",
+          "src_en": "",
+          "desc_en": "Human-readable message; carries the error detail when status is error.",
+          "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。"
+        }
+      ]
+    },
+    {
+      "operation": "GET /twitter/user/check_follow_relationship",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Check if the user is following/followed by the target user.",
+          "desc_en": "Check the directional follow relationship between a source user and a target user: whether the source follows the target and whether the target follows the source back.",
+          "title_zh": "查询来源用户与目标用户之间的关注关系方向：来源用户是否关注目标用户，以及目标用户是否回关来源用户。"
+        },
+        {
+          "path": "param:source_user_name",
+          "src_en": "Screen name of the source user.",
+          "desc_en": "Screen name of the source user whose follow direction is being checked.",
+          "title_zh": "作为关注关系起点被检查的来源用户名。"
+        },
+        {
+          "path": "param:target_user_name",
+          "src_en": "Screen name of the target user.",
+          "desc_en": "Screen name of the target user the relationship is checked against.",
+          "title_zh": "作为关注关系对照对象的目标用户名。"
+        },
+        {
+          "path": "resp.200.data",
+          "src_en": "",
+          "desc_en": "The directional follow relationship between the two users.",
+          "title_zh": "两个用户之间的关注关系方向。"
+        },
+        {
+          "path": "resp.200.data.following",
+          "src_en": "",
+          "desc_en": "Whether the source user follows the target user.",
+          "title_zh": "来源用户是否关注目标用户。"
+        },
+        {
+          "path": "resp.200.data.followed_by",
+          "src_en": "",
+          "desc_en": "Whether the target user follows the source user back.",
+          "title_zh": "目标用户是否回关来源用户。"
+        },
+        {
+          "path": "resp.200.status",
+          "src_en": "",
+          "desc_en": "Outcome marker of the request: success when the relationship was returned, error otherwise.",
+          "title_zh": "请求结果标记：成功返回关系为 success，否则为 error。"
+        },
+        {
+          "path": "resp.200.message",
+          "src_en": "",
+          "desc_en": "Human-readable message; carries the error detail when status is error.",
+          "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。"
+        }
+      ]
+    },
+    {
+      "operation": "GET /twitter/user/search",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Search user by keyword.",
+          "desc_en": "Search for users whose profile matches a keyword, paginated with the cursor.",
+          "title_zh": "按关键词搜索资料匹配的用户，并通过游标翻页。"
+        },
+        {
+          "path": "param:query",
+          "src_en": "The keyword to search.",
+          "desc_en": "Keyword to match against user profiles when searching.",
+          "title_zh": "用于匹配用户资料的搜索关键词。"
+        },
+        {
+          "path": "param:cursor",
+          "src_en": "The cursor to paginate through the results. First page is empty.",
+          "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+          "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+        },
+        {
+          "path": "resp.200.users",
+          "src_en": "",
+          "desc_en": "Users matching the keyword, returned for this page.",
+          "title_zh": "本页返回的匹配关键词的用户。"
+        },
+        {
+          "path": "resp.200.users.type",
+          "src_en": "",
+          "desc_en": "Object type tag identifying the entry as a user.",
+          "title_zh": "对象类型标记，标识该条目为用户。"
+        },
+        {
+          "path": "resp.200.users.userName",
+          "src_en": "",
+          "desc_en": "The follower's @handle, unique across X/Twitter and used in profile URLs.",
+          "title_zh": "关注者的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。"
+        },
+        {
+          "path": "resp.200.users.url",
+          "src_en": "",
+          "desc_en": "Web link to the follower's profile page.",
+          "title_zh": "关注者资料页的网页链接。"
+        },
+        {
+          "path": "resp.200.users.id",
+          "src_en": "",
+          "desc_en": "Unique identifier of the follower.",
+          "title_zh": "关注者的唯一标识。"
+        },
+        {
+          "path": "resp.200.users.name",
+          "src_en": "",
+          "desc_en": "The follower's display name shown on the profile.",
+          "title_zh": "关注者在资料页展示的昵称。"
+        },
+        {
+          "path": "resp.200.users.isBlueVerified",
+          "src_en": "",
+          "desc_en": "Whether the follower holds a paid X (Twitter) Blue verification.",
+          "title_zh": "关注者是否拥有付费的 X（Twitter）Blue 认证。"
+        },
+        {
+          "path": "resp.200.users.verifiedType",
+          "src_en": "",
+          "desc_en": "The follower's verification category, such as a business or government account.",
+          "title_zh": "关注者的认证类别，如企业或政府账号。"
+        },
+        {
+          "path": "resp.200.users.profilePicture",
+          "src_en": "",
+          "desc_en": "Web link to the follower's avatar image.",
+          "title_zh": "关注者头像图片的网页链接。"
+        },
+        {
+          "path": "resp.200.users.coverPicture",
+          "src_en": "",
+          "desc_en": "Web link to the follower's profile banner image.",
+          "title_zh": "关注者资料页横幅图片的网页链接。"
+        },
+        {
+          "path": "resp.200.users.description",
+          "src_en": "",
+          "desc_en": "The follower's profile bio text.",
+          "title_zh": "关注者资料页的个人简介文字。"
+        },
+        {
+          "path": "resp.200.users.location",
+          "src_en": "",
+          "desc_en": "Free-text location the follower lists on their profile.",
+          "title_zh": "关注者在资料页填写的所在地（自由文本）。"
+        },
+        {
+          "path": "resp.200.users.followers",
+          "src_en": "",
+          "desc_en": "Number of accounts following the follower.",
+          "title_zh": "关注该关注者的账号数。"
+        },
+        {
+          "path": "resp.200.users.following",
+          "src_en": "",
+          "desc_en": "Number of accounts the follower follows.",
+          "title_zh": "该关注者关注的账号数。"
+        },
+        {
+          "path": "resp.200.users.canDm",
+          "src_en": "",
+          "desc_en": "Whether the follower currently accepts direct messages from the requester.",
+          "title_zh": "该关注者当前是否接受请求方的私信。"
+        },
+        {
+          "path": "resp.200.users.createdAt",
+          "src_en": "",
+          "desc_en": "Timestamp when the follower's account was created.",
+          "title_zh": "该关注者账号的创建时间。"
+        },
+        {
+          "path": "resp.200.users.favouritesCount",
+          "src_en": "",
+          "desc_en": "Number of tweets the follower has liked.",
+          "title_zh": "该关注者点赞过的推文数。"
+        },
+        {
+          "path": "resp.200.users.hasCustomTimelines",
+          "src_en": "",
+          "desc_en": "Whether the follower has created custom timelines.",
+          "title_zh": "该关注者是否创建过自定义时间线。"
+        },
+        {
+          "path": "resp.200.users.isTranslator",
+          "src_en": "",
+          "desc_en": "Whether the follower participates in the Twitter translation program.",
+          "title_zh": "该关注者是否参与 Twitter 翻译计划。"
+        },
+        {
+          "path": "resp.200.users.mediaCount",
+          "src_en": "",
+          "desc_en": "Number of media items the follower has posted.",
+          "title_zh": "该关注者发布过的媒体条目数。"
+        },
+        {
+          "path": "resp.200.users.statusesCount",
+          "src_en": "",
+          "desc_en": "Total number of tweets the follower has posted.",
+          "title_zh": "该关注者发布过的推文总数。"
+        },
+        {
+          "path": "resp.200.users.withheldInCountries",
+          "src_en": "",
+          "desc_en": "Country codes where the follower's account is withheld for legal reasons.",
+          "title_zh": "因法律原因屏蔽该关注者账号的国家／地区代码列表。"
+        },
+        {
+          "path": "resp.200.users.possiblySensitive",
+          "src_en": "",
+          "desc_en": "Whether the follower's posts are flagged as potentially sensitive.",
+          "title_zh": "该关注者的内容是否被标记为可能含敏感信息。"
+        },
+        {
+          "path": "resp.200.users.pinnedTweetIds",
+          "src_en": "",
+          "desc_en": "Identifiers of tweets the follower has pinned to the top of their profile.",
+          "title_zh": "该关注者置顶在资料页顶部的推文标识列表。"
+        },
+        {
+          "path": "resp.200.users.isAutomated",
+          "src_en": "",
+          "desc_en": "Whether the account is labeled as an automated (bot) account.",
+          "title_zh": "该账号是否被标记为自动化（机器人）账号。"
+        },
+        {
+          "path": "resp.200.users.automatedBy",
+          "src_en": "",
+          "desc_en": "Username of the person or entity managing the automated account.",
+          "title_zh": "管理该自动化账号的个人或机构的用户名。"
+        },
+        {
+          "path": "resp.200.users.unavailable",
+          "src_en": "",
+          "desc_en": "Whether the follower's account is currently unavailable, for example suspended or deactivated.",
+          "title_zh": "该关注者账号当前是否不可用，例如被封禁或停用。"
+        },
+        {
+          "path": "resp.200.users.message",
+          "src_en": "",
+          "desc_en": "Explanatory message returned when the account is unavailable.",
+          "title_zh": "账号不可用时返回的说明信息。"
+        },
+        {
+          "path": "resp.200.users.unavailableReason",
+          "src_en": "",
+          "desc_en": "Reason code or text describing why the account is unavailable.",
+          "title_zh": "描述账号不可用原因的代码或文字。"
+        },
+        {
+          "path": "resp.200.has_next_page",
+          "src_en": "",
+          "desc_en": "Whether more pages remain; if true, call again with next_cursor to fetch them.",
+          "title_zh": "是否还有更多页；为真时用 next_cursor 再次请求即可获取。"
+        },
+        {
+          "path": "resp.200.next_cursor",
+          "src_en": "",
+          "desc_en": "Cursor to pass as the cursor parameter on the next call to fetch the following page.",
+          "title_zh": "下一次请求时作为 cursor 参数传入，用于获取下一页的游标。"
+        },
+        {
+          "path": "resp.200.status",
+          "src_en": "",
+          "desc_en": "Outcome marker of the request: success when users were returned, error otherwise.",
+          "title_zh": "请求结果标记：成功返回用户为 success，否则为 error。"
+        },
+        {
+          "path": "resp.200.msg",
+          "src_en": "",
+          "desc_en": "Human-readable message; carries the error detail when status is error.",
+          "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。"
+        }
+      ]
+    },
+    {
+      "operation": "GET /twitter/user/verifiedFollowers",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Get user verified followers in reverse chronological order.",
+          "desc_en": "List the verified accounts that follow a given user, identified by user ID, in reverse-chronological order with cursor pagination.",
+          "title_zh": "按用户 ID 获取关注某个用户的认证账号，按时间倒序排列并通过游标翻页。"
+        },
+        {
+          "path": "param:user_id",
+          "src_en": "User ID of the user.",
+          "desc_en": "Identifier of the user whose verified followers you want.",
+          "title_zh": "要查询其认证关注者的用户标识。"
+        },
+        {
+          "path": "param:cursor",
+          "src_en": "The cursor to paginate through the results. First page is empty.",
+          "desc_en": "Pagination cursor from the previous response's next_cursor; leave empty to start from the first page.",
+          "title_zh": "翻页游标，取自上一次响应的 next_cursor；首页请求留空即可。"
+        },
+        {
+          "path": "resp.200.followers",
+          "src_en": "",
+          "desc_en": "Verified accounts following the user, returned for this page.",
+          "title_zh": "本页返回的关注该用户的认证账号。"
+        },
+        {
+          "path": "resp.200.followers.type",
+          "src_en": "",
+          "desc_en": "Object type tag identifying the entry as a user.",
+          "title_zh": "对象类型标记，标识该条目为用户。"
+        },
+        {
+          "path": "resp.200.followers.userName",
+          "src_en": "",
+          "desc_en": "The follower's @handle, unique across X/Twitter and used in profile URLs.",
+          "title_zh": "关注者的 @ 用户名，在 X/Twitter 上唯一，用于资料页地址。"
+        },
+        {
+          "path": "resp.200.followers.url",
+          "src_en": "",
+          "desc_en": "Web link to the follower's profile page.",
+          "title_zh": "关注者资料页的网页链接。"
+        },
+        {
+          "path": "resp.200.followers.id",
+          "src_en": "",
+          "desc_en": "Unique identifier of the follower.",
+          "title_zh": "关注者的唯一标识。"
+        },
+        {
+          "path": "resp.200.followers.name",
+          "src_en": "",
+          "desc_en": "The follower's display name shown on the profile.",
+          "title_zh": "关注者在资料页展示的昵称。"
+        },
+        {
+          "path": "resp.200.followers.isBlueVerified",
+          "src_en": "",
+          "desc_en": "Whether the follower holds a paid X (Twitter) Blue verification.",
+          "title_zh": "关注者是否拥有付费的 X（Twitter）Blue 认证。"
+        },
+        {
+          "path": "resp.200.followers.verifiedType",
+          "src_en": "",
+          "desc_en": "The follower's verification category, such as a business or government account.",
+          "title_zh": "关注者的认证类别，如企业或政府账号。"
+        },
+        {
+          "path": "resp.200.followers.profilePicture",
+          "src_en": "",
+          "desc_en": "Web link to the follower's avatar image.",
+          "title_zh": "关注者头像图片的网页链接。"
+        },
+        {
+          "path": "resp.200.followers.coverPicture",
+          "src_en": "",
+          "desc_en": "Web link to the follower's profile banner image.",
+          "title_zh": "关注者资料页横幅图片的网页链接。"
+        },
+        {
+          "path": "resp.200.followers.description",
+          "src_en": "",
+          "desc_en": "The follower's profile bio text.",
+          "title_zh": "关注者资料页的个人简介文字。"
+        },
+        {
+          "path": "resp.200.followers.location",
+          "src_en": "",
+          "desc_en": "Free-text location the follower lists on their profile.",
+          "title_zh": "关注者在资料页填写的所在地（自由文本）。"
+        },
+        {
+          "path": "resp.200.followers.followers",
+          "src_en": "",
+          "desc_en": "Number of accounts following the follower.",
+          "title_zh": "关注该关注者的账号数。"
+        },
+        {
+          "path": "resp.200.followers.following",
+          "src_en": "",
+          "desc_en": "Number of accounts the follower follows.",
+          "title_zh": "该关注者关注的账号数。"
+        },
+        {
+          "path": "resp.200.followers.canDm",
+          "src_en": "",
+          "desc_en": "Whether the follower currently accepts direct messages from the requester.",
+          "title_zh": "该关注者当前是否接受请求方的私信。"
+        },
+        {
+          "path": "resp.200.followers.createdAt",
+          "src_en": "",
+          "desc_en": "Timestamp when the follower's account was created.",
+          "title_zh": "该关注者账号的创建时间。"
+        },
+        {
+          "path": "resp.200.followers.favouritesCount",
+          "src_en": "",
+          "desc_en": "Number of tweets the follower has liked.",
+          "title_zh": "该关注者点赞过的推文数。"
+        },
+        {
+          "path": "resp.200.followers.hasCustomTimelines",
+          "src_en": "",
+          "desc_en": "Whether the follower has created custom timelines.",
+          "title_zh": "该关注者是否创建过自定义时间线。"
+        },
+        {
+          "path": "resp.200.followers.isTranslator",
+          "src_en": "",
+          "desc_en": "Whether the follower participates in the Twitter translation program.",
+          "title_zh": "该关注者是否参与 Twitter 翻译计划。"
+        },
+        {
+          "path": "resp.200.followers.mediaCount",
+          "src_en": "",
+          "desc_en": "Number of media items the follower has posted.",
+          "title_zh": "该关注者发布过的媒体条目数。"
+        },
+        {
+          "path": "resp.200.followers.statusesCount",
+          "src_en": "",
+          "desc_en": "Total number of tweets the follower has posted.",
+          "title_zh": "该关注者发布过的推文总数。"
+        },
+        {
+          "path": "resp.200.followers.withheldInCountries",
+          "src_en": "",
+          "desc_en": "Country codes where the follower's account is withheld for legal reasons.",
+          "title_zh": "因法律原因屏蔽该关注者账号的国家／地区代码列表。"
+        },
+        {
+          "path": "resp.200.followers.possiblySensitive",
+          "src_en": "",
+          "desc_en": "Whether the follower's posts are flagged as potentially sensitive.",
+          "title_zh": "该关注者的内容是否被标记为可能含敏感信息。"
+        },
+        {
+          "path": "resp.200.followers.pinnedTweetIds",
+          "src_en": "",
+          "desc_en": "Identifiers of tweets the follower has pinned to the top of their profile.",
+          "title_zh": "该关注者置顶在资料页顶部的推文标识列表。"
+        },
+        {
+          "path": "resp.200.followers.isAutomated",
+          "src_en": "",
+          "desc_en": "Whether the account is labeled as an automated (bot) account.",
+          "title_zh": "该账号是否被标记为自动化（机器人）账号。"
+        },
+        {
+          "path": "resp.200.followers.automatedBy",
+          "src_en": "",
+          "desc_en": "Username of the person or entity managing the automated account.",
+          "title_zh": "管理该自动化账号的个人或机构的用户名。"
+        },
+        {
+          "path": "resp.200.followers.unavailable",
+          "src_en": "",
+          "desc_en": "Whether the follower's account is currently unavailable, for example suspended or deactivated.",
+          "title_zh": "该关注者账号当前是否不可用，例如被封禁或停用。"
+        },
+        {
+          "path": "resp.200.followers.message",
+          "src_en": "",
+          "desc_en": "Explanatory message returned when the account is unavailable.",
+          "title_zh": "账号不可用时返回的说明信息。"
+        },
+        {
+          "path": "resp.200.followers.unavailableReason",
+          "src_en": "",
+          "desc_en": "Reason code or text describing why the account is unavailable.",
+          "title_zh": "描述账号不可用原因的代码或文字。"
+        },
+        {
+          "path": "resp.200.status",
+          "src_en": "",
+          "desc_en": "Outcome marker of the request: success when followers were returned, error otherwise.",
+          "title_zh": "请求结果标记：成功返回关注者为 success，否则为 error。"
+        },
+        {
+          "path": "resp.200.message",
+          "src_en": "",
+          "desc_en": "Human-readable message; carries the error detail when status is error.",
+          "title_zh": "可读的提示信息；当 status 为 error 时承载错误详情。"
+        }
+      ]
+    }
+  ],
+  "total": 181,
+  "missing": []
+}

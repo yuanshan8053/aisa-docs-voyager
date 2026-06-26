@@ -1,0 +1,4690 @@
+{
+  "stats": {
+    "operations": 25,
+    "fields": 329,
+    "protected_skipped": 0,
+    "unresolved": 936
+  },
+  "entries": [
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.fetch_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.primary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.primary_content.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.primary_content.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.primary_content.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.primary_content.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.primary_content.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_content.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_content.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_content.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_content.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_content.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.is_header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.body",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.is_header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.footer",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.is_header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.footer",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.h_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.main_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.author",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.language",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.level",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.primary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.main_topic.secondary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.h_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.main_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.author",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.language",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.level",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.primary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.secondary_topic.secondary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.ratings",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.ratings.name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.ratings.rating_value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.ratings.max_rating_value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.ratings.rating_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.ratings.relative_rating",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.offers",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.offers.name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.offers.price",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.offers.price_currency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.offers.price_valid_until",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.rating",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.rating_value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.max_rating_value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.rating_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.relative rating",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.publish_date",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.author",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.primary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.primary_content.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.primary_content.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.comments.primary_content.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.contacts",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.contacts.telephones",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_content.contacts.emails",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing/live.post.responses.200..tasks.result.items.page_as_markdown",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.fetch_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.primary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.primary_content.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.primary_content.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.primary_content.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.primary_content.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.primary_content.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_content.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_content.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_content.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_content.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_content.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.header.row_cells.is_header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.body",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.body.row_cells.is_header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.footer",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.table_content.footer.row_cells.is_header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.footer",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.h_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.main_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.author",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.language",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.level",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.primary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.main_topic.secondary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.h_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.main_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.author",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.language",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.level",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.primary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.urls.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.urls.anchor_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.secondary_topic.secondary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.ratings",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.ratings.name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.ratings.rating_value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.ratings.max_rating_value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.ratings.rating_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.ratings.relative_rating",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.offers",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.offers.name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.offers.price",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.offers.price_currency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.offers.price_valid_until",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.rating",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.rating_value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.max_rating_value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.rating_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.relative rating",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.publish_date",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.author",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.primary_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.primary_content.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.primary_content.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.comments.primary_content.urls",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.contacts",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.contacts.telephones",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_content.contacts.emails",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/content_parsing.post.responses.200..tasks.result.items.page_as_markdown",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.total_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.similarity",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.resource_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.location",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.charset",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.follow",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.generator",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.htags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.description",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.favicon",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.meta_keywords",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.canonical",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.internal_links_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.external_links_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.inbound_links_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.images_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.images_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.scripts_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.scripts_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.stylesheets_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.stylesheets_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.title_length",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.description_length",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.render_blocking_scripts_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.render_blocking_stylesheets_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.cumulative_layout_shift",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.plain_text_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.plain_text_rate",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.plain_text_word_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.automated_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.coleman_liau_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.dale_chall_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.flesch_kincaid_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.smog_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.description_to_content_consistency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.title_to_content_consistency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.content.meta_keywords_to_content_consistency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.deprecated_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.duplicate_meta_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.spell",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.spell.hunspell_language_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.spell.misspelled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.spell.misspelled.word",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.resource_errors",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.resource_errors.errors",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.resource_errors.errors.line",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.resource_errors.errors.message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.resource_errors.warnings",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.resource_errors.warnings.line",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.resource_errors.warnings.message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta.social_media_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.time_to_interactive",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.dom_complete",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.largest_contentful_paint",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.first_input_delay",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.connection_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.time_to_secure_connection",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.request_sent_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.waiting_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.download_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.duration_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.fetch_start",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.page_timing.fetch_end",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.onpage_score",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.total_dom_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.custom_js_response",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.custom_js_client_exception",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.broken_resources",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.broken_links",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.duplicate_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.duplicate_description",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.duplicate_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.click_depth",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.encoded_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.total_transfer_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.fetch_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.cache_control",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.cache_control.cachable",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.cache_control.ttl",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_content_encoding",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.high_loading_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_redirect",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_4xx_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_5xx_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_broken",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_www",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_https",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_http",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.high_waiting_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_doctype",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.canonical",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_encoding_meta_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_h1_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.https_to_http_links",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.has_html_doctype",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.size_greater_than_3mb",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.meta_charset_consistency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.has_meta_refresh_redirect",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.has_render_blocking_resources",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.redirect_chain",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.low_content_rate",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.high_content_rate",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.low_character_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.high_character_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.small_page_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.large_page_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.low_readability_rate",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.irrelevant_description",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.irrelevant_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.irrelevant_meta_keywords",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.title_too_long",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.title_too_short",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.deprecated_html_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.duplicate_meta_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.duplicate_title_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_image_alt",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_image_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_description",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.no_favicon",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.seo_friendly_url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.flash",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.frame",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.lorem_ipsum",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.has_misspelling",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.seo_friendly_url_characters_check",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.seo_friendly_url_dynamic_check",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.seo_friendly_url_keywords_check",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.seo_friendly_url_relative_length_check",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_orphan_page",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.is_link_relation_conflict",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.has_links_to_redirects",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.recursive_canonical",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.canonical_chain",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.canonical_to_redirect",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.checks.canonical_to_broken",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.content_encoding",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.media_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.server",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.is_resource",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.last_modified",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.sitemap",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_content.post.responses.200..tasks.result.items.pages.page.meta_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.total_pages_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.accumulator",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.total_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.resource_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.location",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.charset",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.follow",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.generator",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.htags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.description",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.favicon",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.meta_keywords",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.canonical",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.internal_links_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.external_links_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.inbound_links_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.images_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.images_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.scripts_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.scripts_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.stylesheets_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.stylesheets_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.title_length",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.description_length",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.render_blocking_scripts_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.render_blocking_stylesheets_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.cumulative_layout_shift",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.plain_text_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.plain_text_rate",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.plain_text_word_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.automated_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.coleman_liau_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.dale_chall_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.flesch_kincaid_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.smog_readability_index",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.description_to_content_consistency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.title_to_content_consistency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.content.meta_keywords_to_content_consistency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.deprecated_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.duplicate_meta_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.spell",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.spell.hunspell_language_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.spell.misspelled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.spell.misspelled.word",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.resource_errors",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.resource_errors.errors",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.resource_errors.errors.line",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.resource_errors.errors.message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.resource_errors.warnings",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.resource_errors.warnings.line",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.resource_errors.warnings.message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta.social_media_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.time_to_interactive",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.dom_complete",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.largest_contentful_paint",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.first_input_delay",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.connection_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.time_to_secure_connection",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.request_sent_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.waiting_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.download_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.duration_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.fetch_start",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.page_timing.fetch_end",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.onpage_score",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.total_dom_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.custom_js_response",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.custom_js_client_exception",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.broken_resources",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.broken_links",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.duplicate_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.duplicate_description",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.duplicate_content",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.click_depth",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.encoded_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.total_transfer_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.fetch_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.cache_control",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.cache_control.cachable",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.cache_control.ttl",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_content_encoding",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.high_loading_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_redirect",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_4xx_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_5xx_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_broken",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_www",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_https",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_http",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.high_waiting_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_doctype",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.canonical",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_encoding_meta_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_h1_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.https_to_http_links",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.has_html_doctype",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.size_greater_than_3mb",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.meta_charset_consistency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.has_meta_refresh_redirect",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.has_render_blocking_resources",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.redirect_chain",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.low_content_rate",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.high_content_rate",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.low_character_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.high_character_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.small_page_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.large_page_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.low_readability_rate",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.irrelevant_description",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.irrelevant_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.irrelevant_meta_keywords",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.title_too_long",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.title_too_short",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.deprecated_html_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.duplicate_meta_tags",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.duplicate_title_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_image_alt",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_image_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_description",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.no_favicon",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.seo_friendly_url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.flash",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.frame",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.lorem_ipsum",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.has_misspelling",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.seo_friendly_url_characters_check",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.seo_friendly_url_dynamic_check",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.seo_friendly_url_keywords_check",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.seo_friendly_url_relative_length_check",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_orphan_page",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.is_link_relation_conflict",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.has_links_to_redirects",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.recursive_canonical",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.canonical_chain",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.canonical_to_redirect",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.checks.canonical_to_broken",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.content_encoding",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.media_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.server",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.is_resource",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.last_modified",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.sitemap",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/duplicate_tags.post.responses.200..tasks.result.pages.meta_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/available_filters.get.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/force_stop.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.total_items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.items.keyword",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.items.frequency",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/keyword_density.post.responses.200..tasks.result.items.density",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/audits.get.responses.200..tasks.result.audits",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.result.language_name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/languages.get.responses.200..tasks.result.language_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/live/json.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/task_post.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.result.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.result.tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/tasks_ready.get.responses.200..tasks.result.endpoint_json",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.result.available_versions",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.result.version",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/lighthouse/versions.get.responses.200..tasks.result.default",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.total_items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.domain_from",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.domain_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.page_from",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.page_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.link_from",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.link_to",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.link_attribute",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.dofollow",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.page_from_scheme",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.page_to_scheme",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.direction",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.is_broken",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.is_link_relation_conflict",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.page_to_status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.image_alt",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.image_src",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.is_valid_hreflang",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/links.post.responses.200..tasks.result.items.hreflang",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.test_summary",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.test_summary.fatal",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.test_summary.error",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.test_summary.warning",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.test_summary.info",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.types",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.fields",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.fields.name",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.fields.types",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.fields.value",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.fields.test_results",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.fields.test_results.level",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.fields.test_results.message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/microdata.post.responses.200..tasks.result.inspection_info.fields.fields",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.total_items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.reason",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/non_indexable.post.responses.200..tasks.result.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.result.error_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/page_screenshot.post.responses.200..tasks.result.items.image",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/raw_html.post.responses.200..tasks.result.items.html",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.total_items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.resource_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.meta",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.meta.alternative_text",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.meta.title",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.meta.original_width",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.meta.original_height",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.meta.width",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.meta.height",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.location",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.encoded_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.total_transfer_size",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.fetch_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.fetch_timing",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.fetch_timing.duration_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.fetch_timing.fetch_start",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.fetch_timing.fetch_end",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.cache_control",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.cache_control.cachable",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.cache_control.ttl",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.no_content_encoding",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.high_loading_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.is_redirect",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.is_4xx_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.is_5xx_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.is_broken",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.is_www",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.is_https",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.is_http",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.original_size_displayed",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.is_minified",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.has_redirect",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.has_subrequests",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.items.checks.from_sitemap",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.errors",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.errors.line",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.errors.column",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.errors.message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.errors.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.warnings",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.warnings.line",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.warnings.column",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.warnings.message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.warnings.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.content_encoding",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.media_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.accept_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.server",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.last_modified",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.last_modified.header",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.last_modified.sitemap",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/resources.post.responses.200..tasks.result.resource_errors.last_modified.meta_tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/task_post.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.result.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.result.target",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.result.date_posted",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/tasks_ready.get.responses.200..tasks.result.tag",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.total_items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items.reason",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items.fetch_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items.meta",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items.meta.content_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/uncrawlable_resources.post.responses.200..tasks.result.items.meta.expected_content_types",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.id",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.status_code",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.status_message",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.cost",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.path",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.data",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.crawl_progress",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.crawl_status",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.crawl_status.max_crawl_pages",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.crawl_status.pages_in_queue",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.crawl_status.pages_crawled",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items_count",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.page_url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.time_to_interactive",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.dom_complete",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.connection_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.time_to_secure_connection",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.request_sent_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.waiting_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.download_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.duration_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.fetch_start",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.fetch_end",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.resource_type",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.url",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.initiator",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.duration_time",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.fetch_start",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.fetch_end",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.location",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.location.line",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.location.offset_left",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.location.offset_top",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    },
+    {
+      "path": "paths./dataforseo/on_page/waterfall.post.responses.200..tasks.result.items.resources.is_render_blocking",
+      "reason": "dotpath-unresolved",
+      "action": "skipped-no-such-field"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+--- spec.yaml	2026-06-26 14:38:19.000000000 +0800
++++ enhanced.yaml	2026-06-26 14:39:02.000000000 +0800
+@@ -22,30 +22,55 @@
+           enum:
+           - youtube
+         description: Engine identifier for YouTube Search
++        x-doc:
++          title_zh: 搜索引擎标识,固定为 `youtube`,表示本次走 YouTube 搜索通道。
++          source: ai
++          src_hash: sha256:bd82da924a01
++          doc_version: 1.1.0
+       - name: q
+         in: query
+         required: true
+         schema:
+           type: string
+         description: Search query
++        x-doc:
++          title_zh: 搜索关键词。即用户在 YouTube 搜索框中输入的查询词,决定返回哪些视频。
++          source: ai
++          src_hash: sha256:d777986719c8
++          doc_version: 1.1.0
+       - name: sp
+         in: query
+         required: false
+         schema:
+           type: string
+         description: YouTube filter token (pagination or advanced filters)
++        x-doc:
++          title_zh: YouTube 过滤令牌,用于翻页或承载排序、时长、上传时间等高级筛选条件。该令牌通常取自上一次响应或 YouTube 前端,直接透传给搜索引擎。
++          source: ai
++          src_hash: sha256:3dc871889a36
++          doc_version: 1.1.0
+       - name: gl
+         in: query
+         required: false
+         schema:
+           type: string
+         description: Country code (e.g. us, jp)
++        x-doc:
++          title_zh: 地区代码,按所在国家/地区定制搜索结果与排序,如 `us`、`jp`。不传时按引擎默认地区返回。
++          source: ai
++          src_hash: sha256:d39c3f25b4cb
++          doc_version: 1.1.0
+       - name: hl
+         in: query
+         required: false
+         schema:
+           type: string
+         description: Interface language
++        x-doc:
++          title_zh: 界面语言,影响结果中本地化文案的语言。不传时按引擎默认语言返回。
++          source: ai
++          src_hash: sha256:eec46a3d0266
++          doc_version: 1.1.0
+       responses:
+         '200':
+           description: Successful YouTube search response
+@@ -58,6 +83,11 @@
+                   search_metadata:
+                     type: object
+                     description: Search metadata
++                    x-doc:
++                      title_zh: 本次搜索的元信息,记录检索状态等查询维度的附加数据,便于排查与审计。
++                      source: ai
++                      src_hash: sha256:e6477b97a882
++                      doc_version: 1.1.0
+                   search_results:
+                     type: array
+                     items:
+@@ -65,18 +95,57 @@
+                       properties:
+                         video_id:
+                           type: string
++                          x-doc:
++                            title_zh: 视频在 YouTube 上的唯一标识,可用于拼接播放地址或作为后续接口的入参。
++                            source: ai
++                            src_hash: sha256:daf495f1865b
++                            doc_version: 1.1.0
+                         title:
+                           type: string
++                          x-doc:
++                            title_zh: 视频标题。
++                            source: ai
++                            src_hash: sha256:ab10257258f4
++                            doc_version: 1.1.0
+                         link:
+                           type: string
++                          x-doc:
++                            title_zh: 视频的可点击播放链接。
++                            source: ai
++                            src_hash: sha256:477a18b3b7e4
++                            doc_version: 1.1.0
+                         channel_name:
+                           type: string
++                          x-doc:
++                            title_zh: 发布该视频的频道名称。
++                            source: ai
++                            src_hash: sha256:676d059787ac
++                            doc_version: 1.1.0
++                    x-doc:
++                      title_zh: 命中的视频结果列表,按引擎相关性排序;每个元素是一条视频记录。
++                      source: ai
++                      src_hash: sha256:e9447dcc0334
++                      doc_version: 1.1.0
+         '400':
+           description: Invalid request parameters
+         '401':
+           description: Unauthorized / Invalid API key
+       security:
+       - bearerAuth: []
++      x-doc:
++        profile: simple-query
++        heading_zh: YouTube 视频搜索 youtubeSearch
++        description_zh: 通过 SearchApi 聚合的 YouTube 搜索引擎,按关键词检索 YouTube 视频并返回结构化结果列表。属只读查询接口,支持按地区、界面语言以及 YouTube 过滤令牌进一步收窄结果,适用于内容发现、竞品监测、素材采集等场景。
++        resp_section_intro: 成功时返回搜索结果载荷,包含本次检索的元信息与命中的视频列表。
++        errors:
++        - code: '400'
++          message_zh: 请求参数无效,例如缺少必填的 engine 或 q、参数取值不合法。
++        - code: '401'
++          message_zh: 鉴权失败,Bearer API Key 缺失或无效。
++        errors_source: spec 已声明 400/401(无错误体结构)
++        source: ai
++        src_hash: sha256:df4a785b3121
++        doc_version: 1.1.0
+ components:
+   securitySchemes:
+     bearerAuth:

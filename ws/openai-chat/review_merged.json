@@ -1,0 +1,8 @@
+[
+  {
+    "path": "paths./chat/completions.post.x-doc",
+    "old_value": "【人工润色版】向指定模型发起一次对话补全，这是文档负责人手工改写后的权威描述，AI 不得静默覆盖。",
+    "suggestion": "向指定模型发送一段对话消息，获取模型生成的补全回复，兼容 OpenAI Chat Completions 协议。支持纯文本对话、图文多模态输入、流式增量输出、函数调用（Function Calling）以及输出 token 的对数概率，适用于智能问答、多轮对话、智能体工具编排等场景。鉴权采用 HTTP Bearer，需在 `Authorization` 头携带 AIsa 平台签发的 API Key。",
+    "reason": "ai suggestion differs from protected node, src unchanged (R3/R5)"
+  }
+]

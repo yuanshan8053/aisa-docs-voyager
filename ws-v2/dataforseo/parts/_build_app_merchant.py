@@ -1,0 +1,714 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Assembler for app_merchant.content.json.
+
+The bilingual docs below are hand-authored per distinct field semantics (grounded
+in each field's native description). This script ONLY routes those authored entries
+to the literal property keys that each operation actually exposes — it performs no
+templating or machine translation of desc_en/title_zh.
+"""
+import json, os
+
+SPEC = os.path.join(os.path.dirname(__file__), "..", "slices", "app_merchant.json")
+OUT = os.path.join(os.path.dirname(__file__), "app_merchant.content.json")
+
+# ----------------------------------------------------------------------------
+# REQUEST field docs (hand-authored). Keyed by literal property name.
+# Per-op nuances handled via REQ_OVERRIDES below.
+# ----------------------------------------------------------------------------
+REQ = {
+ "asin": {
+   "desc_en": "Amazon Standard Identification Number (ASIN) of the product to look up. Obtain it from the Amazon Products endpoint; ASINs are assigned dynamically by Amazon (e.g. `B085RFFC9Q`).",
+   "title_zh": "要查询商品的 Amazon 标准识别号（ASIN）。可通过 Amazon Products 接口获取；ASIN 由 Amazon 动态分配（如 `B085RFFC9Q`）。"},
+ "keyword": {
+   "desc_en": "Search query (product name or app keyword) to run. Up to 700 characters; `%##` sequences are URL-decoded and `+` becomes a space, so encode a literal `%` as `%25` and a literal `+` as `%2B`.",
+   "title_zh": "要检索的搜索词（商品名或应用关键词）。上限 700 字符；`%##` 会被解码、`+` 会被解码为空格，故字面 `%` 写作 `%25`、字面 `+` 写作 `%2B`。"},
+ "app_id": {
+   "desc_en": "Identifier of the target app on the store. For Google Play it is the package id from the app URL (e.g. `org.telegram.messenger`); for App Store it is the numeric id from the app URL (e.g. `835599320`).",
+   "title_zh": "目标应用在商店中的标识。Google Play 为应用 URL 中的包名（如 `org.telegram.messenger`）；App Store 为应用 URL 中的数字 id（如 `835599320`）。"},
+ "priority": {
+   "desc_en": "Execution priority of the task: `1` normal (default), `2` high. High priority speeds up processing but incurs additional charges.",
+   "title_zh": "任务执行优先级：`1` 普通（默认），`2` 高。高优先级加速处理但会额外计费。"},
+ "location_name": {
+   "desc_en": "Full location name for the search engine (e.g. `London,England,United Kingdom`). Use this when not setting `location_code`/`location_coordinate`; fetch valid values from the corresponding locations endpoint.",
+   "title_zh": "搜索引擎地区的完整名称（如 `London,England,United Kingdom`）。未设 `location_code`/`location_coordinate` 时使用；可调对应 locations 接口获取可用取值。"},
+ "location_code": {
+   "desc_en": "Numeric location code for the search engine (e.g. `9045969`). Use this when not setting `location_name`/`location_coordinate`; fetch valid values from the corresponding locations endpoint.",
+   "title_zh": "搜索引擎地区的数字代码（如 `9045969`）。未设 `location_name`/`location_coordinate` 时使用；可调对应 locations 接口获取可用取值。"},
+ "location_coordinate": {
+   "desc_en": "GPS coordinates as `latitude,longitude,radius` (e.g. `53.476225,-2.243572,200`). Use instead of `location_name`/`location_code`; latitude/longitude allow up to 7 decimals and radius must be at least 199.9.",
+   "title_zh": "GPS 坐标，格式 `纬度,经度,半径`（如 `53.476225,-2.243572,200`）。可替代 `location_name`/`location_code`；经纬度最多 7 位小数，半径下限 199.9。"},
+ "language_name": {
+   "desc_en": "Full language name for the search engine (e.g. `English (United Kingdom)`). Use when not setting `language_code`; fetch valid values from the corresponding languages endpoint.",
+   "title_zh": "搜索引擎语言的完整名称（如 `English (United Kingdom)`）。未设 `language_code` 时使用；可调对应 languages 接口获取可用取值。"},
+ "language_code": {
+   "desc_en": "Language code for the search engine (e.g. `en_GB` for Amazon, `en` for app stores). Use when not setting `language_name`; fetch valid values from the corresponding languages endpoint.",
+   "title_zh": "搜索引擎语言代码（Amazon 如 `en_GB`，应用商店如 `en`）。未设 `language_name` 时使用；可调对应 languages 接口获取可用取值。"},
+ "se_domain": {
+   "desc_en": "Custom search-engine domain (e.g. `amazon.co.uk`, `google.de`). Optional — by default the relevant domain is chosen automatically from the location and language.",
+   "title_zh": "自定义搜索引擎域名（如 `amazon.co.uk`、`google.de`）。可选——默认会按地区与语言自动选择相应域名。"},
+ "tag": {
+   "desc_en": "User-defined task label (up to 255 chars) echoed back in the response `data` object, so you can match results to the task you posted.",
+   "title_zh": "用户自定义任务标签（上限 255 字符），会在响应 `data` 对象中回显，便于将结果与所提交任务对应。"},
+ "postback_url": {
+   "desc_en": "Callback URL to which a gzip-compressed POST with the task results is sent once the task completes. Supports `$id` and url-encoded `$tag` placeholders that are substituted before sending.",
+   "title_zh": "任务完成后接收结果的回调 URL，结果以 gzip 压缩经 POST 发送。支持 `$id` 与经 url 编码的 `$tag` 占位符，发送前会被替换。"},
+ "postback_data": {
+   "desc_en": "Result datatype delivered to `postback_url`; required when `postback_url` is set. Selects which task-result format is pushed (e.g. `advanced`, `html`).",
+   "title_zh": "推送到 `postback_url` 的结果数据类型；设置 `postback_url` 时必填。决定推送哪种任务结果格式（如 `advanced`、`html`）。"},
+ "pingback_url": {
+   "desc_en": "Notification URL pinged via GET when the task completes. Supports `$id` and url-encoded `$tag` placeholders substituted before the request is sent.",
+   "title_zh": "任务完成时以 GET 通知的回调 URL。支持 `$id` 与经 url 编码的 `$tag` 占位符，请求发送前会被替换。"},
+ "depth": {
+   "desc_en": "Parsing depth — how many results/reviews/apps to return. Best set in multiples of the per-page batch size; raising it above one batch may add charges if extra results are returned. Limits vary by endpoint.",
+   "title_zh": "解析深度——返回的结果/评论/应用数量。建议设为单页批量的整数倍；超过一个批量时若返回更多结果可能额外计费。上限因接口而异。"},
+ "se_domain_placeholder": {},  # unused
+ "product_id": {
+   "desc_en": "Unique product identifier on Google Shopping (e.g. `4485466949985702538`). Best paired with `data_docid` and `gid`; obtain it from the Google Shopping Products endpoint.",
+   "title_zh": "Google Shopping 商品的唯一标识（如 `4485466949985702538`）。建议与 `data_docid`、`gid` 搭配；可从 Google Shopping Products 接口获取。"},
+ "data_docid": {
+   "desc_en": "Unique identifier of the Google Shopping SERP data element (e.g. `13071766526042404278`). Best paired with `product_id` and `gid`; obtain it from the Google Shopping Products endpoint.",
+   "title_zh": "Google Shopping SERP 数据元素的唯一标识（如 `13071766526042404278`）。建议与 `product_id`、`gid` 搭配；可从 Google Shopping Products 接口获取。"},
+ "gid": {
+   "desc_en": "Global product identifier on Google Shopping (e.g. `4702526954592161872`). Best paired with `product_id` and `data_docid`; obtain it from the Google Shopping Products endpoint.",
+   "title_zh": "Google Shopping 全局商品标识（如 `4702526954592161872`）。建议与 `product_id`、`data_docid` 搭配；可从 Google Shopping Products 接口获取。"},
+ "additional_specifications": {
+   "desc_en": "Object of extra URL parameters that pull additional product details (e.g. `{\"eto\": \"16157121050167572763_0\"}`). Obtain the values from the Google Shopping Products endpoint.",
+   "title_zh": "携带额外 URL 参数的对象，用于拉取更多商品细节（如 `{\"eto\": \"16157121050167572763_0\"}`）。取值可从 Google Shopping Products 接口获得。"},
+ "pvf": {
+   "desc_en": "Product variant filter — a Google Shopping URL token that constrains returned product variants (e.g. by color, size). Copy the encoded value from the target Google Shopping URL.",
+   "title_zh": "商品变体过滤——Google Shopping URL 中用于限定返回变体（如颜色、尺寸）的令牌。从目标 Google Shopping URL 中复制该编码值。"},
+ "get_shops_on_google": {
+   "desc_en": "When `true`, the response also lists sellers offering the product for purchase directly on Google. Enabling it doubles the task cost.",
+   "title_zh": "为 `true` 时，响应会额外列出可在 Google 上直接购买该商品的卖家。开启会使任务成本翻倍。"},
+ "url": {
+   "desc_en": "Direct search-query URL to parse instead of structured parameters. The URL must already encode the exact language and location; this method is the hardest to process and generally not recommended.",
+   "title_zh": "直接传入搜索查询的 URL，以替代结构化参数。URL 必须已编码确切的语言与地区；此方式处理最复杂，通常不推荐。"},
+ "price_min": {
+   "desc_en": "Minimum product price filter for the query (e.g. `5`). When set, `search_param` is ignored.",
+   "title_zh": "查询的商品最低价过滤（如 `5`）。一旦设置，`search_param` 将被忽略。"},
+ "price_max": {
+   "desc_en": "Maximum product price filter for the query (e.g. `100`). When set, `search_param` is ignored.",
+   "title_zh": "查询的商品最高价过滤（如 `100`）。一旦设置，`search_param` 将被忽略。"},
+ "sort_by": {
+   "desc_en": "Sorting rule for the results. Supported values depend on the endpoint (e.g. relevance, price ascending/descending, review score, newest). When set, `search_param` is ignored where applicable.",
+   "title_zh": "结果排序规则。可用取值因接口而异（如按相关度、价格升/降序、评分、最新等）。设置后在适用场景下 `search_param` 将被忽略。"},
+ "search_param": {
+   "desc_en": "Extra raw search-URL parameters for fine-grained control (e.g. price bounds, sort order). Ignored if `price_min`, `price_max`, or `sort_by` are also provided.",
+   "title_zh": "用于精细控制的原始搜索 URL 附加参数（如价格区间、排序）。若同时提供了 `price_min`、`price_max` 或 `sort_by`，则会被忽略。"},
+ "department": {
+   "desc_en": "Amazon department to scope product listings to (e.g. `Electronics`, `Books`, `Home & Kitchen`).",
+   "title_zh": "限定商品列表所属的 Amazon 部门（如 `Electronics`、`Books`、`Home & Kitchen`）。"},
+ "max_crawl_pages": {
+   "desc_en": "Maximum number of SERP pages to crawl (up to 7). Works together with `depth` to bound how much of the results page set is retrieved.",
+   "title_zh": "最多爬取的 SERP 页数（上限 7）。与 `depth` 协同，共同限定抓取的结果页范围。"},
+ "categories": {
+   "desc_en": "App-listing categories used to scope the search; up to 10 may be specified. Fetch valid values from the app-listings categories endpoint.",
+   "title_zh": "用于限定搜索范围的应用分类，最多 10 个。可调 app-listings categories 接口获取可用取值。"},
+ "title": {
+   "desc_en": "Keyword that must appear in the app title (up to 200 chars).",
+   "title_zh": "必须出现在应用标题中的关键词（上限 200 字符）。"},
+ "description": {
+   "desc_en": "Keyword that must appear in the app description (up to 200 chars).",
+   "title_zh": "必须出现在应用描述中的关键词（上限 200 字符）。"},
+ "filters": {
+   "desc_en": "Array of result-filtering conditions (up to 8), joined by `and`/`or`. Each condition is `[field, operator, value]` (e.g. `[\"rating.value\",\">\",3]`); operators include comparison, `in`/`not_in`, `like`/`not_like`, `regex`. Fetch supported fields from the available-filters endpoint.",
+   "title_zh": "结果过滤条件数组（最多 8 个），用 `and`/`or` 连接。每个条件为 `[字段, 操作符, 值]`（如 `[\"rating.value\",\">\",3]`）；操作符含比较、`in`/`not_in`、`like`/`not_like`、`regex`。可调 available-filters 接口获取支持的字段。"},
+ "order_by": {
+   "desc_en": "Result sorting rules using the same fields as `filters`, formatted as `field,asc|desc` (e.g. `[\"item.rating.value,desc\"]`). Up to three rules per request.",
+   "title_zh": "结果排序规则，使用与 `filters` 相同的字段，格式 `字段,asc|desc`（如 `[\"item.rating.value,desc\"]`）。单次请求最多三条。"},
+ "limit": {
+   "desc_en": "Maximum number of apps to return.",
+   "title_zh": "返回应用数量的上限。"},
+ "offset": {
+   "desc_en": "Number of leading results to skip in the returned array (e.g. `10` omits the first ten). Recommended only up to ~10,000 results; beyond that use `offset_token`.",
+   "title_zh": "返回数组中跳过的前导结果数（如 `10` 略过前十条）。建议仅在约 1 万条以内使用；超出请改用 `offset_token`。"},
+ "offset_token": {
+   "desc_en": "Pagination token returned in the response of the previous request; pass it back to fetch subsequent results and avoid timeouts on very large result sets. When used, all other parameters must match the previous request, and each token is single-use.",
+   "title_zh": "上一次请求响应中返回的分页令牌；回传以获取后续结果并避免超大结果集超时。使用时其余参数须与上次请求一致，且每个令牌仅一次性有效。"},
+ "app_category": {
+   "desc_en": "App-store category to filter results by (e.g. `lifestyle`, `family`). Fetch valid values from the categories endpoint. On Google Play it cannot be combined with `app_collection: featured`.",
+   "title_zh": "用于过滤结果的应用商店分类（如 `lifestyle`、`family`）。可调 categories 接口获取可用取值。Google Play 上不能与 `app_collection: featured` 同时使用。"},
+ "app_collection": {
+   "desc_en": "Top-chart collection to pull apps from (e.g. Google Play `featured`/`topselling_paid`/`topgrossing`, App Store `top_free_ios`/`top_paid_ios`/`new_ios`). On Google Play, `featured` cannot be combined with `app_category`.",
+   "title_zh": "拉取应用所用的榜单集合（如 Google Play `featured`/`topselling_paid`/`topgrossing`，App Store `top_free_ios`/`top_paid_ios`/`new_ios`）。Google Play 上 `featured` 不能与 `app_category` 同时使用。"},
+ "age_rating": {
+   "desc_en": "Filter results by age rating: `ages_up_to_5`, `ages_6_8`, `ages_9_12`. By default all ages are returned. Only effective together with `category: family`.",
+   "title_zh": "按年龄分级过滤结果：`ages_up_to_5`、`ages_6_8`、`ages_9_12`。默认返回全部年龄段。仅在与 `category: family` 同用时生效。"},
+ "rating": {
+   "desc_en": "Filter reviews by star rating: `1`–`5` returns reviews with exactly that number of stars. By default all reviews are returned regardless of rating.",
+   "title_zh": "按星级过滤评论：`1`–`5` 仅返回对应星级的评论。默认返回全部评论，不限星级。"},
+}
+
+# Per-op request overrides where meaning genuinely differs.
+REQ_OVERRIDES = {
+ "post_dataforseo_merchant_google_reviews_task_post": {
+   "sort_by": {
+     "desc_en": "Sorting of returned reviews: `newest` (most recent) or `most_relevant`. Default is `most_relevant`.",
+     "title_zh": "返回评论的排序：`newest`（最新）或 `most_relevant`。默认 `most_relevant`。"},
+   "data_docid": {
+     "desc_en": "Unique identifier of the Google Shopping SERP data element (e.g. `13071766526042404278`); required if neither `product_id` nor `gid` is given. Best paired with `product_id` and `gid`; obtain it from the Google Shopping Products endpoint.",
+     "title_zh": "Google Shopping SERP 数据元素的唯一标识（如 `13071766526042404278`）；未提供 `product_id` 或 `gid` 时必填。建议与 `product_id`、`gid` 搭配；可从 Google Shopping Products 接口获取。"},
+ },
+ "post_dataforseo_app_data_apple_app_reviews_task_post": {
+   "sort_by": {
+     "desc_en": "Sorting of returned reviews: `most_recent` (most recent) or `most_helpful`. Default is `most_helpful`.",
+     "title_zh": "返回评论的排序：`most_recent`（最新）或 `most_helpful`。默认 `most_helpful`。"},
+ },
+ "post_dataforseo_app_data_google_app_reviews_task_post": {
+   "sort_by": {
+     "desc_en": "Sorting of returned reviews: `most_recent` (most recent) or `most_helpful`. Default is `most_helpful`.",
+     "title_zh": "返回评论的排序：`most_recent`（最新）或 `most_helpful`。默认 `most_helpful`。"},
+ },
+ "post_dataforseo_merchant_google_products_task_post": {
+   "sort_by": {
+     "desc_en": "Sorting rule: `review_score`, `price_low_to_high`, or `price_high_to_low`. When set, `search_param` is ignored.",
+     "title_zh": "排序规则：`review_score`、`price_low_to_high` 或 `price_high_to_low`。设置后 `search_param` 被忽略。"},
+ },
+ "post_dataforseo_merchant_amazon_products_task_post": {
+   "sort_by": {
+     "desc_en": "Sorting rule: `relevance`, `price_low_to_high`, `price_high_to_low`, `featured`, `avg_customer_review`, or `newest_arrival`. When set, `search_param` is ignored.",
+     "title_zh": "排序规则：`relevance`、`price_low_to_high`、`price_high_to_low`、`featured`、`avg_customer_review` 或 `newest_arrival`。设置后 `search_param` 被忽略。"},
+ },
+ "post_dataforseo_merchant_google_product_info_task_post": {
+   "product_id": {
+     "desc_en": "Unique product identifier on Google Shopping (e.g. `4485466949985702538`); required if neither `data_docid` nor `gid` is given. Best paired with `data_docid` and `gid`; obtain it from the Google Shopping Products endpoint.",
+     "title_zh": "Google Shopping 商品唯一标识（如 `4485466949985702538`）；未提供 `data_docid` 或 `gid` 时必填。建议与 `data_docid`、`gid` 搭配；可从 Google Shopping Products 接口获取。"},
+   "gid": {
+     "desc_en": "Global product identifier on Google Shopping (e.g. `4702526954592161872`); required if neither `product_id` nor `data_docid` is given. Best paired with `product_id` and `data_docid`; obtain it from the Google Shopping Products endpoint.",
+     "title_zh": "Google Shopping 全局商品标识（如 `4702526954592161872`）；未提供 `product_id` 或 `data_docid` 时必填。建议与 `product_id`、`data_docid` 搭配；可从 Google Shopping Products 接口获取。"},
+ },
+}
+
+# ----------------------------------------------------------------------------
+# RESPONSE field docs (hand-authored). Keyed by literal property key.
+# ----------------------------------------------------------------------------
+RESP = {
+ # --- top-level envelope ---
+ "version": {"desc_en": "Current version of the DataForSEO API that served the response.",
+   "title_zh": "处理本次响应的 DataForSEO API 当前版本号。"},
+ "status_code": {"desc_en": "Overall response status code for the request. Use it to detect success vs. error conditions; see the DataForSEO status-code reference for the full list.",
+   "title_zh": "整个请求的总体状态码。用于判断成功或错误；完整列表见 DataForSEO 状态码参考。"},
+ "status_message": {"desc_en": "Human-readable message accompanying the overall `status_code`.",
+   "title_zh": "与总体 `status_code` 对应的可读说明信息。"},
+ "time": {"desc_en": "Total processing time of the request, in seconds.",
+   "title_zh": "请求的总处理耗时，单位秒。"},
+ "cost": {"desc_en": "Total cost of all tasks in this response, in USD.",
+   "title_zh": "本次响应中所有任务的总费用，单位美元。"},
+ "tasks_count": {"desc_en": "Number of tasks contained in the `tasks` array.",
+   "title_zh": "`tasks` 数组中包含的任务数量。"},
+ "tasks_error": {"desc_en": "Number of tasks in the `tasks` array that returned an error.",
+   "title_zh": "`tasks` 数组中返回错误的任务数量。"},
+ "tasks": {"desc_en": "Array of task objects, each carrying the status and results of one submitted task.",
+   "title_zh": "任务对象数组，每个元素承载一个已提交任务的状态与结果。"},
+ "tasks.id": {"desc_en": "Unique identifier (UUID) of the task within the DataForSEO system.",
+   "title_zh": "任务在 DataForSEO 系统中的唯一标识（UUID）。"},
+ "tasks.status_code": {"desc_en": "Per-task status code (range 10000-60000) indicating how this individual task resolved.",
+   "title_zh": "单个任务的状态码（取值 10000-60000），表示该任务的处理结果。"},
+ "tasks.status_message": {"desc_en": "Human-readable message for this task's `status_code`.",
+   "title_zh": "该任务 `status_code` 对应的可读说明信息。"},
+ "tasks.time": {"desc_en": "Processing time of this individual task, in seconds.",
+   "title_zh": "单个任务的处理耗时，单位秒。"},
+ "tasks.cost": {"desc_en": "Cost of this individual task, in USD.",
+   "title_zh": "单个任务的费用，单位美元。"},
+ "tasks.result_count": {"desc_en": "Number of elements in this task's `result` array.",
+   "title_zh": "该任务 `result` 数组中的元素数量。"},
+ "tasks.path": {"desc_en": "API URL path segments that identify the endpoint this task was routed to.",
+   "title_zh": "标识该任务所路由接口的 API URL 路径片段。"},
+ "tasks.data": {"desc_en": "Echo of the parameters supplied when the task was created (POST body or GET URL parameters).",
+   "title_zh": "创建任务时所提供参数的回显（POST 请求体或 GET URL 参数）。"},
+ "tasks.result": {"desc_en": "Array of result objects for the task. For a just-posted task this is null and is populated once the task completes.",
+   "title_zh": "任务的结果对象数组。对刚提交的任务此处为 null，任务完成后才会填充。"},
+ "tasks.result_count_dup": {},
+
+ # --- result-level (search / list / info) ---
+ "tasks.result.id": {"desc_en": "Identifier (UUID) of the completed task this result belongs to.",
+   "title_zh": "该结果所属已完成任务的标识（UUID）。"},
+ "tasks.result.se": {"desc_en": "Search engine specified when the task was created.",
+   "title_zh": "创建任务时指定的搜索引擎。"},
+ "tasks.result.se_type": {"desc_en": "Type of search engine used for this result (e.g. `organic`, `shopping`).",
+   "title_zh": "本结果所用的搜索引擎类型（如 `organic`、`shopping`）。"},
+ "tasks.result.location_code": {"desc_en": "Location code applied to this result.",
+   "title_zh": "本结果所应用的地区代码。"},
+ "tasks.result.language_code": {"desc_en": "Language code applied to this result, per ISO 639-1.",
+   "title_zh": "本结果所应用的语言代码，遵循 ISO 639-1。"},
+ "tasks.result.check_url_dup": {},
+ "tasks.result.total_count": {"desc_en": "Total number of relevant results available in the database for this query.",
+   "title_zh": "数据库中该查询的相关结果总数。"},
+ "tasks.result.count": {"desc_en": "Number of items returned in this result's `items` array.",
+   "title_zh": "本结果 `items` 数组中返回的条目数量。"},
+ "tasks.result.offset": {"desc_en": "Offset applied within the returned apps array.",
+   "title_zh": "返回应用数组中所应用的偏移量。"},
+ "tasks.result.offset_token": {"desc_en": "Pagination token to pass into a subsequent POST request to retrieve large result sets (over 100,000) without timeouts.",
+   "title_zh": "分页令牌，可在后续 POST 请求中回传，以避免超大结果集（超过 10 万条）超时。"},
+ "tasks.result.items": {"desc_en": "Array of apps (or products) and their related data returned for the query.",
+   "title_zh": "查询返回的应用（或商品）及其相关数据的数组。"},
+
+ # --- items[] wrapper ---
+ "tasks.result.items.app_id": {"desc_en": "Identifier of the returned app.",
+   "title_zh": "返回应用的标识。"},
+ "tasks.result.items.se_domain": {"desc_en": "Search-engine domain echoed from the POST request for this item.",
+   "title_zh": "该条目从 POST 请求回显的搜索引擎域名。"},
+ "tasks.result.items.location_code": {"desc_en": "Location code echoed from the POST request for this item.",
+   "title_zh": "该条目从 POST 请求回显的地区代码。"},
+ "tasks.result.items.language_code": {"desc_en": "Language code echoed from the POST request for this item.",
+   "title_zh": "该条目从 POST 请求回显的语言代码。"},
+ "tasks.result.items.check_url": {"desc_en": "Direct URL to the search-engine results, usable to verify the returned data.",
+   "title_zh": "搜索引擎结果的直达 URL，可用于核对返回数据。"},
+ "tasks.result.items.time_update": {"desc_en": "Timestamp (UTC) when the SERP data was last updated.",
+   "title_zh": "SERP 数据最后更新的时间戳（UTC）。"},
+ "tasks.result.items.item": {"desc_en": "Detailed information object for the app in this item.",
+   "title_zh": "本条目中应用的详细信息对象。"},
+
+ # --- item.* app detail ---
+ "tasks.result.items.item.type": {"desc_en": "Element type of this item (e.g. `app_store_info_organic`, `google_play_info_organic`).",
+   "title_zh": "本条目的元素类型（如 `app_store_info_organic`、`google_play_info_organic`）。"},
+ "tasks.result.items.item.rank_group": {"desc_en": "Rank within the group of items sharing the same `type`; items of differing types are skipped in this count.",
+   "title_zh": "在相同 `type` 的条目组内的排名；不同 `type` 的条目不计入。"},
+ "tasks.result.items.item.rank_absolute": {"desc_en": "Absolute rank of the app across the entire returned list, regardless of type.",
+   "title_zh": "应用在整个返回列表中的绝对排名，不区分类型。"},
+ "tasks.result.items.item.position": {"desc_en": "Alignment of the element within the SERP (e.g. `left`).",
+   "title_zh": "元素在 SERP 中的对齐位置（如 `left`）。"},
+ "tasks.result.items.item.app_id": {"desc_en": "Identifier of the returned app.",
+   "title_zh": "返回应用的标识。"},
+ "tasks.result.items.item.title": {"desc_en": "Title of the returned app.",
+   "title_zh": "返回应用的标题。"},
+ "tasks.result.items.item.url": {"desc_en": "URL to the app's page on the store.",
+   "title_zh": "应用在商店中的页面 URL。"},
+ "tasks.result.items.item.icon": {"desc_en": "URL to the app's icon image.",
+   "title_zh": "应用图标图片的 URL。"},
+ "tasks.result.items.item.description": {"desc_en": "Description text of the returned app.",
+   "title_zh": "返回应用的描述文本。"},
+ "tasks.result.items.item.reviews_count": {"desc_en": "Total number of reviews the app has.",
+   "title_zh": "应用的评论总数。"},
+ "tasks.result.items.item.rating": {"desc_en": "Average rating object of the app.",
+   "title_zh": "应用的平均评分对象。"},
+ "tasks.result.items.item.rating.rating_type": {"desc_en": "Rating scale type, e.g. `Max5`.",
+   "title_zh": "评分量表类型，如 `Max5`。"},
+ "tasks.result.items.item.rating.value": {"desc_en": "The rating value.",
+   "title_zh": "评分数值。"},
+ "tasks.result.items.item.rating.votes_count": {"desc_en": "Number of ratings/feedback contributing to the value; may be null.",
+   "title_zh": "构成该评分的投票/反馈数量；可能为 null。"},
+ "tasks.result.items.item.rating.rating_max": {"desc_en": "Maximum possible value for the rating scale (e.g. 5 for `Max5`).",
+   "title_zh": "该评分量表的最大可能值（如 `Max5` 为 5）。"},
+ "tasks.result.items.item.price": {"desc_en": "Price object for the app.",
+   "title_zh": "应用的价格对象。"},
+ "tasks.result.items.item.price.current": {"desc_en": "Current price shown for the app.",
+   "title_zh": "应用当前显示的价格。"},
+ "tasks.result.items.item.price.regular": {"desc_en": "Regular (non-discounted) price of the app.",
+   "title_zh": "应用的常规（未打折）价格。"},
+ "tasks.result.items.item.price.max_value": {"desc_en": "Maximum price when the app is offered as a price range.",
+   "title_zh": "当应用以价格区间提供时的最高价。"},
+ "tasks.result.items.item.price.currency": {"desc_en": "ISO currency code of the listed price.",
+   "title_zh": "所列价格的 ISO 货币代码。"},
+ "tasks.result.items.item.price.is_price_range": {"desc_en": "Indicates whether the price is given as a range rather than a single value.",
+   "title_zh": "表示价格是否以区间而非单一数值给出。"},
+ "tasks.result.items.item.price.displayed_price": {"desc_en": "Raw price string exactly as shown in the result.",
+   "title_zh": "结果中原样显示的价格字符串。"},
+ "tasks.result.items.item.is_free": {"desc_en": "Indicates whether the app is free.",
+   "title_zh": "表示应用是否免费。"},
+ "tasks.result.items.item.main_category": {"desc_en": "Primary store category most relevant to the app.",
+   "title_zh": "与应用最相关的主要商店分类。"},
+ "tasks.result.items.item.categories": {"desc_en": "Additional store categories relevant to the app.",
+   "title_zh": "与应用相关的其他商店分类。"},
+ "tasks.result.items.item.languages": {"desc_en": "Languages supported by the app.",
+   "title_zh": "应用支持的语言。"},
+ "tasks.result.items.item.advisories": {"desc_en": "App advisory ratings and usage restrictions (e.g. content warnings).",
+   "title_zh": "应用的内容分级与使用限制提示（如内容警示）。"},
+ "tasks.result.items.item.developer": {"desc_en": "Name of the app developer.",
+   "title_zh": "应用开发者名称。"},
+ "tasks.result.items.item.developer_id": {"desc_en": "Identifier of the developer on the store.",
+   "title_zh": "开发者在商店中的标识。"},
+ "tasks.result.items.item.developer_url": {"desc_en": "URL to the developer's page on the store.",
+   "title_zh": "开发者在商店中的页面 URL。"},
+ "tasks.result.items.item.version": {"desc_en": "Current version of the app.",
+   "title_zh": "应用的当前版本。"},
+ "tasks.result.items.item.minimum_os_version": {"desc_en": "Minimum OS version required to install the app.",
+   "title_zh": "安装应用所需的最低操作系统版本。"},
+ "tasks.result.items.item.size": {"desc_en": "Download size of the app.",
+   "title_zh": "应用的下载体积。"},
+ "tasks.result.items.item.released_date": {"desc_en": "Date and time the app was first released, in UTC (`yyyy-mm-dd hh-mm-ss +00:00`).",
+   "title_zh": "应用首次发布的日期时间，UTC 格式（`yyyy-mm-dd hh-mm-ss +00:00`）。"},
+ "tasks.result.items.item.last_update_date": {"desc_en": "Date and time the app was last updated, in UTC (`yyyy-mm-dd hh-mm-ss +00:00`).",
+   "title_zh": "应用最后更新的日期时间，UTC 格式（`yyyy-mm-dd hh-mm-ss +00:00`）。"},
+ "tasks.result.items.item.update_notes": {"desc_en": "Latest update notes provided by the developer.",
+   "title_zh": "开发者提供的最新更新说明。"},
+ "tasks.result.items.item.images": {"desc_en": "URLs to the screenshots/images shown on the app's store page.",
+   "title_zh": "应用商店页面所展示截图/图片的 URL。"},
+ "tasks.result.items.item.similar_apps": {"desc_en": "List of apps similar to this app.",
+   "title_zh": "与本应用相似的应用列表。"},
+ "tasks.result.items.item.similar_apps.app_id": {"desc_en": "Identifier of the similar app.",
+   "title_zh": "相似应用的标识。"},
+ "tasks.result.items.item.similar_apps.title": {"desc_en": "Title of the similar app.",
+   "title_zh": "相似应用的标题。"},
+ "tasks.result.items.item.similar_apps.url": {"desc_en": "URL to the similar app's store page.",
+   "title_zh": "相似应用商店页面的 URL。"},
+ "tasks.result.items.item.more_apps_by_developer": {"desc_en": "Other apps built by the same developer.",
+   "title_zh": "同一开发者发布的其他应用。"},
+ "tasks.result.items.item.more_apps_by_developer.app_id": {"desc_en": "Identifier of the developer's other app.",
+   "title_zh": "该开发者其他应用的标识。"},
+ "tasks.result.items.item.more_apps_by_developer.title": {"desc_en": "Title of the developer's other app.",
+   "title_zh": "该开发者其他应用的标题。"},
+ "tasks.result.items.item.more_apps_by_developer.url": {"desc_en": "URL to the developer's other app store page.",
+   "title_zh": "该开发者其他应用商店页面的 URL。"},
+ # Google-Play-only item fields
+ "tasks.result.items.item.developer_address": {"desc_en": "Physical address of the developer.",
+   "title_zh": "开发者的实际地址。"},
+ "tasks.result.items.item.developer_email": {"desc_en": "Email address of the developer.",
+   "title_zh": "开发者的电子邮箱地址。"},
+ "tasks.result.items.item.developer_website": {"desc_en": "Official website of the developer.",
+   "title_zh": "开发者的官方网站。"},
+ "tasks.result.items.item.genres": {"desc_en": "App genres, listing the relevant app categories.",
+   "title_zh": "应用类型，列出相关的应用分类。"},
+ "tasks.result.items.item.tags": {"desc_en": "Relevant app tags.",
+   "title_zh": "相关的应用标签。"},
+ "tasks.result.items.item.videos": {"desc_en": "URLs to videos published on the app's store page.",
+   "title_zh": "应用商店页面所发布视频的 URL。"},
+ "tasks.result.items.item.installs": {"desc_en": "Approximate number of app installs.",
+   "title_zh": "应用安装量的大致数值。"},
+ "tasks.result.items.item.installs_count": {"desc_en": "Accurate number of app installs.",
+   "title_zh": "应用安装量的精确数值。"},
+
+ # --- languages / locations / categories list endpoints ---
+ "tasks.result.language_name": {"desc_en": "Full name of the supported language.",
+   "title_zh": "受支持语言的完整名称。"},
+ "tasks.result.location_name": {"desc_en": "Full name of the supported location.",
+   "title_zh": "受支持地区的完整名称。"},
+ "tasks.result.location_name_parent": {"desc_en": "Name of the superordinate (parent) location; for example the parent of `Altrincham,England,United Kingdom` is `England,United Kingdom`.",
+   "title_zh": "上级（父）地区名称；例如 `Altrincham,England,United Kingdom` 的父级为 `England,United Kingdom`。"},
+ "tasks.result.country_iso_code": {"desc_en": "ISO country code of the location.",
+   "title_zh": "该地区的 ISO 国家代码。"},
+ "tasks.result.location_type": {"desc_en": "Type of the location (e.g. country, city).",
+   "title_zh": "地区类型（如国家、城市）。"},
+ "tasks.result.categories": {"desc_en": "Full list of supported app categories.",
+   "title_zh": "受支持应用分类的完整列表。"},
+ "tasks.result.category": {"desc_en": "Name of a supported app category.",
+   "title_zh": "某个受支持应用分类的名称。"},
+ "tasks.result.tag": {"desc_en": "User-defined task label echoed from the request.",
+   "title_zh": "从请求回显的用户自定义任务标签。"},
+ "tasks.result.date_posted": {"desc_en": "Timestamp (UTC) when the task was posted.",
+   "title_zh": "任务提交的时间戳（UTC）。"},
+ "tasks.result.endpoint_advanced": {"desc_en": "URL for collecting the advanced (structured JSON) results of this completed task.",
+   "title_zh": "用于收取该已完成任务 advanced（结构化 JSON）结果的 URL。"},
+ "tasks.result.endpoint_html": {"desc_en": "URL for collecting the HTML results of this completed task; may be null where HTML output is unavailable for the endpoint.",
+   "title_zh": "用于收取该已完成任务 HTML 结果的 URL；若该接口不提供 HTML 输出则可能为 null。"},
+
+ # --- standalone simple responses ---
+ "id": {"desc_en": "Task identifier (UUID) returned when posting a task; use it with the matching Task GET endpoint to collect the results within the task retention window.",
+   "title_zh": "提交任务时返回的任务标识（UUID）；在任务保留期内用它调用对应的 Task GET 接口收取结果。"},
+ "country": {"desc_en": "Country ISO code echoed when filtering the locations list by country (e.g. `us`).",
+   "title_zh": "按国家过滤地区列表时回显的国家 ISO 代码（如 `us`）。"},
+ "shop_ad_aclk": {"desc_en": "Unique ad-click referral parameter for a Google Shopping listing; obtain it from the Google Shopping Products or Google Shopping Sellers endpoints.",
+   "title_zh": "Google Shopping 列表的唯一广告点击引荐参数；可从 Google Shopping Products 或 Google Shopping Sellers 接口获取。"},
+
+ "country_dup": {},
+}
+
+# Per-op response overrides (genuine nuance).
+RESP_OVERRIDES = {
+ "tasks.result": {  # default already covers; keep
+ },
+}
+
+# ----------------------------------------------------------------------------
+# Operation-level docs (hand-authored heading_zh + desc_en + description_zh).
+# ----------------------------------------------------------------------------
+OPS = {
+ "get_dataforseo_merchant_amazon_asin_task_get_advanced_id": {
+   "heading_zh": "获取 Amazon ASIN 任务结果（Advanced） get_dataforseo_merchant_amazon_asin_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Amazon ASIN task by its `id`, returning the product and the ASINs of all its variations.",
+   "description_zh": "按任务 `id` 收取已完成 Amazon ASIN 任务的结构化（advanced）结果，返回该商品及其所有变体的 ASIN。"},
+ "get_dataforseo_merchant_amazon_asin_task_get_html_id": {
+   "heading_zh": "获取 Amazon ASIN 任务结果（HTML） get_dataforseo_merchant_amazon_asin_task_get_html_id",
+   "desc_en": "Collect the raw HTML results of a completed Amazon ASIN task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Amazon ASIN 任务的原始 HTML 结果。"},
+ "post_dataforseo_merchant_amazon_asin_task_post": {
+   "heading_zh": "提交 Amazon ASIN 任务 post_dataforseo_merchant_amazon_asin_task_post",
+   "desc_en": "Queue an Amazon ASIN task that returns the full list of ASINs assigned to the variations of a product. Returns a task `id` to collect later via the Task GET endpoints.",
+   "description_zh": "排队提交 Amazon ASIN 任务，返回某商品各变体所对应的完整 ASIN 列表。返回任务 `id`，稍后经 Task GET 接口收取。"},
+ "get_dataforseo_merchant_amazon_asin_tasks_ready": {
+   "heading_zh": "列出可收取的 Amazon ASIN 任务 get_dataforseo_merchant_amazon_asin_tasks_ready",
+   "desc_en": "List completed Amazon ASIN tasks that have not yet been collected, so you can fetch each via the Task GET endpoints.",
+   "description_zh": "列出已完成但尚未收取的 Amazon ASIN 任务，便于逐个经 Task GET 接口取回结果。"},
+ "get_dataforseo_merchant_amazon_languages": {
+   "heading_zh": "列出 Amazon 支持的语言 get_dataforseo_merchant_amazon_languages",
+   "desc_en": "Return the list of languages supported by the Amazon merchant endpoints, with their `language_name` and `language_code`.",
+   "description_zh": "返回 Amazon merchant 接口支持的语言列表，含 `language_name` 与 `language_code`。"},
+ "get_dataforseo_merchant_amazon_locations": {
+   "heading_zh": "列出 Amazon 支持的地区 get_dataforseo_merchant_amazon_locations",
+   "desc_en": "Return the list of locations supported by the Amazon merchant endpoints, with their `location_name` and `location_code`.",
+   "description_zh": "返回 Amazon merchant 接口支持的地区列表，含 `location_name` 与 `location_code`。"},
+ "get_dataforseo_merchant_amazon_products_task_get_advanced_id": {
+   "heading_zh": "获取 Amazon Products 任务结果（Advanced） get_dataforseo_merchant_amazon_products_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Amazon Products task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Amazon Products 任务的结构化（advanced）结果。"},
+ "get_dataforseo_merchant_amazon_products_task_get_html_id": {
+   "heading_zh": "获取 Amazon Products 任务结果（HTML） get_dataforseo_merchant_amazon_products_task_get_html_id",
+   "desc_en": "Collect the raw HTML results of a completed Amazon Products task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Amazon Products 任务的原始 HTML 结果。"},
+ "post_dataforseo_merchant_amazon_products_task_post": {
+   "heading_zh": "提交 Amazon Products 任务 post_dataforseo_merchant_amazon_products_task_post",
+   "desc_en": "Queue an Amazon product-listings task for a keyword, location, and language. Returns a task `id` to collect later via the Task GET endpoints.",
+   "description_zh": "按关键词、地区与语言排队提交 Amazon 商品列表任务。返回任务 `id`，稍后经 Task GET 接口收取。"},
+ "get_dataforseo_merchant_amazon_products_tasks_ready": {
+   "heading_zh": "列出可收取的 Amazon Products 任务 get_dataforseo_merchant_amazon_products_tasks_ready",
+   "desc_en": "List completed Amazon Products tasks that have not yet been collected.",
+   "description_zh": "列出已完成但尚未收取的 Amazon Products 任务。"},
+ "get_dataforseo_merchant_amazon_sellers_task_get_advanced_id": {
+   "heading_zh": "获取 Amazon Sellers 任务结果（Advanced） get_dataforseo_merchant_amazon_sellers_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Amazon Sellers task by its `id`, listing the sellers of a product with condition, pricing, and shipping data.",
+   "description_zh": "按任务 `id` 收取已完成 Amazon Sellers 任务的结构化（advanced）结果，列出某商品的卖家及其品相、定价与配送信息。"},
+ "get_dataforseo_merchant_amazon_sellers_task_get_html_id": {
+   "heading_zh": "获取 Amazon Sellers 任务结果（HTML） get_dataforseo_merchant_amazon_sellers_task_get_html_id",
+   "desc_en": "Collect the raw HTML results of a completed Amazon Sellers task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Amazon Sellers 任务的原始 HTML 结果。"},
+ "post_dataforseo_merchant_amazon_sellers_task_post": {
+   "heading_zh": "提交 Amazon Sellers 任务 post_dataforseo_merchant_amazon_sellers_task_post",
+   "desc_en": "Queue an Amazon Sellers task that returns the sellers of a specified product with condition, pricing, and shipping details. Returns a task `id` to collect later.",
+   "description_zh": "排队提交 Amazon Sellers 任务，返回指定商品的卖家及其品相、定价与配送细节。返回任务 `id`，稍后收取。"},
+ "get_dataforseo_merchant_amazon_sellers_tasks_ready": {
+   "heading_zh": "列出可收取的 Amazon Sellers 任务 get_dataforseo_merchant_amazon_sellers_tasks_ready",
+   "desc_en": "List completed Amazon Sellers tasks that have not yet been collected.",
+   "description_zh": "列出已完成但尚未收取的 Amazon Sellers 任务。"},
+ "get_dataforseo_merchant_google_languages": {
+   "heading_zh": "列出 Google Shopping 支持的语言 get_dataforseo_merchant_google_languages",
+   "desc_en": "Return the list of languages supported by the Google Shopping merchant endpoints, with their `language_name` and `language_code`.",
+   "description_zh": "返回 Google Shopping merchant 接口支持的语言列表，含 `language_name` 与 `language_code`。"},
+ "get_dataforseo_merchant_google_locations": {
+   "heading_zh": "列出 Google Shopping 支持的地区 get_dataforseo_merchant_google_locations",
+   "desc_en": "Return the list of locations supported by the Google Shopping merchant endpoints, with their `location_name` and `location_code`.",
+   "description_zh": "返回 Google Shopping merchant 接口支持的地区列表，含 `location_name` 与 `location_code`。"},
+ "get_dataforseo_merchant_google_product_info_task_get_advanced_id": {
+   "heading_zh": "获取 Google Shopping 商品详情任务结果（Advanced） get_dataforseo_merchant_google_product_info_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Google Shopping Product Info task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Google Shopping 商品详情任务的结构化（advanced）结果。"},
+ "post_dataforseo_merchant_google_product_info_task_post": {
+   "heading_zh": "提交 Google Shopping 商品详情任务 post_dataforseo_merchant_google_product_info_task_post",
+   "desc_en": "Queue a Google Shopping Product Info task for a product (identified by `product_id`, `gid`, or `data_docid`), returning description, images, rating, variations, specifications, and sellers. Returns a task `id`.",
+   "description_zh": "为某商品（以 `product_id`、`gid` 或 `data_docid` 标识）排队提交 Google Shopping 商品详情任务，返回描述、图片、评分、变体、规格与卖家。返回任务 `id`。"},
+ "get_dataforseo_merchant_google_product_info_tasks_ready": {
+   "heading_zh": "列出可收取的 Google Shopping 商品详情任务 get_dataforseo_merchant_google_product_info_tasks_ready",
+   "desc_en": "List completed Google Shopping Product Info tasks that have not yet been collected.",
+   "description_zh": "列出已完成但尚未收取的 Google Shopping 商品详情任务。"},
+ "get_dataforseo_merchant_google_products_task_get_advanced_id": {
+   "heading_zh": "获取 Google Shopping Products 任务结果（Advanced） get_dataforseo_merchant_google_products_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Google Shopping Products task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Google Shopping Products 任务的结构化（advanced）结果。"},
+ "get_dataforseo_merchant_google_products_task_get_html_id": {
+   "heading_zh": "获取 Google Shopping Products 任务结果（HTML） get_dataforseo_merchant_google_products_task_get_html_id",
+   "desc_en": "Collect the raw HTML results of a completed Google Shopping Products task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Google Shopping Products 任务的原始 HTML 结果。"},
+ "post_dataforseo_merchant_google_products_task_post": {
+   "heading_zh": "提交 Google Shopping Products 任务 post_dataforseo_merchant_google_products_task_post",
+   "desc_en": "Queue a Google Shopping Products task that returns the products found for a query, including titles, prices, and seller data. Returns a task `id`.",
+   "description_zh": "排队提交 Google Shopping Products 任务，返回查询命中的商品（含标题、价格与卖家数据）。返回任务 `id`。"},
+ "get_dataforseo_merchant_google_products_tasks_ready": {
+   "heading_zh": "列出可收取的 Google Shopping Products 任务 get_dataforseo_merchant_google_products_tasks_ready",
+   "desc_en": "List completed Google Shopping Products tasks that have not yet been collected.",
+   "description_zh": "列出已完成但尚未收取的 Google Shopping Products 任务。"},
+ "get_dataforseo_merchant_google_reviews_task_get_advanced_id": {
+   "heading_zh": "获取 Google Shopping 评论任务结果（Advanced） get_dataforseo_merchant_google_reviews_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Google Shopping Reviews task by its `id`, including top keywords, review titles, images, and ratings.",
+   "description_zh": "按任务 `id` 收取已完成 Google Shopping 评论任务的结构化（advanced）结果，含高频关键词、评论标题、图片与评分。"},
+ "post_dataforseo_merchant_google_reviews_task_post": {
+   "heading_zh": "提交 Google Shopping 评论任务 post_dataforseo_merchant_google_reviews_task_post",
+   "desc_en": "Queue a Google Shopping Reviews task to collect reviews for a product on Google Shopping. Returns a task `id`.",
+   "description_zh": "排队提交 Google Shopping 评论任务，收取某 Google Shopping 商品的评论。返回任务 `id`。"},
+ "get_dataforseo_merchant_google_reviews_tasks_ready": {
+   "heading_zh": "列出可收取的 Google Shopping 评论任务 get_dataforseo_merchant_google_reviews_tasks_ready",
+   "desc_en": "List completed Google Shopping Reviews tasks that have not yet been collected.",
+   "description_zh": "列出已完成但尚未收取的 Google Shopping 评论任务。"},
+ "get_dataforseo_merchant_google_sellers_ad_url": {
+   "heading_zh": "获取 Google Shopping 卖家广告 URL get_dataforseo_merchant_google_sellers_ad_url",
+   "desc_en": "Return the full advertisement URL of a Google Shopping seller, including all extra parameters the seller set.",
+   "description_zh": "返回某 Google Shopping 卖家广告的完整 URL，含卖家设置的全部附加参数。"},
+ "get_dataforseo_merchant_google_sellers_task_get_advanced_id": {
+   "heading_zh": "获取 Google Shopping Sellers 任务结果（Advanced） get_dataforseo_merchant_google_sellers_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Google Shopping Sellers task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Google Shopping Sellers 任务的结构化（advanced）结果。"},
+ "post_dataforseo_merchant_google_sellers_task_post": {
+   "heading_zh": "提交 Google Shopping Sellers 任务 post_dataforseo_merchant_google_sellers_task_post",
+   "desc_en": "Queue a Google Shopping Sellers task that returns the sellers offering a specified product on Google Shopping. Returns a task `id`.",
+   "description_zh": "排队提交 Google Shopping Sellers 任务，返回在 Google Shopping 上提供指定商品的卖家。返回任务 `id`。"},
+ "get_dataforseo_merchant_google_sellers_tasks_ready": {
+   "heading_zh": "列出可收取的 Google Shopping Sellers 任务 get_dataforseo_merchant_google_sellers_tasks_ready",
+   "desc_en": "List completed Google Shopping Sellers tasks that have not yet been collected.",
+   "description_zh": "列出已完成但尚未收取的 Google Shopping Sellers 任务。"},
+ "get_dataforseo_app_data_apple_app_info_task_get_advanced_id": {
+   "heading_zh": "获取 App Store 应用详情任务结果（Advanced） get_dataforseo_app_data_apple_app_info_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed App Store App Info task by its `id`, returning the app's ID, icon, description, reviews, rating, and more.",
+   "description_zh": "按任务 `id` 收取已完成 App Store 应用详情任务的结构化（advanced）结果，返回应用 ID、图标、描述、评论、评分等。"},
+ "post_dataforseo_app_data_apple_app_info_task_post": {
+   "heading_zh": "提交 App Store 应用详情任务 post_dataforseo_app_data_apple_app_info_task_post",
+   "desc_en": "Queue an App Store App Info task for the app given in `app_id`. Returns a task `id` to collect later.",
+   "description_zh": "为 `app_id` 指定的应用排队提交 App Store 应用详情任务。返回任务 `id`，稍后收取。"},
+ "get_dataforseo_app_data_apple_app_list_task_get_advanced_id": {
+   "heading_zh": "获取 App Store 榜单任务结果（Advanced） get_dataforseo_app_data_apple_app_list_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed App Store App List task by its `id`, returning apps from the top charts with IDs, ratings, prices, and titles.",
+   "description_zh": "按任务 `id` 收取已完成 App Store 榜单任务的结构化（advanced）结果，返回排行榜应用及其 ID、评分、价格与标题。"},
+ "post_dataforseo_app_data_apple_app_list_task_post": {
+   "heading_zh": "提交 App Store 榜单任务 post_dataforseo_app_data_apple_app_list_task_post",
+   "desc_en": "Queue an App Store App List task that returns apps from a specified top chart collection. Returns a task `id`.",
+   "description_zh": "排队提交 App Store 榜单任务，返回指定榜单集合中的应用。返回任务 `id`。"},
+ "get_dataforseo_app_data_apple_app_listings_categories": {
+   "heading_zh": "列出 App Store 应用分类 get_dataforseo_app_data_apple_app_listings_categories",
+   "desc_en": "Return the full list of app categories available on the Apple App Store for app-listing searches.",
+   "description_zh": "返回 Apple App Store 上可用于应用列表检索的全部应用分类。"},
+ "post_dataforseo_app_data_apple_app_listings_search_live": {
+   "heading_zh": "实时检索 App Store 应用列表 post_dataforseo_app_data_apple_app_listings_search_live",
+   "desc_en": "Search App Store app listings in real time (Live mode) and return apps with ID, icon, reviews count, rating, price, and more in the same response.",
+   "description_zh": "以实时（Live）方式检索 App Store 应用列表，在同一响应中返回应用的 ID、图标、评论数、评分、价格等信息。"},
+ "get_dataforseo_app_data_apple_app_reviews_task_get_advanced_id": {
+   "heading_zh": "获取 App Store 评论任务结果（Advanced） get_dataforseo_app_data_apple_app_reviews_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed App Store App Reviews task by its `id`, including review ratings, content, and user profile info.",
+   "description_zh": "按任务 `id` 收取已完成 App Store 评论任务的结构化（advanced）结果，含评论评分、内容与用户资料信息。"},
+ "post_dataforseo_app_data_apple_app_reviews_task_post": {
+   "heading_zh": "提交 App Store 评论任务 post_dataforseo_app_data_apple_app_reviews_task_post",
+   "desc_en": "Queue an App Store App Reviews task for the app given in `app_id`. Returns a task `id` to collect later.",
+   "description_zh": "为 `app_id` 指定的应用排队提交 App Store 评论任务。返回任务 `id`，稍后收取。"},
+ "get_dataforseo_app_data_apple_app_searches_task_get_advanced_id": {
+   "heading_zh": "获取 App Store 关键词搜索任务结果（Advanced） get_dataforseo_app_data_apple_app_searches_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed App Store App Searches task by its `id`, listing apps ranking for the posted keyword.",
+   "description_zh": "按任务 `id` 收取已完成 App Store 关键词搜索任务的结构化（advanced）结果，列出对应关键词下排名的应用。"},
+ "post_dataforseo_app_data_apple_app_searches_task_post": {
+   "heading_zh": "提交 App Store 关键词搜索任务 post_dataforseo_app_data_apple_app_searches_task_post",
+   "desc_en": "Queue an App Store App Searches task that returns apps ranking for a keyword. Returns a task `id`.",
+   "description_zh": "排队提交 App Store 关键词搜索任务，返回某关键词下排名的应用。返回任务 `id`。"},
+ "get_dataforseo_app_data_apple_categories": {
+   "heading_zh": "列出 App Store 应用分类 get_dataforseo_app_data_apple_categories",
+   "desc_en": "Return the full list of app categories available on the App Store.",
+   "description_zh": "返回 App Store 上可用的全部应用分类。"},
+ "get_dataforseo_app_data_apple_languages": {
+   "heading_zh": "列出 App Data Apple 支持的语言 get_dataforseo_app_data_apple_languages",
+   "desc_en": "Return the list of Apple languages supported by the App Data API.",
+   "description_zh": "返回 App Data API 支持的 Apple 语言列表。"},
+ "get_dataforseo_app_data_apple_locations": {
+   "heading_zh": "列出 App Data Apple 支持的地区 get_dataforseo_app_data_apple_locations",
+   "desc_en": "Return the list of Apple locations supported by the App Data API.",
+   "description_zh": "返回 App Data API 支持的 Apple 地区列表。"},
+ "get_dataforseo_app_data_google_app_info_task_get_advanced_id": {
+   "heading_zh": "获取 Google Play 应用详情任务结果（Advanced） get_dataforseo_app_data_google_app_info_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Google Play App Info task by its `id`, returning the app's ID, icon, description, reviews, rating, and more.",
+   "description_zh": "按任务 `id` 收取已完成 Google Play 应用详情任务的结构化（advanced）结果，返回应用 ID、图标、描述、评论、评分等。"},
+ "get_dataforseo_app_data_google_app_info_task_get_html_id": {
+   "heading_zh": "获取 Google Play 应用详情任务结果（HTML） get_dataforseo_app_data_google_app_info_task_get_html_id",
+   "desc_en": "Collect the raw HTML results of a completed Google Play App Info task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Google Play 应用详情任务的原始 HTML 结果。"},
+ "post_dataforseo_app_data_google_app_info_task_post": {
+   "heading_zh": "提交 Google Play 应用详情任务 post_dataforseo_app_data_google_app_info_task_post",
+   "desc_en": "Queue a Google Play App Info task for the app given in `app_id`. Returns a task `id` to collect later.",
+   "description_zh": "为 `app_id` 指定的应用排队提交 Google Play 应用详情任务。返回任务 `id`，稍后收取。"},
+ "get_dataforseo_app_data_google_app_list_task_get_advanced_id": {
+   "heading_zh": "获取 Google Play 榜单任务结果（Advanced） get_dataforseo_app_data_google_app_list_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Google Play App List task by its `id`, returning apps from the top charts.",
+   "description_zh": "按任务 `id` 收取已完成 Google Play 榜单任务的结构化（advanced）结果，返回排行榜中的应用。"},
+ "get_dataforseo_app_data_google_app_list_task_get_html_id": {
+   "heading_zh": "获取 Google Play 榜单任务结果（HTML） get_dataforseo_app_data_google_app_list_task_get_html_id",
+   "desc_en": "Collect the raw HTML results of a completed Google Play App List task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Google Play 榜单任务的原始 HTML 结果。"},
+ "post_dataforseo_app_data_google_app_list_task_post": {
+   "heading_zh": "提交 Google Play 榜单任务 post_dataforseo_app_data_google_app_list_task_post",
+   "desc_en": "Queue a Google Play App List task that returns apps from a specified top chart collection. Returns a task `id`.",
+   "description_zh": "排队提交 Google Play 榜单任务，返回指定榜单集合中的应用。返回任务 `id`。"},
+ "get_dataforseo_app_data_google_app_listings_categories": {
+   "heading_zh": "列出 Google Play 应用分类 get_dataforseo_app_data_google_app_listings_categories",
+   "desc_en": "Return the full list of app categories available on Google Play for app-listing searches.",
+   "description_zh": "返回 Google Play 上可用于应用列表检索的全部应用分类。"},
+ "post_dataforseo_app_data_google_app_listings_search_live": {
+   "heading_zh": "实时检索 Google Play 应用列表 post_dataforseo_app_data_google_app_listings_search_live",
+   "desc_en": "Search Google Play app listings in real time (Live mode) and return apps with ID, icon, reviews count, rating, price, and more in the same response.",
+   "description_zh": "以实时（Live）方式检索 Google Play 应用列表，在同一响应中返回应用的 ID、图标、评论数、评分、价格等信息。"},
+ "get_dataforseo_app_data_google_app_reviews_task_get_advanced_id": {
+   "heading_zh": "获取 Google Play 评论任务结果（Advanced） get_dataforseo_app_data_google_app_reviews_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Google Play App Reviews task by its `id`, including review ratings and content.",
+   "description_zh": "按任务 `id` 收取已完成 Google Play 评论任务的结构化（advanced）结果，含评论评分与内容。"},
+ "post_dataforseo_app_data_google_app_reviews_task_post": {
+   "heading_zh": "提交 Google Play 评论任务 post_dataforseo_app_data_google_app_reviews_task_post",
+   "desc_en": "Queue a Google Play App Reviews task for the app given in `app_id`. Returns a task `id` to collect later.",
+   "description_zh": "为 `app_id` 指定的应用排队提交 Google Play 评论任务。返回任务 `id`，稍后收取。"},
+ "get_dataforseo_app_data_google_app_searches_task_get_advanced_id": {
+   "heading_zh": "获取 Google Play 关键词搜索任务结果（Advanced） get_dataforseo_app_data_google_app_searches_task_get_advanced_id",
+   "desc_en": "Collect the structured (advanced) results of a completed Google Play App Searches task by its `id`, listing apps ranking for the posted keyword.",
+   "description_zh": "按任务 `id` 收取已完成 Google Play 关键词搜索任务的结构化（advanced）结果，列出对应关键词下排名的应用。"},
+ "get_dataforseo_app_data_google_app_searches_task_get_html_id": {
+   "heading_zh": "获取 Google Play 关键词搜索任务结果（HTML） get_dataforseo_app_data_google_app_searches_task_get_html_id",
+   "desc_en": "Collect the raw HTML results of a completed Google Play App Searches task by its `id`.",
+   "description_zh": "按任务 `id` 收取已完成 Google Play 关键词搜索任务的原始 HTML 结果。"},
+ "post_dataforseo_app_data_google_app_searches_task_post": {
+   "heading_zh": "提交 Google Play 关键词搜索任务 post_dataforseo_app_data_google_app_searches_task_post",
+   "desc_en": "Queue a Google Play App Searches task that returns apps ranking for a keyword. Returns a task `id`.",
+   "description_zh": "排队提交 Google Play 关键词搜索任务，返回某关键词下排名的应用。返回任务 `id`。"},
+ "get_dataforseo_app_data_google_categories": {
+   "heading_zh": "列出 Google Play 应用分类 get_dataforseo_app_data_google_categories",
+   "desc_en": "Return the full list of app categories available on Google Play.",
+   "description_zh": "返回 Google Play 上可用的全部应用分类。"},
+ "get_dataforseo_app_data_google_languages": {
+   "heading_zh": "列出 App Data Google 支持的语言 get_dataforseo_app_data_google_languages",
+   "desc_en": "Return the list of Google languages supported by the App Data API.",
+   "description_zh": "返回 App Data API 支持的 Google 语言列表。"},
+ "get_dataforseo_app_data_google_locations": {
+   "heading_zh": "列出 App Data Google 支持的地区 get_dataforseo_app_data_google_locations",
+   "desc_en": "Return the list of Google locations supported by the App Data API.",
+   "description_zh": "返回 App Data API 支持的 Google 地区列表。"},
+}
+
+# ----------------------------------------------------------------------------
+# Assembly
+# ----------------------------------------------------------------------------
+def main():
+    spec = json.load(open(SPEC, encoding="utf-8"))
+    paths = spec["paths"]
+    content = {"operations": {}, "fields": {}}
+    missing_req = set()
+    missing_resp = set()
+    for p, methods in paths.items():
+        for meth, op in methods.items():
+            if meth not in ("get", "post", "put", "delete", "patch"):
+                continue
+            opid = op.get("operationId") or f"{meth.upper()} {p}"
+            # operation level
+            if opid in OPS:
+                content["operations"][opid] = dict(OPS[opid])
+            else:
+                missing_req.add("OP:" + opid)
+            fobj = {"request": {}, "response": {}}
+            # request
+            rb = (((op.get("requestBody") or {}).get("content") or {})
+                  .get("application/json") or {}).get("schema") or {}
+            for key in (rb.get("properties") or {}):
+                doc = None
+                ov = REQ_OVERRIDES.get(opid, {})
+                if key in ov:
+                    doc = ov[key]
+                elif key in REQ and REQ[key]:
+                    doc = REQ[key]
+                if doc:
+                    fobj["request"][key] = dict(doc)
+                else:
+                    missing_req.add(key)
+            # response 200 (others have no schema)
+            for code, resp in (op.get("responses") or {}).items():
+                sch = ((resp.get("content") or {}).get("application/json") or {}).get("schema") or {}
+                props = sch.get("properties") or {}
+                if not props:
+                    continue
+                cmap = {}
+                for key in props:
+                    doc = RESP.get(key)
+                    if doc:
+                        cmap[key] = dict(doc)
+                    else:
+                        missing_resp.add(key)
+                if cmap:
+                    fobj["response"][code] = cmap
+            content["fields"][opid] = fobj
+    json.dump(content, open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    open(OUT, "a").write("\n")
+    if missing_req or missing_resp:
+        print("MISSING REQ:", sorted(missing_req))
+        print("MISSING RESP:", sorted(missing_resp))
+    else:
+        print("All keys mapped. Wrote", OUT)
+
+if __name__ == "__main__":
+    main()

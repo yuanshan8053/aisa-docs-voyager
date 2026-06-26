@@ -1,0 +1,64 @@
+{
+  "operations": {
+    "get /youtube/search": {
+      "profile": "simple-query",
+      "heading_zh": "YouTube 视频搜索 youtubeSearch",
+      "description_zh": "通过 SearchApi 聚合的 YouTube 搜索引擎,按关键词检索 YouTube 视频并返回结构化结果列表。属只读查询接口,支持按地区、界面语言以及 YouTube 过滤令牌进一步收窄结果,适用于内容发现、竞品监测、素材采集等场景。",
+      "resp_section_intro": "成功时返回搜索结果载荷,包含本次检索的元信息与命中的视频列表。",
+      "errors": [
+        {"code": "400", "message_zh": "请求参数无效,例如缺少必填的 engine 或 q、参数取值不合法。"},
+        {"code": "401", "message_zh": "鉴权失败,Bearer API Key 缺失或无效。"}
+      ],
+      "errors_source": "spec 已声明 400/401(无错误体结构)"
+    }
+  },
+  "inline": {
+    "get /youtube/search": {
+      "parameters": {
+        "engine": {
+          "title_zh": "搜索引擎标识,固定为 `youtube`,表示本次走 YouTube 搜索通道。"
+        },
+        "q": {
+          "title_zh": "搜索关键词。即用户在 YouTube 搜索框中输入的查询词,决定返回哪些视频。"
+        },
+        "sp": {
+          "title_zh": "YouTube 过滤令牌,用于翻页或承载排序、时长、上传时间等高级筛选条件。该令牌通常取自上一次响应或 YouTube 前端,直接透传给搜索引擎。"
+        },
+        "gl": {
+          "title_zh": "地区代码,按所在国家/地区定制搜索结果与排序,如 `us`、`jp`。不传时按引擎默认地区返回。"
+        },
+        "hl": {
+          "title_zh": "界面语言,影响结果中本地化文案的语言。不传时按引擎默认语言返回。"
+        }
+      },
+      "response": {
+        "200": {
+          "properties": {
+            "search_metadata": {
+              "title_zh": "本次搜索的元信息,记录检索状态等查询维度的附加数据,便于排查与审计。"
+            },
+            "search_results": {
+              "title_zh": "命中的视频结果列表,按引擎相关性排序;每个元素是一条视频记录。",
+              "items": {
+                "properties": {
+                  "video_id": {
+                    "title_zh": "视频在 YouTube 上的唯一标识,可用于拼接播放地址或作为后续接口的入参。"
+                  },
+                  "title": {
+                    "title_zh": "视频标题。"
+                  },
+                  "link": {
+                    "title_zh": "视频的可点击播放链接。"
+                  },
+                  "channel_name": {
+                    "title_zh": "发布该视频的频道名称。"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5712 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AgentMail API",
+    "version": "1.0.0",
+    "description": "AgentMail email API endpoints exposed through the AIsa unified gateway. Adapted from the upstream docs.agentmail.to OpenAPI spec."
+  },
+  "servers": [
+    {
+      "url": "https://api.aisa.one/apis/v1"
+    }
+  ],
+  "security": [
+    {
+      "Bearer": []
+    }
+  ],
+  "components": {
+    "schemas": {
+      "type_agent_AgentSignupRequest": {
+        "type": "object",
+        "properties": {
+          "human_email": {
+            "type": "string",
+            "description": "Email address of the human who owns the agent. A 6-digit OTP will be sent to this address."
+          },
+          "username": {
+            "type": "string",
+            "description": "Username for the auto-created inbox (e.g. \"my-agent\" creates my-agent@agentmail.to)."
+          },
+          "source": {
+            "type": "string",
+            "description": "The SDK, framework, or platform issuing this sign-up (e.g. `agentmail-python`, `agentmail-cli`, `agentmail-mcp`).\nIdentifies the caller — answers \"who is signing up\".\nMax 2048 characters."
+          },
+          "referrer": {
+            "type": "string",
+            "description": "The channel that drove this sign-up — where the agent or its developer discovered AgentMail\n(e.g. `agent.email`, a partner URL, a campaign tag). Answers \"where did this sign-up come from\".\nMax 2048 characters."
+          }
+        },
+        "required": [
+          "human_email",
+          "username"
+        ],
+        "description": "Request body to sign up an agent.",
+        "title": "AgentSignupRequest"
+      },
+      "type_agent_AgentSignupResponse": {
+        "type": "object",
+        "properties": {
+          "organization_id": {
+            "type": "string",
+            "description": "ID of the created organization."
+          },
+          "inbox_id": {
+            "type": "string",
+            "description": "ID of the auto-created inbox."
+          },
+          "api_key": {
+            "type": "string",
+            "description": "API key for authenticating subsequent requests. Store this securely, it cannot be retrieved again."
+          }
+        },
+        "required": [
+          "organization_id",
+          "inbox_id",
+          "api_key"
+        ],
+        "description": "Response after successful agent sign-up.",
+        "title": "AgentSignupResponse"
+      },
+      "type__ErrorName": {
+        "type": "string",
+        "description": "Name of error.",
+        "title": "ErrorName"
+      },
+      "type__ValidationErrorResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/type__ErrorName",
+            "x-doc": {
+              "desc_en": "Machine-readable error name identifying the validation failure.",
+              "title_zh": "标识本次校验失败的机器可读错误名。",
+              "source": "ai",
+              "src_hash": "sha256:c765f665373b",
+              "doc_version": "2.0.0"
+            }
+          },
+          "errors": {
+            "description": "Validation errors.",
+            "x-doc": {
+              "desc_en": "Details of the validation problems with the query parameters.",
+              "title_zh": "查询参数校验问题的明细。",
+              "source": "ai",
+              "src_hash": "sha256:482c891b78d8",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "errors"
+        ],
+        "title": "ValidationErrorResponse"
+      },
+      "type_agent_AgentVerifyRequest": {
+        "type": "object",
+        "properties": {
+          "otp_code": {
+            "type": "string",
+            "description": "6-digit verification code sent to the human's email address."
+          }
+        },
+        "required": [
+          "otp_code"
+        ],
+        "description": "Request body to verify an agent with an OTP code.",
+        "title": "AgentVerifyRequest"
+      },
+      "type_agent_AgentVerifyResponse": {
+        "type": "object",
+        "properties": {
+          "verified": {
+            "type": "boolean",
+            "description": "Whether the organization was verified."
+          }
+        },
+        "required": [
+          "verified"
+        ],
+        "description": "Response after successful agent verification.",
+        "title": "AgentVerifyResponse"
+      },
+      "type__Limit": {
+        "type": "integer",
+        "description": "Limit of number of items returned.",
+        "title": "Limit"
+      },
+      "type__PageToken": {
+        "type": "string",
+        "description": "Page token for pagination.",
+        "title": "PageToken"
+      },
+      "type__Ascending": {
+        "type": "boolean",
+        "description": "Sort in ascending temporal order.",
+        "title": "Ascending"
+      },
+      "type__Count": {
+        "type": "integer",
+        "description": "Number of items returned.",
+        "title": "Count"
+      },
+      "type_pods_PodId": {
+        "type": "string",
+        "description": "ID of pod.",
+        "title": "PodId"
+      },
+      "type_inboxes_InboxId": {
+        "type": "string",
+        "description": "The ID of the inbox.",
+        "title": "InboxId"
+      },
+      "type_inboxes_Email": {
+        "type": "string",
+        "description": "Email address of the inbox.",
+        "title": "Email"
+      },
+      "type_inboxes_DisplayName": {
+        "type": "string",
+        "description": "Display name: `Display Name <username@domain.com>`.",
+        "title": "DisplayName"
+      },
+      "type_inboxes_ClientId": {
+        "type": "string",
+        "description": "Client ID of inbox.",
+        "title": "ClientId"
+      },
+      "type_inboxes_MetadataValue": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number",
+            "format": "double"
+          },
+          {
+            "type": "boolean"
+          }
+        ],
+        "description": "A metadata value. May be a string, number, or boolean.",
+        "title": "MetadataValue"
+      },
+      "type_inboxes_Metadata": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/type_inboxes_MetadataValue"
+        },
+        "description": "Custom key-value pairs attached to the inbox. Up to 256 keys. Keys and\nstring values are each limited to 256 characters. When updating metadata,\nsend a key with a null value to remove that key.",
+        "title": "Metadata"
+      },
+      "type_inboxes_Inbox": {
+        "type": "object",
+        "properties": {
+          "pod_id": {
+            "$ref": "#/components/schemas/type_pods_PodId"
+          },
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId"
+          },
+          "email": {
+            "$ref": "#/components/schemas/type_inboxes_Email"
+          },
+          "display_name": {
+            "$ref": "#/components/schemas/type_inboxes_DisplayName"
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_inboxes_ClientId"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/type_inboxes_Metadata",
+            "description": "Custom metadata attached to the inbox."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which inbox was last updated."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which inbox was created."
+          }
+        },
+        "required": [
+          "pod_id",
+          "inbox_id",
+          "email",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "Inbox"
+      },
+      "type_inboxes_ListInboxesResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit"
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken"
+          },
+          "inboxes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_inboxes_Inbox"
+            },
+            "description": "Ordered by `created_at` descending."
+          }
+        },
+        "required": [
+          "count",
+          "inboxes"
+        ],
+        "title": "ListInboxesResponse"
+      },
+      "type__ErrorMessage": {
+        "type": "string",
+        "description": "Error message.",
+        "title": "ErrorMessage"
+      },
+      "type__ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/type__ErrorName",
+            "x-doc": {
+              "desc_en": "Machine-readable error name identifying the failure.",
+              "title_zh": "标识此次失败的机器可读错误名。",
+              "source": "ai",
+              "src_hash": "sha256:c765f665373b",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message": {
+            "$ref": "#/components/schemas/type__ErrorMessage",
+            "x-doc": {
+              "desc_en": "Human-readable description of the error.",
+              "title_zh": "面向人类的错误描述。",
+              "source": "ai",
+              "src_hash": "sha256:fa561d31f37d",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "message"
+        ],
+        "title": "ErrorResponse"
+      },
+      "type_inboxes_CreateInboxRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "Username of address. Randomly generated if not specified."
+          },
+          "domain": {
+            "type": "string",
+            "description": "Domain of address. Must be verified domain. Defaults to `agentmail.to`."
+          },
+          "display_name": {
+            "$ref": "#/components/schemas/type_inboxes_DisplayName"
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_inboxes_ClientId"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/type_inboxes_Metadata",
+            "description": "Custom metadata to attach to the inbox."
+          }
+        },
+        "title": "CreateInboxRequest"
+      },
+      "type_inboxes_UpdateMetadata": {
+        "type": "object",
+        "additionalProperties": {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/type_inboxes_MetadataValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": "Custom key-value pairs to merge into the inbox's existing metadata. A\nvalue may be a string, number, boolean, or null. Setting a key to null\nremoves it. Up to 256 keys; keys and string values are each limited to\n256 characters.",
+        "title": "UpdateMetadata"
+      },
+      "type_inboxes_UpdateInboxRequest": {
+        "type": "object",
+        "properties": {
+          "display_name": {
+            "$ref": "#/components/schemas/type_inboxes_DisplayName"
+          },
+          "metadata": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/type_inboxes_UpdateMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Metadata to merge into the inbox's existing metadata. Keys you include\nare added or overwritten; keys you omit are left unchanged. To remove a\nsingle key, send it with a null value. To clear all metadata, send\n`metadata` as null. Sending an empty object is rejected; use null to\nclear. Each update must include at least one of `display_name` or\n`metadata`."
+          }
+        },
+        "title": "UpdateInboxRequest"
+      },
+      "type__Labels": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Labels to filter by.",
+        "title": "Labels"
+      },
+      "type__Before": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp before which to filter by.",
+        "title": "Before"
+      },
+      "type__After": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp after which to filter by.",
+        "title": "After"
+      },
+      "type__IncludeSpam": {
+        "type": "boolean",
+        "description": "Include spam in results.",
+        "title": "IncludeSpam"
+      },
+      "type__IncludeBlocked": {
+        "type": "boolean",
+        "description": "Include blocked in results.",
+        "title": "IncludeBlocked"
+      },
+      "type__IncludeUnauthenticated": {
+        "type": "boolean",
+        "description": "Include unauthenticated in results.",
+        "title": "IncludeUnauthenticated"
+      },
+      "type__IncludeTrash": {
+        "type": "boolean",
+        "description": "Include trash in results.",
+        "title": "IncludeTrash"
+      },
+      "type_threads_ThreadId": {
+        "type": "string",
+        "description": "ID of thread.",
+        "title": "ThreadId"
+      },
+      "type_threads_ThreadLabels": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Labels of thread.",
+        "title": "ThreadLabels"
+      },
+      "type_threads_ThreadTimestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of last sent or received message.",
+        "title": "ThreadTimestamp"
+      },
+      "type_threads_ThreadReceivedTimestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of last received message.",
+        "title": "ThreadReceivedTimestamp"
+      },
+      "type_threads_ThreadSentTimestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of last sent message.",
+        "title": "ThreadSentTimestamp"
+      },
+      "type_threads_ThreadSenders": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Senders in thread. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "ThreadSenders"
+      },
+      "type_threads_ThreadRecipients": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Recipients in thread. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "ThreadRecipients"
+      },
+      "type_threads_ThreadSubject": {
+        "type": "string",
+        "description": "Subject of thread.",
+        "title": "ThreadSubject"
+      },
+      "type_threads_ThreadPreview": {
+        "type": "string",
+        "description": "Text preview of last message in thread.",
+        "title": "ThreadPreview"
+      },
+      "type_attachments_AttachmentId": {
+        "type": "string",
+        "description": "ID of attachment.",
+        "title": "AttachmentId"
+      },
+      "type_attachments_AttachmentFilename": {
+        "type": "string",
+        "description": "Filename of attachment.",
+        "title": "AttachmentFilename"
+      },
+      "type_attachments_AttachmentSize": {
+        "type": "integer",
+        "description": "Size of attachment in bytes.",
+        "title": "AttachmentSize"
+      },
+      "type_attachments_AttachmentContentType": {
+        "type": "string",
+        "description": "Content type of attachment.",
+        "title": "AttachmentContentType"
+      },
+      "type_attachments_AttachmentContentDisposition": {
+        "type": "string",
+        "enum": [
+          "inline",
+          "attachment"
+        ],
+        "description": "Content disposition of attachment.",
+        "title": "AttachmentContentDisposition"
+      },
+      "type_attachments_AttachmentContentId": {
+        "type": "string",
+        "description": "Content ID of attachment.",
+        "title": "AttachmentContentId"
+      },
+      "type_attachments_Attachment": {
+        "type": "object",
+        "properties": {
+          "attachment_id": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentId",
+            "x-doc": {
+              "desc_en": "ID of the attachment, used as the path parameter for the get-attachment endpoint.",
+              "title_zh": "附件 ID，作为获取附件端点的路径参数。",
+              "source": "ai",
+              "src_hash": "sha256:4a3dbfbb5efe",
+              "doc_version": "2.0.0"
+            }
+          },
+          "filename": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentFilename",
+            "x-doc": {
+              "desc_en": "Original filename of the attachment.",
+              "title_zh": "附件的原始文件名。",
+              "source": "ai",
+              "src_hash": "sha256:f06623aef87d",
+              "doc_version": "2.0.0"
+            }
+          },
+          "size": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentSize",
+            "x-doc": {
+              "desc_en": "Attachment size in bytes.",
+              "title_zh": "附件大小（字节）。",
+              "source": "ai",
+              "src_hash": "sha256:92ebcc603ace",
+              "doc_version": "2.0.0"
+            }
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentType",
+            "x-doc": {
+              "desc_en": "MIME content type of the attachment (e.g. `application/pdf`).",
+              "title_zh": "附件的 MIME 内容类型（如 `application/pdf`）。",
+              "source": "ai",
+              "src_hash": "sha256:020ec46c3a18",
+              "doc_version": "2.0.0"
+            }
+          },
+          "content_disposition": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentDisposition",
+            "x-doc": {
+              "desc_en": "How the attachment is presented: `inline` (rendered within the body, e.g. an embedded image) or `attachment` (a downloadable file).",
+              "title_zh": "附件呈现方式：`inline`（随正文内嵌，如内嵌图片）或 `attachment`（可下载的文件）。",
+              "source": "ai",
+              "src_hash": "sha256:af1c7e894553",
+              "doc_version": "2.0.0"
+            }
+          },
+          "content_id": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentId",
+            "x-doc": {
+              "desc_en": "Content-ID used to reference an inline attachment from within the HTML body (via `cid:`).",
+              "title_zh": "Content-ID，用于在 HTML 正文中以 `cid:` 引用内嵌附件。",
+              "source": "ai",
+              "src_hash": "sha256:ac28b2ce9b90",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "attachment_id",
+          "size"
+        ],
+        "title": "Attachment"
+      },
+      "type_threads_ThreadAttachments": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/type_attachments_Attachment"
+        },
+        "description": "Attachments in thread.",
+        "title": "ThreadAttachments"
+      },
+      "type_threads_ThreadLastMessageId": {
+        "type": "string",
+        "description": "ID of last message in thread.",
+        "title": "ThreadLastMessageId"
+      },
+      "type_threads_ThreadMessageCount": {
+        "type": "integer",
+        "description": "Number of messages in thread.",
+        "title": "ThreadMessageCount"
+      },
+      "type_threads_ThreadSize": {
+        "type": "integer",
+        "description": "Size of thread in bytes.",
+        "title": "ThreadSize"
+      },
+      "type_threads_ThreadUpdatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Time at which thread was last updated.",
+        "title": "ThreadUpdatedAt"
+      },
+      "type_threads_ThreadCreatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Time at which thread was created.",
+        "title": "ThreadCreatedAt"
+      },
+      "type_threads_ThreadItem": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId",
+            "x-doc": {
+              "desc_en": "ID of the inbox that owns the thread.",
+              "title_zh": "拥有该对话的收件箱 ID。",
+              "source": "ai",
+              "src_hash": "sha256:8a38e4b85225",
+              "doc_version": "2.0.0"
+            }
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId",
+            "x-doc": {
+              "desc_en": "ID of the thread, usable as the path parameter for thread operations.",
+              "title_zh": "对话 ID，可用作对话相关操作的路径参数。",
+              "source": "ai",
+              "src_hash": "sha256:a2460ac25f28",
+              "doc_version": "2.0.0"
+            }
+          },
+          "labels": {
+            "$ref": "#/components/schemas/type_threads_ThreadLabels",
+            "x-doc": {
+              "desc_en": "Labels applied to the thread.",
+              "title_zh": "应用于该对话的标签。",
+              "source": "ai",
+              "src_hash": "sha256:4041090ff8ae",
+              "doc_version": "2.0.0"
+            }
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_threads_ThreadTimestamp",
+            "x-doc": {
+              "desc_en": "When the last message was sent or received.",
+              "title_zh": "最近一次发送或接收消息的时间。",
+              "source": "ai",
+              "src_hash": "sha256:11dcfc0ffab6",
+              "doc_version": "2.0.0"
+            }
+          },
+          "received_timestamp": {
+            "$ref": "#/components/schemas/type_threads_ThreadReceivedTimestamp",
+            "x-doc": {
+              "desc_en": "When the last message was received.",
+              "title_zh": "最近一次接收消息的时间。",
+              "source": "ai",
+              "src_hash": "sha256:b7b462238e97",
+              "doc_version": "2.0.0"
+            }
+          },
+          "sent_timestamp": {
+            "$ref": "#/components/schemas/type_threads_ThreadSentTimestamp",
+            "x-doc": {
+              "desc_en": "When the last message was sent.",
+              "title_zh": "最近一次发送消息的时间。",
+              "source": "ai",
+              "src_hash": "sha256:b14ad04fea7a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "senders": {
+            "$ref": "#/components/schemas/type_threads_ThreadSenders",
+            "x-doc": {
+              "desc_en": "Distinct sender addresses in the thread.",
+              "title_zh": "对话中出现过的不同发件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:54996523b822",
+              "doc_version": "2.0.0"
+            }
+          },
+          "recipients": {
+            "$ref": "#/components/schemas/type_threads_ThreadRecipients",
+            "x-doc": {
+              "desc_en": "Distinct recipient addresses in the thread.",
+              "title_zh": "对话中出现过的不同收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:f70e379b3646",
+              "doc_version": "2.0.0"
+            }
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_threads_ThreadSubject",
+            "x-doc": {
+              "desc_en": "Subject of the thread.",
+              "title_zh": "对话主题。",
+              "source": "ai",
+              "src_hash": "sha256:f082fc127e09",
+              "doc_version": "2.0.0"
+            }
+          },
+          "preview": {
+            "$ref": "#/components/schemas/type_threads_ThreadPreview",
+            "x-doc": {
+              "desc_en": "Plain-text snippet of the last message.",
+              "title_zh": "最后一条消息的纯文本短摘要。",
+              "source": "ai",
+              "src_hash": "sha256:72ddc7054dc4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_threads_ThreadAttachments",
+            "x-doc": {
+              "desc_en": "Attachments present in the thread.",
+              "title_zh": "对话中包含的附件。",
+              "source": "ai",
+              "src_hash": "sha256:5be051818d38",
+              "doc_version": "2.0.0"
+            }
+          },
+          "last_message_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadLastMessageId",
+            "x-doc": {
+              "desc_en": "ID of the most recent message in the thread.",
+              "title_zh": "对话中最新一条消息的 ID。",
+              "source": "ai",
+              "src_hash": "sha256:12fc1c450beb",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message_count": {
+            "$ref": "#/components/schemas/type_threads_ThreadMessageCount",
+            "x-doc": {
+              "desc_en": "Number of messages in the thread.",
+              "title_zh": "对话中的消息数量。",
+              "source": "ai",
+              "src_hash": "sha256:e443315e5e31",
+              "doc_version": "2.0.0"
+            }
+          },
+          "size": {
+            "$ref": "#/components/schemas/type_threads_ThreadSize",
+            "x-doc": {
+              "desc_en": "Total size of the thread in bytes.",
+              "title_zh": "对话的总大小（字节）。",
+              "source": "ai",
+              "src_hash": "sha256:e733205a18fe",
+              "doc_version": "2.0.0"
+            }
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/type_threads_ThreadUpdatedAt",
+            "x-doc": {
+              "desc_en": "When the thread was last updated.",
+              "title_zh": "对话最后更新时间。",
+              "source": "ai",
+              "src_hash": "sha256:f46cd7919f90",
+              "doc_version": "2.0.0"
+            }
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/type_threads_ThreadCreatedAt",
+            "x-doc": {
+              "desc_en": "When the thread was created.",
+              "title_zh": "对话创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:7713248f78d2",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "labels",
+          "timestamp",
+          "senders",
+          "recipients",
+          "last_message_id",
+          "message_count",
+          "size",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "ThreadItem"
+      },
+      "type_threads_ListThreadsResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count",
+            "x-doc": {
+              "desc_en": "Number of items returned in this page.",
+              "title_zh": "本页返回的条目数。",
+              "source": "ai",
+              "src_hash": "sha256:337dd2eb5769",
+              "doc_version": "2.0.0"
+            }
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit",
+            "x-doc": {
+              "desc_en": "The limit that was applied to this page.",
+              "title_zh": "本页实际生效的数量上限。",
+              "source": "ai",
+              "src_hash": "sha256:5c5d0ecf6874",
+              "doc_version": "2.0.0"
+            }
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken",
+            "x-doc": {
+              "desc_en": "Cursor for the next page; pass it back as `page_token`. Absent or empty when there are no more pages.",
+              "title_zh": "下一页的游标；作为 `page_token` 回传。无更多页时缺省或为空。",
+              "source": "ai",
+              "src_hash": "sha256:8aee05adb9ba",
+              "doc_version": "2.0.0"
+            }
+          },
+          "threads": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_threads_ThreadItem"
+            },
+            "description": "Ordered by `timestamp` descending.",
+            "x-doc": {
+              "desc_en": "The page of threads, newest first.",
+              "title_zh": "本页对话列表，最新优先。",
+              "source": "ai",
+              "src_hash": "sha256:737844a33fdb",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "count",
+          "threads"
+        ],
+        "title": "ListThreadsResponse"
+      },
+      "type_messages_MessageId": {
+        "type": "string",
+        "description": "ID of message.",
+        "title": "MessageId"
+      },
+      "type_messages_MessageLabels": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Labels of message.",
+        "title": "MessageLabels"
+      },
+      "type_messages_MessageTimestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Time at which message was sent or drafted.",
+        "title": "MessageTimestamp"
+      },
+      "type_messages_MessageFrom": {
+        "type": "string",
+        "description": "Address of sender. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "MessageFrom"
+      },
+      "type_messages_MessageTo": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Addresses of recipients. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "MessageTo"
+      },
+      "type_messages_MessageCc": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Addresses of CC recipients. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "MessageCc"
+      },
+      "type_messages_MessageBcc": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Addresses of BCC recipients. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "MessageBcc"
+      },
+      "type_messages_MessageSubject": {
+        "type": "string",
+        "description": "Subject of message.",
+        "title": "MessageSubject"
+      },
+      "type_messages_MessagePreview": {
+        "type": "string",
+        "description": "Text preview of message.",
+        "title": "MessagePreview"
+      },
+      "type_messages_MessageText": {
+        "type": "string",
+        "description": "Plain text body of message.",
+        "title": "MessageText"
+      },
+      "type_messages_MessageHtml": {
+        "type": "string",
+        "description": "HTML body of message.",
+        "title": "MessageHtml"
+      },
+      "type_messages_MessageAttachments": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/type_attachments_Attachment"
+        },
+        "description": "Attachments in message.",
+        "title": "MessageAttachments"
+      },
+      "type_messages_MessageInReplyTo": {
+        "type": "string",
+        "description": "ID of message being replied to.",
+        "title": "MessageInReplyTo"
+      },
+      "type_messages_MessageReferences": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "IDs of previous messages in thread.",
+        "title": "MessageReferences"
+      },
+      "type_messages_MessageHeaders": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "Headers in message.",
+        "title": "MessageHeaders"
+      },
+      "type_messages_MessageSize": {
+        "type": "integer",
+        "description": "Size of message in bytes.",
+        "title": "MessageSize"
+      },
+      "type_messages_MessageUpdatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Time at which message was last updated.",
+        "title": "MessageUpdatedAt"
+      },
+      "type_messages_MessageCreatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Time at which message was created.",
+        "title": "MessageCreatedAt"
+      },
+      "type_messages_Message": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId",
+            "x-doc": {
+              "desc_en": "ID of the inbox that owns this message.",
+              "title_zh": "拥有该消息的收件箱 ID。",
+              "source": "ai",
+              "src_hash": "sha256:8a38e4b85225",
+              "doc_version": "2.0.0"
+            }
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId",
+            "x-doc": {
+              "desc_en": "ID of the thread this message belongs to.",
+              "title_zh": "该消息所属的对话 ID。",
+              "source": "ai",
+              "src_hash": "sha256:a2460ac25f28",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId",
+            "x-doc": {
+              "desc_en": "ID of the message.",
+              "title_zh": "消息 ID。",
+              "source": "ai",
+              "src_hash": "sha256:af3d0f5340aa",
+              "doc_version": "2.0.0"
+            }
+          },
+          "labels": {
+            "$ref": "#/components/schemas/type_messages_MessageLabels",
+            "x-doc": {
+              "desc_en": "Labels applied to this message.",
+              "title_zh": "应用于该消息的标签。",
+              "source": "ai",
+              "src_hash": "sha256:9bf8f0ed5442",
+              "doc_version": "2.0.0"
+            }
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_messages_MessageTimestamp",
+            "x-doc": {
+              "desc_en": "When the message was sent or drafted.",
+              "title_zh": "消息发送或起草的时间。",
+              "source": "ai",
+              "src_hash": "sha256:46ffc084b8ec",
+              "doc_version": "2.0.0"
+            }
+          },
+          "from": {
+            "$ref": "#/components/schemas/type_messages_MessageFrom",
+            "x-doc": {
+              "desc_en": "Sender address of the message.",
+              "title_zh": "消息发件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:e9ecc4e37b25",
+              "doc_version": "2.0.0"
+            }
+          },
+          "reply_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reply-to addresses. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+            "x-doc": {
+              "desc_en": "Reply-To addresses for this message.",
+              "title_zh": "该消息的回复目标地址。",
+              "source": "ai",
+              "src_hash": "sha256:08fa4a3e200d",
+              "doc_version": "2.0.0"
+            }
+          },
+          "to": {
+            "$ref": "#/components/schemas/type_messages_MessageTo",
+            "x-doc": {
+              "desc_en": "Primary recipient addresses of the message.",
+              "title_zh": "消息的主要收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:cddfabf40be7",
+              "doc_version": "2.0.0"
+            }
+          },
+          "cc": {
+            "$ref": "#/components/schemas/type_messages_MessageCc",
+            "x-doc": {
+              "desc_en": "CC recipient addresses of the message.",
+              "title_zh": "消息的抄送收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:ead98eccb9e4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "bcc": {
+            "$ref": "#/components/schemas/type_messages_MessageBcc",
+            "x-doc": {
+              "desc_en": "BCC recipient addresses of the message.",
+              "title_zh": "消息的密送收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:f1b456948b76",
+              "doc_version": "2.0.0"
+            }
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_messages_MessageSubject",
+            "x-doc": {
+              "desc_en": "Subject of the message.",
+              "title_zh": "消息主题。",
+              "source": "ai",
+              "src_hash": "sha256:73de586e98a4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "preview": {
+            "$ref": "#/components/schemas/type_messages_MessagePreview",
+            "x-doc": {
+              "desc_en": "Short plain-text snippet of the message.",
+              "title_zh": "消息的纯文本短摘要。",
+              "source": "ai",
+              "src_hash": "sha256:432f4a151bc1",
+              "doc_version": "2.0.0"
+            }
+          },
+          "text": {
+            "$ref": "#/components/schemas/type_messages_MessageText",
+            "x-doc": {
+              "desc_en": "Plain-text body of the message, including any quoted history.",
+              "title_zh": "消息的纯文本正文，含引用的历史内容。",
+              "source": "ai",
+              "src_hash": "sha256:af5396a07e05",
+              "doc_version": "2.0.0"
+            }
+          },
+          "html": {
+            "$ref": "#/components/schemas/type_messages_MessageHtml",
+            "x-doc": {
+              "desc_en": "HTML body of the message, including any quoted history.",
+              "title_zh": "消息的 HTML 正文，含引用的历史内容。",
+              "source": "ai",
+              "src_hash": "sha256:3371243f7bec",
+              "doc_version": "2.0.0"
+            }
+          },
+          "extracted_text": {
+            "type": "string",
+            "description": "Extracted new text content.",
+            "x-doc": {
+              "desc_en": "Just the newly written plain text of the message, with quoted reply history stripped out.",
+              "title_zh": "仅该消息新写入的纯文本，已剔除引用的回复历史。",
+              "source": "ai",
+              "src_hash": "sha256:85de0ef91883",
+              "doc_version": "2.0.0"
+            }
+          },
+          "extracted_html": {
+            "type": "string",
+            "description": "Extracted new HTML content.",
+            "x-doc": {
+              "desc_en": "Just the newly written HTML of the message, with quoted reply history stripped out.",
+              "title_zh": "仅该消息新写入的 HTML，已剔除引用的回复历史。",
+              "source": "ai",
+              "src_hash": "sha256:61737e3c8fe1",
+              "doc_version": "2.0.0"
+            }
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_messages_MessageAttachments",
+            "x-doc": {
+              "desc_en": "Attachments of this message.",
+              "title_zh": "该消息的附件。",
+              "source": "ai",
+              "src_hash": "sha256:8fb9b90fc3d4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "in_reply_to": {
+            "$ref": "#/components/schemas/type_messages_MessageInReplyTo",
+            "x-doc": {
+              "desc_en": "ID of the message this one replies to.",
+              "title_zh": "该消息所回复的目标消息 ID。",
+              "source": "ai",
+              "src_hash": "sha256:4e24e0496257",
+              "doc_version": "2.0.0"
+            }
+          },
+          "references": {
+            "$ref": "#/components/schemas/type_messages_MessageReferences",
+            "x-doc": {
+              "desc_en": "IDs of earlier messages in the thread, forming the reply chain.",
+              "title_zh": "对话中较早消息的 ID，构成回复链。",
+              "source": "ai",
+              "src_hash": "sha256:dc4c8a3a8a87",
+              "doc_version": "2.0.0"
+            }
+          },
+          "headers": {
+            "$ref": "#/components/schemas/type_messages_MessageHeaders",
+            "x-doc": {
+              "desc_en": "Raw email headers of the message as key-value pairs.",
+              "title_zh": "消息的原始邮件头，以键值对表示。",
+              "source": "ai",
+              "src_hash": "sha256:a3b7bde9cece",
+              "doc_version": "2.0.0"
+            }
+          },
+          "size": {
+            "$ref": "#/components/schemas/type_messages_MessageSize",
+            "x-doc": {
+              "desc_en": "Message size in bytes.",
+              "title_zh": "消息大小（字节）。",
+              "source": "ai",
+              "src_hash": "sha256:f2e93ad745cf",
+              "doc_version": "2.0.0"
+            }
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/type_messages_MessageUpdatedAt",
+            "x-doc": {
+              "desc_en": "When the message was last updated.",
+              "title_zh": "消息最后更新时间。",
+              "source": "ai",
+              "src_hash": "sha256:0b379aad335b",
+              "doc_version": "2.0.0"
+            }
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/type_messages_MessageCreatedAt",
+            "x-doc": {
+              "desc_en": "When the message was created.",
+              "title_zh": "消息创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:42526127e19d",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "message_id",
+          "labels",
+          "timestamp",
+          "from",
+          "to",
+          "size",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "Message"
+      },
+      "type_threads_Thread": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId",
+            "x-doc": {
+              "desc_en": "ID of the inbox that owns this resource.",
+              "title_zh": "拥有该资源的收件箱 ID。",
+              "source": "ai",
+              "src_hash": "sha256:8a38e4b85225",
+              "doc_version": "2.0.0"
+            }
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId",
+            "x-doc": {
+              "desc_en": "ID of the thread, usable as the path parameter for thread operations.",
+              "title_zh": "对话 ID，可用作对话相关操作的路径参数。",
+              "source": "ai",
+              "src_hash": "sha256:a2460ac25f28",
+              "doc_version": "2.0.0"
+            }
+          },
+          "labels": {
+            "$ref": "#/components/schemas/type_threads_ThreadLabels",
+            "x-doc": {
+              "desc_en": "Labels currently applied, including both system labels and your custom labels.",
+              "title_zh": "当前应用的标签，含系统标签与自定义标签。",
+              "source": "ai",
+              "src_hash": "sha256:4041090ff8ae",
+              "doc_version": "2.0.0"
+            }
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_threads_ThreadTimestamp",
+            "x-doc": {
+              "desc_en": "When the last message was sent or received in the thread.",
+              "title_zh": "对话中最近一次发送或接收消息的时间。",
+              "source": "ai",
+              "src_hash": "sha256:11dcfc0ffab6",
+              "doc_version": "2.0.0"
+            }
+          },
+          "received_timestamp": {
+            "$ref": "#/components/schemas/type_threads_ThreadReceivedTimestamp",
+            "x-doc": {
+              "desc_en": "When the last message was received in the thread.",
+              "title_zh": "对话中最近一次接收消息的时间。",
+              "source": "ai",
+              "src_hash": "sha256:b7b462238e97",
+              "doc_version": "2.0.0"
+            }
+          },
+          "sent_timestamp": {
+            "$ref": "#/components/schemas/type_threads_ThreadSentTimestamp",
+            "x-doc": {
+              "desc_en": "When the last message was sent in the thread.",
+              "title_zh": "对话中最近一次发送消息的时间。",
+              "source": "ai",
+              "src_hash": "sha256:b14ad04fea7a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "senders": {
+            "$ref": "#/components/schemas/type_threads_ThreadSenders",
+            "x-doc": {
+              "desc_en": "Distinct sender addresses appearing in the thread.",
+              "title_zh": "对话中出现过的不同发件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:54996523b822",
+              "doc_version": "2.0.0"
+            }
+          },
+          "recipients": {
+            "$ref": "#/components/schemas/type_threads_ThreadRecipients",
+            "x-doc": {
+              "desc_en": "Distinct recipient addresses appearing in the thread.",
+              "title_zh": "对话中出现过的不同收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:f70e379b3646",
+              "doc_version": "2.0.0"
+            }
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_threads_ThreadSubject",
+            "x-doc": {
+              "desc_en": "Subject line.",
+              "title_zh": "主题。",
+              "source": "ai",
+              "src_hash": "sha256:f082fc127e09",
+              "doc_version": "2.0.0"
+            }
+          },
+          "preview": {
+            "$ref": "#/components/schemas/type_threads_ThreadPreview",
+            "x-doc": {
+              "desc_en": "Short plain-text snippet of the content, for list-style display.",
+              "title_zh": "内容的纯文本短摘要，用于列表展示。",
+              "source": "ai",
+              "src_hash": "sha256:72ddc7054dc4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_threads_ThreadAttachments",
+            "x-doc": {
+              "desc_en": "Attachments belonging to this resource.",
+              "title_zh": "该资源包含的附件。",
+              "source": "ai",
+              "src_hash": "sha256:5be051818d38",
+              "doc_version": "2.0.0"
+            }
+          },
+          "last_message_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadLastMessageId",
+            "x-doc": {
+              "desc_en": "ID of the most recent message in the thread.",
+              "title_zh": "对话中最新一条消息的 ID。",
+              "source": "ai",
+              "src_hash": "sha256:12fc1c450beb",
+              "doc_version": "2.0.0"
+            }
+          },
+          "message_count": {
+            "$ref": "#/components/schemas/type_threads_ThreadMessageCount",
+            "x-doc": {
+              "desc_en": "Number of messages in the thread.",
+              "title_zh": "对话中的消息数量。",
+              "source": "ai",
+              "src_hash": "sha256:e443315e5e31",
+              "doc_version": "2.0.0"
+            }
+          },
+          "size": {
+            "$ref": "#/components/schemas/type_threads_ThreadSize",
+            "x-doc": {
+              "desc_en": "Total size of the thread in bytes.",
+              "title_zh": "对话的总大小（字节）。",
+              "source": "ai",
+              "src_hash": "sha256:e733205a18fe",
+              "doc_version": "2.0.0"
+            }
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/type_threads_ThreadUpdatedAt",
+            "x-doc": {
+              "desc_en": "When the resource was last updated.",
+              "title_zh": "资源最后更新时间。",
+              "source": "ai",
+              "src_hash": "sha256:f46cd7919f90",
+              "doc_version": "2.0.0"
+            }
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/type_threads_ThreadCreatedAt",
+            "x-doc": {
+              "desc_en": "When the resource was created.",
+              "title_zh": "资源创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:7713248f78d2",
+              "doc_version": "2.0.0"
+            }
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_messages_Message"
+            },
+            "description": "Messages in thread. Ordered by `timestamp` ascending.",
+            "x-doc": {
+              "desc_en": "Full messages of the thread in chronological order, each with bodies and attachments.",
+              "title_zh": "对话内的完整消息，按时间先后排列，每条含正文与附件。",
+              "source": "ai",
+              "src_hash": "sha256:ad13f69a45db",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "labels",
+          "timestamp",
+          "senders",
+          "recipients",
+          "last_message_id",
+          "message_count",
+          "size",
+          "updated_at",
+          "created_at",
+          "messages"
+        ],
+        "title": "Thread"
+      },
+      "type_attachments_AttachmentResponse": {
+        "type": "object",
+        "properties": {
+          "attachment_id": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentId",
+            "x-doc": {
+              "desc_en": "ID of the attachment.",
+              "title_zh": "附件 ID。",
+              "source": "ai",
+              "src_hash": "sha256:4a3dbfbb5efe",
+              "doc_version": "2.0.0"
+            }
+          },
+          "filename": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentFilename",
+            "x-doc": {
+              "desc_en": "Original filename of the attachment.",
+              "title_zh": "附件的原始文件名。",
+              "source": "ai",
+              "src_hash": "sha256:f06623aef87d",
+              "doc_version": "2.0.0"
+            }
+          },
+          "size": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentSize",
+            "x-doc": {
+              "desc_en": "Attachment size in bytes.",
+              "title_zh": "附件大小（字节）。",
+              "source": "ai",
+              "src_hash": "sha256:92ebcc603ace",
+              "doc_version": "2.0.0"
+            }
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentType",
+            "x-doc": {
+              "desc_en": "MIME content type of the attachment.",
+              "title_zh": "附件的 MIME 内容类型。",
+              "source": "ai",
+              "src_hash": "sha256:020ec46c3a18",
+              "doc_version": "2.0.0"
+            }
+          },
+          "content_disposition": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentDisposition",
+            "x-doc": {
+              "desc_en": "How the attachment is presented: `inline` or `attachment`.",
+              "title_zh": "附件呈现方式：`inline` 或 `attachment`。",
+              "source": "ai",
+              "src_hash": "sha256:af1c7e894553",
+              "doc_version": "2.0.0"
+            }
+          },
+          "content_id": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentId",
+            "x-doc": {
+              "desc_en": "Content-ID for referencing an inline attachment from the HTML body.",
+              "title_zh": "Content-ID，用于在 HTML 正文中引用内嵌附件。",
+              "source": "ai",
+              "src_hash": "sha256:ac28b2ce9b90",
+              "doc_version": "2.0.0"
+            }
+          },
+          "download_url": {
+            "type": "string",
+            "description": "URL to download the attachment.",
+            "x-doc": {
+              "desc_en": "Time-limited presigned URL to download the attachment binary. Fetch the file before `expires_at`.",
+              "title_zh": "限时预签名下载链接，用于下载附件二进制内容。请在 `expires_at` 之前完成下载。",
+              "source": "ai",
+              "src_hash": "sha256:515dacfda219",
+              "doc_version": "2.0.0"
+            }
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the download URL expires.",
+            "x-doc": {
+              "desc_en": "When the download URL expires and stops working.",
+              "title_zh": "下载链接失效的时间。",
+              "source": "ai",
+              "src_hash": "sha256:b054ae2b9d65",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "attachment_id",
+          "size",
+          "download_url",
+          "expires_at"
+        ],
+        "title": "AttachmentResponse"
+      },
+      "type_threads_UpdateThreadRequest": {
+        "type": "object",
+        "properties": {
+          "add_labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Labels to add to thread. Cannot be system labels.",
+            "x-doc": {
+              "desc_en": "Custom labels to apply to the thread. System labels are not allowed.",
+              "title_zh": "要为对话添加的自定义标签。不允许使用系统标签。",
+              "source": "ai",
+              "src_hash": "sha256:d611e0904aa0",
+              "doc_version": "2.0.0"
+            }
+          },
+          "remove_labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Labels to remove from thread. Cannot be system labels. Takes priority over `add_labels` (in the event of duplicate labels passed in).",
+            "x-doc": {
+              "desc_en": "Custom labels to remove from the thread. System labels are not allowed. If the same label appears in both lists, removal wins.",
+              "title_zh": "要从对话移除的自定义标签。不允许使用系统标签。若同一标签同时出现在两个列表，以移除为准。",
+              "source": "ai",
+              "src_hash": "sha256:b3b7bbe26f9c",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "title": "UpdateThreadRequest"
+      },
+      "type_threads_UpdateThreadResponse": {
+        "type": "object",
+        "properties": {
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId",
+            "x-doc": {
+              "desc_en": "ID of the updated thread.",
+              "title_zh": "已更新对话的 ID。",
+              "source": "ai",
+              "src_hash": "sha256:a2460ac25f28",
+              "doc_version": "2.0.0"
+            }
+          },
+          "labels": {
+            "$ref": "#/components/schemas/type_threads_ThreadLabels",
+            "x-doc": {
+              "desc_en": "The thread's complete label set after the update.",
+              "title_zh": "更新后对话的完整标签集合。",
+              "source": "ai",
+              "src_hash": "sha256:4041090ff8ae",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "thread_id",
+          "labels"
+        ],
+        "title": "UpdateThreadResponse"
+      },
+      "type_messages_MessageItem": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId"
+          },
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/type_messages_MessageLabels"
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_messages_MessageTimestamp"
+          },
+          "from": {
+            "$ref": "#/components/schemas/type_messages_MessageFrom"
+          },
+          "to": {
+            "$ref": "#/components/schemas/type_messages_MessageTo"
+          },
+          "cc": {
+            "$ref": "#/components/schemas/type_messages_MessageCc"
+          },
+          "bcc": {
+            "$ref": "#/components/schemas/type_messages_MessageBcc"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_messages_MessageSubject"
+          },
+          "preview": {
+            "$ref": "#/components/schemas/type_messages_MessagePreview"
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_messages_MessageAttachments"
+          },
+          "in_reply_to": {
+            "$ref": "#/components/schemas/type_messages_MessageInReplyTo"
+          },
+          "references": {
+            "$ref": "#/components/schemas/type_messages_MessageReferences"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/type_messages_MessageHeaders"
+          },
+          "size": {
+            "$ref": "#/components/schemas/type_messages_MessageSize"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/type_messages_MessageUpdatedAt"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/type_messages_MessageCreatedAt"
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "message_id",
+          "labels",
+          "timestamp",
+          "from",
+          "to",
+          "size",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "MessageItem"
+      },
+      "type_messages_ListMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit"
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_messages_MessageItem"
+            },
+            "description": "Ordered by `timestamp` descending."
+          }
+        },
+        "required": [
+          "count",
+          "messages"
+        ],
+        "title": "ListMessagesResponse"
+      },
+      "type_messages_BatchGetMessagesMessageIds": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/type_messages_MessageId"
+        },
+        "description": "IDs of messages to fetch. Maximum 500 ids per request. Duplicates are\nrejected with a validation error. IDs not found in the inbox (including\ncross-inbox or permission-restricted) are silently omitted from the\nresponse; callers detect misses by comparing `count` against `limit`.",
+        "title": "BatchGetMessagesMessageIds"
+      },
+      "type_messages_BatchGetMessagesRequest": {
+        "type": "object",
+        "properties": {
+          "message_ids": {
+            "$ref": "#/components/schemas/type_messages_BatchGetMessagesMessageIds"
+          }
+        },
+        "required": [
+          "message_ids"
+        ],
+        "title": "BatchGetMessagesRequest"
+      },
+      "type_messages_BatchGetMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit"
+          },
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_messages_Message"
+            },
+            "description": "Found messages. Order matches `message_ids` in the request. Body\nfields (`text`, `html`, `extracted_text`, `extracted_html`) are\nnever populated; use the single-message endpoint to retrieve bodies."
+          }
+        },
+        "required": [
+          "limit",
+          "count",
+          "messages"
+        ],
+        "title": "BatchGetMessagesResponse"
+      },
+      "type_messages_RawMessageResponse": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId",
+            "description": "ID of the message."
+          },
+          "size": {
+            "$ref": "#/components/schemas/type_messages_MessageSize",
+            "description": "Size of the raw message in bytes."
+          },
+          "download_url": {
+            "type": "string",
+            "description": "S3 presigned URL to download the raw message. Expires at expires_at."
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the download URL expires."
+          }
+        },
+        "required": [
+          "message_id",
+          "size",
+          "download_url",
+          "expires_at"
+        ],
+        "description": "S3 presigned URL to download the raw .eml file.",
+        "title": "RawMessageResponse"
+      },
+      "type_messages_UpdateMessageLabels": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Label or list of labels.",
+        "title": "UpdateMessageLabels"
+      },
+      "type_messages_UpdateMessageRequest": {
+        "type": "object",
+        "properties": {
+          "add_labels": {
+            "$ref": "#/components/schemas/type_messages_UpdateMessageLabels",
+            "description": "Label or labels to add to message."
+          },
+          "remove_labels": {
+            "$ref": "#/components/schemas/type_messages_UpdateMessageLabels",
+            "description": "Label or labels to remove from message."
+          }
+        },
+        "title": "UpdateMessageRequest"
+      },
+      "type_messages_UpdateMessageResponse": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/type_messages_MessageLabels"
+          }
+        },
+        "required": [
+          "message_id",
+          "labels"
+        ],
+        "title": "UpdateMessageResponse"
+      },
+      "type_messages_Addresses": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ],
+        "title": "Addresses"
+      },
+      "type_messages_SendMessageReplyTo": {
+        "$ref": "#/components/schemas/type_messages_Addresses",
+        "description": "Reply-to address or addresses.",
+        "title": "SendMessageReplyTo"
+      },
+      "type_messages_SendMessageTo": {
+        "$ref": "#/components/schemas/type_messages_Addresses",
+        "description": "Recipient address or addresses.",
+        "title": "SendMessageTo"
+      },
+      "type_messages_SendMessageCc": {
+        "$ref": "#/components/schemas/type_messages_Addresses",
+        "description": "CC recipient address or addresses.",
+        "title": "SendMessageCc"
+      },
+      "type_messages_SendMessageBcc": {
+        "$ref": "#/components/schemas/type_messages_Addresses",
+        "description": "BCC recipient address or addresses.",
+        "title": "SendMessageBcc"
+      },
+      "type_attachments_SendAttachment": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentFilename"
+          },
+          "content_type": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentType"
+          },
+          "content_disposition": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentDisposition"
+          },
+          "content_id": {
+            "$ref": "#/components/schemas/type_attachments_AttachmentContentId"
+          },
+          "content": {
+            "type": "string",
+            "description": "Base64 encoded content of attachment."
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to the attachment."
+          }
+        },
+        "title": "SendAttachment"
+      },
+      "type_messages_SendMessageAttachments": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/type_attachments_SendAttachment"
+        },
+        "description": "Attachments to include in message.",
+        "title": "SendMessageAttachments"
+      },
+      "type_messages_SendMessageHeaders": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "Headers to include in message.",
+        "title": "SendMessageHeaders"
+      },
+      "type_messages_SendMessageRequest": {
+        "type": "object",
+        "properties": {
+          "labels": {
+            "$ref": "#/components/schemas/type_messages_MessageLabels"
+          },
+          "reply_to": {
+            "$ref": "#/components/schemas/type_messages_SendMessageReplyTo"
+          },
+          "to": {
+            "$ref": "#/components/schemas/type_messages_SendMessageTo"
+          },
+          "cc": {
+            "$ref": "#/components/schemas/type_messages_SendMessageCc"
+          },
+          "bcc": {
+            "$ref": "#/components/schemas/type_messages_SendMessageBcc"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_messages_MessageSubject"
+          },
+          "text": {
+            "$ref": "#/components/schemas/type_messages_MessageText"
+          },
+          "html": {
+            "$ref": "#/components/schemas/type_messages_MessageHtml"
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_messages_SendMessageAttachments"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/type_messages_SendMessageHeaders"
+          }
+        },
+        "title": "SendMessageRequest"
+      },
+      "type_messages_SendMessageResponse": {
+        "type": "object",
+        "properties": {
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId"
+          }
+        },
+        "required": [
+          "message_id",
+          "thread_id"
+        ],
+        "title": "SendMessageResponse"
+      },
+      "type_messages_ReplyAll": {
+        "type": "boolean",
+        "description": "Reply to all recipients of the original message.",
+        "title": "ReplyAll"
+      },
+      "type_messages_ReplyToMessageRequest": {
+        "type": "object",
+        "properties": {
+          "labels": {
+            "$ref": "#/components/schemas/type_messages_MessageLabels"
+          },
+          "reply_to": {
+            "$ref": "#/components/schemas/type_messages_SendMessageReplyTo"
+          },
+          "to": {
+            "$ref": "#/components/schemas/type_messages_SendMessageTo"
+          },
+          "cc": {
+            "$ref": "#/components/schemas/type_messages_SendMessageCc"
+          },
+          "bcc": {
+            "$ref": "#/components/schemas/type_messages_SendMessageBcc"
+          },
+          "reply_all": {
+            "$ref": "#/components/schemas/type_messages_ReplyAll"
+          },
+          "text": {
+            "$ref": "#/components/schemas/type_messages_MessageText"
+          },
+          "html": {
+            "$ref": "#/components/schemas/type_messages_MessageHtml"
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_messages_SendMessageAttachments"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/type_messages_SendMessageHeaders"
+          }
+        },
+        "title": "ReplyToMessageRequest"
+      },
+      "type_messages_ReplyAllMessageRequest": {
+        "type": "object",
+        "properties": {
+          "labels": {
+            "$ref": "#/components/schemas/type_messages_MessageLabels"
+          },
+          "reply_to": {
+            "$ref": "#/components/schemas/type_messages_SendMessageReplyTo"
+          },
+          "text": {
+            "$ref": "#/components/schemas/type_messages_MessageText"
+          },
+          "html": {
+            "$ref": "#/components/schemas/type_messages_MessageHtml"
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_messages_SendMessageAttachments"
+          },
+          "headers": {
+            "$ref": "#/components/schemas/type_messages_SendMessageHeaders"
+          }
+        },
+        "title": "ReplyAllMessageRequest"
+      },
+      "type_drafts_DraftId": {
+        "type": "string",
+        "description": "ID of draft.",
+        "title": "DraftId"
+      },
+      "type_drafts_DraftLabels": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Labels of draft.",
+        "title": "DraftLabels"
+      },
+      "type_drafts_DraftTo": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Addresses of recipients. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "DraftTo"
+      },
+      "type_drafts_DraftCc": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Addresses of CC recipients. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "DraftCc"
+      },
+      "type_drafts_DraftBcc": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Addresses of BCC recipients. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "DraftBcc"
+      },
+      "type_drafts_DraftSubject": {
+        "type": "string",
+        "description": "Subject of draft.",
+        "title": "DraftSubject"
+      },
+      "type_drafts_DraftPreview": {
+        "type": "string",
+        "description": "Text preview of draft.",
+        "title": "DraftPreview"
+      },
+      "type_drafts_DraftAttachments": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/type_attachments_Attachment"
+        },
+        "description": "Attachments in draft.",
+        "title": "DraftAttachments"
+      },
+      "type_drafts_DraftInReplyTo": {
+        "type": "string",
+        "description": "ID of message being replied to.",
+        "title": "DraftInReplyTo"
+      },
+      "type_drafts_DraftSendStatus": {
+        "type": "string",
+        "enum": [
+          "scheduled",
+          "sending",
+          "failed"
+        ],
+        "description": "Schedule send status of draft.",
+        "title": "DraftSendStatus"
+      },
+      "type_drafts_DraftSendAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Time at which to schedule send draft.",
+        "title": "DraftSendAt"
+      },
+      "type_drafts_DraftUpdatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Time at which draft was last updated.",
+        "title": "DraftUpdatedAt"
+      },
+      "type_drafts_DraftItem": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId",
+            "x-doc": {
+              "desc_en": "ID of the inbox that owns the draft.",
+              "title_zh": "拥有该草稿的收件箱 ID。",
+              "source": "ai",
+              "src_hash": "sha256:8a38e4b85225",
+              "doc_version": "2.0.0"
+            }
+          },
+          "draft_id": {
+            "$ref": "#/components/schemas/type_drafts_DraftId",
+            "x-doc": {
+              "desc_en": "ID of the draft, usable as the path parameter for draft operations.",
+              "title_zh": "草稿 ID，可用作草稿相关操作的路径参数。",
+              "source": "ai",
+              "src_hash": "sha256:fd8fcf281f3e",
+              "doc_version": "2.0.0"
+            }
+          },
+          "labels": {
+            "$ref": "#/components/schemas/type_drafts_DraftLabels",
+            "x-doc": {
+              "desc_en": "Labels applied to the draft.",
+              "title_zh": "应用于该草稿的标签。",
+              "source": "ai",
+              "src_hash": "sha256:28c95d0fe3fd",
+              "doc_version": "2.0.0"
+            }
+          },
+          "to": {
+            "$ref": "#/components/schemas/type_drafts_DraftTo",
+            "x-doc": {
+              "desc_en": "Primary recipient addresses of the draft.",
+              "title_zh": "草稿的主要收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:0d9c8f02954a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "cc": {
+            "$ref": "#/components/schemas/type_drafts_DraftCc",
+            "x-doc": {
+              "desc_en": "CC recipient addresses of the draft.",
+              "title_zh": "草稿的抄送收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:417114b93576",
+              "doc_version": "2.0.0"
+            }
+          },
+          "bcc": {
+            "$ref": "#/components/schemas/type_drafts_DraftBcc",
+            "x-doc": {
+              "desc_en": "BCC recipient addresses of the draft.",
+              "title_zh": "草稿的密送收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:17fd2f5d712e",
+              "doc_version": "2.0.0"
+            }
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_drafts_DraftSubject",
+            "x-doc": {
+              "desc_en": "Subject of the draft.",
+              "title_zh": "草稿主题。",
+              "source": "ai",
+              "src_hash": "sha256:920a0c089495",
+              "doc_version": "2.0.0"
+            }
+          },
+          "preview": {
+            "$ref": "#/components/schemas/type_drafts_DraftPreview",
+            "x-doc": {
+              "desc_en": "Plain-text snippet of the draft body.",
+              "title_zh": "草稿正文的纯文本短摘要。",
+              "source": "ai",
+              "src_hash": "sha256:f9114d04faf7",
+              "doc_version": "2.0.0"
+            }
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_drafts_DraftAttachments",
+            "x-doc": {
+              "desc_en": "Attachments present in the draft.",
+              "title_zh": "草稿中包含的附件。",
+              "source": "ai",
+              "src_hash": "sha256:a3a6fa64e92f",
+              "doc_version": "2.0.0"
+            }
+          },
+          "in_reply_to": {
+            "$ref": "#/components/schemas/type_drafts_DraftInReplyTo",
+            "x-doc": {
+              "desc_en": "ID of the message the draft replies to, if any.",
+              "title_zh": "草稿所回复的目标消息 ID（如有）。",
+              "source": "ai",
+              "src_hash": "sha256:cd96d8657ef6",
+              "doc_version": "2.0.0"
+            }
+          },
+          "send_status": {
+            "$ref": "#/components/schemas/type_drafts_DraftSendStatus",
+            "x-doc": {
+              "desc_en": "Scheduled-send state of the draft: `scheduled`, `sending`, or `failed`.",
+              "title_zh": "草稿的定时发送状态：`scheduled`、`sending` 或 `failed`。",
+              "source": "ai",
+              "src_hash": "sha256:9a38da18080e",
+              "doc_version": "2.0.0"
+            }
+          },
+          "send_at": {
+            "$ref": "#/components/schemas/type_drafts_DraftSendAt",
+            "x-doc": {
+              "desc_en": "When the draft is scheduled to be sent.",
+              "title_zh": "草稿计划发送的时间。",
+              "source": "ai",
+              "src_hash": "sha256:565c0101256c",
+              "doc_version": "2.0.0"
+            }
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/type_drafts_DraftUpdatedAt",
+            "x-doc": {
+              "desc_en": "When the draft was last updated.",
+              "title_zh": "草稿最后更新时间。",
+              "source": "ai",
+              "src_hash": "sha256:1b8df1ddc567",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "inbox_id",
+          "draft_id",
+          "labels",
+          "updated_at"
+        ],
+        "title": "DraftItem"
+      },
+      "type_drafts_ListDraftsResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count",
+            "x-doc": {
+              "desc_en": "Number of items returned in this page.",
+              "title_zh": "本页返回的条目数。",
+              "source": "ai",
+              "src_hash": "sha256:337dd2eb5769",
+              "doc_version": "2.0.0"
+            }
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit",
+            "x-doc": {
+              "desc_en": "The limit that was applied to this page.",
+              "title_zh": "本页实际生效的数量上限。",
+              "source": "ai",
+              "src_hash": "sha256:5c5d0ecf6874",
+              "doc_version": "2.0.0"
+            }
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken",
+            "x-doc": {
+              "desc_en": "Cursor for the next page; pass it back as `page_token`. Absent or empty when there are no more pages.",
+              "title_zh": "下一页的游标；作为 `page_token` 回传。无更多页时缺省或为空。",
+              "source": "ai",
+              "src_hash": "sha256:8aee05adb9ba",
+              "doc_version": "2.0.0"
+            }
+          },
+          "drafts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_drafts_DraftItem"
+            },
+            "description": "Ordered by `updated_at` descending.",
+            "x-doc": {
+              "desc_en": "The page of drafts, most recently updated first.",
+              "title_zh": "本页草稿列表，按最近更新优先。",
+              "source": "ai",
+              "src_hash": "sha256:53a6908a7abc",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "count",
+          "drafts"
+        ],
+        "title": "ListDraftsResponse"
+      },
+      "type_drafts_DraftClientId": {
+        "type": "string",
+        "description": "Client ID of draft.",
+        "title": "DraftClientId"
+      },
+      "type_drafts_DraftReplyTo": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Reply-to addresses. In format `username@domain.com` or `Display Name <username@domain.com>`.",
+        "title": "DraftReplyTo"
+      },
+      "type_drafts_DraftText": {
+        "type": "string",
+        "description": "Plain text body of draft.",
+        "title": "DraftText"
+      },
+      "type_drafts_DraftHtml": {
+        "type": "string",
+        "description": "HTML body of draft.",
+        "title": "DraftHtml"
+      },
+      "type_drafts_Draft": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId",
+            "x-doc": {
+              "desc_en": "ID of the inbox that owns this resource.",
+              "title_zh": "拥有该资源的收件箱 ID。",
+              "source": "ai",
+              "src_hash": "sha256:8a38e4b85225",
+              "doc_version": "2.0.0"
+            }
+          },
+          "draft_id": {
+            "$ref": "#/components/schemas/type_drafts_DraftId",
+            "x-doc": {
+              "desc_en": "ID of the draft, usable as the path parameter for draft operations.",
+              "title_zh": "草稿 ID，可用作草稿相关操作的路径参数。",
+              "source": "ai",
+              "src_hash": "sha256:fd8fcf281f3e",
+              "doc_version": "2.0.0"
+            }
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_drafts_DraftClientId",
+            "x-doc": {
+              "desc_en": "Caller-supplied client ID echoed back, useful for correlating the draft with your own records.",
+              "title_zh": "回显的调用方自定义 client ID，便于将草稿与你自己的记录关联。",
+              "source": "ai",
+              "src_hash": "sha256:1ea786b21267",
+              "doc_version": "2.0.0"
+            }
+          },
+          "labels": {
+            "$ref": "#/components/schemas/type_drafts_DraftLabels",
+            "x-doc": {
+              "desc_en": "Labels currently applied, including both system labels and your custom labels.",
+              "title_zh": "当前应用的标签，含系统标签与自定义标签。",
+              "source": "ai",
+              "src_hash": "sha256:28c95d0fe3fd",
+              "doc_version": "2.0.0"
+            }
+          },
+          "reply_to": {
+            "$ref": "#/components/schemas/type_drafts_DraftReplyTo",
+            "x-doc": {
+              "desc_en": "Reply-To addresses recipients should reply to instead of the From address.",
+              "title_zh": "回复目标地址，收件人应回复到此处而非 From 地址。",
+              "source": "ai",
+              "src_hash": "sha256:bc71b730c861",
+              "doc_version": "2.0.0"
+            }
+          },
+          "to": {
+            "$ref": "#/components/schemas/type_drafts_DraftTo",
+            "x-doc": {
+              "desc_en": "Primary recipient addresses.",
+              "title_zh": "主要收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:0d9c8f02954a",
+              "doc_version": "2.0.0"
+            }
+          },
+          "cc": {
+            "$ref": "#/components/schemas/type_drafts_DraftCc",
+            "x-doc": {
+              "desc_en": "CC (carbon copy) recipient addresses.",
+              "title_zh": "抄送（CC）收件人地址。",
+              "source": "ai",
+              "src_hash": "sha256:417114b93576",
+              "doc_version": "2.0.0"
+            }
+          },
+          "bcc": {
+            "$ref": "#/components/schemas/type_drafts_DraftBcc",
+            "x-doc": {
+              "desc_en": "BCC (blind carbon copy) recipient addresses, not visible to other recipients.",
+              "title_zh": "密送（BCC）收件人地址，其他收件人不可见。",
+              "source": "ai",
+              "src_hash": "sha256:17fd2f5d712e",
+              "doc_version": "2.0.0"
+            }
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_drafts_DraftSubject",
+            "x-doc": {
+              "desc_en": "Subject line.",
+              "title_zh": "主题。",
+              "source": "ai",
+              "src_hash": "sha256:920a0c089495",
+              "doc_version": "2.0.0"
+            }
+          },
+          "preview": {
+            "$ref": "#/components/schemas/type_drafts_DraftPreview",
+            "x-doc": {
+              "desc_en": "Short plain-text snippet of the content, for list-style display.",
+              "title_zh": "内容的纯文本短摘要，用于列表展示。",
+              "source": "ai",
+              "src_hash": "sha256:f9114d04faf7",
+              "doc_version": "2.0.0"
+            }
+          },
+          "text": {
+            "$ref": "#/components/schemas/type_drafts_DraftText",
+            "x-doc": {
+              "desc_en": "Plain-text body.",
+              "title_zh": "纯文本正文。",
+              "source": "ai",
+              "src_hash": "sha256:fb1c18e926c5",
+              "doc_version": "2.0.0"
+            }
+          },
+          "html": {
+            "$ref": "#/components/schemas/type_drafts_DraftHtml",
+            "x-doc": {
+              "desc_en": "HTML body.",
+              "title_zh": "HTML 正文。",
+              "source": "ai",
+              "src_hash": "sha256:d1ed6c066cc4",
+              "doc_version": "2.0.0"
+            }
+          },
+          "attachments": {
+            "$ref": "#/components/schemas/type_drafts_DraftAttachments",
+            "x-doc": {
+              "desc_en": "Attachments belonging to this resource.",
+              "title_zh": "该资源包含的附件。",
+              "source": "ai",
+              "src_hash": "sha256:a3a6fa64e92f",
+              "doc_version": "2.0.0"
+            }
+          },
+          "in_reply_to": {
+            "$ref": "#/components/schemas/type_drafts_DraftInReplyTo",
+            "x-doc": {
+              "desc_en": "ID of the message this draft/thread is replying to, if any.",
+              "title_zh": "本草稿/对话所回复的目标消息 ID（如有）。",
+              "source": "ai",
+              "src_hash": "sha256:cd96d8657ef6",
+              "doc_version": "2.0.0"
+            }
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "IDs of previous messages in thread.",
+            "x-doc": {
+              "desc_en": "IDs of earlier messages in the thread, forming the reply chain.",
+              "title_zh": "对话中较早消息的 ID 列表，构成回复链。",
+              "source": "ai",
+              "src_hash": "sha256:18257ce82e31",
+              "doc_version": "2.0.0"
+            }
+          },
+          "send_status": {
+            "$ref": "#/components/schemas/type_drafts_DraftSendStatus",
+            "x-doc": {
+              "desc_en": "Scheduled-send state of the draft: `scheduled` (queued for `send_at`), `sending`, or `failed`. Absent for drafts with no scheduled send.",
+              "title_zh": "草稿的定时发送状态：`scheduled`（已排期到 `send_at`）、`sending`、`failed`。未设定时发送的草稿无此字段。",
+              "source": "ai",
+              "src_hash": "sha256:9a38da18080e",
+              "doc_version": "2.0.0"
+            }
+          },
+          "send_at": {
+            "$ref": "#/components/schemas/type_drafts_DraftSendAt",
+            "x-doc": {
+              "desc_en": "When the draft is scheduled to be sent.",
+              "title_zh": "草稿计划发送的时间。",
+              "source": "ai",
+              "src_hash": "sha256:565c0101256c",
+              "doc_version": "2.0.0"
+            }
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/type_drafts_DraftUpdatedAt",
+            "x-doc": {
+              "desc_en": "When the resource was last updated.",
+              "title_zh": "资源最后更新时间。",
+              "source": "ai",
+              "src_hash": "sha256:1b8df1ddc567",
+              "doc_version": "2.0.0"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which draft was created.",
+            "x-doc": {
+              "desc_en": "When the resource was created.",
+              "title_zh": "资源创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:271cc2d6f0e0",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "inbox_id",
+          "draft_id",
+          "labels",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "Draft"
+      },
+      "type_drafts_CreateDraftRequest": {
+        "type": "object",
+        "properties": {
+          "labels": {
+            "$ref": "#/components/schemas/type_drafts_DraftLabels"
+          },
+          "reply_to": {
+            "$ref": "#/components/schemas/type_drafts_DraftReplyTo"
+          },
+          "to": {
+            "$ref": "#/components/schemas/type_drafts_DraftTo"
+          },
+          "cc": {
+            "$ref": "#/components/schemas/type_drafts_DraftCc"
+          },
+          "bcc": {
+            "$ref": "#/components/schemas/type_drafts_DraftBcc"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_drafts_DraftSubject"
+          },
+          "text": {
+            "$ref": "#/components/schemas/type_drafts_DraftText"
+          },
+          "html": {
+            "$ref": "#/components/schemas/type_drafts_DraftHtml"
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_attachments_SendAttachment"
+            },
+            "description": "Attachments to include in draft."
+          },
+          "in_reply_to": {
+            "$ref": "#/components/schemas/type_drafts_DraftInReplyTo"
+          },
+          "send_at": {
+            "$ref": "#/components/schemas/type_drafts_DraftSendAt"
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_drafts_DraftClientId"
+          }
+        },
+        "title": "CreateDraftRequest"
+      },
+      "type_drafts_UpdateDraftRequest": {
+        "type": "object",
+        "properties": {
+          "reply_to": {
+            "$ref": "#/components/schemas/type_drafts_DraftReplyTo"
+          },
+          "to": {
+            "$ref": "#/components/schemas/type_drafts_DraftTo"
+          },
+          "cc": {
+            "$ref": "#/components/schemas/type_drafts_DraftCc"
+          },
+          "bcc": {
+            "$ref": "#/components/schemas/type_drafts_DraftBcc"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/type_drafts_DraftSubject"
+          },
+          "text": {
+            "$ref": "#/components/schemas/type_drafts_DraftText"
+          },
+          "html": {
+            "$ref": "#/components/schemas/type_drafts_DraftHtml"
+          },
+          "send_at": {
+            "$ref": "#/components/schemas/type_drafts_DraftSendAt"
+          }
+        },
+        "title": "UpdateDraftRequest"
+      },
+      "type_lists_Direction": {
+        "type": "string",
+        "enum": [
+          "send",
+          "receive",
+          "reply"
+        ],
+        "description": "Direction of list entry.",
+        "title": "Direction"
+      },
+      "type_lists_ListType": {
+        "type": "string",
+        "enum": [
+          "allow",
+          "block"
+        ],
+        "description": "Type of list entry.",
+        "title": "ListType"
+      },
+      "type__OrganizationId": {
+        "type": "string",
+        "description": "ID of organization.",
+        "title": "OrganizationId"
+      },
+      "type_lists_EntryType": {
+        "type": "string",
+        "enum": [
+          "email",
+          "domain"
+        ],
+        "description": "Whether the entry is an email address or domain.",
+        "title": "EntryType"
+      },
+      "type_lists_PodListEntry": {
+        "type": "object",
+        "properties": {
+          "entry": {
+            "type": "string",
+            "description": "Email address or domain of list entry."
+          },
+          "organization_id": {
+            "$ref": "#/components/schemas/type__OrganizationId"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for adding the entry."
+          },
+          "direction": {
+            "$ref": "#/components/schemas/type_lists_Direction"
+          },
+          "list_type": {
+            "$ref": "#/components/schemas/type_lists_ListType"
+          },
+          "entry_type": {
+            "$ref": "#/components/schemas/type_lists_EntryType"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which entry was created."
+          },
+          "read_only": {
+            "type": "boolean",
+            "description": "Whether the entry is read-only and cannot be deleted via the API."
+          },
+          "pod_id": {
+            "type": "string",
+            "description": "ID of pod."
+          },
+          "inbox_id": {
+            "type": "string",
+            "description": "ID of inbox, if entry is inbox-scoped."
+          }
+        },
+        "required": [
+          "entry",
+          "organization_id",
+          "direction",
+          "list_type",
+          "entry_type",
+          "created_at",
+          "pod_id"
+        ],
+        "title": "PodListEntry"
+      },
+      "type_lists_PodListListEntriesResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit"
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_lists_PodListEntry"
+            },
+            "description": "Ordered by entry ascending."
+          }
+        },
+        "required": [
+          "count",
+          "entries"
+        ],
+        "title": "PodListListEntriesResponse"
+      },
+      "type_lists_CreateListEntryRequest": {
+        "type": "object",
+        "properties": {
+          "entry": {
+            "type": "string",
+            "description": "Email address or domain to add.",
+            "x-doc": {
+              "desc_en": "Email address or domain to add to the list.",
+              "title_zh": "要加入名单的邮箱地址或域名。",
+              "source": "ai",
+              "src_hash": "sha256:3bf66fcac5a7",
+              "doc_version": "2.0.0"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for adding the entry.",
+            "x-doc": {
+              "desc_en": "Optional free-text note recording why the entry was added.",
+              "title_zh": "可选的自由文本备注，记录添加该条目的原因。",
+              "source": "ai",
+              "src_hash": "sha256:47d7d4f482d1",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "entry"
+        ],
+        "title": "CreateListEntryRequest"
+      },
+      "type_metrics_MetricEventType": {
+        "type": "string",
+        "enum": [
+          "message.sent",
+          "message.delivered",
+          "message.bounced",
+          "message.delayed",
+          "message.rejected",
+          "message.complained",
+          "message.received"
+        ],
+        "description": "Type of metric event.",
+        "title": "MetricEventType"
+      },
+      "type_metrics_MetricEventTypes": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/type_metrics_MetricEventType"
+        },
+        "description": "List of metric event types to query.",
+        "title": "MetricEventTypes"
+      },
+      "type_metrics_Start": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Start timestamp for the query.",
+        "title": "Start"
+      },
+      "type_metrics_End": {
+        "type": "string",
+        "format": "date-time",
+        "description": "End timestamp for the query.",
+        "title": "End"
+      },
+      "type_metrics_Period": {
+        "type": "string",
+        "description": "Period in number of seconds for the query.",
+        "title": "Period"
+      },
+      "type_metrics_MetricLimit": {
+        "type": "integer",
+        "description": "Limit on number of buckets to return.",
+        "title": "MetricLimit"
+      },
+      "type_metrics_Descending": {
+        "type": "boolean",
+        "description": "Sort in descending order.",
+        "title": "Descending"
+      },
+      "type_metrics_MetricBucket": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of the bucket."
+          },
+          "count": {
+            "type": "integer",
+            "description": "Count of events in the bucket."
+          }
+        },
+        "required": [
+          "timestamp",
+          "count"
+        ],
+        "title": "MetricBucket"
+      },
+      "type_metrics_QueryMetricsResponse": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/type_metrics_MetricBucket"
+          }
+        },
+        "description": "Metrics grouped by event type.",
+        "title": "QueryMetricsResponse"
+      },
+      "type_inbox-events_InboxEventId": {
+        "type": "string",
+        "description": "ID of event.",
+        "title": "InboxEventId"
+      },
+      "type_inbox-events_InboxEventType": {
+        "type": "string",
+        "enum": [
+          "label.added",
+          "label.removed"
+        ],
+        "description": "Type of inbox event. Wire format is dot.case to match the\nconvention used by webhook events (`message.received`,\n`domain.verified`, etc. in events.yml). Pre-2026-04 these were\n`label_added`/`label_removed` (snake_case). The Fern enum's `name`\nfield stays uppercase-snake (Fern convention); only the wire\n`value` changed.",
+        "title": "InboxEventType"
+      },
+      "type_inbox-events_InboxEvent": {
+        "type": "object",
+        "properties": {
+          "organization_id": {
+            "$ref": "#/components/schemas/type__OrganizationId"
+          },
+          "pod_id": {
+            "type": "string",
+            "description": "ID of pod."
+          },
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId"
+          },
+          "event_id": {
+            "$ref": "#/components/schemas/type_inbox-events_InboxEventId"
+          },
+          "event_type": {
+            "$ref": "#/components/schemas/type_inbox-events_InboxEventType"
+          },
+          "message_id": {
+            "type": "string",
+            "description": "ID of message."
+          },
+          "label": {
+            "type": "string",
+            "description": "Label added or removed."
+          },
+          "event_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the event occurred."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the event was recorded."
+          }
+        },
+        "required": [
+          "organization_id",
+          "pod_id",
+          "inbox_id",
+          "event_id",
+          "event_type",
+          "message_id",
+          "label",
+          "event_at",
+          "created_at"
+        ],
+        "title": "InboxEvent"
+      },
+      "type_inbox-events_ListInboxEventsResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit"
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_inbox-events_InboxEvent"
+            },
+            "description": "Ordered by `event_id` descending."
+          }
+        },
+        "required": [
+          "count",
+          "events"
+        ],
+        "title": "ListInboxEventsResponse"
+      },
+      "type_api-keys_ApiKeyId": {
+        "type": "string",
+        "description": "ID of api key.",
+        "title": "ApiKeyId"
+      },
+      "type_api-keys_Prefix": {
+        "type": "string",
+        "description": "Prefix of api key.",
+        "title": "Prefix"
+      },
+      "type_api-keys_Name": {
+        "type": "string",
+        "description": "Name of api key.",
+        "title": "Name"
+      },
+      "type_api-keys_ApiKeyPermissions": {
+        "type": "object",
+        "properties": {
+          "inbox_read": {
+            "type": "boolean",
+            "description": "Read inbox details."
+          },
+          "inbox_create": {
+            "type": "boolean",
+            "description": "Create new inboxes."
+          },
+          "inbox_update": {
+            "type": "boolean",
+            "description": "Update inbox settings."
+          },
+          "inbox_delete": {
+            "type": "boolean",
+            "description": "Delete inboxes."
+          },
+          "thread_read": {
+            "type": "boolean",
+            "description": "Read threads."
+          },
+          "thread_delete": {
+            "type": "boolean",
+            "description": "Delete threads."
+          },
+          "message_read": {
+            "type": "boolean",
+            "description": "Read messages."
+          },
+          "message_send": {
+            "type": "boolean",
+            "description": "Send messages."
+          },
+          "message_update": {
+            "type": "boolean",
+            "description": "Update message labels."
+          },
+          "label_spam_read": {
+            "type": "boolean",
+            "description": "Access messages labeled spam."
+          },
+          "label_blocked_read": {
+            "type": "boolean",
+            "description": "Access messages labeled blocked."
+          },
+          "label_trash_read": {
+            "type": "boolean",
+            "description": "Access messages labeled trash."
+          },
+          "draft_read": {
+            "type": "boolean",
+            "description": "Read drafts."
+          },
+          "draft_create": {
+            "type": "boolean",
+            "description": "Create drafts."
+          },
+          "draft_update": {
+            "type": "boolean",
+            "description": "Update drafts."
+          },
+          "draft_delete": {
+            "type": "boolean",
+            "description": "Delete drafts."
+          },
+          "draft_send": {
+            "type": "boolean",
+            "description": "Send drafts."
+          },
+          "webhook_read": {
+            "type": "boolean",
+            "description": "Read webhook configurations."
+          },
+          "webhook_create": {
+            "type": "boolean",
+            "description": "Create webhooks."
+          },
+          "webhook_update": {
+            "type": "boolean",
+            "description": "Update webhooks."
+          },
+          "webhook_delete": {
+            "type": "boolean",
+            "description": "Delete webhooks."
+          },
+          "domain_read": {
+            "type": "boolean",
+            "description": "Read domain details."
+          },
+          "domain_create": {
+            "type": "boolean",
+            "description": "Create domains."
+          },
+          "domain_update": {
+            "type": "boolean",
+            "description": "Update domains."
+          },
+          "domain_delete": {
+            "type": "boolean",
+            "description": "Delete domains."
+          },
+          "list_entry_read": {
+            "type": "boolean",
+            "description": "Read list entries."
+          },
+          "list_entry_create": {
+            "type": "boolean",
+            "description": "Create list entries."
+          },
+          "list_entry_delete": {
+            "type": "boolean",
+            "description": "Delete list entries."
+          },
+          "metrics_read": {
+            "type": "boolean",
+            "description": "Read metrics."
+          },
+          "api_key_read": {
+            "type": "boolean",
+            "description": "Read API keys."
+          },
+          "api_key_create": {
+            "type": "boolean",
+            "description": "Create API keys."
+          },
+          "api_key_delete": {
+            "type": "boolean",
+            "description": "Delete API keys."
+          },
+          "pod_read": {
+            "type": "boolean",
+            "description": "Read pods."
+          },
+          "pod_create": {
+            "type": "boolean",
+            "description": "Create pods."
+          },
+          "pod_delete": {
+            "type": "boolean",
+            "description": "Delete pods."
+          }
+        },
+        "description": "Granular permissions for the API key. When ommitted all permissions are granted. Otherwise, only permissions set to true are granted.",
+        "title": "ApiKeyPermissions"
+      },
+      "type_api-keys_CreatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Time at which api key was created.",
+        "title": "CreatedAt"
+      },
+      "type_api-keys_ApiKey": {
+        "type": "object",
+        "properties": {
+          "api_key_id": {
+            "$ref": "#/components/schemas/type_api-keys_ApiKeyId"
+          },
+          "prefix": {
+            "$ref": "#/components/schemas/type_api-keys_Prefix"
+          },
+          "name": {
+            "$ref": "#/components/schemas/type_api-keys_Name"
+          },
+          "pod_id": {
+            "type": "string",
+            "description": "Pod ID the api key is scoped to. If set, the key can only access resources within this pod."
+          },
+          "inbox_id": {
+            "type": "string",
+            "description": "Inbox ID the api key is scoped to. If set, the key can only access resources within this inbox."
+          },
+          "used_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which api key was last used."
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/type_api-keys_ApiKeyPermissions"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/type_api-keys_CreatedAt"
+          }
+        },
+        "required": [
+          "api_key_id",
+          "prefix",
+          "name",
+          "created_at"
+        ],
+        "title": "ApiKey"
+      },
+      "type_api-keys_ListApiKeysResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken"
+          },
+          "api_keys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_api-keys_ApiKey"
+            },
+            "description": "Ordered by `created_at` descending."
+          }
+        },
+        "required": [
+          "count",
+          "api_keys"
+        ],
+        "title": "ListApiKeysResponse"
+      },
+      "type_api-keys_CreateApiKeyRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/type_api-keys_Name"
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/type_api-keys_ApiKeyPermissions"
+          }
+        },
+        "title": "CreateApiKeyRequest"
+      },
+      "type_api-keys_CreateApiKeyResponse": {
+        "type": "object",
+        "properties": {
+          "api_key_id": {
+            "$ref": "#/components/schemas/type_api-keys_ApiKeyId"
+          },
+          "api_key": {
+            "type": "string",
+            "description": "API key."
+          },
+          "prefix": {
+            "$ref": "#/components/schemas/type_api-keys_Prefix"
+          },
+          "name": {
+            "$ref": "#/components/schemas/type_api-keys_Name"
+          },
+          "pod_id": {
+            "type": "string",
+            "description": "Pod ID the api key is scoped to."
+          },
+          "inbox_id": {
+            "type": "string",
+            "description": "Inbox ID the api key is scoped to."
+          },
+          "permissions": {
+            "$ref": "#/components/schemas/type_api-keys_ApiKeyPermissions"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/type_api-keys_CreatedAt"
+          }
+        },
+        "required": [
+          "api_key_id",
+          "api_key",
+          "prefix",
+          "name",
+          "created_at"
+        ],
+        "title": "CreateApiKeyResponse"
+      },
+      "type_webhooks_WebhookId": {
+        "type": "string",
+        "description": "ID of webhook.",
+        "title": "WebhookId"
+      },
+      "type_webhooks_Url": {
+        "type": "string",
+        "description": "URL of webhook endpoint.",
+        "title": "Url"
+      },
+      "type_events_EventType": {
+        "type": "string",
+        "enum": [
+          "message.received",
+          "message.received.spam",
+          "message.received.blocked",
+          "message.received.unauthenticated",
+          "message.sent",
+          "message.delivered",
+          "message.bounced",
+          "message.complained",
+          "message.rejected",
+          "domain.verified"
+        ],
+        "title": "EventType"
+      },
+      "type_events_EventTypes": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/type_events_EventType"
+        },
+        "description": "Event types for which to send events.",
+        "title": "EventTypes"
+      },
+      "type_events_PodIds": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Pods for which to send events. Maximum 10 per webhook.",
+        "title": "PodIds"
+      },
+      "type_events_InboxIds": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Inboxes for which to send events. Maximum 10 per webhook.",
+        "title": "InboxIds"
+      },
+      "type_webhooks_ClientId": {
+        "type": "string",
+        "description": "Client ID of webhook.",
+        "title": "ClientId"
+      },
+      "type_webhooks_Webhook": {
+        "type": "object",
+        "properties": {
+          "webhook_id": {
+            "$ref": "#/components/schemas/type_webhooks_WebhookId"
+          },
+          "url": {
+            "$ref": "#/components/schemas/type_webhooks_Url"
+          },
+          "event_types": {
+            "$ref": "#/components/schemas/type_events_EventTypes"
+          },
+          "pod_ids": {
+            "$ref": "#/components/schemas/type_events_PodIds"
+          },
+          "inbox_ids": {
+            "$ref": "#/components/schemas/type_events_InboxIds"
+          },
+          "secret": {
+            "type": "string",
+            "description": "Secret for webhook signature verification."
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Webhook is enabled."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which webhook was last updated."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which webhook was created."
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_webhooks_ClientId"
+          }
+        },
+        "required": [
+          "webhook_id",
+          "url",
+          "secret",
+          "enabled",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "Webhook"
+      },
+      "type_webhooks_ListWebhooksResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit"
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken"
+          },
+          "webhooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_webhooks_Webhook"
+            },
+            "description": "Ordered by `created_at` descending."
+          }
+        },
+        "required": [
+          "count",
+          "webhooks"
+        ],
+        "title": "ListWebhooksResponse"
+      },
+      "type_webhooks_CreateWebhookRequest": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "$ref": "#/components/schemas/type_webhooks_Url"
+          },
+          "event_types": {
+            "$ref": "#/components/schemas/type_events_EventTypes",
+            "description": "Full list of event types this webhook should receive. At least one type is required. Send every type you\nwant in this array (not incremental). See [Webhooks overview](https://docs.agentmail.to/webhooks-overview)\nfor spam, blocked, and unauthenticated events and required permissions."
+          },
+          "pod_ids": {
+            "$ref": "#/components/schemas/type_events_PodIds"
+          },
+          "inbox_ids": {
+            "$ref": "#/components/schemas/type_events_InboxIds"
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_webhooks_ClientId"
+          }
+        },
+        "required": [
+          "url",
+          "event_types"
+        ],
+        "title": "CreateWebhookRequest"
+      },
+      "type_webhooks_UpdateWebhookRequest": {
+        "type": "object",
+        "properties": {
+          "add_inbox_ids": {
+            "$ref": "#/components/schemas/type_events_InboxIds",
+            "description": "Inbox IDs to subscribe to the webhook."
+          },
+          "remove_inbox_ids": {
+            "$ref": "#/components/schemas/type_events_InboxIds",
+            "description": "Inbox IDs to unsubscribe from the webhook."
+          },
+          "add_pod_ids": {
+            "$ref": "#/components/schemas/type_events_PodIds",
+            "description": "Pod IDs to subscribe to the webhook."
+          },
+          "remove_pod_ids": {
+            "$ref": "#/components/schemas/type_events_PodIds",
+            "description": "Pod IDs to unsubscribe from the webhook."
+          },
+          "event_types": {
+            "$ref": "#/components/schemas/type_events_EventTypes",
+            "description": "When you send a non-empty list, it replaces the webhook's subscribed event types in full (the same\n\"set the list\" behavior as create). It is not a merge or diff: include every event type you want after\nthe update. Sending a one-element array means the webhook will only receive that one type afterward.\nOmit this field or send an empty array to leave event types unchanged. Clearing all types with an empty\nlist is not supported. Subscribing to `message.received.spam`, `message.received.blocked`, or\n`message.received.unauthenticated` requires the matching label permission on the API key."
+          }
+        },
+        "title": "UpdateWebhookRequest"
+      },
+      "type_domains_DomainId": {
+        "type": "string",
+        "description": "The ID of the domain.",
+        "title": "DomainId"
+      },
+      "type_domains_DomainName": {
+        "type": "string",
+        "description": "The name of the domain (e.g., `example.com`).",
+        "title": "DomainName"
+      },
+      "type_domains_FeedbackEnabled": {
+        "type": "boolean",
+        "description": "Bounce and complaint notifications are sent to your inboxes.",
+        "title": "FeedbackEnabled"
+      },
+      "type_domains_ClientId": {
+        "type": "string",
+        "description": "Client ID of domain.",
+        "title": "ClientId"
+      },
+      "type_domains_DomainItem": {
+        "type": "object",
+        "properties": {
+          "pod_id": {
+            "$ref": "#/components/schemas/type_pods_PodId"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/type_domains_DomainId"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/type_domains_DomainName"
+          },
+          "feedback_enabled": {
+            "$ref": "#/components/schemas/type_domains_FeedbackEnabled"
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_domains_ClientId"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the domain was last updated."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the domain was created."
+          }
+        },
+        "required": [
+          "domain_id",
+          "domain",
+          "feedback_enabled",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "DomainItem"
+      },
+      "type_domains_ListDomainsResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit"
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken"
+          },
+          "domains": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_domains_DomainItem"
+            },
+            "description": "Ordered by `created_at` descending."
+          }
+        },
+        "required": [
+          "count",
+          "domains"
+        ],
+        "title": "ListDomainsResponse"
+      },
+      "type_domains_VerificationStatus": {
+        "type": "string",
+        "enum": [
+          "NOT_STARTED",
+          "PENDING",
+          "INVALID",
+          "FAILED",
+          "VERIFYING",
+          "VERIFIED"
+        ],
+        "title": "VerificationStatus"
+      },
+      "type_domains_Status": {
+        "$ref": "#/components/schemas/type_domains_VerificationStatus",
+        "description": "The verification status of the domain.",
+        "title": "Status"
+      },
+      "type_domains_RecordType": {
+        "type": "string",
+        "enum": [
+          "TXT",
+          "CNAME",
+          "MX"
+        ],
+        "title": "RecordType"
+      },
+      "type_domains_RecordStatus": {
+        "type": "string",
+        "enum": [
+          "MISSING",
+          "INVALID",
+          "VALID"
+        ],
+        "title": "RecordStatus"
+      },
+      "type_domains_VerificationRecord": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/type_domains_RecordType",
+            "description": "The type of the DNS record."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name or host of the record."
+          },
+          "value": {
+            "type": "string",
+            "description": "The value of the record."
+          },
+          "status": {
+            "$ref": "#/components/schemas/type_domains_RecordStatus",
+            "description": "The verification status of this specific record."
+          },
+          "priority": {
+            "type": "integer",
+            "description": "The priority of the MX record."
+          }
+        },
+        "required": [
+          "type",
+          "name",
+          "value",
+          "status"
+        ],
+        "title": "VerificationRecord"
+      },
+      "type_domains_Domain": {
+        "type": "object",
+        "properties": {
+          "pod_id": {
+            "$ref": "#/components/schemas/type_pods_PodId"
+          },
+          "domain_id": {
+            "$ref": "#/components/schemas/type_domains_DomainId"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/type_domains_DomainName"
+          },
+          "status": {
+            "$ref": "#/components/schemas/type_domains_Status"
+          },
+          "feedback_enabled": {
+            "$ref": "#/components/schemas/type_domains_FeedbackEnabled"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_domains_VerificationRecord"
+            },
+            "description": "A list of DNS records required to verify the domain."
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_domains_ClientId"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the domain was last updated."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which the domain was created."
+          }
+        },
+        "required": [
+          "domain_id",
+          "domain",
+          "status",
+          "feedback_enabled",
+          "records",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "Domain"
+      },
+      "type_domains_CreateDomainRequest": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "$ref": "#/components/schemas/type_domains_DomainName"
+          },
+          "feedback_enabled": {
+            "$ref": "#/components/schemas/type_domains_FeedbackEnabled"
+          }
+        },
+        "required": [
+          "domain",
+          "feedback_enabled"
+        ],
+        "title": "CreateDomainRequest"
+      },
+      "type_domains_UpdateDomainRequest": {
+        "type": "object",
+        "properties": {
+          "feedback_enabled": {
+            "$ref": "#/components/schemas/type_domains_FeedbackEnabled"
+          }
+        },
+        "title": "UpdateDomainRequest"
+      },
+      "type_lists_ListEntry": {
+        "type": "object",
+        "properties": {
+          "entry": {
+            "type": "string",
+            "description": "Email address or domain of list entry.",
+            "x-doc": {
+              "desc_en": "The email address or domain of the list entry.",
+              "title_zh": "名单条目的邮箱地址或域名。",
+              "source": "ai",
+              "src_hash": "sha256:bb92d87f1927",
+              "doc_version": "2.0.0"
+            }
+          },
+          "organization_id": {
+            "$ref": "#/components/schemas/type__OrganizationId",
+            "x-doc": {
+              "desc_en": "ID of the organization the list entry belongs to.",
+              "title_zh": "名单条目所属的组织 ID。",
+              "source": "ai",
+              "src_hash": "sha256:1c81a4e3e155",
+              "doc_version": "2.0.0"
+            }
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for adding the entry.",
+            "x-doc": {
+              "desc_en": "Free-text reason recorded when the entry was added.",
+              "title_zh": "添加该条目时记录的自由文本原因。",
+              "source": "ai",
+              "src_hash": "sha256:47d7d4f482d1",
+              "doc_version": "2.0.0"
+            }
+          },
+          "direction": {
+            "$ref": "#/components/schemas/type_lists_Direction",
+            "x-doc": {
+              "desc_en": "Traffic direction the entry governs: `send`, `receive`, or `reply`.",
+              "title_zh": "条目作用的流量方向：`send`、`receive` 或 `reply`。",
+              "source": "ai",
+              "src_hash": "sha256:f67be0bbaf84",
+              "doc_version": "2.0.0"
+            }
+          },
+          "list_type": {
+            "$ref": "#/components/schemas/type_lists_ListType",
+            "x-doc": {
+              "desc_en": "Whether this is an `allow` or `block` list entry.",
+              "title_zh": "该条目属于 `allow` 还是 `block` 名单。",
+              "source": "ai",
+              "src_hash": "sha256:cdd56c6c3605",
+              "doc_version": "2.0.0"
+            }
+          },
+          "entry_type": {
+            "$ref": "#/components/schemas/type_lists_EntryType",
+            "x-doc": {
+              "desc_en": "Whether the entry matches a single `email` address or an entire `domain`.",
+              "title_zh": "条目匹配单个 `email` 地址还是整个 `domain`。",
+              "source": "ai",
+              "src_hash": "sha256:b683c87d4344",
+              "doc_version": "2.0.0"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which entry was created.",
+            "x-doc": {
+              "desc_en": "When the resource was created.",
+              "title_zh": "资源创建时间。",
+              "source": "ai",
+              "src_hash": "sha256:eaa165ab9c58",
+              "doc_version": "2.0.0"
+            }
+          },
+          "read_only": {
+            "type": "boolean",
+            "description": "Whether the entry is read-only and cannot be deleted via the API.",
+            "x-doc": {
+              "desc_en": "When true, the entry is system-managed and cannot be deleted through the API.",
+              "title_zh": "为 true 时，条目由系统管理，不能通过 API 删除。",
+              "source": "ai",
+              "src_hash": "sha256:c8563fe05343",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "entry",
+          "organization_id",
+          "direction",
+          "list_type",
+          "entry_type",
+          "created_at"
+        ],
+        "title": "ListEntry"
+      },
+      "type_lists_ListListEntriesResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count",
+            "x-doc": {
+              "desc_en": "Number of items returned in this page.",
+              "title_zh": "本页返回的条目数。",
+              "source": "ai",
+              "src_hash": "sha256:337dd2eb5769",
+              "doc_version": "2.0.0"
+            }
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit",
+            "x-doc": {
+              "desc_en": "The limit that was applied to this page.",
+              "title_zh": "本页实际生效的数量上限。",
+              "source": "ai",
+              "src_hash": "sha256:5c5d0ecf6874",
+              "doc_version": "2.0.0"
+            }
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken",
+            "x-doc": {
+              "desc_en": "Cursor for the next page; pass it back as `page_token`. Absent or empty when there are no more pages.",
+              "title_zh": "下一页的游标；作为 `page_token` 回传。无更多页时缺省或为空。",
+              "source": "ai",
+              "src_hash": "sha256:8aee05adb9ba",
+              "doc_version": "2.0.0"
+            }
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_lists_ListEntry"
+            },
+            "description": "Ordered by entry ascending.",
+            "x-doc": {
+              "desc_en": "The page of allow/block list entries, ordered by entry ascending.",
+              "title_zh": "本页允许/拦截名单条目，按条目升序排列。",
+              "source": "ai",
+              "src_hash": "sha256:13184d4685ba",
+              "doc_version": "2.0.0"
+            }
+          }
+        },
+        "required": [
+          "count",
+          "entries"
+        ],
+        "title": "ListListEntriesResponse"
+      },
+      "type_pods_Name": {
+        "type": "string",
+        "description": "Name of pod.",
+        "title": "Name"
+      },
+      "type_pods_ClientId": {
+        "type": "string",
+        "description": "Client ID of pod.",
+        "title": "ClientId"
+      },
+      "type_pods_Pod": {
+        "type": "object",
+        "properties": {
+          "pod_id": {
+            "$ref": "#/components/schemas/type_pods_PodId"
+          },
+          "name": {
+            "$ref": "#/components/schemas/type_pods_Name"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which pod was last updated."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which pod was created."
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_pods_ClientId"
+          }
+        },
+        "required": [
+          "pod_id",
+          "name",
+          "updated_at",
+          "created_at"
+        ],
+        "title": "Pod"
+      },
+      "type_pods_ListPodsResponse": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "$ref": "#/components/schemas/type__Count"
+          },
+          "limit": {
+            "$ref": "#/components/schemas/type__Limit"
+          },
+          "next_page_token": {
+            "$ref": "#/components/schemas/type__PageToken"
+          },
+          "pods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_pods_Pod"
+            },
+            "description": "Ordered by `created_at` descending."
+          }
+        },
+        "required": [
+          "count",
+          "pods"
+        ],
+        "title": "ListPodsResponse"
+      },
+      "type_pods_CreatePodRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/type_pods_Name"
+          },
+          "client_id": {
+            "$ref": "#/components/schemas/type_pods_ClientId"
+          }
+        },
+        "title": "CreatePodRequest"
+      },
+      "type_organizations_Organization": {
+        "type": "object",
+        "properties": {
+          "organization_id": {
+            "$ref": "#/components/schemas/type__OrganizationId"
+          },
+          "inbox_count": {
+            "type": "integer",
+            "description": "Current number of inboxes."
+          },
+          "domain_count": {
+            "type": "integer",
+            "description": "Current number of domains."
+          },
+          "inbox_limit": {
+            "type": "integer",
+            "description": "Maximum number of inboxes allowed."
+          },
+          "domain_limit": {
+            "type": "integer",
+            "description": "Maximum number of domains allowed."
+          },
+          "billing_id": {
+            "type": "string",
+            "description": "Provider-agnostic billing customer ID."
+          },
+          "billing_type": {
+            "type": "string",
+            "description": "Billing provider type (e.g. \"stripe\")."
+          },
+          "billing_subscription_id": {
+            "type": "string",
+            "description": "Active billing subscription ID."
+          },
+          "authentication_id": {
+            "type": "string",
+            "description": "Provider-agnostic authentication ID."
+          },
+          "authentication_type": {
+            "type": "string",
+            "description": "Authentication provider type."
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which organization was last updated."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Time at which organization was created."
+          }
+        },
+        "required": [
+          "organization_id",
+          "inbox_count",
+          "domain_count",
+          "updated_at",
+          "created_at"
+        ],
+        "description": "Organization details with usage limits and counts.",
+        "title": "Organization"
+      },
+      "type_webhooks_events_SvixId": {
+        "type": "string",
+        "description": "ID of webhook message.",
+        "title": "SvixId"
+      },
+      "type_webhooks_events_SvixSignature": {
+        "type": "string",
+        "description": "Signature of webhook message.",
+        "title": "SvixSignature"
+      },
+      "type_webhooks_events_SvixTimestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of webhook message.",
+        "title": "SvixTimestamp"
+      },
+      "type_events_MessageReceivedEventType": {
+        "type": "string",
+        "enum": [
+          "message.received",
+          "message.received.spam",
+          "message.received.blocked",
+          "message.received.unauthenticated"
+        ],
+        "title": "MessageReceivedEventType"
+      },
+      "type_events_EventId": {
+        "type": "string",
+        "description": "ID of event.",
+        "title": "EventId"
+      },
+      "type_events_MessageReceivedEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "event_type": {
+            "$ref": "#/components/schemas/type_events_MessageReceivedEventType"
+          },
+          "event_id": {
+            "$ref": "#/components/schemas/type_events_EventId"
+          },
+          "message": {
+            "$ref": "#/components/schemas/type_messages_Message"
+          },
+          "thread": {
+            "$ref": "#/components/schemas/type_threads_ThreadItem"
+          }
+        },
+        "required": [
+          "type",
+          "event_type",
+          "event_id",
+          "message",
+          "thread"
+        ],
+        "description": "A message was received. Spam, blocked, and unauthenticated received-message events use the same payload shape with different `event_type` values.",
+        "title": "MessageReceivedEvent"
+      },
+      "type_events_Timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp of event.",
+        "title": "Timestamp"
+      },
+      "type_events_Send": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId"
+          },
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId"
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_events_Timestamp"
+          },
+          "recipients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Sent recipients."
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "message_id",
+          "timestamp",
+          "recipients"
+        ],
+        "title": "Send"
+      },
+      "type_events_MessageSentEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "message.sent"
+            ]
+          },
+          "event_id": {
+            "$ref": "#/components/schemas/type_events_EventId"
+          },
+          "send": {
+            "$ref": "#/components/schemas/type_events_Send"
+          }
+        },
+        "required": [
+          "type",
+          "event_type",
+          "event_id",
+          "send"
+        ],
+        "title": "MessageSentEvent"
+      },
+      "type_events_Delivery": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId"
+          },
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId"
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_events_Timestamp"
+          },
+          "recipients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Delivered recipients."
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "message_id",
+          "timestamp",
+          "recipients"
+        ],
+        "title": "Delivery"
+      },
+      "type_events_MessageDeliveredEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "message.delivered"
+            ]
+          },
+          "event_id": {
+            "$ref": "#/components/schemas/type_events_EventId"
+          },
+          "delivery": {
+            "$ref": "#/components/schemas/type_events_Delivery"
+          }
+        },
+        "required": [
+          "type",
+          "event_type",
+          "event_id",
+          "delivery"
+        ],
+        "title": "MessageDeliveredEvent"
+      },
+      "type_events_Recipient": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Recipient address."
+          },
+          "status": {
+            "type": "string",
+            "description": "Recipient status."
+          }
+        },
+        "required": [
+          "address",
+          "status"
+        ],
+        "title": "Recipient"
+      },
+      "type_events_Bounce": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId"
+          },
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId"
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_events_Timestamp"
+          },
+          "type": {
+            "type": "string",
+            "description": "Bounce type."
+          },
+          "sub_type": {
+            "type": "string",
+            "description": "Bounce sub-type."
+          },
+          "recipients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/type_events_Recipient"
+            },
+            "description": "Bounced recipients."
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "message_id",
+          "timestamp",
+          "type",
+          "sub_type",
+          "recipients"
+        ],
+        "title": "Bounce"
+      },
+      "type_events_MessageBouncedEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "message.bounced"
+            ]
+          },
+          "event_id": {
+            "$ref": "#/components/schemas/type_events_EventId"
+          },
+          "bounce": {
+            "$ref": "#/components/schemas/type_events_Bounce"
+          }
+        },
+        "required": [
+          "type",
+          "event_type",
+          "event_id",
+          "bounce"
+        ],
+        "title": "MessageBouncedEvent"
+      },
+      "type_events_Complaint": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId"
+          },
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId"
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_events_Timestamp"
+          },
+          "type": {
+            "type": "string",
+            "description": "Complaint type."
+          },
+          "sub_type": {
+            "type": "string",
+            "description": "Complaint sub-type."
+          },
+          "recipients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Complained recipients."
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "message_id",
+          "timestamp",
+          "type",
+          "sub_type",
+          "recipients"
+        ],
+        "title": "Complaint"
+      },
+      "type_events_MessageComplainedEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "message.complained"
+            ]
+          },
+          "event_id": {
+            "$ref": "#/components/schemas/type_events_EventId"
+          },
+          "complaint": {
+            "$ref": "#/components/schemas/type_events_Complaint"
+          }
+        },
+        "required": [
+          "type",
+          "event_type",
+          "event_id",
+          "complaint"
+        ],
+        "title": "MessageComplainedEvent"
+      },
+      "type_events_Reject": {
+        "type": "object",
+        "properties": {
+          "inbox_id": {
+            "$ref": "#/components/schemas/type_inboxes_InboxId"
+          },
+          "thread_id": {
+            "$ref": "#/components/schemas/type_threads_ThreadId"
+          },
+          "message_id": {
+            "$ref": "#/components/schemas/type_messages_MessageId"
+          },
+          "timestamp": {
+            "$ref": "#/components/schemas/type_events_Timestamp"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reject reason."
+          }
+        },
+        "required": [
+          "inbox_id",
+          "thread_id",
+          "message_id",
+          "timestamp",
+          "reason"
+        ],
+        "title": "Reject"
+      },
+      "type_events_MessageRejectedEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "message.rejected"
+            ]
+          },
+          "event_id": {
+            "$ref": "#/components/schemas/type_events_EventId"
+          },
+          "reject": {
+            "$ref": "#/components/schemas/type_events_Reject"
+          }
+        },
+        "required": [
+          "type",
+          "event_type",
+          "event_id",
+          "reject"
+        ],
+        "title": "MessageRejectedEvent"
+      },
+      "type_events_DomainVerifiedEvent": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "event"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "domain.verified"
+            ]
+          },
+          "event_id": {
+            "$ref": "#/components/schemas/type_events_EventId"
+          },
+          "domain": {
+            "$ref": "#/components/schemas/type_domains_Domain"
+          }
+        },
+        "required": [
+          "type",
+          "event_type",
+          "event_id",
+          "domain"
+        ],
+        "title": "DomainVerifiedEvent"
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/agentmail/threads/{thread_id}": {
+      "get": {
+        "operationId": "get",
+        "summary": "Get Thread",
+        "description": "**CLI:**\n```bash\nagentmail threads get --thread-id <thread_id>\n```",
+        "tags": [
+          "subpackage_threads"
+        ],
+        "parameters": [
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_threads_ThreadId"
+            },
+            "x-doc": {
+              "desc_en": "ID of the thread to fetch. Obtain it from the `thread_id` field of a list-threads result or a send/reply response.",
+              "title_zh": "要获取的对话 ID。可从列出对话的结果或发送/回复响应的 `thread_id` 字段获得。",
+              "source": "ai",
+              "src_hash": "sha256:08a11d1c2b1d",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret; never log it in plaintext.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密，切勿明文记录。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_threads_Thread"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "按 ID 获取单个资源 get",
+          "desc_en": "Fetch a single resource by its ID. This operationId is shared by three endpoints: get a thread (with its full message list) by `thread_id`, get a draft by `draft_id`, and get one allow/block list entry by `direction`/`type`/`entry`. The path determines which resource and response shape you receive.",
+          "description_zh": "按 ID 获取单个资源。该 operationId 由三个端点共用：按 `thread_id` 获取对话（含完整消息列表）、按 `draft_id` 获取草稿、按 `direction`/`type`/`entry` 获取单条允许/拦截名单条目。具体取哪种资源及返回结构由请求路径决定。",
+          "source": "ai",
+          "src_hash": "sha256:d7ae343ad27f",
+          "doc_version": "2.0.0"
+        }
+      },
+      "patch": {
+        "operationId": "update",
+        "summary": "Update Thread",
+        "description": "Updates thread labels. Cannot add or remove system labels (sent, received, bounced, etc.). Rejects requests with a `422` for threads with 100 or more messages.",
+        "tags": [
+          "subpackage_threads"
+        ],
+        "parameters": [
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_threads_ThreadId"
+            },
+            "x-doc": {
+              "desc_en": "ID of the thread whose labels are being updated.",
+              "title_zh": "要更新标签的对话 ID。",
+              "source": "ai",
+              "src_hash": "sha256:08a11d1c2b1d",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_threads_UpdateThreadResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response with status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Error response with status 422",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/type_threads_UpdateThreadRequest"
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "更新对话标签 update",
+          "desc_en": "Update a thread's labels by adding and/or removing custom labels. System labels (sent, received, bounced, etc.) cannot be changed, and threads with 100 or more messages are rejected with 422.",
+          "description_zh": "更新对话标签：增加和/或移除自定义标签。系统标签（sent、received、bounced 等）不可改动；消息数达 100 条及以上的对话会以 422 拒绝。",
+          "source": "ai",
+          "src_hash": "sha256:806b6145f056",
+          "doc_version": "2.0.0"
+        }
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "Delete Thread",
+        "description": "Moves the thread to trash by adding a trash label to all messages. If the thread is already in trash, it will be permanently deleted. Use `permanent=true` to force permanent deletion.\n\n**CLI:**\n```bash\nagentmail threads delete --thread-id <thread_id>\n```",
+        "tags": [
+          "subpackage_threads"
+        ],
+        "parameters": [
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_threads_ThreadId"
+            },
+            "x-doc": {
+              "desc_en": "ID of the thread to delete (trash, or permanently delete if already trashed or `permanent=true`).",
+              "title_zh": "要删除的对话 ID（移入回收站；若已在回收站或 `permanent=true` 则永久删除）。",
+              "source": "ai",
+              "src_hash": "sha256:08a11d1c2b1d",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "permanent",
+            "in": "query",
+            "description": "If true, permanently delete the thread instead of moving to trash.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "x-doc": {
+              "desc_en": "When true, permanently delete the thread immediately instead of moving it to trash.",
+              "title_zh": "为 true 时立即永久删除对话，而非移入回收站。",
+              "source": "ai",
+              "src_hash": "sha256:9631d2d27859",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "按 ID 删除资源 delete",
+          "desc_en": "Delete a resource by its ID. Shared by two endpoints: delete a thread (moves it to trash, or permanently removes it when already trashed or when `permanent=true`) and delete one allow/block list entry. Read-only system entries cannot be deleted.",
+          "description_zh": "按 ID 删除资源。由两个端点共用：删除对话（移入回收站；若已在回收站或 `permanent=true` 则永久删除）、删除单条允许/拦截名单条目。只读的系统条目无法删除。",
+          "source": "ai",
+          "src_hash": "sha256:7f33b1c6b4ad",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/agentmail/lists/{direction}/{type}": {
+      "get": {
+        "operationId": "list",
+        "summary": "List Entries",
+        "description": "**CLI:**\n```bash\nagentmail lists list --direction <direction> --type <type>\n```",
+        "tags": [
+          "subpackage_lists"
+        ],
+        "parameters": [
+          {
+            "name": "direction",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_lists_Direction"
+            },
+            "x-doc": {
+              "desc_en": "Traffic direction of the list to read: `send`, `receive`, or `reply`. (List-entries endpoint only.)",
+              "title_zh": "要读取的名单流量方向：`send`、`receive` 或 `reply`。（仅名单条目端点）",
+              "source": "ai",
+              "src_hash": "sha256:2e28c1ff50a2",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_lists_ListType"
+            },
+            "x-doc": {
+              "desc_en": "Whether to read the `allow` or `block` list. (List-entries endpoint only.)",
+              "title_zh": "读取 `allow` 还是 `block` 名单。（仅名单条目端点）",
+              "source": "ai",
+              "src_hash": "sha256:e1482baf6cab",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Limit"
+            },
+            "x-doc": {
+              "desc_en": "Maximum number of items to return in this page.",
+              "title_zh": "本页返回的最大条目数。",
+              "source": "ai",
+              "src_hash": "sha256:113a26372081",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__PageToken"
+            },
+            "x-doc": {
+              "desc_en": "Pagination cursor. Pass the `next_page_token` from the previous response to fetch the next page; omit for the first page.",
+              "title_zh": "分页游标。传入上一次响应的 `next_page_token` 以取下一页；首页可不传。",
+              "source": "ai",
+              "src_hash": "sha256:0dc0314734cc",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_lists_ListListEntriesResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "分页列出资源 list",
+          "desc_en": "List resources with cursor pagination. This operationId is shared by three endpoints: list threads, list drafts, and list allow/block list entries. Supports time/label filters where applicable; iterate with `next_page_token` to walk all pages.",
+          "description_zh": "分页列出资源（基于游标）。该 operationId 由三个端点共用：列出对话、列出草稿、列出允许/拦截名单条目。在适用处支持时间与标签筛选；通过 `next_page_token` 翻页可遍历全部结果。",
+          "source": "ai",
+          "src_hash": "sha256:c47776cec4d2",
+          "doc_version": "2.0.0"
+        }
+      },
+      "post": {
+        "operationId": "create",
+        "summary": "Create List Entry",
+        "description": "**CLI:**\n```bash\nagentmail lists create --direction <direction> --type <type> --entry user@example.com\n```",
+        "tags": [
+          "subpackage_lists"
+        ],
+        "parameters": [
+          {
+            "name": "direction",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_lists_Direction"
+            },
+            "x-doc": {
+              "desc_en": "Traffic direction the new entry should govern: `send`, `receive`, or `reply`.",
+              "title_zh": "新条目作用的流量方向：`send`、`receive` 或 `reply`。",
+              "source": "ai",
+              "src_hash": "sha256:2e28c1ff50a2",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_lists_ListType"
+            },
+            "x-doc": {
+              "desc_en": "Whether to add the entry to the `allow` or `block` list.",
+              "title_zh": "将条目加入 `allow` 还是 `block` 名单。",
+              "source": "ai",
+              "src_hash": "sha256:e1482baf6cab",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_lists_ListEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response with status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/type_lists_CreateListEntryRequest"
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "新增名单条目 create",
+          "desc_en": "Add an email address or domain to an allow/block list, scoped by the `direction` and `type` path parameters. Returns the created entry.",
+          "description_zh": "向允许/拦截名单新增一个邮箱地址或域名，作用范围由路径参数 `direction` 与 `type` 决定。返回新建的条目。",
+          "source": "ai",
+          "src_hash": "sha256:aa60fcd6b944",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/agentmail/threads": {
+      "get": {
+        "operationId": "list",
+        "summary": "List Threads",
+        "description": "**CLI:**\n```bash\nagentmail threads list\n```",
+        "tags": [
+          "subpackage_threads"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Limit"
+            },
+            "x-doc": {
+              "desc_en": "Maximum number of items to return in this page.",
+              "title_zh": "本页返回的最大条目数。",
+              "source": "ai",
+              "src_hash": "sha256:113a26372081",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__PageToken"
+            },
+            "x-doc": {
+              "desc_en": "Pagination cursor. Pass the `next_page_token` from the previous response to fetch the next page; omit for the first page.",
+              "title_zh": "分页游标。传入上一次响应的 `next_page_token` 以取下一页；首页可不传。",
+              "source": "ai",
+              "src_hash": "sha256:0dc0314734cc",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "labels",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Labels"
+            },
+            "x-doc": {
+              "desc_en": "Restrict results to items carrying all of these labels.",
+              "title_zh": "仅返回带有全部这些标签的条目。",
+              "source": "ai",
+              "src_hash": "sha256:c6069ec06018",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Before"
+            },
+            "x-doc": {
+              "desc_en": "Only return items with a timestamp before this moment.",
+              "title_zh": "仅返回时间戳早于该时刻的条目。",
+              "source": "ai",
+              "src_hash": "sha256:0e6672e7ad85",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__After"
+            },
+            "x-doc": {
+              "desc_en": "Only return items with a timestamp after this moment.",
+              "title_zh": "仅返回时间戳晚于该时刻的条目。",
+              "source": "ai",
+              "src_hash": "sha256:787eb28f9a11",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Ascending"
+            },
+            "x-doc": {
+              "desc_en": "When true, return items in ascending time order instead of the default newest-first.",
+              "title_zh": "为 true 时按时间升序返回，而非默认的最新优先。",
+              "source": "ai",
+              "src_hash": "sha256:ede81d123ffc",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "include_spam",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__IncludeSpam"
+            },
+            "x-doc": {
+              "desc_en": "When true, include items labeled spam in the results.",
+              "title_zh": "为 true 时在结果中包含被标记为垃圾邮件（spam）的条目。",
+              "source": "ai",
+              "src_hash": "sha256:0fad83dd0f38",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "include_blocked",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__IncludeBlocked"
+            },
+            "x-doc": {
+              "desc_en": "When true, include items labeled blocked in the results.",
+              "title_zh": "为 true 时在结果中包含被标记为拦截（blocked）的条目。",
+              "source": "ai",
+              "src_hash": "sha256:4fa47f8cc7c0",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "include_unauthenticated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__IncludeUnauthenticated"
+            },
+            "x-doc": {
+              "desc_en": "When true, include items from unauthenticated senders in the results.",
+              "title_zh": "为 true 时在结果中包含来自未通过认证发件人的条目。",
+              "source": "ai",
+              "src_hash": "sha256:fc587c016c8b",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "include_trash",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__IncludeTrash"
+            },
+            "x-doc": {
+              "desc_en": "When true, include items in trash in the results.",
+              "title_zh": "为 true 时在结果中包含回收站（trash）内的条目。",
+              "source": "ai",
+              "src_hash": "sha256:e1f5035d1db3",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_threads_ListThreadsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "分页列出资源 list",
+          "desc_en": "List resources with cursor pagination. This operationId is shared by three endpoints: list threads, list drafts, and list allow/block list entries. Supports time/label filters where applicable; iterate with `next_page_token` to walk all pages.",
+          "description_zh": "分页列出资源（基于游标）。该 operationId 由三个端点共用：列出对话、列出草稿、列出允许/拦截名单条目。在适用处支持时间与标签筛选；通过 `next_page_token` 翻页可遍历全部结果。",
+          "source": "ai",
+          "src_hash": "sha256:6c6244bc1641",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/agentmail/drafts/{draft_id}/attachments/{attachment_id}": {
+      "get": {
+        "operationId": "get-attachment",
+        "summary": "Get Attachment",
+        "description": "**CLI:**\n```bash\nagentmail drafts get-attachment --draft-id <draft_id> --attachment-id <attachment_id>\n```",
+        "tags": [
+          "subpackage_drafts"
+        ],
+        "parameters": [
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_drafts_DraftId"
+            },
+            "x-doc": {
+              "desc_en": "ID of the draft that contains the attachment. (Draft attachment endpoint only.)",
+              "title_zh": "包含该附件的草稿 ID。（仅草稿附件端点）",
+              "source": "ai",
+              "src_hash": "sha256:d80bed99896d",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_attachments_AttachmentId"
+            },
+            "x-doc": {
+              "desc_en": "ID of the attachment to fetch. Obtain it from the `attachment_id` field of a message/thread/draft attachment.",
+              "title_zh": "要获取的附件 ID。可从消息/对话/草稿附件的 `attachment_id` 字段获得。",
+              "source": "ai",
+              "src_hash": "sha256:dfd8c45cce3d",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_attachments_AttachmentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "获取附件下载链接 get-attachment",
+          "desc_en": "Get attachment metadata together with a time-limited presigned download URL. Shared by two endpoints: fetch an attachment from a draft (`draft_id`) or from a thread (`thread_id`), in both cases by `attachment_id`.",
+          "description_zh": "获取附件元数据及一个限时的预签名下载链接。由两个端点共用：从草稿（`draft_id`）或从对话（`thread_id`）按 `attachment_id` 获取附件。",
+          "source": "ai",
+          "src_hash": "sha256:e42a1fb22441",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/agentmail/threads/{thread_id}/attachments/{attachment_id}": {
+      "get": {
+        "operationId": "get-attachment",
+        "summary": "Get Attachment",
+        "description": "**CLI:**\n```bash\nagentmail threads get-attachment --thread-id <thread_id> --attachment-id <attachment_id>\n```",
+        "tags": [
+          "subpackage_threads"
+        ],
+        "parameters": [
+          {
+            "name": "thread_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_threads_ThreadId"
+            },
+            "x-doc": {
+              "desc_en": "ID of the thread that contains the attachment. (Thread attachment endpoint only.)",
+              "title_zh": "包含该附件的对话 ID。（仅对话附件端点）",
+              "source": "ai",
+              "src_hash": "sha256:08a11d1c2b1d",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_attachments_AttachmentId"
+            },
+            "x-doc": {
+              "desc_en": "ID of the attachment to fetch. Obtain it from the `attachment_id` field of a message/thread/draft attachment.",
+              "title_zh": "要获取的附件 ID。可从消息/对话/草稿附件的 `attachment_id` 字段获得。",
+              "source": "ai",
+              "src_hash": "sha256:dfd8c45cce3d",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_attachments_AttachmentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "获取附件下载链接 get-attachment",
+          "desc_en": "Get attachment metadata together with a time-limited presigned download URL. Shared by two endpoints: fetch an attachment from a draft (`draft_id`) or from a thread (`thread_id`), in both cases by `attachment_id`.",
+          "description_zh": "获取附件元数据及一个限时的预签名下载链接。由两个端点共用：从草稿（`draft_id`）或从对话（`thread_id`）按 `attachment_id` 获取附件。",
+          "source": "ai",
+          "src_hash": "sha256:3ae3bfb1bd6f",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/agentmail/metrics": {
+      "get": {
+        "operationId": "query",
+        "summary": "Query Metrics",
+        "description": "**CLI:**\n```bash\nagentmail metrics list\n```",
+        "tags": [
+          "subpackage_metrics"
+        ],
+        "parameters": [
+          {
+            "name": "event_types",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type_metrics_MetricEventTypes"
+            },
+            "x-doc": {
+              "desc_en": "Which metric event types to include, e.g. `message.sent`, `message.delivered`, `message.bounced`. Omit to query the default set.",
+              "title_zh": "要纳入统计的指标事件类型，如 `message.sent`、`message.delivered`、`message.bounced`。不传则查询默认集合。",
+              "source": "ai",
+              "src_hash": "sha256:15342f317108",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type_metrics_Start"
+            },
+            "x-doc": {
+              "desc_en": "Start of the time window to query (inclusive).",
+              "title_zh": "查询时间窗口的起点（含）。",
+              "source": "ai",
+              "src_hash": "sha256:42c202795fff",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type_metrics_End"
+            },
+            "x-doc": {
+              "desc_en": "End of the time window to query (exclusive).",
+              "title_zh": "查询时间窗口的终点（不含）。",
+              "source": "ai",
+              "src_hash": "sha256:1e0e9f137a36",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type_metrics_Period"
+            },
+            "x-doc": {
+              "desc_en": "Width of each time bucket, expressed as a number of seconds. Determines the granularity of the aggregation.",
+              "title_zh": "每个时间桶的宽度，以秒数表示，决定聚合的粒度。",
+              "source": "ai",
+              "src_hash": "sha256:25fe969d3624",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type_metrics_MetricLimit"
+            },
+            "x-doc": {
+              "desc_en": "Maximum number of time buckets to return.",
+              "title_zh": "返回的时间桶最大数量。",
+              "source": "ai",
+              "src_hash": "sha256:01091bc44dae",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "descending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type_metrics_Descending"
+            },
+            "x-doc": {
+              "desc_en": "When true, return buckets in descending time order (newest first).",
+              "title_zh": "为 true 时按时间降序返回桶（最新优先）。",
+              "source": "ai",
+              "src_hash": "sha256:7d571695b6e6",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_metrics_QueryMetricsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response with status 400",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "查询邮件指标 query",
+          "desc_en": "Query email delivery metrics aggregated into time buckets. Results are grouped by event type (sent, delivered, bounced, etc.) over the requested time window and bucket period.",
+          "description_zh": "查询邮件投递指标，按时间桶聚合。结果按事件类型（sent、delivered、bounced 等）分组，覆盖请求指定的时间窗口与桶周期。",
+          "source": "ai",
+          "src_hash": "sha256:870c6a7c3866",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/agentmail/lists/{direction}/{type}/{entry}": {
+      "get": {
+        "operationId": "get",
+        "summary": "Get List Entry",
+        "description": "**CLI:**\n```bash\nagentmail lists get --direction <direction> --type <type> --entry <entry>\n```",
+        "tags": [
+          "subpackage_lists"
+        ],
+        "parameters": [
+          {
+            "name": "direction",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_lists_Direction"
+            },
+            "x-doc": {
+              "desc_en": "Which traffic direction the list entry governs: `send` (your outbound), `receive` (inbound to you), or `reply`. Combined with `type` it selects exactly one list.",
+              "title_zh": "名单条目作用的流量方向：`send`（出站）、`receive`（入站）或 `reply`（回复）。与 `type` 组合可精确定位一份名单。",
+              "source": "ai",
+              "src_hash": "sha256:2e28c1ff50a2",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_lists_ListType"
+            },
+            "x-doc": {
+              "desc_en": "Whether to address the allow list or the block list. `allow` permits the entry; `block` denies it. Combined with `direction` it selects exactly one list.",
+              "title_zh": "操作允许名单还是拦截名单：`allow` 放行、`block` 拦截。与 `direction` 组合可精确定位一份名单。",
+              "source": "ai",
+              "src_hash": "sha256:e1482baf6cab",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "entry",
+            "in": "path",
+            "description": "Email address or domain.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "The exact email address or domain identifying the list entry to fetch.",
+              "title_zh": "标识要获取的名单条目的邮箱地址或域名（需精确匹配）。",
+              "source": "ai",
+              "src_hash": "sha256:51f80c9cd2bd",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret; never log it in plaintext.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密，切勿明文记录。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_lists_ListEntry"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "按 ID 获取单个资源 get",
+          "desc_en": "Fetch a single resource by its ID. This operationId is shared by three endpoints: get a thread (with its full message list) by `thread_id`, get a draft by `draft_id`, and get one allow/block list entry by `direction`/`type`/`entry`. The path determines which resource and response shape you receive.",
+          "description_zh": "按 ID 获取单个资源。该 operationId 由三个端点共用：按 `thread_id` 获取对话（含完整消息列表）、按 `draft_id` 获取草稿、按 `direction`/`type`/`entry` 获取单条允许/拦截名单条目。具体取哪种资源及返回结构由请求路径决定。",
+          "source": "ai",
+          "src_hash": "sha256:98b2a1622fc6",
+          "doc_version": "2.0.0"
+        }
+      },
+      "delete": {
+        "operationId": "delete",
+        "summary": "Delete List Entry",
+        "description": "**CLI:**\n```bash\nagentmail lists delete --direction <direction> --type <type> --entry <entry>\n```",
+        "tags": [
+          "subpackage_lists"
+        ],
+        "parameters": [
+          {
+            "name": "direction",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_lists_Direction"
+            },
+            "x-doc": {
+              "desc_en": "Traffic direction of the list entry to delete: `send`, `receive`, or `reply`.",
+              "title_zh": "要删除的名单条目的流量方向：`send`、`receive` 或 `reply`。",
+              "source": "ai",
+              "src_hash": "sha256:2e28c1ff50a2",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_lists_ListType"
+            },
+            "x-doc": {
+              "desc_en": "Whether the entry is on the `allow` or `block` list.",
+              "title_zh": "条目位于 `allow` 还是 `block` 名单。",
+              "source": "ai",
+              "src_hash": "sha256:e1482baf6cab",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "entry",
+            "in": "path",
+            "description": "Email address or domain.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "The exact email address or domain of the list entry to delete. System (read-only) entries cannot be removed.",
+              "title_zh": "要删除的名单条目的邮箱地址或域名（需精确匹配）。系统（只读）条目不可删除。",
+              "source": "ai",
+              "src_hash": "sha256:51f80c9cd2bd",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "按 ID 删除资源 delete",
+          "desc_en": "Delete a resource by its ID. Shared by two endpoints: delete a thread (moves it to trash, or permanently removes it when already trashed or when `permanent=true`) and delete one allow/block list entry. Read-only system entries cannot be deleted.",
+          "description_zh": "按 ID 删除资源。由两个端点共用：删除对话（移入回收站；若已在回收站或 `permanent=true` 则永久删除）、删除单条允许/拦截名单条目。只读的系统条目无法删除。",
+          "source": "ai",
+          "src_hash": "sha256:39e996e12420",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/agentmail/drafts": {
+      "get": {
+        "operationId": "list",
+        "summary": "List Drafts",
+        "description": "**CLI:**\n```bash\nagentmail drafts list\n```",
+        "tags": [
+          "subpackage_drafts"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Limit"
+            },
+            "x-doc": {
+              "desc_en": "Maximum number of items to return in this page.",
+              "title_zh": "本页返回的最大条目数。",
+              "source": "ai",
+              "src_hash": "sha256:113a26372081",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__PageToken"
+            },
+            "x-doc": {
+              "desc_en": "Pagination cursor. Pass the `next_page_token` from the previous response to fetch the next page; omit for the first page.",
+              "title_zh": "分页游标。传入上一次响应的 `next_page_token` 以取下一页；首页可不传。",
+              "source": "ai",
+              "src_hash": "sha256:0dc0314734cc",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "labels",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Labels"
+            },
+            "x-doc": {
+              "desc_en": "Restrict results to items carrying all of these labels.",
+              "title_zh": "仅返回带有全部这些标签的条目。",
+              "source": "ai",
+              "src_hash": "sha256:c6069ec06018",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Before"
+            },
+            "x-doc": {
+              "desc_en": "Only return items with a timestamp before this moment.",
+              "title_zh": "仅返回时间戳早于该时刻的条目。",
+              "source": "ai",
+              "src_hash": "sha256:0e6672e7ad85",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__After"
+            },
+            "x-doc": {
+              "desc_en": "Only return items with a timestamp after this moment.",
+              "title_zh": "仅返回时间戳晚于该时刻的条目。",
+              "source": "ai",
+              "src_hash": "sha256:787eb28f9a11",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "ascending",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/type__Ascending"
+            },
+            "x-doc": {
+              "desc_en": "When true, return items in ascending time order instead of the default newest-first.",
+              "title_zh": "为 true 时按时间升序返回，而非默认的最新优先。",
+              "source": "ai",
+              "src_hash": "sha256:ede81d123ffc",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_drafts_ListDraftsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "分页列出资源 list",
+          "desc_en": "List resources with cursor pagination. This operationId is shared by three endpoints: list threads, list drafts, and list allow/block list entries. Supports time/label filters where applicable; iterate with `next_page_token` to walk all pages.",
+          "description_zh": "分页列出资源（基于游标）。该 operationId 由三个端点共用：列出对话、列出草稿、列出允许/拦截名单条目。在适用处支持时间与标签筛选；通过 `next_page_token` 翻页可遍历全部结果。",
+          "source": "ai",
+          "src_hash": "sha256:5fa43d679ef6",
+          "doc_version": "2.0.0"
+        }
+      }
+    },
+    "/agentmail/drafts/{draft_id}": {
+      "get": {
+        "operationId": "get",
+        "summary": "Get Draft",
+        "description": "**CLI:**\n```bash\nagentmail drafts get --draft-id <draft_id>\n```",
+        "tags": [
+          "subpackage_drafts"
+        ],
+        "parameters": [
+          {
+            "name": "draft_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/type_drafts_DraftId"
+            },
+            "x-doc": {
+              "desc_en": "ID of the draft to fetch. Obtain it from the `draft_id` field of a list-drafts result or a create-draft response.",
+              "title_zh": "要获取的草稿 ID。可从列出草稿的结果或创建草稿响应的 `draft_id` 字段获得。",
+              "source": "ai",
+              "src_hash": "sha256:d80bed99896d",
+              "doc_version": "2.0.0"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "Bearer authentication",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "x-doc": {
+              "desc_en": "Bearer token for authentication, sent as `Bearer <api_key>`. Keep the key secret; never log it in plaintext.",
+              "title_zh": "用于鉴权的 Bearer 令牌，格式为 `Bearer <api_key>`。请妥善保密，切勿明文记录。",
+              "source": "ai",
+              "src_hash": "sha256:68ad0c46607f",
+              "doc_version": "2.0.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response with status 200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type_drafts_Draft"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error response with status 404",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/type__ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "x-doc": {
+          "heading_zh": "按 ID 获取单个资源 get",
+          "desc_en": "Fetch a single resource by its ID. This operationId is shared by three endpoints: get a thread (with its full message list) by `thread_id`, get a draft by `draft_id`, and get one allow/block list entry by `direction`/`type`/`entry`. The path determines which resource and response shape you receive.",
+          "description_zh": "按 ID 获取单个资源。该 operationId 由三个端点共用：按 `thread_id` 获取对话（含完整消息列表）、按 `draft_id` 获取草稿、按 `direction`/`type`/`entry` 获取单条允许/拦截名单条目。具体取哪种资源及返回结构由请求路径决定。",
+          "source": "ai",
+          "src_hash": "sha256:d59b2af54b09",
+          "doc_version": "2.0.0"
+        }
+      }
+    }
+  }
+}

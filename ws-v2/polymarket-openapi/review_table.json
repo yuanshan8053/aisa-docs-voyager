@@ -1,0 +1,1718 @@
+{
+  "sections": [
+    {
+      "operation": "get_polymarket-markets",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches market data with optional filtering and search functionality. Supports filtering by market slug, condition ID, token ID, or tags, as well as fuzzy search across market titles and descriptions. Returns markets ordered by volume (most popular first) when filters are applied, or by start_time (most recent first) when no filters are provided.",
+          "desc_en": "List prediction markets with optional filtering (by slug, condition ID, token ID, tags, status, volume, time range) and keyword search. Results are ordered by volume when filters are applied, or by start time otherwise, and paginated via a cursor.",
+          "title_zh": "查询预测市场列表，支持按 slug、condition ID、token ID、标签、状态、成交量、时间范围筛选及关键词搜索。施加筛选时按成交量排序，否则按开始时间排序，并以游标分页。"
+        },
+        {
+          "path": "param:market_slug",
+          "src_en": "Filter markets by market slug(s). Can provide multiple values.",
+          "desc_en": "Restrict results to markets with these slugs; a slug is the market's URL identifier. Repeat the parameter for multiple values.",
+          "title_zh": "按市场 slug（市场的 URL 标识）筛选，可重复传入多个值。"
+        },
+        {
+          "path": "param:event_slug",
+          "src_en": "Filter markets by event slug(s). Can provide multiple values.",
+          "desc_en": "Restrict results to markets belonging to events with these slugs. Repeat the parameter for multiple values.",
+          "title_zh": "按所属事件的 slug 筛选，可重复传入多个值。"
+        },
+        {
+          "path": "param:condition_id",
+          "src_en": "Filter markets by condition ID(s). Can provide multiple values.",
+          "desc_en": "Restrict results to markets with these on-chain condition IDs. Repeat the parameter for multiple values.",
+          "title_zh": "按市场链上 condition ID 筛选，可重复传入多个值。"
+        },
+        {
+          "path": "param:token_id",
+          "src_en": "Filter markets by token ID(s). Matches markets where the token_id is either the primary_token_id or secondary_token_id. Can provide multiple values (maximum 100). Each token_id must be a numeric string.",
+          "desc_en": "Restrict results to markets whose primary or secondary outcome token matches these token IDs. Repeat the parameter for multiple values.",
+          "title_zh": "按结果 token ID 筛选，命中市场的 primary 或 secondary token 即返回，可重复传入多个值。"
+        },
+        {
+          "path": "param:tags",
+          "src_en": "Filter markets by tag(s). Can provide multiple values.",
+          "desc_en": "Restrict results to markets carrying these category tags. Repeat the parameter for multiple values.",
+          "title_zh": "按市场所带的分类标签筛选，可重复传入多个值。"
+        },
+        {
+          "path": "param:search",
+          "src_en": "Search markets by keywords in title and description. Must be URL encoded (e.g., 'bitcoin%20price' for 'bitcoin price').",
+          "desc_en": "Fuzzy keyword search across market titles and descriptions; the value must be URL-encoded. Cannot be combined with other filter parameters.",
+          "title_zh": "对市场标题与描述做模糊关键词搜索，取值需 URL 编码；不可与其他筛选参数同时使用。"
+        },
+        {
+          "path": "param:status",
+          "src_en": "Filter markets by status (whether they're open or closed)",
+          "desc_en": "Restrict results to markets that are currently open or already closed.",
+          "title_zh": "按市场当前是开放还是已关闭筛选。"
+        },
+        {
+          "path": "param:min_volume",
+          "src_en": "Filter markets with total trading volume greater than or equal to this amount (USD)",
+          "desc_en": "Only return markets whose total trading volume (in USD) is at least this amount.",
+          "title_zh": "仅返回累计成交量（美元）不低于该值的市场。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Number of markets to return (1-100). Default: 10 for search, 10 for regular queries.",
+          "desc_en": "Maximum number of markets to return in this page.",
+          "title_zh": "本页最多返回的市场数量。"
+        },
+        {
+          "path": "param:pagination_key",
+          "src_en": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object. Use this instead of large offsets for better performance.",
+          "desc_en": "Cursor for the next page; pass back the value from the previous response's pagination object. Preferred over large offsets for performance.",
+          "title_zh": "翻页游标，回传上一页响应 pagination 中的值；相比大偏移量更高效。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Filter markets from this Unix timestamp in seconds (inclusive)",
+          "desc_en": "Only return markets at or after this start time, given as a Unix timestamp in seconds.",
+          "title_zh": "仅返回开始时间不早于此刻的市场，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "Filter markets until this Unix timestamp in seconds (inclusive)",
+          "desc_en": "Only return markets at or before this time, given as a Unix timestamp in seconds.",
+          "title_zh": "仅返回时间不晚于此刻的市场，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.markets",
+          "src_en": "",
+          "desc_en": "The list of markets matching the query.",
+          "title_zh": "匹配查询条件的市场列表。"
+        },
+        {
+          "path": "resp.200.markets.market_slug",
+          "src_en": "",
+          "desc_en": "URL identifier of the market.",
+          "title_zh": "市场的 URL 标识。"
+        },
+        {
+          "path": "resp.200.markets.event_slug",
+          "src_en": "The event slug this market belongs to, or null if not associated with an event",
+          "desc_en": "Slug of the event this market belongs to; null when the market is not part of an event.",
+          "title_zh": "该市场所属事件的 slug；不属于任何事件时为 null。"
+        },
+        {
+          "path": "resp.200.markets.condition_id",
+          "src_en": "",
+          "desc_en": "On-chain condition ID identifying the market.",
+          "title_zh": "标识该市场的链上 condition ID。"
+        },
+        {
+          "path": "resp.200.markets.title",
+          "src_en": "",
+          "desc_en": "Human-readable market question or title.",
+          "title_zh": "市场的可读问题或标题。"
+        },
+        {
+          "path": "resp.200.markets.start_time",
+          "src_en": "Unix timestamp in seconds when the market starts",
+          "desc_en": "When trading on the market opens, as a Unix timestamp in seconds.",
+          "title_zh": "市场开盘时间，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.markets.end_time",
+          "src_en": "Unix timestamp in seconds when the market ends",
+          "desc_en": "When trading on the market ends, as a Unix timestamp in seconds.",
+          "title_zh": "市场结束时间，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.markets.completed_time",
+          "src_en": "Unix timestamp in seconds when the market was completed",
+          "desc_en": "When the market was completed, as a Unix timestamp in seconds; null if not yet completed.",
+          "title_zh": "市场完成时间，Unix 时间戳（秒）；尚未完成时为 null。"
+        },
+        {
+          "path": "resp.200.markets.close_time",
+          "src_en": "Unix timestamp in seconds when the market was closed",
+          "desc_en": "When the market was closed, as a Unix timestamp in seconds; null if still open.",
+          "title_zh": "市场关闭时间，Unix 时间戳（秒）；仍开放时为 null。"
+        },
+        {
+          "path": "resp.200.markets.game_start_time",
+          "src_en": "Datetime string in UTC format (YYYY-MM-DD HH:MM:SS.000) for when the game/event starts. Only present for sports markets that have a game start time.",
+          "desc_en": "For sports markets, the UTC datetime when the underlying game starts; null otherwise.",
+          "title_zh": "体育类市场中对应赛事的开始时间（UTC）；非体育市场为 null。"
+        },
+        {
+          "path": "resp.200.markets.tags",
+          "src_en": "",
+          "desc_en": "Category tags attached to the market.",
+          "title_zh": "市场所带的分类标签。"
+        },
+        {
+          "path": "resp.200.markets.volume_1_week",
+          "src_en": "Trading volume in USD for the past week",
+          "desc_en": "Trading volume over the past week, in USD.",
+          "title_zh": "过去一周的成交量（美元）。"
+        },
+        {
+          "path": "resp.200.markets.volume_1_month",
+          "src_en": "Trading volume in USD for the past month",
+          "desc_en": "Trading volume over the past month, in USD.",
+          "title_zh": "过去一个月的成交量（美元）。"
+        },
+        {
+          "path": "resp.200.markets.volume_1_year",
+          "src_en": "Trading volume in USD for the past year",
+          "desc_en": "Trading volume over the past year, in USD.",
+          "title_zh": "过去一年的成交量（美元）。"
+        },
+        {
+          "path": "resp.200.markets.volume_total",
+          "src_en": "Total trading volume in USD",
+          "desc_en": "Cumulative trading volume since inception, in USD.",
+          "title_zh": "自创建以来的累计成交量（美元）。"
+        },
+        {
+          "path": "resp.200.markets.resolution_source",
+          "src_en": "URL to the data source used for market resolution",
+          "desc_en": "URL of the data source used to resolve the market outcome.",
+          "title_zh": "用于裁定市场结果的数据源 URL。"
+        },
+        {
+          "path": "resp.200.markets.image",
+          "src_en": "URL to the market image",
+          "desc_en": "URL of the market's display image.",
+          "title_zh": "市场展示图片的 URL。"
+        },
+        {
+          "path": "resp.200.markets.description",
+          "src_en": "Detailed description of the market, or null if no description is available",
+          "desc_en": "Detailed market description including resolution criteria; null when unavailable.",
+          "title_zh": "市场的详细描述（含裁定标准）；无内容时为 null。"
+        },
+        {
+          "path": "resp.200.markets.negative_risk_id",
+          "src_en": "Negative risk identifier for the market, or null if not applicable",
+          "desc_en": "Identifier linking related mutually-exclusive markets under a negative-risk group; null when not applicable.",
+          "title_zh": "将互斥相关市场归入 negative-risk 组的标识；不适用时为 null。"
+        },
+        {
+          "path": "resp.200.markets.side_a",
+          "src_en": "First side/outcome of the market",
+          "desc_en": "The first of the two market outcomes.",
+          "title_zh": "市场两个结果中的第一个。"
+        },
+        {
+          "path": "resp.200.markets.side_a.id",
+          "src_en": "Token ID for side A",
+          "desc_en": "Outcome token ID for side A.",
+          "title_zh": "side A 的结果 token ID。"
+        },
+        {
+          "path": "resp.200.markets.side_a.label",
+          "src_en": "Label for side A",
+          "desc_en": "Display label for side A's outcome.",
+          "title_zh": "side A 结果的展示标签。"
+        },
+        {
+          "path": "resp.200.markets.side_b",
+          "src_en": "Second side/outcome of the market",
+          "desc_en": "The second of the two market outcomes.",
+          "title_zh": "市场两个结果中的第二个。"
+        },
+        {
+          "path": "resp.200.markets.side_b.id",
+          "src_en": "Token ID for side B",
+          "desc_en": "Outcome token ID for side B.",
+          "title_zh": "side B 的结果 token ID。"
+        },
+        {
+          "path": "resp.200.markets.side_b.label",
+          "src_en": "Label for side B",
+          "desc_en": "Display label for side B's outcome.",
+          "title_zh": "side B 结果的展示标签。"
+        },
+        {
+          "path": "resp.200.markets.winning_side",
+          "src_en": "The winning side of the market (null if not yet resolved)",
+          "desc_en": "The outcome that won once resolved; null until the market is resolved.",
+          "title_zh": "裁定后的获胜结果；未裁定前为 null。"
+        },
+        {
+          "path": "resp.200.markets.status",
+          "src_en": "",
+          "desc_en": "Whether the market is currently open or closed.",
+          "title_zh": "市场当前为开放还是已关闭。"
+        },
+        {
+          "path": "resp.200.markets.extra_fields",
+          "src_en": "Additional market-specific fields as a map of key-value pairs. For updown markets (markets with slugs containing '-updown-15m-', '-up-or-down-', or '-updown-4h-'), this object includes 'price_to_beat' and 'final_price' fields. Empty object if no extra fields are present.",
+          "desc_en": "Map of market-specific extra fields; for up/down markets it includes price_to_beat and final_price. Empty when none apply.",
+          "title_zh": "市场专有的附加字段映射；涨跌（up/down）类市场含 price_to_beat 与 final_price。无附加字段时为空对象。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "",
+          "desc_en": "The page size applied to this response.",
+          "title_zh": "本次响应采用的页大小。"
+        },
+        {
+          "path": "resp.200.pagination.total",
+          "src_en": "Total number of markets matching the filters",
+          "desc_en": "Total number of markets matching the filters across all pages.",
+          "title_zh": "所有页中匹配筛选条件的市场总数。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more markets available",
+          "desc_en": "Whether further pages of results are available.",
+          "title_zh": "是否还有更多结果页可取。"
+        },
+        {
+          "path": "resp.200.pagination.pagination_key",
+          "src_en": "Cursor for next page. Only present when has_more is true and using cursor-based pagination.",
+          "desc_en": "Cursor to request the next page; present only when has_more is true under cursor pagination.",
+          "title_zh": "请求下一页的游标；仅在游标分页且 has_more 为 true 时出现。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        },
+        {
+          "path": "resp.500.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.500.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-events",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches events (groups of related markets) with optional filtering by event_slug, tags/categories and status. Events aggregate multiple markets under a single topic (e.g., 'Presidential Election 2024' contains multiple candidate markets). Returns events ordered by total volume (most popular first).\n\n**Example Request (single event by slug):**\n```bash\ncurl 'https://api.aisa.one/apis/v1/polymarket/events?event_slug=presidential-election-winner-2024&include_markets=true'\n```\n\n**Example Request (filter by tags):**\n```bash\ncurl 'https://api.aisa.one/apis/v1/polymarket/events?tags=sports&status=open&limit=10'\n```\n\n**Example Request (with markets included):**\n```bash\ncurl 'https://api.aisa.one/apis/v1/polymarket/events?include_markets=true&limit=5'\n```",
+          "desc_en": "List events, which group related markets under a single topic, with optional filtering by event slug, tags, status, and time range. Optionally embeds each event's markets when include_markets is enabled. Results are ordered by total volume and paginated via a cursor.",
+          "title_zh": "查询事件列表。事件将相关市场聚合到同一主题下，支持按事件 slug、标签、状态、时间范围筛选；开启 include_markets 时内嵌各事件的市场。结果按总成交量排序并以游标分页。"
+        },
+        {
+          "path": "param:event_slug",
+          "src_en": "Filter by specific event slug. When provided, returns a single hydrated event matching that slug (e.g., 'presidential-election-winner-2024'). Use with include_markets=true to get the full event with all its markets.",
+          "desc_en": "Return the single event matching this slug; combine with include_markets=true to also embed its markets.",
+          "title_zh": "返回与该 slug 匹配的单个事件；配合 include_markets=true 可一并内嵌其市场。"
+        },
+        {
+          "path": "param:tags",
+          "src_en": "Filter events by tag(s)/category. Can provide multiple values (e.g., sports, crypto, politics).",
+          "desc_en": "Restrict results to events carrying these category tags. Repeat the parameter for multiple values.",
+          "title_zh": "按事件所带的分类标签筛选，可重复传入多个值。"
+        },
+        {
+          "path": "param:status",
+          "src_en": "Filter events by status. An event is 'open' if any of its markets are still open, 'closed' if all markets are closed.",
+          "desc_en": "Filter by event status; an event is open if any of its markets is open, otherwise closed.",
+          "title_zh": "按事件状态筛选；只要有一个市场开放即视为 open，全部关闭则为 closed。"
+        },
+        {
+          "path": "param:include_markets",
+          "src_en": "Set to 'true' to include the list of markets for each event in the response.",
+          "desc_en": "Pass true to embed the full list of markets within each returned event.",
+          "title_zh": "传 true 时在每个返回事件中内嵌其完整市场列表。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Filter events starting after this Unix timestamp (seconds)",
+          "desc_en": "Only return events starting at or after this Unix timestamp in seconds.",
+          "title_zh": "仅返回开始时间不早于此刻的事件，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "Filter events starting before this Unix timestamp (seconds)",
+          "desc_en": "Only return events starting at or before this Unix timestamp in seconds.",
+          "title_zh": "仅返回开始时间不晚于此刻的事件，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:game_start_time",
+          "src_en": "Filter events by game start time (Unix timestamp in seconds). Useful for filtering sports events by when the game starts.",
+          "desc_en": "Filter sports events by when the underlying game starts, as a Unix timestamp in seconds.",
+          "title_zh": "按对应赛事开始时间筛选体育类事件，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Number of events to return (1-100). Default: 10.",
+          "desc_en": "Maximum number of events to return in this page.",
+          "title_zh": "本页最多返回的事件数量。"
+        },
+        {
+          "path": "param:pagination_key",
+          "src_en": "Pagination key for cursor-based pagination. Use the value from the previous response's pagination.pagination_key field to get the next page of results. Do not use the deprecated 'offset' parameter.",
+          "desc_en": "Cursor for the next page; pass back pagination.pagination_key from the previous response. Do not use the deprecated offset parameter.",
+          "title_zh": "翻页游标，回传上一页响应的 pagination.pagination_key；请勿使用已废弃的 offset 参数。"
+        },
+        {
+          "path": "resp.200.events",
+          "src_en": "",
+          "desc_en": "The list of events matching the query.",
+          "title_zh": "匹配查询条件的事件列表。"
+        },
+        {
+          "path": "resp.200.events.event_slug",
+          "src_en": "Unique identifier for the event",
+          "desc_en": "URL identifier uniquely naming the event.",
+          "title_zh": "唯一标识事件的 URL slug。"
+        },
+        {
+          "path": "resp.200.events.title",
+          "src_en": "Event title",
+          "desc_en": "Human-readable event title.",
+          "title_zh": "事件的可读标题。"
+        },
+        {
+          "path": "resp.200.events.subtitle",
+          "src_en": "Event subtitle or description",
+          "desc_en": "Optional subtitle or short description of the event; null when absent.",
+          "title_zh": "事件的副标题或简短描述；无则为 null。"
+        },
+        {
+          "path": "resp.200.events.status",
+          "src_en": "Event status - 'open' if any market is open, 'closed' if all markets are closed",
+          "desc_en": "Aggregate event status: open if any market is open, closed if all are closed.",
+          "title_zh": "事件的聚合状态：有任一市场开放为 open，全部关闭为 closed。"
+        },
+        {
+          "path": "resp.200.events.start_time",
+          "src_en": "Unix timestamp (seconds) when the event started",
+          "desc_en": "When the event started, as a Unix timestamp in seconds.",
+          "title_zh": "事件开始时间，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.events.end_time",
+          "src_en": "Unix timestamp (seconds) when the event ends",
+          "desc_en": "When the event ends, as a Unix timestamp in seconds.",
+          "title_zh": "事件结束时间，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.events.volume_fiat_amount",
+          "src_en": "Total trading volume across all markets in the event (USD)",
+          "desc_en": "Total trading volume across all markets in the event, in USD.",
+          "title_zh": "事件下所有市场的总成交量（美元）。"
+        },
+        {
+          "path": "resp.200.events.settlement_sources",
+          "src_en": "Resolution/settlement source for the event",
+          "desc_en": "Source used to settle/resolve the event; null when unspecified.",
+          "title_zh": "用于结算/裁定事件的来源；未指定时为 null。"
+        },
+        {
+          "path": "resp.200.events.rules_url",
+          "src_en": "URL to the event rules (if available)",
+          "desc_en": "Link to the event's rules; null when unavailable.",
+          "title_zh": "事件规则的链接；无则为 null。"
+        },
+        {
+          "path": "resp.200.events.image",
+          "src_en": "Event image URL",
+          "desc_en": "URL of the event's display image; null when none.",
+          "title_zh": "事件展示图片的 URL；无则为 null。"
+        },
+        {
+          "path": "resp.200.events.tags",
+          "src_en": "Array of category tags for the event",
+          "desc_en": "Category tags attached to the event.",
+          "title_zh": "事件所带的分类标签。"
+        },
+        {
+          "path": "resp.200.events.market_count",
+          "src_en": "Number of markets in this event",
+          "desc_en": "Number of markets grouped under this event.",
+          "title_zh": "该事件下聚合的市场数量。"
+        },
+        {
+          "path": "resp.200.events.markets",
+          "src_en": "List of markets in this event (only included when include_markets=true)",
+          "desc_en": "Markets belonging to this event; populated only when include_markets=true.",
+          "title_zh": "该事件下的市场；仅在 include_markets=true 时填充。"
+        },
+        {
+          "path": "resp.200.events.markets.market_slug",
+          "src_en": "",
+          "desc_en": "URL identifier of the embedded market.",
+          "title_zh": "内嵌市场的 URL 标识。"
+        },
+        {
+          "path": "resp.200.events.markets.title",
+          "src_en": "",
+          "desc_en": "Title of the embedded market.",
+          "title_zh": "内嵌市场的标题。"
+        },
+        {
+          "path": "resp.200.events.markets.condition_id",
+          "src_en": "",
+          "desc_en": "On-chain condition ID of the embedded market.",
+          "title_zh": "内嵌市场的链上 condition ID。"
+        },
+        {
+          "path": "resp.200.events.markets.status",
+          "src_en": "",
+          "desc_en": "Whether the embedded market is open or closed.",
+          "title_zh": "内嵌市场为开放还是已关闭。"
+        },
+        {
+          "path": "resp.200.events.markets.volume_total",
+          "src_en": "",
+          "desc_en": "Cumulative trading volume of the embedded market, in USD.",
+          "title_zh": "内嵌市场的累计成交量（美元）。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "Number of events returned in this response",
+          "desc_en": "Number of events returned in this response.",
+          "title_zh": "本次响应返回的事件数量。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more events available. If true, use pagination_key to fetch the next page.",
+          "desc_en": "Whether further pages are available; if true, use pagination_key to continue.",
+          "title_zh": "是否还有更多页；为 true 时用 pagination_key 继续翻页。"
+        },
+        {
+          "path": "resp.200.pagination.pagination_key",
+          "src_en": "Pagination key for fetching the next page. Pass this value as the pagination_key query parameter to get the next page of results. Will be null if has_more is false.",
+          "desc_en": "Cursor to fetch the next page; null when has_more is false.",
+          "title_zh": "获取下一页的游标；has_more 为 false 时为 null。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        },
+        {
+          "path": "resp.500.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.500.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-orders",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches order data with optional filtering by market, condition, token, time range, and user. Returns orders that match either primary or secondary token IDs for markets. If no filters provided, fetches the latest trades happening in real-time. Only one of market_slug, token_id, or condition_id can be provided.",
+          "desc_en": "List on-chain order/trade records, optionally filtered by market, condition, token, user wallet, and time range. With no filters it returns the latest real-time trades. Only one of market_slug, token_id, or condition_id may be supplied.",
+          "title_zh": "查询链上订单/成交记录，可按市场、condition、token、用户钱包及时间范围筛选；不传筛选时返回最新的实时成交。market_slug、token_id、condition_id 三者只能择一传入。"
+        },
+        {
+          "path": "param:market_slug",
+          "src_en": "Filter orders by market slug",
+          "desc_en": "Restrict orders to a single market identified by its slug. Mutually exclusive with token_id and condition_id.",
+          "title_zh": "按市场 slug 限定订单，与 token_id、condition_id 互斥。"
+        },
+        {
+          "path": "param:condition_id",
+          "src_en": "Filter orders by condition ID",
+          "desc_en": "Restrict orders to a single market identified by its on-chain condition ID. Mutually exclusive with market_slug and token_id.",
+          "title_zh": "按链上 condition ID 限定订单，与 market_slug、token_id 互斥。"
+        },
+        {
+          "path": "param:token_id",
+          "src_en": "Filter orders by token ID",
+          "desc_en": "Restrict orders to those touching this outcome token ID. Mutually exclusive with market_slug and condition_id.",
+          "title_zh": "按结果 token ID 限定订单，与 market_slug、condition_id 互斥。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Filter orders from this Unix timestamp in seconds (inclusive)",
+          "desc_en": "Only return orders placed at or after this Unix timestamp in seconds.",
+          "title_zh": "仅返回下单时间不早于此刻的订单，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "Filter orders until this Unix timestamp in seconds (inclusive)",
+          "desc_en": "Only return orders placed at or before this Unix timestamp in seconds.",
+          "title_zh": "仅返回下单时间不晚于此刻的订单，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Number of orders to return (1-1000)",
+          "desc_en": "Maximum number of orders to return in this page.",
+          "title_zh": "本页最多返回的订单数量。"
+        },
+        {
+          "path": "param:pagination_key",
+          "src_en": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object.",
+          "desc_en": "Cursor for the next page; pass back the value from the previous response's pagination object.",
+          "title_zh": "翻页游标，回传上一页响应 pagination 中的值。"
+        },
+        {
+          "path": "param:user",
+          "src_en": "Filter orders by user (wallet address)",
+          "desc_en": "Restrict orders to those made by this user wallet address.",
+          "title_zh": "按用户钱包地址限定订单。"
+        },
+        {
+          "path": "resp.200.orders",
+          "src_en": "",
+          "desc_en": "The list of matching order/trade records.",
+          "title_zh": "匹配的订单/成交记录列表。"
+        },
+        {
+          "path": "resp.200.orders.token_id",
+          "src_en": "",
+          "desc_en": "Outcome token ID this order traded.",
+          "title_zh": "该订单交易的结果 token ID。"
+        },
+        {
+          "path": "resp.200.orders.token_label",
+          "src_en": "Human readable label for this outcome (yes/no etc)",
+          "desc_en": "Human-readable label of the traded outcome (e.g. Yes/No).",
+          "title_zh": "所交易结果的可读标签（如 Yes/No）。"
+        },
+        {
+          "path": "resp.200.orders.side",
+          "src_en": "",
+          "desc_en": "Whether the order bought or sold the outcome token.",
+          "title_zh": "该订单是买入还是卖出结果 token。"
+        },
+        {
+          "path": "resp.200.orders.market_slug",
+          "src_en": "",
+          "desc_en": "Slug of the market the order belongs to.",
+          "title_zh": "订单所属市场的 slug。"
+        },
+        {
+          "path": "resp.200.orders.condition_id",
+          "src_en": "",
+          "desc_en": "On-chain condition ID of the order's market.",
+          "title_zh": "订单所属市场的链上 condition ID。"
+        },
+        {
+          "path": "resp.200.orders.shares",
+          "src_en": "Raw number of shares purchased (from the blockchain)",
+          "desc_en": "Raw share quantity as recorded on-chain (before normalization).",
+          "title_zh": "链上记录的原始份额数量（未归一化）。"
+        },
+        {
+          "path": "resp.200.orders.shares_normalized",
+          "src_en": "Number of shares purchased normalized (this is raw divided by 1000000)",
+          "desc_en": "Share quantity normalized to whole-share units (raw value scaled down by 1,000,000).",
+          "title_zh": "归一化后的份额数量（原始值除以 1,000,000）。"
+        },
+        {
+          "path": "resp.200.orders.price",
+          "src_en": "Price per share",
+          "desc_en": "Execution price per share.\n[⚠️Note:源码未声明价格单位与取值范围，待研发确认。]",
+          "title_zh": "每份额的成交价格。\n[⚠️批注:源码未声明价格单位与取值范围，待研发确认。]"
+        },
+        {
+          "path": "resp.200.orders.block_number",
+          "src_en": "Block number where the order was placed",
+          "desc_en": "Block height at which the order was recorded on-chain.",
+          "title_zh": "订单上链所在的区块高度。"
+        },
+        {
+          "path": "resp.200.orders.log_index",
+          "src_en": "Log index of the order event in the block",
+          "desc_en": "Index of the order's event log within its block.",
+          "title_zh": "订单事件日志在区块内的索引。"
+        },
+        {
+          "path": "resp.200.orders.tx_hash",
+          "src_en": "Transaction hash of the order",
+          "desc_en": "Hash of the transaction that recorded the order.",
+          "title_zh": "记录该订单的交易哈希。"
+        },
+        {
+          "path": "resp.200.orders.title",
+          "src_en": "Market title",
+          "desc_en": "Title of the order's market.",
+          "title_zh": "订单所属市场的标题。"
+        },
+        {
+          "path": "resp.200.orders.timestamp",
+          "src_en": "Unix timestamp in seconds when the order was placed",
+          "desc_en": "When the order was placed, as a Unix timestamp in seconds.",
+          "title_zh": "下单时间，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.orders.order_hash",
+          "src_en": "Hash of the order",
+          "desc_en": "Hash identifying the order.",
+          "title_zh": "标识该订单的哈希。"
+        },
+        {
+          "path": "resp.200.orders.user",
+          "src_en": "Maker address of the order",
+          "desc_en": "Maker wallet address of the order.",
+          "title_zh": "订单的 maker 钱包地址。"
+        },
+        {
+          "path": "resp.200.orders.taker",
+          "src_en": "Taker address that was part of this trade. Note: This can often be the CTF exchange and is not always the true taker, proceed with caution using taker information",
+          "desc_en": "Taker wallet address in the trade; note it is often the CTF exchange rather than the true counterparty, so use with caution.",
+          "title_zh": "成交中的 taker 钱包地址；注意它常是 CTF 交易所而非真实对手方，使用时需谨慎。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "",
+          "desc_en": "The page size applied to this response.",
+          "title_zh": "本次响应采用的页大小。"
+        },
+        {
+          "path": "resp.200.pagination.offset",
+          "src_en": "",
+          "desc_en": "Offset applied to this response under offset-based paging.",
+          "title_zh": "基于偏移分页时本次响应采用的偏移量。"
+        },
+        {
+          "path": "resp.200.pagination.total",
+          "src_en": "Total number of orders matching the filters",
+          "desc_en": "Total number of orders matching the filters.",
+          "title_zh": "匹配筛选条件的订单总数。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more orders available",
+          "desc_en": "Whether further pages are available.",
+          "title_zh": "是否还有更多结果页。"
+        },
+        {
+          "path": "resp.200.pagination.pagination_key",
+          "src_en": "Base64-encoded cursor for the next page. Only present when there are more results. Use this in the next request instead of offset.",
+          "desc_en": "Cursor for the next page; present only when more results exist. Prefer it over offset.",
+          "title_zh": "下一页的游标；仅在还有更多结果时出现，优先于 offset 使用。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        },
+        {
+          "path": "resp.401.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.401.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        },
+        {
+          "path": "resp.401.docs",
+          "src_en": "",
+          "desc_en": "Link to documentation explaining the deprecation and the recommended pagination approach.",
+          "title_zh": "指向相关文档的链接，说明该废弃项及推荐的分页方式。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-orderbooks",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches historical orderbook snapshots for a specific asset (token ID) over a specified time range. If no start_time and end_time are provided, returns the latest orderbook snapshot for the market. Returns snapshots of the order book including bids, asks, and market metadata in order. All timestamps are in milliseconds. Orderbook data has history starting from October 14th, 2025. Note: When fetching the latest orderbook (without start/end times), the limit and pagination_key parameters are ignored.",
+          "desc_en": "Fetch historical order book snapshots for an outcome token over a time range; when no time range is given, returns only the latest snapshot. Each snapshot contains bids, asks, and market metadata. All timestamps are in milliseconds.",
+          "title_zh": "查询某结果 token 在指定时间范围内的历史订单簿快照；不传时间范围时仅返回最新一份快照。每份快照包含买单、卖单及市场元数据，所有时间戳均为毫秒。"
+        },
+        {
+          "path": "param:token_id",
+          "src_en": "The token id (asset) for the Polymarket market",
+          "desc_en": "The outcome token (asset) whose order book snapshots are requested.",
+          "title_zh": "待查询订单簿快照的结果 token（资产）。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Start time in Unix timestamp (milliseconds). Optional - if not provided along with end_time, returns the latest orderbook snapshot.",
+          "desc_en": "Start of the time range, as a Unix timestamp in milliseconds; omit together with end_time to get the latest snapshot only.",
+          "title_zh": "时间范围起点，Unix 时间戳（毫秒）；与 end_time 一并省略时仅取最新快照。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "End time in Unix timestamp (milliseconds). Optional - if not provided along with start_time, returns the latest orderbook snapshot.",
+          "desc_en": "End of the time range, as a Unix timestamp in milliseconds; omit together with start_time to get the latest snapshot only.",
+          "title_zh": "时间范围终点，Unix 时间戳（毫秒）；与 start_time 一并省略时仅取最新快照。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Maximum number of snapshots to return (default: 100, max: 200). Ignored when fetching the latest orderbook without start_time and end_time.",
+          "desc_en": "Maximum number of snapshots to return; ignored when fetching only the latest snapshot.",
+          "title_zh": "最多返回的快照数量；仅取最新快照时忽略该参数。"
+        },
+        {
+          "path": "param:pagination_key",
+          "src_en": "Pagination key to get the next chunk of data. Ignored when fetching the latest orderbook without start_time and end_time.",
+          "desc_en": "Cursor for the next chunk of snapshots; ignored when fetching only the latest snapshot.",
+          "title_zh": "获取下一批快照的游标；仅取最新快照时忽略该参数。"
+        },
+        {
+          "path": "resp.200.snapshots",
+          "src_en": "Array of orderbook snapshots at different points in time",
+          "desc_en": "Order book snapshots at successive points in time.",
+          "title_zh": "按时间先后排列的订单簿快照。"
+        },
+        {
+          "path": "resp.200.snapshots.asks",
+          "src_en": "Sell orders, ordered by price",
+          "desc_en": "Sell-side order book levels, ordered by price.",
+          "title_zh": "卖方订单簿档位，按价格排序。"
+        },
+        {
+          "path": "resp.200.snapshots.asks.size",
+          "src_en": "",
+          "desc_en": "Quantity available at this ask level.",
+          "title_zh": "该卖单档位可成交的数量。"
+        },
+        {
+          "path": "resp.200.snapshots.asks.price",
+          "src_en": "",
+          "desc_en": "Price of this ask level.",
+          "title_zh": "该卖单档位的价格。"
+        },
+        {
+          "path": "resp.200.snapshots.bids",
+          "src_en": "Buy orders, ordered by price",
+          "desc_en": "Buy-side order book levels, ordered by price.",
+          "title_zh": "买方订单簿档位，按价格排序。"
+        },
+        {
+          "path": "resp.200.snapshots.bids.size",
+          "src_en": "",
+          "desc_en": "Quantity available at this bid level.",
+          "title_zh": "该买单档位可成交的数量。"
+        },
+        {
+          "path": "resp.200.snapshots.bids.price",
+          "src_en": "",
+          "desc_en": "Price of this bid level.",
+          "title_zh": "该买单档位的价格。"
+        },
+        {
+          "path": "resp.200.snapshots.hash",
+          "src_en": "",
+          "desc_en": "Content hash identifying this snapshot.",
+          "title_zh": "标识该快照内容的哈希。"
+        },
+        {
+          "path": "resp.200.snapshots.minOrderSize",
+          "src_en": "",
+          "desc_en": "Minimum allowed order size for this market.",
+          "title_zh": "该市场允许的最小下单数量。"
+        },
+        {
+          "path": "resp.200.snapshots.negRisk",
+          "src_en": "",
+          "desc_en": "Whether the market is part of a negative-risk group.",
+          "title_zh": "该市场是否属于 negative-risk 组。"
+        },
+        {
+          "path": "resp.200.snapshots.assetId",
+          "src_en": "",
+          "desc_en": "The outcome token (asset) this snapshot is for.",
+          "title_zh": "该快照对应的结果 token（资产）。"
+        },
+        {
+          "path": "resp.200.snapshots.timestamp",
+          "src_en": "Timestamp of the snapshot in milliseconds",
+          "desc_en": "When the snapshot was taken, as a Unix timestamp in milliseconds.",
+          "title_zh": "快照采集时间，Unix 时间戳（毫秒）。"
+        },
+        {
+          "path": "resp.200.snapshots.tickSize",
+          "src_en": "",
+          "desc_en": "Minimum price increment for the market.",
+          "title_zh": "该市场的最小价格变动单位。"
+        },
+        {
+          "path": "resp.200.snapshots.indexedAt",
+          "src_en": "When the snapshot was indexed in milliseconds",
+          "desc_en": "When the snapshot was indexed by the service, as a Unix timestamp in milliseconds.",
+          "title_zh": "服务为该快照建立索引的时间，Unix 时间戳（毫秒）。"
+        },
+        {
+          "path": "resp.200.snapshots.market",
+          "src_en": "",
+          "desc_en": "On-chain condition ID of the market this snapshot belongs to.",
+          "title_zh": "该快照所属市场的链上 condition ID。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "",
+          "desc_en": "Pagination metadata for the snapshots.",
+          "title_zh": "快照结果的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "",
+          "desc_en": "The page size applied to this response.",
+          "title_zh": "本次响应采用的页大小。"
+        },
+        {
+          "path": "resp.200.pagination.count",
+          "src_en": "Number of snapshots returned",
+          "desc_en": "Number of snapshots returned in this response.",
+          "title_zh": "本次响应返回的快照数量。"
+        },
+        {
+          "path": "resp.200.pagination.pagination_key",
+          "src_en": "The pagination key to pass in to get the next chunk of data",
+          "desc_en": "Cursor to fetch the next chunk of snapshots.",
+          "title_zh": "获取下一批快照的游标。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more snapshots available",
+          "desc_en": "Whether more snapshots are available.",
+          "title_zh": "是否还有更多快照可取。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-activity",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches activity data with optional filtering by user, market, condition, and time range. Returns trading activity including `MERGES`, `SPLITS`, and `REDEEMS`. Supports efficient cursor-based pagination for large datasets.",
+          "desc_en": "List on-chain account activity (merges, splits, and redeems), optionally filtered by user wallet, market, condition, and time range, with cursor-based pagination.",
+          "title_zh": "查询链上账户活动（合并 MERGE、拆分 SPLIT、赎回 REDEEM），可按用户钱包、市场、condition 及时间范围筛选，并支持游标分页。"
+        },
+        {
+          "path": "param:user",
+          "src_en": "User wallet address to fetch activity for. If not provided, returns activity for all users.",
+          "desc_en": "Wallet address whose activity to return; omit to return activity across all users.",
+          "title_zh": "待查询活动的钱包地址；省略则返回所有用户的活动。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Filter activity from this Unix timestamp in seconds (inclusive)",
+          "desc_en": "Only return activity at or after this Unix timestamp in seconds.",
+          "title_zh": "仅返回时间不早于此刻的活动，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "Filter activity until this Unix timestamp in seconds (inclusive)",
+          "desc_en": "Only return activity at or before this Unix timestamp in seconds.",
+          "title_zh": "仅返回时间不晚于此刻的活动，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:market_slug",
+          "src_en": "Filter activity by market slug",
+          "desc_en": "Restrict activity to a single market identified by its slug. Mutually exclusive with condition_id.",
+          "title_zh": "按市场 slug 限定活动，与 condition_id 互斥。"
+        },
+        {
+          "path": "param:condition_id",
+          "src_en": "Filter activity by condition ID",
+          "desc_en": "Restrict activity to a single market identified by its condition ID. Mutually exclusive with market_slug.",
+          "title_zh": "按 condition ID 限定活动，与 market_slug 互斥。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Number of activities to return (1-1000)",
+          "desc_en": "Maximum number of activity records to return in this page.",
+          "title_zh": "本页最多返回的活动记录数量。"
+        },
+        {
+          "path": "param:pagination_key",
+          "src_en": "Base64-encoded cursor for efficient pagination. Returned in the previous response's pagination object.",
+          "desc_en": "Cursor for the next page; pass back the value from the previous response's pagination object.",
+          "title_zh": "翻页游标，回传上一页响应 pagination 中的值。"
+        },
+        {
+          "path": "resp.200.activities",
+          "src_en": "",
+          "desc_en": "The list of matching activity records.",
+          "title_zh": "匹配的活动记录列表。"
+        },
+        {
+          "path": "resp.200.activities.token_id",
+          "src_en": "",
+          "desc_en": "Outcome token ID involved in the activity.",
+          "title_zh": "该活动涉及的结果 token ID。"
+        },
+        {
+          "path": "resp.200.activities.side",
+          "src_en": "",
+          "desc_en": "Type of activity: a token merge, split, or redeem.",
+          "title_zh": "活动类型：token 的合并、拆分或赎回。"
+        },
+        {
+          "path": "resp.200.activities.market_slug",
+          "src_en": "",
+          "desc_en": "Slug of the market the activity relates to.",
+          "title_zh": "活动关联市场的 slug。"
+        },
+        {
+          "path": "resp.200.activities.condition_id",
+          "src_en": "",
+          "desc_en": "On-chain condition ID of the related market.",
+          "title_zh": "关联市场的链上 condition ID。"
+        },
+        {
+          "path": "resp.200.activities.shares",
+          "src_en": "Raw number of shares (from the blockchain)",
+          "desc_en": "Raw share quantity as recorded on-chain (before normalization).",
+          "title_zh": "链上记录的原始份额数量（未归一化）。"
+        },
+        {
+          "path": "resp.200.activities.shares_normalized",
+          "src_en": "Number of shares normalized (raw divided by 1000000)",
+          "desc_en": "Share quantity normalized to whole-share units (raw value scaled down by 1,000,000).",
+          "title_zh": "归一化后的份额数量（原始值除以 1,000,000）。"
+        },
+        {
+          "path": "resp.200.activities.price",
+          "src_en": "",
+          "desc_en": "Price associated with the activity.\n[⚠️Note:源码未声明价格单位与取值范围，待研发确认。]",
+          "title_zh": "与该活动关联的价格。\n[⚠️批注:源码未声明价格单位与取值范围，待研发确认。]"
+        },
+        {
+          "path": "resp.200.activities.block_number",
+          "src_en": "Block number where the activity occurred",
+          "desc_en": "Block height at which the activity was recorded on-chain.",
+          "title_zh": "活动上链所在的区块高度。"
+        },
+        {
+          "path": "resp.200.activities.log_index",
+          "src_en": "Log index of the activity event in the block",
+          "desc_en": "Index of the activity's event log within its block.",
+          "title_zh": "活动事件日志在区块内的索引。"
+        },
+        {
+          "path": "resp.200.activities.tx_hash",
+          "src_en": "",
+          "desc_en": "Hash of the transaction that recorded the activity.",
+          "title_zh": "记录该活动的交易哈希。"
+        },
+        {
+          "path": "resp.200.activities.title",
+          "src_en": "",
+          "desc_en": "Title of the related market.",
+          "title_zh": "关联市场的标题。"
+        },
+        {
+          "path": "resp.200.activities.timestamp",
+          "src_en": "Unix timestamp in seconds when the activity occurred",
+          "desc_en": "When the activity occurred, as a Unix timestamp in seconds.",
+          "title_zh": "活动发生时间，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.activities.order_hash",
+          "src_en": "",
+          "desc_en": "Hash of the associated order, if any.",
+          "title_zh": "关联订单的哈希（若有）。"
+        },
+        {
+          "path": "resp.200.activities.user",
+          "src_en": "User wallet address",
+          "desc_en": "Wallet address that performed the activity.",
+          "title_zh": "执行该活动的钱包地址。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "",
+          "desc_en": "Pagination metadata for the result set.",
+          "title_zh": "结果集的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "",
+          "desc_en": "The page size applied to this response.",
+          "title_zh": "本次响应采用的页大小。"
+        },
+        {
+          "path": "resp.200.pagination.count",
+          "src_en": "Total number of activities matching the filters",
+          "desc_en": "Total number of activity records matching the filters.",
+          "title_zh": "匹配筛选条件的活动记录总数。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more activities available",
+          "desc_en": "Whether further pages are available.",
+          "title_zh": "是否还有更多结果页。"
+        },
+        {
+          "path": "resp.200.pagination.pagination_key",
+          "src_en": "Base64-encoded cursor for the next page. Only present when there are more results.",
+          "desc_en": "Cursor for the next page; present only when more results exist.",
+          "title_zh": "下一页的游标；仅在还有更多结果时出现。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        },
+        {
+          "path": "resp.500.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.500.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-market-price",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches the current market price for a market by `token_id`. When `at_time` is not provided, returns the most real-time price available. When `at_time` is provided, returns the historical market price at that specific timestamp.\n\n**Example Request (with historical timestamp):**\n```bash\ncurl 'https://api.aisa.one/apis/v1/polymarket/market-price/19701256321759583954581192053894521654935987478209343000964756587964612528044?at_time=1762164600'\n```\n\n**Example Request (real-time price):**\n```bash\ncurl 'https://api.aisa.one/apis/v1/polymarket/market-price/19701256321759583954581192053894521654935987478209343000964756587964612528044'\n```",
+          "desc_en": "Get the current price of an outcome token by token_id; when at_time is supplied, returns the historical price at that timestamp instead of the latest.",
+          "title_zh": "按 token_id 查询某结果 token 的当前价格；传入 at_time 时返回该时间点的历史价格，否则返回最新价格。"
+        },
+        {
+          "path": "param:at_time",
+          "src_en": "Optional Unix timestamp (in seconds) to fetch a historical market price. If not provided, returns the most real-time price available.",
+          "desc_en": "Unix timestamp in seconds at which to read the historical price; omit to get the most real-time price.",
+          "title_zh": "读取历史价格的时间点，Unix 时间戳（秒）；省略则返回最实时的价格。"
+        },
+        {
+          "path": "resp.200.price",
+          "src_en": "The market price (between 0 and 1)",
+          "desc_en": "The market price of the outcome token, expressed as a probability between 0 and 1.",
+          "title_zh": "该结果 token 的市场价格，以 0 到 1 之间的概率表示。"
+        },
+        {
+          "path": "resp.200.at_time",
+          "src_en": "The timestamp for which the price was fetched (Unix timestamp in seconds)",
+          "desc_en": "The timestamp the returned price corresponds to, as a Unix timestamp in seconds.",
+          "title_zh": "返回价格所对应的时间点，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        },
+        {
+          "path": "resp.404.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-positions",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches all Polymarket positions for a proxy wallet address. Returns positions with balance >= 10,000 shares (0.01 normalized) with market info.",
+          "desc_en": "List all Polymarket positions held by a proxy wallet, including per-position market info. Only positions with a balance of at least 10,000 raw shares (0.01 normalized) are returned, with cursor-based pagination.",
+          "title_zh": "查询某代理钱包持有的全部 Polymarket 持仓，含每个持仓的市场信息。仅返回余额不低于 10,000 原始份额（归一化 0.01）的持仓，并支持游标分页。"
+        },
+        {
+          "path": "param:limit",
+          "src_en": "Maximum number of positions to return per page. Defaults to 100, maximum 100.",
+          "desc_en": "Maximum number of positions to return per page.",
+          "title_zh": "每页最多返回的持仓数量。"
+        },
+        {
+          "path": "param:pagination_key",
+          "src_en": "Pagination key returned from previous request to fetch next page of results",
+          "desc_en": "Cursor returned by a previous request, used to fetch the next page.",
+          "title_zh": "上一次请求返回的游标，用于获取下一页。"
+        },
+        {
+          "path": "resp.200.wallet_address",
+          "src_en": "The wallet address (normalized to lowercase)",
+          "desc_en": "The queried wallet address, normalized to lowercase.",
+          "title_zh": "被查询的钱包地址，已归一化为小写。"
+        },
+        {
+          "path": "resp.200.positions",
+          "src_en": "Array of position objects",
+          "desc_en": "The wallet's position entries.",
+          "title_zh": "该钱包的持仓条目。"
+        },
+        {
+          "path": "resp.200.positions.wallet",
+          "src_en": "The wallet address",
+          "desc_en": "Wallet address holding the position.",
+          "title_zh": "持有该持仓的钱包地址。"
+        },
+        {
+          "path": "resp.200.positions.token_id",
+          "src_en": "The Polymarket token ID for this position",
+          "desc_en": "Outcome token ID held in this position.",
+          "title_zh": "该持仓持有的结果 token ID。"
+        },
+        {
+          "path": "resp.200.positions.condition_id",
+          "src_en": "The condition ID for the market",
+          "desc_en": "On-chain condition ID of the position's market.",
+          "title_zh": "持仓所属市场的链上 condition ID。"
+        },
+        {
+          "path": "resp.200.positions.title",
+          "src_en": "Market title",
+          "desc_en": "Title of the position's market.",
+          "title_zh": "持仓所属市场的标题。"
+        },
+        {
+          "path": "resp.200.positions.shares",
+          "src_en": "Number of shares (raw, not normalized)",
+          "desc_en": "Raw share quantity held (before normalization).",
+          "title_zh": "持有的原始份额数量（未归一化）。"
+        },
+        {
+          "path": "resp.200.positions.shares_normalized",
+          "src_en": "Number of shares normalized (divided by 1,000,000)",
+          "desc_en": "Share quantity normalized to whole-share units (raw value scaled down by 1,000,000).",
+          "title_zh": "归一化后的份额数量（原始值除以 1,000,000）。"
+        },
+        {
+          "path": "resp.200.positions.redeemable",
+          "src_en": "Whether this position can be redeemed (market completed and is closed)",
+          "desc_en": "Whether the position can be redeemed, which requires the market to be completed and closed.",
+          "title_zh": "该持仓是否可赎回；需市场已完成并关闭。"
+        },
+        {
+          "path": "resp.200.positions.market_slug",
+          "src_en": "The market slug",
+          "desc_en": "Slug of the position's market.",
+          "title_zh": "持仓所属市场的 slug。"
+        },
+        {
+          "path": "resp.200.positions.event_slug",
+          "src_en": "The event slug",
+          "desc_en": "Slug of the event the position's market belongs to.",
+          "title_zh": "持仓所属市场归属事件的 slug。"
+        },
+        {
+          "path": "resp.200.positions.image",
+          "src_en": "URL to market image",
+          "desc_en": "URL of the market's display image.",
+          "title_zh": "市场展示图片的 URL。"
+        },
+        {
+          "path": "resp.200.positions.label",
+          "src_en": "The outcome label for this token (e.g., 'Yes' or 'No')",
+          "desc_en": "Outcome label of the held token (e.g. Yes/No).",
+          "title_zh": "所持 token 的结果标签（如 Yes/No）。"
+        },
+        {
+          "path": "resp.200.positions.winning_outcome",
+          "src_en": "Information about the winning outcome if market is closed, null if market is still open or no outcome determined",
+          "desc_en": "Details of the winning outcome once the market is closed; null while open or undetermined.",
+          "title_zh": "市场关闭后获胜结果的详情；仍开放或未定时为 null。"
+        },
+        {
+          "path": "resp.200.positions.winning_outcome.id",
+          "src_en": "Token ID of the winning outcome",
+          "desc_en": "Token ID of the winning outcome.",
+          "title_zh": "获胜结果的 token ID。"
+        },
+        {
+          "path": "resp.200.positions.winning_outcome.label",
+          "src_en": "Label of the winning outcome",
+          "desc_en": "Label of the winning outcome.",
+          "title_zh": "获胜结果的标签。"
+        },
+        {
+          "path": "resp.200.positions.start_time",
+          "src_en": "Market start timestamp (Unix seconds)",
+          "desc_en": "Market start time, as a Unix timestamp in seconds.",
+          "title_zh": "市场开始时间，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.positions.end_time",
+          "src_en": "Market end timestamp (Unix seconds)",
+          "desc_en": "Market end time, as a Unix timestamp in seconds.",
+          "title_zh": "市场结束时间，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.positions.completed_time",
+          "src_en": "Market completion timestamp (Unix seconds), currently always null",
+          "desc_en": "Market completion time, as a Unix timestamp in seconds; null when not completed.",
+          "title_zh": "市场完成时间，Unix 时间戳（秒）；未完成时为 null。"
+        },
+        {
+          "path": "resp.200.positions.close_time",
+          "src_en": "Market close timestamp (Unix seconds) if market is closed, null if still open",
+          "desc_en": "Market close time, as a Unix timestamp in seconds; null while still open.",
+          "title_zh": "市场关闭时间，Unix 时间戳（秒）；仍开放时为 null。"
+        },
+        {
+          "path": "resp.200.positions.game_start_time",
+          "src_en": "Game start time for sports markets, null for non-sports markets",
+          "desc_en": "Game start time for sports markets; null for non-sports markets.",
+          "title_zh": "体育类市场的赛事开始时间；非体育市场为 null。"
+        },
+        {
+          "path": "resp.200.positions.market_status",
+          "src_en": "Whether the market is open or closed",
+          "desc_en": "Whether the position's market is open or closed.",
+          "title_zh": "持仓所属市场为开放还是已关闭。"
+        },
+        {
+          "path": "resp.200.positions.negativeRisk",
+          "src_en": "Whether this market has negative risk",
+          "desc_en": "Whether the position's market is part of a negative-risk group.",
+          "title_zh": "持仓所属市场是否属于 negative-risk 组。"
+        },
+        {
+          "path": "resp.200.pagination",
+          "src_en": "Pagination information",
+          "desc_en": "Pagination metadata for the positions.",
+          "title_zh": "持仓结果的分页元信息。"
+        },
+        {
+          "path": "resp.200.pagination.has_more",
+          "src_en": "Whether there are more results available",
+          "desc_en": "Whether more positions are available.",
+          "title_zh": "是否还有更多持仓可取。"
+        },
+        {
+          "path": "resp.200.pagination.limit",
+          "src_en": "The limit used for this request",
+          "desc_en": "The page size applied to this request.",
+          "title_zh": "本次请求采用的页大小。"
+        },
+        {
+          "path": "resp.200.pagination.pagination_key",
+          "src_en": "Pagination key to use for fetching next page, null if no more pages",
+          "desc_en": "Cursor to fetch the next page; null when there are no more pages.",
+          "title_zh": "获取下一页的游标；无更多页时为 null。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-wallet",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches wallet information by providing either an EOA (Externally Owned Account) address, a proxy wallet address, or a user handle. Returns the associated EOA, proxy, wallet type, handle, pseudonym, and profile image. Optionally returns trading metrics when `with_metrics=true`.",
+          "desc_en": "Look up wallet information by EOA address, proxy address, or user handle, returning the associated EOA, proxy, wallet type, handle, pseudonym, and profile image. Trading metrics are included only when with_metrics=true.",
+          "title_zh": "按 EOA 地址、代理地址或用户 handle 查询钱包信息，返回关联的 EOA、代理、钱包类型、handle、化名与头像。仅当 with_metrics=true 时附带交易指标。"
+        },
+        {
+          "path": "param:eoa",
+          "src_en": "EOA (Externally Owned Account) wallet address. Either `eoa`, `proxy`, or `handle` must be provided, but not more than one.",
+          "desc_en": "Externally owned account address to look up. Provide exactly one of eoa, proxy, or handle.",
+          "title_zh": "待查询的外部账户（EOA）地址。eoa、proxy、handle 三者须且仅须提供其一。"
+        },
+        {
+          "path": "param:proxy",
+          "src_en": "Proxy wallet address. Either `eoa`, `proxy`, or `handle` must be provided, but not more than one.",
+          "desc_en": "Proxy wallet address to look up. Provide exactly one of eoa, proxy, or handle.",
+          "title_zh": "待查询的代理钱包地址。eoa、proxy、handle 三者须且仅须提供其一。"
+        },
+        {
+          "path": "param:handle",
+          "src_en": "User handle/username. Accepts both formats: `username` or `@username` (the @ prefix will be automatically stripped). Either `eoa`, `proxy`, or `handle` must be provided, but not more than one.",
+          "desc_en": "User handle to look up; an optional leading @ is stripped automatically. Provide exactly one of eoa, proxy, or handle.",
+          "title_zh": "待查询的用户 handle，开头的 @ 会被自动去除。eoa、proxy、handle 三者须且仅须提供其一。"
+        },
+        {
+          "path": "param:with_metrics",
+          "src_en": "Whether to include wallet trading metrics (total volume, trades, and markets). Pass `true` to include metrics. Metrics are computed only when explicitly requested for performance reasons.",
+          "desc_en": "Pass true to also compute and return trading metrics; they are calculated only on demand for performance.",
+          "title_zh": "传 true 时额外计算并返回交易指标；出于性能考虑仅按需计算。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Optional start date for metrics calculation (Unix timestamp in seconds). Only used when `with_metrics=true`.",
+          "desc_en": "Start of the window for metric calculation, as a Unix timestamp in seconds; only used when with_metrics=true.",
+          "title_zh": "指标计算窗口的起点，Unix 时间戳（秒）；仅在 with_metrics=true 时生效。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "Optional end date for metrics calculation (Unix timestamp in seconds). Only used when `with_metrics=true`.",
+          "desc_en": "End of the window for metric calculation, as a Unix timestamp in seconds; only used when with_metrics=true.",
+          "title_zh": "指标计算窗口的终点，Unix 时间戳（秒）；仅在 with_metrics=true 时生效。"
+        },
+        {
+          "path": "resp.200.eoa",
+          "src_en": "The EOA (Externally Owned Account) wallet address",
+          "desc_en": "The resolved externally owned account address.",
+          "title_zh": "解析得到的外部账户（EOA）地址。"
+        },
+        {
+          "path": "resp.200.proxy",
+          "src_en": "The proxy wallet address",
+          "desc_en": "The resolved proxy wallet address.",
+          "title_zh": "解析得到的代理钱包地址。"
+        },
+        {
+          "path": "resp.200.wallet_type",
+          "src_en": "The type of wallet",
+          "desc_en": "The wallet implementation type.",
+          "title_zh": "钱包的实现类型。"
+        },
+        {
+          "path": "resp.200.handle",
+          "src_en": "User handle/username",
+          "desc_en": "The user's handle; null when none is set.",
+          "title_zh": "用户 handle；未设置时为 null。"
+        },
+        {
+          "path": "resp.200.pseudonym",
+          "src_en": "User pseudonym/display name",
+          "desc_en": "The user's display pseudonym; null when none is set.",
+          "title_zh": "用户的展示化名；未设置时为 null。"
+        },
+        {
+          "path": "resp.200.image",
+          "src_en": "User profile image URL",
+          "desc_en": "URL of the user's profile image; null when none is set.",
+          "title_zh": "用户头像的 URL；未设置时为 null。"
+        },
+        {
+          "path": "resp.200.wallet_metrics",
+          "src_en": "Trading metrics for this wallet (only present when with_metrics=true)",
+          "desc_en": "Trading metrics for the wallet; present only when with_metrics=true.",
+          "title_zh": "钱包的交易指标；仅在 with_metrics=true 时出现。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.total_volume",
+          "src_en": "Total trading volume in USD",
+          "desc_en": "Total trading volume of the wallet, in USD.",
+          "title_zh": "钱包的总交易额（美元）。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.total_trades",
+          "src_en": "Total number of trades (orders where this wallet was the maker)",
+          "desc_en": "Total number of trades where this wallet was the maker.",
+          "title_zh": "该钱包作为 maker 的总成交笔数。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.total_markets",
+          "src_en": "Total number of unique markets traded in",
+          "desc_en": "Number of distinct markets the wallet has traded in.",
+          "title_zh": "钱包参与交易的不同市场数量。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.highest_volume_day",
+          "src_en": "The day with the highest number of shares traded",
+          "desc_en": "The single day with the highest traded share volume.",
+          "title_zh": "成交份额最高的单日。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.highest_volume_day.date",
+          "src_en": "Date in YYYY-MM-DD format",
+          "desc_en": "Calendar date of the highest-volume day.",
+          "title_zh": "成交量最高那一天的日期。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.highest_volume_day.volume",
+          "src_en": "Total shares traded on that day (normalized, divided by 1,000,000)",
+          "desc_en": "Shares traded that day, normalized (raw value scaled down by 1,000,000).",
+          "title_zh": "当日成交份额，归一化值（原始值除以 1,000,000）。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.highest_volume_day.trades",
+          "src_en": "Number of trades executed on that day",
+          "desc_en": "Number of trades executed that day.",
+          "title_zh": "当日执行的成交笔数。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.merges",
+          "src_en": "Total number of token merges performed by this wallet",
+          "desc_en": "Total token merges performed by the wallet.",
+          "title_zh": "钱包执行的 token 合并总次数。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.splits",
+          "src_en": "Total number of token splits performed by this wallet",
+          "desc_en": "Total token splits performed by the wallet.",
+          "title_zh": "钱包执行的 token 拆分总次数。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.conversions",
+          "src_en": "Total number of token conversions performed by this wallet",
+          "desc_en": "Total token conversions performed by the wallet.",
+          "title_zh": "钱包执行的 token 转换总次数。"
+        },
+        {
+          "path": "resp.200.wallet_metrics.redemptions",
+          "src_en": "Total number of token redemptions performed by this wallet",
+          "desc_en": "Total token redemptions performed by the wallet.",
+          "title_zh": "钱包执行的 token 赎回总次数。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        },
+        {
+          "path": "resp.404.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.404.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-candlesticks",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches historical candlestick data for a market identified by `condition_id`, over a specified interval.",
+          "desc_en": "Fetch historical candlestick (OHLC) data for a market identified by condition_id over a time range, at a 1-minute, 1-hour, or 1-day interval. Each interval enforces a maximum lookback range.",
+          "title_zh": "按 condition_id 查询某市场在指定时间范围内的历史 K 线（OHLC）数据，可选 1 分钟、1 小时或 1 天的时间粒度。不同粒度有各自的最大回溯范围限制。"
+        },
+        {
+          "path": "param:condition_id",
+          "src_en": "Polymarket condition ID for the market.",
+          "desc_en": "On-chain condition ID identifying the market to fetch candlesticks for.",
+          "title_zh": "待查询 K 线的市场链上 condition ID。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Unix timestamp (in seconds) for start of time range",
+          "desc_en": "Start of the time range, as a Unix timestamp in seconds.",
+          "title_zh": "时间范围起点，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "Unix timestamp (in seconds) for end of time range",
+          "desc_en": "End of the time range, as a Unix timestamp in seconds.",
+          "title_zh": "时间范围终点，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "param:interval",
+          "src_en": "Interval length: 1 = 1m, 60 = 1h, 1440 = 1d. Defaults to 1m. \n\n⚠️ **Note:** There are range limits for `interval` — specifically:\n- `1` (1m): max range **1 week**\n- `60` (1h): max range **1 month**\n- `1440` (1d): max range **1 year**\n\n",
+          "desc_en": "Candle granularity in minutes (1 = 1m, 60 = 1h, 1440 = 1d); each granularity caps the allowed range (1m up to 1 week, 1h up to 1 month, 1d up to 1 year).",
+          "title_zh": "K 线粒度（按分钟：1 = 1 分钟，60 = 1 小时，1440 = 1 天）；各粒度有最大范围限制（1 分钟至多 1 周，1 小时至多 1 个月，1 天至多 1 年）。"
+        },
+        {
+          "path": "resp.200.candlesticks",
+          "src_en": "Array of market candlestick data, where each element is a tuple containing candlestick data array and token metadata",
+          "desc_en": "Per-outcome candlestick series; each element pairs a candlestick data array with that token's metadata (token_id and outcome label).",
+          "title_zh": "按结果划分的 K 线序列；每个元素由一段 K 线数据数组与该 token 的元数据（token_id 与结果标签）配对组成。"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.required",
+          "src_en": "",
+          "desc_en": "Names of the required parameters that were missing from the request.",
+          "title_zh": "请求中缺失的必填参数名称。"
+        }
+      ]
+    },
+    {
+      "operation": "get_polymarket-wallet-pnl",
+      "rows": [
+        {
+          "path": "(operation)",
+          "src_en": "Fetches the REALIZED profit and loss (PnL) for a specific wallet address over a specified time range and granularity. **Note:** This will differ to what you see on Polymarket's dashboard since Polymarket showcases historical unrealized PnL. This API tracks realized gains only - from either confirmed sells or redeems. We do not realize a gain/loss until a finished market is redeemed.",
+          "desc_en": "Return a wallet's REALIZED profit and loss over a time range at a chosen granularity. Only realized gains from confirmed sells or redeems are counted, so values differ from Polymarket's dashboard, which shows unrealized PnL.",
+          "title_zh": "按选定粒度返回某钱包在指定时间范围内的「已实现」盈亏。仅计入确认卖出或赎回带来的已实现收益，因此与展示未实现盈亏的 Polymarket 看板数值不同。"
+        },
+        {
+          "path": "param:wallet_address",
+          "src_en": "Polymarket wallet address (0x-prefixed).",
+          "desc_en": "The 0x-prefixed wallet address to compute PnL for.",
+          "title_zh": "待计算盈亏的 0x 前缀钱包地址。"
+        },
+        {
+          "path": "param:granularity",
+          "src_en": "",
+          "desc_en": "Time bucket size for the PnL series (day, week, month, year, or the whole period).",
+          "title_zh": "盈亏序列的时间分桶粒度（日、周、月、年或全部时段）。"
+        },
+        {
+          "path": "param:start_time",
+          "src_en": "Defaults to first day of first trade if not provided.",
+          "desc_en": "Start of the range, as a Unix timestamp in seconds; defaults to the day of the wallet's first trade when omitted.",
+          "title_zh": "范围起点，Unix 时间戳（秒）；省略时默认取该钱包首笔交易当日。"
+        },
+        {
+          "path": "param:end_time",
+          "src_en": "Defaults to the current date if not provided.",
+          "desc_en": "End of the range, as a Unix timestamp in seconds; defaults to the current date when omitted.",
+          "title_zh": "范围终点，Unix 时间戳（秒）；省略时默认取当前日期。"
+        },
+        {
+          "path": "resp.200.granularity",
+          "src_en": "",
+          "desc_en": "The time bucket size applied to the returned series.",
+          "title_zh": "返回序列采用的时间分桶粒度。"
+        },
+        {
+          "path": "resp.200.start_time",
+          "src_en": "",
+          "desc_en": "Start of the computed range, as a Unix timestamp in seconds.",
+          "title_zh": "实际计算范围的起点，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.end_time",
+          "src_en": "",
+          "desc_en": "End of the computed range, as a Unix timestamp in seconds.",
+          "title_zh": "实际计算范围的终点，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.wallet_address",
+          "src_en": "",
+          "desc_en": "The wallet address the PnL was computed for.",
+          "title_zh": "计算盈亏所针对的钱包地址。"
+        },
+        {
+          "path": "resp.200.pnl_over_time",
+          "src_en": "",
+          "desc_en": "Realized PnL series, one point per time bucket.",
+          "title_zh": "已实现盈亏序列，每个时间分桶一个数据点。"
+        },
+        {
+          "path": "resp.200.pnl_over_time.timestamp",
+          "src_en": "",
+          "desc_en": "Start of the time bucket, as a Unix timestamp in seconds.",
+          "title_zh": "该时间分桶的起点，Unix 时间戳（秒）。"
+        },
+        {
+          "path": "resp.200.pnl_over_time.pnl_to_date",
+          "src_en": "",
+          "desc_en": "Cumulative realized PnL up to this bucket.\n[⚠️Note:源码未声明盈亏金额的货币单位，待研发确认。]",
+          "title_zh": "截至该分桶的累计已实现盈亏。\n[⚠️批注:源码未声明盈亏金额的货币单位，待研发确认。]"
+        },
+        {
+          "path": "resp.400.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.400.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        },
+        {
+          "path": "resp.503.error",
+          "src_en": "",
+          "desc_en": "Short error code identifying the failure category.",
+          "title_zh": "标识失败类别的简短错误码。"
+        },
+        {
+          "path": "resp.503.message",
+          "src_en": "",
+          "desc_en": "Human-readable explanation of what went wrong.",
+          "title_zh": "对错误原因的可读说明。"
+        }
+      ]
+    }
+  ],
+  "total": 267,
+  "missing": []
+}
