@@ -89,7 +89,7 @@
 
 | # | 事项 | 现状 / 建议 |
 | --- | --- | --- |
-| 一 | Plant Store 样例 `openapi.json` 去留 | **已按指示排除**：31 源 → 30 纳入站点。如需恢复，重跑投影 + `build_index.py` 即可。 |
+| 一 | Plant Store 样例 `openapi.json` 去留 | **已按负责人要求纳入**（D-018，撤回 D-017 的排除）：站点现覆盖 31/31 份 spec。补档走同款管线，闸门 en/zh 均 exit 0。 |
 | 二 | 在线 "Test Request" 开关 | **默认关闭**（`hideTestRequestButton:true`，连带隐藏鉴权面板）。servers 指向真网关 `api.aisa.one`、涉鉴权，静态档内零密钥。开启与否交决断。 |
 | 三 | 上线部署方式 | **建议 GitHub Pages**：已写 `deploy-api-site.yml`（手动触发或推 `ws-site/**` 才跑，默认不自动）。启用步骤见 workflow 顶部注释；http(s) 托管解掉 `file://` 的 fetch CORS。域名形如 `https://<owner>.github.io/<repo>/{en,zh}/`。 |
 
