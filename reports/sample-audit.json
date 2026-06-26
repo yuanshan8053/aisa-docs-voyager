@@ -1,0 +1,108 @@
+{
+  "tool": "aisa-doc-reality-auditor",
+  "version": "1.0",
+  "generated_at": "2026-06-26T02:11:08.920504+00:00",
+  "target": "https://aisa.one",
+  "summary": {
+    "BLOCKER": 3,
+    "WARN": 1,
+    "OK": 4
+  },
+  "findings": [
+    {
+      "check": "discovery_endpoint",
+      "severity": "OK",
+      "summary": "Discovery endpoint OK: /.well-known/agent-card.json",
+      "evidence": {
+        "url": "https://aisa.one/.well-known/agent-card.json",
+        "http_status": 200
+      },
+      "remediation": ""
+    },
+    {
+      "check": "discovery_endpoint",
+      "severity": "OK",
+      "summary": "Discovery endpoint OK: /.well-known/ai-plugin.json",
+      "evidence": {
+        "url": "https://aisa.one/.well-known/ai-plugin.json",
+        "http_status": 200
+      },
+      "remediation": ""
+    },
+    {
+      "check": "discovery_endpoint",
+      "severity": "OK",
+      "summary": "Discovery endpoint OK: /.well-known/mcp.json",
+      "evidence": {
+        "url": "https://aisa.one/.well-known/mcp.json",
+        "http_status": 200
+      },
+      "remediation": ""
+    },
+    {
+      "check": "discovery_endpoint",
+      "severity": "BLOCKER",
+      "summary": "Discovery endpoint unusable: /openapi.yaml (Consolidated OpenAPI spec (cited by guide + ai-plugin))",
+      "evidence": {
+        "url": "https://aisa.one/openapi.yaml",
+        "http_status": 404,
+        "returned_html_shell": false
+      },
+      "remediation": "Either publish the resource at this exact URL or update every reference (ai-plugin.json `api.url`, agent-discovery guide) to the real location. Agents following the published contract currently hit a dead link here."
+    },
+    {
+      "check": "discovery_endpoint",
+      "severity": "OK",
+      "summary": "Discovery endpoint OK: /docs/llms.txt",
+      "evidence": {
+        "url": "https://aisa.one/docs/llms.txt",
+        "http_status": 200
+      },
+      "remediation": ""
+    },
+    {
+      "check": "count_drift_skills",
+      "severity": "BLOCKER",
+      "summary": "Skill count drift: guide says 13, live agent card advertises 45",
+      "evidence": {
+        "claimed": 13,
+        "live": 45,
+        "claimed_source": "https://aisa.one/docs/guides/agent-discovery.md",
+        "live_source": "https://aisa.one/.well-known/agent-card.json"
+      },
+      "remediation": "The skill catalogue is generated; the guide's number is hand-typed. Replace the literal with a build-time injection from the agent card so it can never drift."
+    },
+    {
+      "check": "count_drift_paths",
+      "severity": "WARN",
+      "summary": "Guide promises one consolidated spec with 111+ paths, but the live index ships 30 separate per-service OpenAPI files and no consolidated spec.",
+      "evidence": {
+        "claimed_api_paths": 111,
+        "live_split_spec_files": 30,
+        "consolidated_spec_url": "https://aisa.one/openapi.yaml"
+      },
+      "remediation": "Decide on one contract shape. Either build & publish the consolidated openapi.yaml the docs promise, or rewrite the guide to point at the per-service specs in /docs/openapi/."
+    },
+    {
+      "check": "localization_zh",
+      "severity": "BLOCKER",
+      "summary": "Chinese doc coverage is 1.3% (10/773 indexed pages). China is the gateway's headline model-supply market.",
+      "evidence": {
+        "zh_pages": 10,
+        "total_pages": 773,
+        "zh_share_pct": 1.3,
+        "examples": [
+          "https://aisa.one/docs/agent-skills/last30days-zh.md",
+          "https://aisa.one/docs/agent-skills/prediction-market-arbitrage-zh.md",
+          "https://aisa.one/docs/agent-skills/prediction-market-data-zh.md",
+          "https://aisa.one/docs/guides/chinese-llms.md",
+          "https://aisa.one/docs/guides/chinese-llms/bytedance.md",
+          "https://aisa.one/docs/guides/chinese-llms/deepseek.md",
+          "https://aisa.one/docs/guides/chinese-llms/glm.md",
+          "https://aisa.one/docs/guides/chinese-llms/kimi.md"
+        ]
+      },
+      "remediation": "Stand up a zh-CN docs tree mirroring the EN tree. Prioritise the first-success path: quickstart + chinese-llms + auth. Drive it from the same source via an automated translate-and-PR agent."
+    }
+  ]
+}
