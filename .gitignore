@@ -5,6 +5,6 @@ __pycache__/
 venv/
 .env
 .DS_Store
-# live regenerated reports (a committed sample lives at reports/sample-audit.*)
+# live regenerated reports
 reports/audit.json
 reports/audit.md

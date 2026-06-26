@@ -63,9 +63,9 @@
 
 ## 附：可验收产物清单
 
-两份试点产物均落 `ws/`（会话工作区），可逐件复核：
+两份试点产物均落 `pilots/ws/`（会话工作区），可逐件复核：
 
-- `ws/openai-chat/`：`content.json`（人工撰写的增强内容）、`enhanced.yaml`（回写后增强 spec）、`enhanced-page.md`（独立增强参考页）、`writeback.diff`（回写前后 diff，+80/−0）、`review_list.json`；外加 `existing-human.yaml` + `enhanced-merged.yaml` + `review_merged.json`（source=human 保护演示证据）。
-- `ws/youte-search/`：`content.json`、`enhanced.yaml`、`enhanced-page.md`、`writeback.diff`（+70/−0）、`review_list.json`。
+- `pilots/ws/openai-chat/`：`content.json`（人工撰写的增强内容）、`enhanced.yaml`（回写后增强 spec）、`enhanced-page.md`（独立增强参考页）、`writeback.diff`（回写前后 diff，+80/−0）、`review_list.json`；外加 `existing-human.yaml` + `enhanced-merged.yaml` + `review_merged.json`（source=human 保护演示证据）。
+- `pilots/ws/youte-search/`：`content.json`、`enhanced.yaml`、`enhanced-page.md`、`writeback.diff`（+70/−0）、`review_list.json`。
 
-复现命令（在 `~/files/aisa-docs-voyager` 下）：用 `phase3-pilot/inline_inject.py` 注入，`spectral lint --ruleset <api-doc-agent>/contracts/rulesets/doc-engine-output.spectral.yaml enhanced.yaml` 过 Gate 2，`check_native_preserved.py <输入 spec> enhanced.yaml` 过原生保全闸门。
+复现命令（在 `~/files/aisa-docs-voyager` 下）：用 `pilots/phase3-pilot/inline_inject.py` 注入，`spectral lint --ruleset <api-doc-agent>/contracts/rulesets/doc-engine-output.spectral.yaml enhanced.yaml` 过 Gate 2，`check_native_preserved.py <输入 spec> enhanced.yaml` 过原生保全闸门。
