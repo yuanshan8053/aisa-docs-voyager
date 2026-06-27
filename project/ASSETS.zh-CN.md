@@ -1,7 +1,7 @@
 # 资产清单（项目全量盘点）
 
 > 本文件是项目所有文件的权威分类索引。回答「这个文件是什么、属哪一类、能不能动」就看它。
-> 盘点时间：2026-06-26。盘点口径：仓库根 `~/files/aisa-docs-voyager` 下全部纳管文件，不含 `.git/`。
+> 盘点时间：2026-06-28。盘点口径：仓库根 `~/files/aisa-docs-voyager` 下全部纳管文件，不含 `.git/`。
 > 分类四大类：**产物**（对外可交付的高价值成果）、**规划**（各阶段实施提示词）、**过程**（中间工作区与脚本）、**参考**（权威信息源与基线）。
 
 ---
@@ -14,6 +14,7 @@ aisa-docs-voyager/
 ├── 规划  planning/       五个阶段的自包含实施提示词
 ├── 产物  reports/        13 份对外报告（质检结果、写作实践、批注清单……）
 ├── 产物  ws-site/        双语 Scalar API 站点（部署源）
+├── 产物  site/           成果落地页 + 质检报告叙事页（双主题，站点根）
 ├── 产物  checks/         阶段一静态检查器（可独立运行的工具）
 ├── 过程  ws-v2/          阶段三加强工作区（31 spec 五件套 + 复现脚本）
 ├── 过程  skill-local/    阶段三本地加强方法与工具链
@@ -21,7 +22,8 @@ aisa-docs-voyager/
 ├── 过程  tools/          镜像工具
 ├── 过程  aisa_doc_auditor/  早期 live-probe 审计器（降级为旁证）
 ├── 过程  pilots/         阶段三早期试点（ws/ + phase3-pilot/，保留作对照，见 D-013/D-015）
-└── 根    README/LICENSE/WRITING-STANDARD/pyproject/三个 Phase-5 工具
+├── 过程  tests/          可移植门禁测试（accept_all / central_accept 路径）
+└── 根    README/LICENSE/WRITING-STANDARD/pyproject/accept_all.py/三个 Phase-5 工具
 ```
 
 ---
@@ -53,7 +55,13 @@ aisa-docs-voyager/
 - 由 `project_spec.py` 从 `ws-v2/*/enhanced.json` 投影派生，`check_projection.py` 三闸逐字节验收。
 - 上线方式：`.github/workflows/deploy-api-site.yml` → GitHub Pages。
 
-### 2.3 静态检查器 `checks/`
+### 2.3 成果落地页 `site/`（站点根，部署源）
+
+- `site/index.html` — 成果落地页，双主题重设计版（沉浸体验暗色 / 阅读模式暖纸白，顶栏 + 键盘 1/2 切换、`localStorage` 持久化）。8 块规模指标 + 四步历程 + 四块产物卡 + 五阶段表 + 四条质量纪律 + `accept_all.py` 终端块。相对链接 `./en/ ./zh/ ./ai-friendly.html` 接双语站与质检页（D-021）。
+- `site/ai-friendly.html` — 质检报告叙事页《从一个连字符看 Agent 的文档体验》，忠于 `reports/ai-friendly-prose-readable-2026-06-26.md`，28 条 GitHub permalink（pinned `16863d3`）+ aisa.one 链接，与落地页共用主题脚本。
+- 上线方式：`.github/workflows/deploy-api-site.yml` 把 `site/index.html` + `site/ai-friendly.html` + `ws-site/{en,zh}` 装配进 `_site/` → GitHub Pages。
+
+### 2.4 静态检查器 `checks/`
 
 - `src_consistency.py` — 阶段一交付，零依赖确定性源码一致性检查器，可 CI 集成。
 - `README.md` — 用法。`.gitkeep` 占位。
@@ -82,7 +90,7 @@ aisa-docs-voyager/
 | --- | --- | --- |
 | `CHARTER.md` | 项目章程：是什么、四条线、约束、资产地图 | 稳定 |
 | `STATE.md` | 当前进度、阻塞、下一步 | 每 session 必更 |
-| `DECISIONS.md` | 决策日志（D-001…D-019） | **只追加，不删改** |
+| `DECISIONS.md` | 决策日志（D-001…D-021） | **只追加，不删改** |
 | `baselines/FACTS.zh-CN.md` | 静态可证基线事实 + 复现命令 | 随上游更新 |
 | `REPORT-CONTRACT.zh-CN.md` | 对外报告契约（骨架 + 证据闭环） | 稳定 |
 | `HANDOVER.md` | 交接说明 | 稳定 |
@@ -138,9 +146,12 @@ aisa-docs-voyager/
 | `WRITING-STANDARD.zh-CN.md` | 参考 | 写作规范（所有文字产出遵守） |
 | `pyproject.toml` | 过程 | 打包配置，入口指向 `aisa_doc_auditor` |
 | `.gitignore` / `.github/` | 过程 | 忽略规则 + 两个 workflow |
+| `accept_all.py` | 过程（产物工具） | 一键机器验收：双闸门 31/31 + 投影三闸 60/60，`--baseline 16863d3` exit 0（D-021） |
 | `project_spec.py` | 过程（产物工具） | 阶段五投影器 |
 | `check_projection.py` | 过程（产物工具） | 阶段五投影闸门 |
 | `build_index.py` | 过程（产物工具） | 阶段五站点入口生成器 |
+
+`tests/`（过程）：`test_accept_all.py`、`test_central_accept_paths.py`——可移植门禁路径测试（随 `accept_all.py`/`ws-v2/central_accept.py` 修复引入，D-021）。
 
 **为什么三个 Phase-5 工具留在根、不归进子目录**：`DECISIONS.md`（只追加不删改）与 `reports/scalar-api-site-2026-06-26.md`、`planning/PHASE-5-*.md`、`STATE.md` 均以根路径形式钉死了复现命令（如 `python3 project_spec.py …`、`python3 check_projection.py …`）。决策日志不可改写，移动这些文件会让已发布的复现命令失效。同理 `ws-v2/*.py` 与 `skill-local/.../tools/*.py` 被产物报告与脚本 `import`，亦不移动。**归整以「分类标注 + 清理 cruft」为限，不做破坏复现链的物理搬迁。**
 
