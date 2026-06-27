@@ -45,12 +45,14 @@ jobs:
 
       # 发布三块,不带源码与中间产物:
       #   /            ← site/index.html(成果与历程落地页,带英/中 API 站入口)
+      #   /ai-friendly.html ← 质检报告叙事页(从落地页「质检报告」入口进入)
       #   /en/ /zh/    ← ws-site/ 双语 Scalar API 站(各 30 份投影 spec + index.html)
       # 落地页用相对链接 ./en/ ./zh/ 指向同级双语站,放在站点根即生效。
       - name: Assemble site root
         run: |
           mkdir -p _site
           cp site/index.html _site/index.html
+          cp site/ai-friendly.html _site/ai-friendly.html
           cp -r ws-site/en _site/en
           cp -r ws-site/zh _site/zh
 
