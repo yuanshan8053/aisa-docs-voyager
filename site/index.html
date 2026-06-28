@@ -256,31 +256,6 @@
   :root[data-theme="B"] .btn.primary { background: var(--ink); border-color: var(--ink); color: var(--bg); }
   :root[data-theme="B"] .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 
-  .availability {
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
-    max-width: 760px; margin: 18px 0 0;
-  }
-  .state-chip {
-    display: flex; align-items: flex-start; gap: 10px;
-    border: 1px solid var(--line); border-radius: 10px;
-    background: color-mix(in srgb, var(--panel) 82%, transparent);
-    padding: 12px 13px; min-width: 0;
-  }
-  .state-dot {
-    width: 9px; height: 9px; border-radius: 50%; margin-top: 7px; flex: 0 0 auto;
-    background: var(--ink-dim); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink-dim) 14%, transparent);
-  }
-  .state-chip[data-state="ready"] .state-dot { background: var(--add); box-shadow: 0 0 0 4px color-mix(in srgb, var(--add) 16%, transparent); }
-  .state-chip[data-state="external"] .state-dot { background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent); }
-  .state-chip[data-state="deployed"] .state-dot { background: var(--amber); box-shadow: 0 0 0 4px color-mix(in srgb, var(--amber) 16%, transparent); }
-  .state-chip[data-state="checking"] .state-dot { background: var(--ink-dim); animation: pulse 1.2s ease-in-out infinite; }
-  .state-chip[data-state="error"] .state-dot { background: #ff6b6b; box-shadow: 0 0 0 4px rgba(255,107,107,.16); }
-  .state-chip b { display: block; font-size: 13px; line-height: 1.3; color: var(--ink); }
-  .state-chip span { display: block; margin-top: 2px; font-size: 12px; line-height: 1.45; color: var(--ink-dim); }
-  :root[data-theme="B"] .availability { max-width: 680px; }
-  :root[data-theme="B"] .state-chip { background: transparent; border-radius: 2px; }
-  @keyframes pulse { 50% { opacity: .38; transform: scale(.84); } }
-
   /* =========================================================
      Terminal block （仅沉浸体验显示；阅读模式隐藏）
      ========================================================= */
@@ -499,7 +474,6 @@
     .topbar .status { max-width: 34vw; overflow: hidden; text-overflow: ellipsis; }
     .theme-toggle button { padding: 7px 10px; min-height: 38px; }
     header.hero { padding: 48px 0 24px; }
-    .availability { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 560px) {
@@ -519,15 +493,6 @@
     h1 .hl { display: inline; }
     .notes { margin-bottom: 22px; padding: 12px 14px; }
     .notes p + p { display: none; }
-    .availability {
-      margin-top: 14px;
-      gap: 8px;
-    }
-    .state-chip {
-      padding: 10px 12px;
-      background: color-mix(in srgb, var(--panel) 64%, transparent);
-    }
-    .state-chip span { display: none; }
     .term { margin-top: 24px; box-shadow: none; }
     .term summary {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -618,21 +583,6 @@
       <a class="btn" href="./en/">英文 API 站 ↗</a>
       <a class="btn" href="./zh/">中文 API 站 ↗</a>
       <a class="btn" href="https://github.com/yuanshan8053/aisa-docs-voyager" target="_blank" rel="noopener noreferrer">Github 源码 ↗</a>
-    </div>
-
-    <div class="availability" aria-label="交付入口状态">
-      <div class="state-chip" id="report-link-state" data-state="checking" aria-live="polite">
-        <i class="state-dot" aria-hidden="true"></i>
-        <div><b>报告页检查中</b><span>正在确认当前入口可打开</span></div>
-      </div>
-      <div class="state-chip" data-state="deployed">
-        <i class="state-dot" aria-hidden="true"></i>
-        <div><b>API 站入口保留</b><span>最终部署路径保持可见</span></div>
-      </div>
-      <div class="state-chip" data-state="external">
-        <i class="state-dot" aria-hidden="true"></i>
-        <div><b>源码仓库</b><span>新窗口打开 GitHub</span></div>
-      </div>
     </div>
 
     <details class="term" id="repro-term" aria-label="一键复跑命令" open>
@@ -829,17 +779,6 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
   buttons.forEach(function (b) {
     b.addEventListener('click', function () { apply(b.getAttribute('data-set-theme')); });
   });
-
-  var reportState = document.getElementById('report-link-state');
-  function setReportState(state, title, message) {
-    if (!reportState) return;
-    reportState.setAttribute('data-state', state);
-    var titleNode = reportState.querySelector('b');
-    var messageNode = reportState.querySelector('span');
-    if (titleNode) titleNode.textContent = title;
-    if (messageNode) messageNode.textContent = message;
-  }
-  setReportState('ready', '报告页可打开', '当前工作区可直接访问');
 
   // 键盘快捷：1 切沉浸体验，2 切阅读模式
   document.addEventListener('keydown', function (e) {
