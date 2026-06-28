@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>从一个连字符看 Agent 的文档体验 · AIsa 文档质量工程</title>
-<meta name="description" content="一个 AI Agent 因接口路径里连字符被误写成斜杠、一字之差拿到 404 的失败旅程：23 处硬缺口（3 阻断 + 20 事实冲突），根因是缺少单一可信源。" />
+<title>AIsa AI 友好度质检报告</title>
+<meta name="description" content="AIsa AI 友好度质检报告：系统走查 73 页人写散文，确认 23 处会让 Agent 拿错值、调错接口或对不上账的硬缺口，根因是缺少单一可信源。" />
 <style>
   /* =========================================================
      共享变量壳：默认 = 沉浸体验（深色 / 等宽点缀）
@@ -81,7 +81,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 108px; }
   body {
     margin: 0;
     background: var(--bg);
@@ -95,14 +95,43 @@
     background-position: -1px -1px;
     transition: background-color .25s ease, color .25s ease;
   }
+  h1, h2, h3, h4, p, li, td, th, .deck, .lede {
+    line-break: strict;
+    word-break: normal;
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   :root[data-theme="B"] a { border-bottom: 1px solid transparent; text-decoration: none; }
   :root[data-theme="B"] a:hover { border-bottom-color: var(--accent); text-decoration: none; }
 
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 78%, white 22%);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: .01ms !important;
+    }
+  }
+
   .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
   .mono { font-family: var(--mono); }
   .serif { font-family: var(--serif); }
+
+  .skip-link {
+    position: fixed; left: 16px; top: 10px; z-index: 100;
+    transform: translateY(-160%); transition: transform .15s ease;
+    background: var(--accent); color: var(--accent-ink);
+    border-radius: 999px; padding: 9px 14px;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+  }
+  .skip-link:focus-visible { transform: translateY(0); text-decoration: none; }
 
   code {
     font-family: var(--mono); font-size: .86em;
@@ -129,7 +158,7 @@
     border-bottom: 2px solid var(--ink);
     backdrop-filter: none;
   }
-  .topbar .wrap { display: flex; align-items: center; gap: 14px; height: 52px; }
+  .topbar .wrap { display: flex; align-items: center; gap: 14px; height: 52px; min-width: 0; }
   .topbar .dot {
     width: 10px; height: 10px; border-radius: 50%;
     background: var(--accent); box-shadow: 0 0 12px var(--accent);
@@ -138,17 +167,34 @@
   .topbar .back {
     color: var(--ink-dim);
     display: inline-flex; align-items: center; gap: 6px;
+    white-space: nowrap;
   }
   .topbar .back:hover { color: var(--ink); text-decoration: none; }
   .topbar .back .arrow { color: var(--accent); }
   .topbar .crumb { color: var(--ink-dim); }
   .topbar .crumb b { color: var(--ink); font-weight: 600; }
+  .topbar .current-page {
+    color: var(--ink);
+    white-space: nowrap;
+    letter-spacing: .04em;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 10px;
+    background: var(--panel);
+  }
+  :root[data-theme="B"] .topbar .current-page {
+    background: transparent;
+    border-color: var(--ink);
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: .06em;
+  }
   .topbar .brand-A { display: inline; }
   .topbar .brand-B { display: none; font-family: var(--serif); font-weight: 700; font-size: 18px; color: var(--ink); letter-spacing: .01em; }
   :root[data-theme="B"] .topbar .brand-A { display: none; }
   :root[data-theme="B"] .topbar .brand-B { display: inline; }
   .topbar .spacer { flex: 1; }
-  .topbar .status { color: var(--accent); letter-spacing: .04em; }
+  .topbar .status { color: var(--accent); letter-spacing: .04em; white-space: nowrap; }
   :root[data-theme="B"] .topbar .status { color: var(--ink-dim); }
 
   /* 主题切换器 */
@@ -160,13 +206,48 @@
   }
   .theme-toggle button {
     appearance: none; background: transparent; border: 0; cursor: pointer;
-    color: var(--ink-dim); padding: 6px 12px; border-radius: 999px;
+    color: var(--ink-dim); padding: 6px 12px; border-radius: 999px; min-height: 34px;
     font: inherit; letter-spacing: inherit; transition: all .18s;
   }
+  .theme-toggle .short { display: none; }
   .theme-toggle button[aria-pressed="true"] {
     background: var(--accent); color: var(--accent-ink); font-weight: 700;
   }
   .theme-toggle button:hover:not([aria-pressed="true"]) { color: var(--ink); }
+
+  /* 全局章节导航：桌面辅助定位，手机端成为 sticky 横向 tab bar */
+  .chapter-tabs {
+    position: sticky; top: 52px; z-index: 40;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  :root[data-theme="B"] .chapter-tabs { background: var(--bg); backdrop-filter: none; }
+  .chapter-tabs .wrap {
+    display: flex; align-items: center; gap: 8px;
+    min-height: 48px; overflow-x: auto; scrollbar-width: none;
+  }
+  .chapter-tabs .wrap::-webkit-scrollbar { display: none; }
+  .chapter-tabs a {
+    flex: none; min-height: 36px; display: inline-flex; align-items: center;
+    padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px;
+    color: var(--ink-mid); background: var(--panel);
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em;
+  }
+  .chapter-tabs a:hover { color: var(--ink); text-decoration: none; border-color: var(--line-strong); }
+  .chapter-tabs a[aria-current="true"] {
+    color: var(--ink);
+    border-color: var(--line-strong);
+    background: var(--panel-2);
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
+  :root[data-theme="B"] .chapter-tabs a { background: transparent; font-family: var(--sans); letter-spacing: .04em; }
+  :root[data-theme="B"] .chapter-tabs a[aria-current="true"] {
+    color: var(--ink);
+    border-color: var(--ink);
+    box-shadow: inset 0 -2px 0 var(--accent);
+  }
 
   /* =========================================================
      报告封面
@@ -194,20 +275,47 @@
 
   h1.title {
     font-family: var(--font-display);
-    font-size: clamp(30px, 4.8vw, 54px);
-    line-height: 1.16;
+    font-size: clamp(36px, 5.2vw, 68px);
+    line-height: 1.08;
     margin: 22px 0 18px;
     font-weight: 750;
-    letter-spacing: -0.02em;
-    max-width: 18ch;
+    letter-spacing: -0.04em;
+    max-width: none;
+    white-space: nowrap;
   }
   :root[data-theme="B"] h1.title {
     font-weight: 700; margin-top: 0;
-    font-size: clamp(34px, 5.6vw, 60px);
-    max-width: 20ch;
+    font-size: clamp(38px, 5.6vw, 70px);
+    max-width: none;
   }
   h1.title .hl { color: var(--accent); }
   :root[data-theme="B"] h1.title .hl { color: var(--ink); border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+
+  .report-subtitle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: -2px 0 20px;
+    max-width: 760px;
+    color: var(--ink-mid);
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.2;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 12px;
+    background: var(--panel);
+  }
+  .report-subtitle::before { content: "REPORT"; color: var(--ink-dim); letter-spacing: .12em; }
+  :root[data-theme="B"] .report-subtitle {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--ink);
+    background: transparent;
+    border-color: var(--ink);
+  }
 
   .deck {
     font-size: 18px; color: var(--ink-mid);
@@ -223,7 +331,7 @@
     max-width: 760px;
   }
   .meta b { color: var(--ink); font-weight: 600; }
-  .meta .accent { color: var(--accent); }
+  .meta .accent { color: var(--amber); }
   :root[data-theme="B"] .meta { font-family: var(--sans); border-top-color: var(--line-strong); }
 
   /* =========================================================
@@ -248,7 +356,7 @@
   :root[data-theme="B"] section.chapter + section.chapter { border-top: 1px solid var(--line); }
 
   .ch-no {
-    font-family: var(--mono); font-size: 12px; color: var(--accent);
+    font-family: var(--mono); font-size: 12px; color: var(--ink-dim);
     letter-spacing: .18em; text-transform: uppercase;
   }
   :root[data-theme="B"] .ch-no { letter-spacing: .24em; }
@@ -306,17 +414,21 @@
   /* 强调引言（pull-quote / blockquote） */
   blockquote.pull {
     margin: 28px 0;
-    padding: 20px 22px;
-    background: var(--panel); border-left: 3px solid var(--accent);
-    border-radius: 0 var(--card-radius) var(--card-radius) 0;
+    padding: 18px 0 20px;
+    background: transparent;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
     color: var(--ink);
     font-size: 16.5px;
   }
   blockquote.pull p { margin: 0 0 8px; color: var(--ink); font-size: 16.5px; }
   blockquote.pull p:last-child { margin-bottom: 0; }
   :root[data-theme="B"] blockquote.pull {
-    background: transparent; padding: 0 0 0 24px;
-    border-left: 3px solid var(--accent);
+    background: transparent; padding: 18px 0 20px;
+    border-left: 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--line);
     border-radius: 0;
     font-family: var(--serif); font-size: 19px;
   }
@@ -348,17 +460,17 @@
   /* 强调要点条 */
   .note-strip {
     display: flex; gap: 14px; align-items: flex-start;
-    background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
-    border-left: 3px solid var(--accent);
+    background: var(--panel); border: 1px solid var(--line);
+    border-left: 3px solid var(--line-strong);
     padding: 14px 18px; border-radius: var(--card-radius);
     color: var(--ink); font-size: 15px; line-height: 1.7;
     margin: 18px 0 22px;
   }
-  .note-strip .ico { color: var(--accent); font-family: var(--mono); font-weight: 700; flex: none; }
+  .note-strip .ico { color: var(--ink-dim); font-family: var(--mono); font-weight: 700; flex: none; }
   .note-strip p { margin: 0; color: var(--ink); font-size: 15px; }
   :root[data-theme="B"] .note-strip {
-    background: var(--accent-soft); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
-    border-left: 3px solid var(--accent);
+    background: transparent; border: 1px solid var(--line);
+    border-left: 3px solid var(--line-strong);
   }
 
   /* =========================================================
@@ -401,12 +513,13 @@
   table.gap tbody tr:last-child td { border-bottom: 0; }
   table.gap tbody tr:hover { background: var(--panel); }
   table.gap td code { font-size: .82em; }
-  table.gap td.col-id { font-family: var(--mono); color: var(--accent); font-weight: 700; white-space: nowrap; }
+  table.gap td.col-id { font-family: var(--mono); color: var(--ink-mid); font-weight: 700; white-space: nowrap; }
   table.gap td.col-num { font-family: var(--mono); font-weight: 700; color: var(--ink); white-space: nowrap; }
   table.gap td.col-num .truth { color: var(--add); }
   table.gap td.col-num .fake { color: var(--del); text-decoration: line-through wavy; text-decoration-color: color-mix(in srgb, var(--del) 60%, transparent); }
   table.gap td.col-locate { font-family: var(--mono); font-size: 12.5px; line-height: 1.85; white-space: normal; }
-  table.gap td.col-locate a { display: inline-block; }
+  table.gap td.col-locate a { display: inline-block; color: var(--ink-mid); }
+  table.gap td.col-locate a:hover { color: var(--ink); }
   table.gap td.col-locate .sep { color: var(--ink-dim); margin: 0 2px; }
 
   :root[data-theme="B"] table.gap { font-size: 15px; }
@@ -433,7 +546,7 @@
     border-radius: var(--card-radius); padding: 22px 24px;
   }
   .rec .rec-no {
-    font-family: var(--mono); font-size: 12px; color: var(--accent);
+    font-family: var(--mono); font-size: 12px; color: var(--ink-dim);
     letter-spacing: .14em; text-transform: uppercase; margin-bottom: 6px;
   }
   .rec h4 { margin: 0 0 8px; font-size: 19px; font-family: var(--font-display); font-weight: 700; letter-spacing: -.005em; }
@@ -467,11 +580,11 @@
   .toc ol li:last-child { border-bottom: 0; }
   .toc ol li::before {
     content: counter(t, decimal-leading-zero);
-    font-family: var(--mono); font-size: 11.5px; color: var(--accent);
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink-dim);
     letter-spacing: .06em; flex: none; min-width: 24px;
   }
   .toc ol li a { color: var(--ink); }
-  .toc ol li a:hover { color: var(--accent); }
+  .toc ol li a:hover { color: var(--ink-mid); }
   :root[data-theme="B"] .toc {
     background: transparent; border: 0;
     border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line);
@@ -509,11 +622,13 @@
   @media (max-width: 760px) {
     .wrap { padding: 0 18px; }
     .topbar .crumb { display: none; }
+    .topbar .current-page { padding: 3px 8px; font-size: 11px; }
     .topbar .brand-B { font-size: 16px; }
-    .theme-toggle button { padding: 6px 10px; }
+    .topbar .status { max-width: 30vw; overflow: hidden; text-overflow: ellipsis; }
+    .theme-toggle button { padding: 7px 10px; min-height: 38px; }
     header.cover { padding: 48px 0 28px; }
-    h1.title { font-size: 30px; }
-    :root[data-theme="B"] h1.title { font-size: 34px; max-width: 12ch; }
+    h1.title { font-size: clamp(22px, 7.4vw, 34px); letter-spacing: -0.06em; }
+    :root[data-theme="B"] h1.title { font-size: clamp(24px, 7.6vw, 36px); max-width: none; }
     h2.ch { font-size: 25px; }
     h3.sub { font-size: 17px; }
     article p, :root[data-theme="B"] article p { font-size: 16px; }
@@ -521,30 +636,103 @@
     pre.code, .repro pre { font-size: 12px; }
     table.gap { font-size: 13px; min-width: 520px; }
   }
+
+  @media (max-width: 560px) {
+    html { scroll-padding-top: 100px; }
+    .topbar .wrap { gap: 9px; height: 56px; }
+    .topbar .dot { width: 8px; height: 8px; }
+    .topbar .status { display: none; }
+    .topbar .current-page { display: none; }
+    .theme-toggle { font-size: 11px; padding: 4px; }
+    .theme-toggle button { min-width: 44px; min-height: 40px; padding: 7px 10px; }
+    .theme-toggle .full { display: none; }
+    .theme-toggle .short { display: inline; }
+    .chapter-tabs { top: 56px; }
+    .chapter-tabs .wrap { padding: 0 12px; min-height: 44px; }
+    .chapter-tabs a { min-height: 34px; padding: 6px 11px; }
+    header.cover { padding-top: 40px; }
+    h1.title {
+      white-space: normal;
+      max-width: 11.5em;
+      font-size: clamp(30px, 9vw, 42px);
+      letter-spacing: -0.04em;
+    }
+    :root[data-theme="B"] h1.title { font-size: clamp(31px, 9.2vw, 44px); max-width: 11.5em; }
+    .meta { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .tbl-wrap { border: 0; overflow: visible; }
+    table.gap, table.gap thead, table.gap tbody, table.gap tr, table.gap td { display: block; width: 100%; min-width: 0; }
+    table.gap thead { display: none; }
+    table.gap tbody tr {
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--card-radius);
+      margin-bottom: 12px; padding: 12px 14px;
+    }
+    table.gap tbody tr:hover { background: var(--panel); }
+    table.gap td {
+      display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 12px;
+      padding: 8px 0; border-bottom: 1px dashed var(--line-soft);
+      word-break: break-word;
+    }
+    table.gap td:last-child { border-bottom: 0; }
+    table.gap td::before {
+      content: attr(data-label); color: var(--ink-dim); font-family: var(--mono);
+      font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    }
+    table.gap td.col-id { color: var(--ink); }
+    table.gap td.col-locate a { min-height: 34px; display: inline-flex; align-items: center; margin-right: 6px; }
+    :root[data-theme="B"] table.gap tbody tr { background: transparent; border-radius: 0; border-color: var(--line); }
+    :root[data-theme="B"] table.gap td { border-bottom-color: var(--line); }
+  }
+
+  @media (max-width: 420px) {
+    .wrap { padding: 0 16px; }
+    h1.title { font-size: clamp(29px, 8.8vw, 38px); letter-spacing: -0.04em; }
+    :root[data-theme="B"] h1.title { font-size: clamp(30px, 9vw, 40px); }
+    .deck { font-size: 16px; line-height: 1.72; }
+    table.gap td { grid-template-columns: 1fr; gap: 3px; }
+    .note-strip { padding: 13px 14px; }
+  }
+
+  @media (min-width: 1200px) {
+    .chapter-tabs .wrap { justify-content: center; }
+  }
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#report-main">跳到报告正文</a>
+
 <div class="topbar">
   <div class="wrap">
     <span class="dot" aria-hidden="true"></span>
-    <a class="back brand-A mono" href="./index.html"><span class="arrow">‹</span>&nbsp;返回 <span class="crumb">aisa-docs-voyager <b>/ 成果与历程</b></span></a>
-    <a class="back brand-B" href="./index.html"><span class="arrow">‹</span>&nbsp;返回 · AIsa 文档质量工程</a>
+    <a class="back brand-A mono" href="./index.html"><span class="arrow">‹</span>&nbsp;返回项目成果页</a>
+    <a class="back brand-B" href="./index.html"><span class="arrow">‹</span>&nbsp;成果说明</a>
+    <span class="current-page mono">AI 友好度质检报告</span>
     <span class="spacer"></span>
-    <span class="status mono" id="status-text">● 质检报告 · baseline 16863d3</span>
+    <span class="status mono" id="status-text">● AI 友好度质检报告 · baseline 16863d3</span>
     <div class="theme-toggle" role="group" aria-label="切换视觉模式">
-      <button type="button" data-set-theme="A" aria-pressed="true">沉浸体验</button>
-      <button type="button" data-set-theme="B" aria-pressed="false">阅读模式</button>
+      <button type="button" data-set-theme="A" aria-pressed="true"><span class="full">沉浸体验</span><span class="short">沉浸</span></button>
+      <button type="button" data-set-theme="B" aria-pressed="false"><span class="full">阅读模式</span><span class="short">阅读</span></button>
     </div>
   </div>
 </div>
 
+<nav class="chapter-tabs" aria-label="报告章节导航">
+  <div class="wrap">
+    <a href="#ch-1" aria-current="true">旅程</a>
+    <a href="#ch-2">结论</a>
+    <a href="#ch-3">方法</a>
+    <a href="#ch-4">问题</a>
+    <a href="#ch-5">建议</a>
+  </div>
+</nav>
+
 <header class="cover">
   <div class="wrap">
-    <span class="eyebrow kicker">AI 友好度质检报告 · 叙事版</span>
+    <span class="eyebrow kicker">AIsa · AI 友好度质检报告</span>
     <div class="rule" aria-hidden="true"></div>
-    <h1 class="title">从一个连字符<br>看 <span class="hl">Agent 的文档体验</span></h1>
-    <p class="deck">一个 AI 助手照着技能手册发起请求，只因文档把接口路径里的连字符 <code>-</code> 误写成斜杠 <code>/</code> ，一个字符之差就拿到 404 。从这次失败旅程切入，系统走查 73 页人写散文，确认 23 处会让 Agent 拿错值、调错接口、或对不上账的硬缺口，根因收口到一句话——这套文档缺少「单一可信源」 。</p>
+    <h1 class="title">从一个连字符看 Agent 的文档体验</h1>
+    <p class="report-subtitle">AI 友好度质检报告</p>
+    <p class="deck">一个 AI 助手照着技能手册发起请求，只因文档把接口路径里的连字符 <code>-</code> 误写成斜杠 <code>/</code>，一个字符之差就拿到 404。从这次失败旅程切入，系统走查 73 页人写散文，确认 23 处会让 Agent 拿错值、调错接口、或对不上账的硬缺口，根因收口到一句话——这套文档缺少「单一可信源」。</p>
     <div class="meta">
       <span>走查范围 · <b>73 页人写散文</b></span>
       <span class="accent">23 处硬缺口 · 3 阻断 + 20 事实冲突</span>
@@ -554,7 +742,7 @@
   </div>
 </header>
 
-<main>
+<main id="report-main">
   <article class="wrap">
 
     <!-- ===================== 章一 ===================== -->
@@ -562,11 +750,11 @@
       <div class="ch-no">章一 / CHAPTER ONE</div>
       <h2 class="ch">一次按文档调用的失败旅程</h2>
 
-      <p class="lede">设想一个 AI 助手（Agent）要拉取某只美股的分析师预测。它打开技能手册 <code>us-stock-analyst</code> ，照着示例发出请求：</p>
+      <p class="lede">设想一个 AI 助手（Agent）要拉取某只美股的分析师预测。它打开技能手册 <code>us-stock-analyst</code>，照着示例发出请求：</p>
 
 <pre class="code"><span class="verb">GET</span> <span class="url">https://api.aisa.one/apis/v1<span class="bad">/financial/analyst/eps</span>?ticker=AAPL</span></pre>
 
-      <p>请求返回 404 。 Agent 没有理由怀疑文档，于是反复检查自己的鉴权、参数、网络——而真正的原因是文档里的端点路径写错了一个字符：真实路径是 <code>/financial/analyst-estimates</code> ，用的是连字符 <code>-</code> ，文档却写成了 <code>/financial/analyst/eps</code> ，用的是斜杠 <code>/</code> 。同一套接口，相邻的 <code>marketpulse</code> 、 <code>trend-forecast</code> 两页写的都是对的。</p>
+      <p>请求返回 404。Agent 没有理由怀疑文档，于是反复检查自己的鉴权、参数、网络——而真正的原因是文档里的端点路径写错了一个字符：真实路径是 <code>/financial/analyst-estimates</code>，用的是连字符 <code>-</code>，文档却写成了 <code>/financial/analyst/eps</code>，用的是斜杠 <code>/</code>。同一套接口，相邻的 <code>marketpulse</code>、<code>trend-forecast</code> 两页写的都是对的。</p>
 
       <p>这类「一个字符之差」的事故并不新鲜：开发者照着示例代码多写或漏写一个符号，签名失效、请求报错，往往要耗上大半天才在另一篇文档里找到正确写法。区别只在于：那时的受害者是人，会换思路、会翻别的页面、会提工单；而 Agent 不会。</p>
 
@@ -581,16 +769,16 @@
       <div class="ch-no">章二 / CHAPTER TWO</div>
       <h2 class="ch">一个系统性结论</h2>
 
-      <p>我们系统走查了这 73 页， <strong>确认 23 处会让 Agent 拿错值、调错接口、或对不上账的硬缺口</strong>——其中 3 处是面向 Agent 的发现入口失真（阻断级），20 处是说明文中的事实冲突。每一处都能在源文件里逐字检索复现，守住了零误报的红线。</p>
+      <p>我们系统走查了这 73 页，<strong>确认 23 处会让 Agent 拿错值、调错接口、或对不上账的硬缺口</strong>——其中 3 处是面向 Agent 的发现入口失真（阻断级），20 处是说明文中的事实冲突。每一处都能在源文件里逐字检索复现，守住了零误报的红线。</p>
 
-      <p>把这些缺口归到一处，根因只有一句话：<span class="hl-soft"><strong>这套文档缺少「单一可信源」</strong></span> 。</p>
+      <p>把这些缺口归到一处，根因只有一句话：<span class="hl-soft"><strong>这套文档缺少「单一可信源」</strong></span>。</p>
 
       <ul class="spaced">
-        <li>平台指南那 30 页其实维护得相当好——有一份 6 月 4 日刷新、内部逐行自洽的权威模型清单（ <code>guides/models.mdx</code> ）和定价页，价格、上下文长度、厂商计数在多页之间完全一致，我们一条都没误报。</li>
-        <li>问题集中在技能手册那 43 页： <strong>每一页都自行手抄了一份模型清单、价目表、接口地址，没有一页去引用那份权威源。</strong> 抄一次就冻结一个快照，快照之间、快照与权威源之间随时间推移系统性地漂移开来。</li>
+        <li>平台指南那 30 页其实维护得相当好——有一份 6 月 4 日刷新、内部逐行自洽的权威模型清单（<code>guides/models.mdx</code>）和定价页，价格、上下文长度、厂商计数在多页之间完全一致，我们一条都没误报。</li>
+        <li>问题集中在技能手册那 43 页：<strong>每一页都自行手抄了一份模型清单、价目表、接口地址，没有一页去引用那份权威源。</strong>抄一次就冻结一个快照，快照之间、快照与权威源之间随时间推移系统性地漂移开来。</li>
       </ul>
 
-      <p>这恰是一条朴素工程原则的反面：信息一旦缺少单一真实源、靠各处重复叙述维持，冗余处迟早各说各话。 <strong>哪里有权威源，哪里就干净；哪里各抄各的，哪里就打架。</strong> 这不是作者是否认真的问题，而是缺少一个强制「引用而非重写」的机制。</p>
+      <p>这恰是一条朴素工程原则的反面：信息一旦缺少单一真实源、靠各处重复叙述维持，冗余处迟早各说各话。<strong>哪里有权威源，哪里就干净；哪里各抄各的，哪里就打架。</strong>这不是作者是否认真的问题，而是缺少一个强制「引用而非重写」的机制。</p>
     </section>
 
     <!-- ===================== 章三 ===================== -->
@@ -598,7 +786,7 @@
       <div class="ch-no">章三 / CHAPTER THREE</div>
       <h2 class="ch">走查方法（简述）</h2>
 
-      <p>走查由三组相互隔离的探查并行完成：第一组通读全库并做跨页对账，第二组用「逐页精读—跨页拉通—复核」三遍法，第三组按固定规范清单逐页核对。前两组刻意不知道分类框架的存在，以免照框架找证据、漏掉框架外的问题。三组产出由一名汇总者去重、逐字回核、归类， <strong>拿不准的一律不报</strong> ：本轮 47 条原始线索，最终保留 20 条说明文缺口，撤回 6 条（证据检索不到，或经核对实为不同对象），并入 21 条重复项；另有 3 条阻断级缺口来自配套的纯静态检查器，可仅凭 <code>openapi.yaml</code> 证伪。</p>
+      <p>走查由三组相互隔离的探查并行完成：第一组通读全库并做跨页对账，第二组用「逐页精读—跨页拉通—复核」三遍法，第三组按固定规范清单逐页核对。前两组刻意不知道分类框架的存在，以免照框架找证据、漏掉框架外的问题。三组产出由一名汇总者去重、逐字回核、归类，<strong>拿不准的一律不报</strong>：本轮 47 条原始线索，最终保留 20 条说明文缺口，撤回 6 条（证据检索不到，或经核对实为不同对象），并入 21 条重复项；另有 3 条阻断级缺口来自配套的纯静态检查器，可仅凭 <code>openapi.yaml</code> 证伪。</p>
     </section>
 
     <!-- ===================== 章四 ===================== -->
@@ -608,7 +796,7 @@
 
       <div class="note-strip">
         <span class="ico">i</span>
-        <p><strong>如何快速核验每一处。</strong> 我们原本计划用「页面截图 + 红框标注」来定位，但线上站点 <code>aisa.one/docs</code> 启用了 Cloudflare 防护，自动截图会被拦截，且页面重排后框选位置会失效。对于文字类缺陷，更可靠的定位方式是 <strong>GitHub 行级永久链接</strong>——下表每条都给出两个入口： <strong>线上页</strong> （ Agent / 用户实际读到的内容）与 <strong>源文件</strong> （锚定提交 <code>16863d3</code> ，点击直达那一行，永不漂移）。需要时也可在源仓库根目录用所附命令一键复现。</p>
+        <p><strong>如何快速核验每一处。</strong> 我们原本计划用「页面截图 + 红框标注」来定位，但线上站点 <code>aisa.one/docs</code> 启用了 Cloudflare 防护，自动截图会被拦截，且页面重排后框选位置会失效。对于文字类缺陷，更可靠的定位方式是 <strong>GitHub 行级永久链接</strong>——下表每条都给出两个入口：<strong>线上页</strong>（Agent / 用户实际读到的内容）与 <strong>源文件</strong>（锚定提交 <code>16863d3</code>，点击直达那一行，永不漂移）。需要时也可在源仓库根目录用所附命令一键复现。</p>
       </div>
 
       <div class="toc">
@@ -664,7 +852,7 @@
           </table>
         </div>
 
-        <p style="margin-top:18px">最值得放大的是 B3 ：被漏掉的 4 个分类不是空壳，全都承载真实操作，其中 <code>SEO &amp; Search Data</code> 一个分类就有 445 个操作，约占全 spec 的三分之二。换言之，一个只读这页做能力发现的 Agent ，会以为 AIsa 提供 10 类能力、而最大的那块业务对它根本不存在。这不是「数字过期」的小瑕疵，而是核心能力的发现性缺失。</p>
+        <p style="margin-top:18px">最值得放大的是 B3：被漏掉的 4 个分类不是空壳，全都承载真实操作，其中 <code>SEO &amp; Search Data</code> 一个分类就有 445 个操作，约占全 spec 的三分之二。换言之，一个只读这页做能力发现的 Agent，会以为 AIsa 提供 10 类能力、而最大的那块业务对它根本不存在。这不是「数字过期」的小瑕疵，而是核心能力的发现性缺失。</p>
 
         <div class="repro">
           <div class="lbl">复现 · 源仓库根目录</div>
@@ -680,12 +868,12 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
           <span class="label">缺口二类 · 高危 · 4 处</span>
           <h4>同一模型，多套价格</h4>
         </div>
-        <p class="intro">价格冲突是最隐蔽的一类：挂了旧模型， Agent 调用时至少会收到「模型不存在」的报错从而起疑；但每个价格单独看都「格式正确、量级合理」， Agent 没有任何信号判断该信哪一个。以 <code>qwen-plus</code> 为例，三个页面给了三套输出价：</p>
+        <p class="intro">价格冲突是最隐蔽的一类：挂了旧模型，Agent 调用时至少会收到「模型不存在」的报错从而起疑；但每个价格单独看都「格式正确、量级合理」，Agent 没有任何信号判断该信哪一个。以 <code>qwen-plus</code> 为例，三个页面给了三套输出价：</p>
 
         <div class="tbl-wrap">
           <table class="gap">
             <thead>
-              <tr><th style="width:38%">来源</th><th style="width:24%">输出价（每百万 token ）</th><th>定位</th></tr>
+              <tr><th style="width:38%">来源</th><th style="width:24%">输出价（每百万 token）</th><th>定位</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -713,7 +901,7 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
           </table>
         </div>
 
-        <p style="margin-top:18px">一个做成本预算或按价比选型的 Agent ，若读到 <code>cn-llm</code> 那页，会判定这个本该廉价的模型贵到不可用而将其排除；若读到 <code>aisa-provider</code> ，则整笔估算偏差约 7% 。 <strong>全程不报错。</strong> 同样的分叉在 <code>qwen-mt-flash</code> （权威 $0.072 vs <code>cn-llm</code> $0.168 ）、 <code>deepseek-r1</code> （权威 $0.4018 / $1.6058 vs <code>cn-llm</code> $2.00 / $8.00 ，高约 5 倍）、 <code>kimi-k2.5</code> 上重复出现。</p>
+        <p style="margin-top:18px">一个做成本预算或按价比选型的 Agent，若读到 <code>cn-llm</code> 那页，会判定这个本该廉价的模型贵到不可用而将其排除；若读到 <code>aisa-provider</code>，则整笔估算偏差约 7%。<strong>全程不报错。</strong> 同样的分叉在 <code>qwen-mt-flash</code>（权威 $0.072 vs <code>cn-llm</code> $0.168）、<code>deepseek-r1</code>（权威 $0.4018 / $1.6058 vs <code>cn-llm</code> $2.00 / $8.00，高约 5 倍）、<code>kimi-k2.5</code> 上重复出现。</p>
 
         <div class="tbl-wrap">
           <table class="gap">
@@ -748,7 +936,7 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
           <span class="label">缺口三类 · 高危 · 1 处含两条端点</span>
           <h4>同一接口，多个地址</h4>
         </div>
-        <p class="intro">即第一节那个开篇案例。 <code>us-stock-analyst</code> 把两个金融端点的路径写成了斜杠分隔，而真实路径（及相邻的 <code>marketpulse</code> 页）用的是连字符：</p>
+        <p class="intro">即第一节那个开篇案例。<code>us-stock-analyst</code> 把两个金融端点的路径写成了斜杠分隔，而真实路径（及相邻的 <code>marketpulse</code> 页）用的是连字符：</p>
 
         <div class="tbl-wrap">
           <table class="gap">
@@ -783,7 +971,7 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
           <span class="label">缺口四类 · 高危 · 1 处</span>
           <h4>同一参数，两种说法</h4>
         </div>
-        <p class="intro"><code>youtube-search</code> 把 <code>gl=cn</code> （中国）当作正常示例使用，而 <code>youtube-search-skill</code> 明确写着 <code>cn</code> 不受支持、会返回 <code>Unsupported value</code> 错误（ <a href="https://github.com/AIsa-team/docs/blob/16863d3/agent-skills/youtube-search-skill.mdx#L385">源文件 L385</a> ）。 Agent 取哪一页，决定了它会不会构造出一个注定报错的请求。</p>
+        <p class="intro"><code>youtube-search</code> 把 <code>gl=cn</code>（中国）当作正常示例使用，而 <code>youtube-search-skill</code> 明确写着 <code>cn</code> 不受支持、会返回 <code>Unsupported value</code> 错误（<a href="https://github.com/AIsa-team/docs/blob/16863d3/agent-skills/youtube-search-skill.mdx#L385">源文件 L385</a>）。Agent 取哪一页，决定了它会不会构造出一个注定报错的请求。</p>
       </div>
 
       <!-- ----- 缺口五 ----- -->
@@ -795,12 +983,12 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
         <p class="intro">这类缺陷不依赖跨页对账，单页审阅即可发现：</p>
 
         <ul class="spaced">
-          <li><strong>评分表权重合计 130%</strong> ： <code>stock-analysis</code> 的八维评分为 <code>30 + 20 + 20 + 10 + 10 + 15 + 15 + 10 = <span style="color:var(--del)">130%</span></code> ，凑不出 100% ， Agent 无法据此做加权（ <a href="https://github.com/AIsa-team/docs/blob/16863d3/agent-skills/stock-analysis.mdx#L82">源文件 L82–89</a> ）。</li>
-          <li><strong>折扣阶梯不单调</strong> ： <code>wallet</code> 页声称「充得越多折扣越高」，却把 $50 与 $100 都标为 5% （ <a href="https://github.com/AIsa-team/docs/blob/16863d3/guides/pricing/wallet.mdx#L43">源文件 L43–44</a> ）。</li>
+          <li><strong>评分表权重合计 130%</strong>：<code>stock-analysis</code> 的八维评分为 <code>30 + 20 + 20 + 10 + 10 + 15 + 15 + 10 = <span style="color:var(--del)">130%</span></code>，凑不出 100%，Agent 无法据此做加权（<a href="https://github.com/AIsa-team/docs/blob/16863d3/agent-skills/stock-analysis.mdx#L82">源文件 L82–89</a>）。</li>
+          <li><strong>折扣阶梯不单调</strong>：<code>wallet</code> 页声称「充得越多折扣越高」，却把 $50 与 $100 都标为 5%（<a href="https://github.com/AIsa-team/docs/blob/16863d3/guides/pricing/wallet.mdx#L43">源文件 L43–44</a>）。</li>
         </ul>
 
         <blockquote class="pull">
-          <p>其余缺口（模型总数 49+ / 50+ / 167 各处不一、 <code>us-stock-analyst</code> 与 <code>llm-router</code> 仍在推荐 GPT-4 / Claude 3 Opus 等已被取代的旧型号、 <code>cn-llm</code> 声称覆盖 GLM / Baichuan 而定价表无对应行等）见技术版完整清单，定位方式相同。</p>
+          <p>其余缺口（模型总数 49+ / 50+ / 167 各处不一、<code>us-stock-analyst</code> 与 <code>llm-router</code> 仍在推荐 GPT-4 / Claude 3 Opus 等已被取代的旧型号、<code>cn-llm</code> 声称覆盖 GLM / Baichuan 而定价表无对应行等）见技术版完整清单，定位方式相同。</p>
         </blockquote>
       </div>
     </section>
@@ -816,12 +1004,12 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
         <div class="rec">
           <div class="rec-no">第一件 · 治本，一次消解大半</div>
           <h4>建立单一可信源，让技能手册「引用而非重写」</h4>
-          <p>那份 6 月 4 日刷新、内部自洽的权威模型清单与定价页已经存在。把模型、价格、上下文长度、端点路径这类会被多页复用的事实，固化为一份机器可读的单一数据源，各技能手册在构建时自动注入、而非人工 copy 。本轮 14 条「同对象跨页不一致」会随之同时消失，也从机制上杜绝复发。</p>
+          <p>那份 6 月 4 日刷新、内部自洽的权威模型清单与定价页已经存在。把模型、价格、上下文长度、端点路径这类会被多页复用的事实，固化为一份机器可读的单一数据源，各技能手册在构建时自动注入、而非人工 copy。本轮 14 条「同对象跨页不一致」会随之同时消失，也从机制上杜绝复发。</p>
         </div>
         <div class="rec">
           <div class="rec-no">第二件 · 治标，但必须做</div>
           <h4>把单页可发现的硬错挡在合入前</h4>
-          <p>评分权重应合计 100% 、折扣阶梯应单调递增、端点路径应统一为连字符——这些无需跨页对账，单页审阅就该拦下。建议在 CI 中加一道极简自检（数字加和校验 + 端点路径白名单），让这类机械错不再进入正文。同样的自检也能盯住第一类的发现入口：让 <code>agent-discovery</code> 的 schema 数、分类数、分类表由 <code>openapi.yaml</code> 自动派生， spec 再增长也不会漂移。</p>
+          <p>评分权重应合计 100%、折扣阶梯应单调递增、端点路径应统一为连字符——这些无需跨页对账，单页审阅就该拦下。建议在 CI 中加一道极简自检（数字加和校验 + 端点路径白名单），让这类机械错不再进入正文。同样的自检也能盯住第一类的发现入口：让 <code>agent-discovery</code> 的 schema 数、分类数、分类表由 <code>openapi.yaml</code> 自动派生，spec 再增长也不会漂移。</p>
         </div>
         <div class="rec">
           <div class="rec-no">第三件 · 防复发</div>
@@ -831,7 +1019,7 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
       </div>
 
       <div class="closing">
-        <p>技术写作不只是修正语法与拼写，而是在为用户——无论是人还是 Agent ——铺一段流畅、能成功走完的旅程。 AIsa 文档的底子并不差，差的是一个让所有页面都去对齐同一个答案的机制。补上这个源、让技能手册引用它，缺口的大半会自动消失，剩下的几处用单页审阅加 CI 自检即可兜住。</p>
+        <p>技术写作不只是修正语法与拼写，而是在为用户——无论是人还是 Agent——铺一段流畅、能成功走完的旅程。AIsa 文档的底子并不差，差的是一个让所有页面都去对齐同一个答案的机制。补上这个源、让技能手册引用它，缺口的大半会自动消失，剩下的几处用单页审阅加 CI 自检即可兜住。</p>
       </div>
     </section>
 
@@ -841,9 +1029,9 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
 <footer>
   <div class="wrap">
     <div class="row">
-      <a class="back-link" href="./index.html">‹ 返回成果与历程</a>
+      <a class="back-link" href="./index.html">‹ 返回项目成果与历程说明</a>
       <span>·</span>
-      <span>AIsa 文档质量工程 · 报告基线 <code style="font-size:11.5px;padding:1px 5px">16863d3</code></span>
+      <span>AIsa AI 友好度质检报告 · 基线 <code style="font-size:11.5px;padding:1px 5px">16863d3</code></span>
       <span>·</span>
       <a href="https://github.com/yuanshan8053/aisa-docs-voyager">GitHub 仓库</a>
       <span>·</span>
@@ -858,7 +1046,21 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
   var STORE_KEY = 'aisa-docs:theme';
   var root = document.documentElement;
   var buttons = document.querySelectorAll('[data-set-theme]');
+  var chapterLinks = document.querySelectorAll('.chapter-tabs a[href^="#"]');
   var statusText = document.getElementById('status-text');
+
+  function hydrateResponsiveTables() {
+    document.querySelectorAll('table.gap').forEach(function (table) {
+      var labels = Array.prototype.slice.call(table.querySelectorAll('thead th')).map(function (th) {
+        return (th.textContent || '').trim();
+      });
+      table.querySelectorAll('tbody tr').forEach(function (row) {
+        Array.prototype.slice.call(row.children).forEach(function (cell, i) {
+          if (!cell.getAttribute('data-label') && labels[i]) cell.setAttribute('data-label', labels[i]);
+        });
+      });
+    });
+  }
 
   function apply(theme) {
     if (theme !== 'A' && theme !== 'B') theme = 'A';
@@ -868,8 +1070,8 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
     });
     if (statusText) {
       statusText.textContent = theme === 'A'
-        ? '● 质检报告 · baseline 16863d3'
-        : '质检报告 · 基线 16863d3';
+        ? '● AI 友好度质检报告 · baseline 16863d3'
+        : 'AI 友好度质检报告 · 基线 16863d3';
     }
     try { localStorage.setItem(STORE_KEY, theme); } catch (_) {}
   }
@@ -880,10 +1082,29 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
     if (saved === 'A' || saved === 'B') initial = saved;
   } catch (_) {}
   apply(initial);
+  hydrateResponsiveTables();
 
   buttons.forEach(function (b) {
     b.addEventListener('click', function () { apply(b.getAttribute('data-set-theme')); });
   });
+
+  function markChapter(id) {
+    chapterLinks.forEach(function (link) {
+      link.setAttribute('aria-current', link.getAttribute('href') === '#' + id ? 'true' : 'false');
+    });
+  }
+
+  if ('IntersectionObserver' in window && chapterLinks.length) {
+    var watchedChapters = ['ch-1', 'ch-2', 'ch-3', 'ch-4', 'ch-5']
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);
+    var chapterObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) markChapter(entry.target.id);
+      });
+    }, { rootMargin: '-34% 0px -58% 0px', threshold: 0.01 });
+    watchedChapters.forEach(function (section) { chapterObserver.observe(section); });
+  }
 
   // 键盘快捷：1 切沉浸体验，2 切阅读模式
   document.addEventListener('keydown', function (e) {

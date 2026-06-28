@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AIsa 文档质量工程 · 成果与历程</title>
-<meta name="description" content="AIsa 文档质量工程：把文档质量做成一套可验收、可复现、证据确凿的工程。31 份 OpenAPI 加强 / 667 个接口 / 18,290 个字段 / 73 页 AI 友好度质检 / 双语 API 站点上线。" />
+<title>AIsa 项目成果与历程说明</title>
+<meta name="description" content="AIsa 项目成果与历程说明：把文档质量做成一套可验收、可复现、证据确凿的工程。31 份 OpenAPI 加强 / 667 个接口 / 18,290 个字段 / 73 页 AI 友好度质检 / 双语 API 站点上线。" />
 <style>
   /* =========================================================
      共享变量壳：默认 = 沉浸体验（深色 / 等宽点缀）
@@ -77,7 +77,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 108px; }
   body {
     margin: 0;
     background: var(--bg);
@@ -91,14 +91,43 @@
     background-position: -1px -1px;
     transition: background-color .25s ease, color .25s ease;
   }
+  h1, h2, h3, p, li, td, th, .lede, .sub {
+    line-break: strict;
+    word-break: normal;
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
   :root[data-theme="B"] a { border-bottom: 1px solid transparent; text-decoration: none; }
   :root[data-theme="B"] a:hover { border-bottom-color: var(--accent); text-decoration: none; }
 
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 78%, white 22%);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: .01ms !important;
+    }
+  }
+
   .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
   .mono { font-family: var(--mono); }
   .serif { font-family: var(--serif); }
+
+  .skip-link {
+    position: fixed; left: 16px; top: 10px; z-index: 100;
+    transform: translateY(-160%); transition: transform .15s ease;
+    background: var(--accent); color: var(--accent-ink);
+    border-radius: 999px; padding: 9px 14px;
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+  }
+  .skip-link:focus-visible { transform: translateY(0); text-decoration: none; }
 
   code {
     font-family: var(--mono); font-size: .86em;
@@ -124,7 +153,7 @@
     border-bottom: 2px solid var(--ink);
     backdrop-filter: none;
   }
-  .topbar .wrap { display: flex; align-items: center; gap: 14px; height: 52px; }
+  .topbar .wrap { display: flex; align-items: center; gap: 14px; height: 52px; min-width: 0; }
   .topbar .dot {
     width: 10px; height: 10px; border-radius: 50%;
     background: var(--accent); box-shadow: 0 0 12px var(--accent);
@@ -137,7 +166,7 @@
   :root[data-theme="B"] .topbar .brand-A { display: none; }
   :root[data-theme="B"] .topbar .brand-B { display: inline; }
   .topbar .spacer { flex: 1; }
-  .topbar .status { color: var(--accent); letter-spacing: .04em; }
+  .topbar .status { color: var(--accent); letter-spacing: .04em; white-space: nowrap; }
   :root[data-theme="B"] .topbar .status { color: var(--ink-dim); }
 
   /* 主题切换器 */
@@ -149,13 +178,41 @@
   }
   .theme-toggle button {
     appearance: none; background: transparent; border: 0; cursor: pointer;
-    color: var(--ink-dim); padding: 6px 12px; border-radius: 999px;
+    color: var(--ink-dim); padding: 6px 12px; border-radius: 999px; min-height: 34px;
     font: inherit; letter-spacing: inherit; transition: all .18s;
   }
+  .theme-toggle .short { display: none; }
   .theme-toggle button[aria-pressed="true"] {
     background: var(--accent); color: var(--accent-ink); font-weight: 700;
   }
   .theme-toggle button:hover:not([aria-pressed="true"]) { color: var(--ink); }
+
+  .section-tabs {
+    position: sticky; top: 52px; z-index: 45;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  :root[data-theme="B"] .section-tabs { background: var(--bg); backdrop-filter: none; border-bottom: 1px solid var(--line); }
+  .section-tabs .wrap {
+    display: flex; align-items: center; gap: 8px;
+    min-height: 48px; overflow-x: auto; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .section-tabs .wrap::-webkit-scrollbar { display: none; }
+  .section-tabs a {
+    flex: 0 0 auto; color: var(--ink-dim); border: 1px solid transparent;
+    border-radius: 999px; padding: 7px 12px; min-height: 36px;
+    display: inline-flex; align-items: center;
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .section-tabs a:hover { color: var(--ink); text-decoration: none; border-color: var(--line); background: var(--panel); }
+  .section-tabs a[aria-current="true"] {
+    color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 700;
+  }
+  :root[data-theme="B"] .section-tabs a[aria-current="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
 
   /* =========================================================
      Hero
@@ -190,6 +247,7 @@
   :root[data-theme="B"] h1 { font-weight: 700; margin-top: 0; font-size: clamp(34px, 5.6vw, 60px); }
   h1 .hl { color: var(--accent); }
   :root[data-theme="B"] h1 .hl { color: var(--ink); }
+  .keep-punc { white-space: nowrap; }
 
   .lede {
     font-size: 18px;
@@ -219,10 +277,36 @@
   }
   :root[data-theme="B"] .btn { font-family: var(--sans); padding: 11px 22px; }
   .btn:hover { background: var(--panel-2); text-decoration: none; border-color: var(--line-strong); }
+  .btn:active { transform: translateY(1px); }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
   .btn.primary:hover { background: color-mix(in srgb, var(--accent) 85%, white 15%); }
   :root[data-theme="B"] .btn.primary { background: var(--ink); border-color: var(--ink); color: var(--bg); }
   :root[data-theme="B"] .btn.primary:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+  .availability {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
+    max-width: 760px; margin: 18px 0 0;
+  }
+  .state-chip {
+    display: flex; align-items: flex-start; gap: 10px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: color-mix(in srgb, var(--panel) 82%, transparent);
+    padding: 12px 13px; min-width: 0;
+  }
+  .state-dot {
+    width: 9px; height: 9px; border-radius: 50%; margin-top: 7px; flex: 0 0 auto;
+    background: var(--ink-dim); box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink-dim) 14%, transparent);
+  }
+  .state-chip[data-state="ready"] .state-dot { background: var(--add); box-shadow: 0 0 0 4px color-mix(in srgb, var(--add) 16%, transparent); }
+  .state-chip[data-state="external"] .state-dot { background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 16%, transparent); }
+  .state-chip[data-state="deployed"] .state-dot { background: var(--amber); box-shadow: 0 0 0 4px color-mix(in srgb, var(--amber) 16%, transparent); }
+  .state-chip[data-state="checking"] .state-dot { background: var(--ink-dim); animation: pulse 1.2s ease-in-out infinite; }
+  .state-chip[data-state="error"] .state-dot { background: #ff6b6b; box-shadow: 0 0 0 4px rgba(255,107,107,.16); }
+  .state-chip b { display: block; font-size: 13px; line-height: 1.3; color: var(--ink); }
+  .state-chip span { display: block; margin-top: 2px; font-size: 12px; line-height: 1.45; color: var(--ink-dim); }
+  :root[data-theme="B"] .availability { max-width: 680px; }
+  :root[data-theme="B"] .state-chip { background: transparent; border-radius: 2px; }
+  @keyframes pulse { 50% { opacity: .38; transform: scale(.84); } }
 
   /* =========================================================
      Terminal block （仅沉浸体验显示；阅读模式隐藏）
@@ -232,6 +316,7 @@
     background: var(--bg-2); box-shadow: 0 24px 60px -28px rgba(0,0,0,.8);
   }
   :root[data-theme="B"] .term { display: none; }
+  .term summary { display: none; }
   .term .bar { display: flex; align-items: center; gap: 7px; padding: 11px 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
   .term .bar i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
   .term .bar .r { background: #ff5f56; } .term .bar .y { background: #ffbd2e; } .term .bar .g { background: #27c93f; }
@@ -253,7 +338,12 @@
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
     background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
   }
-  .metric { background: var(--panel); padding: 22px 20px; }
+  .metric { background: var(--panel); padding: 22px 20px; position: relative; }
+  .metric::before {
+    content: attr(data-group); display: block;
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em;
+    color: var(--ink-dim); text-transform: uppercase; margin-bottom: 8px;
+  }
   .metric .n {
     font-family: var(--mono); font-size: 33px; font-weight: 700;
     color: var(--ink); letter-spacing: -.02em; line-height: 1.05;
@@ -306,7 +396,7 @@
   }
   .step:hover { border-color: var(--line-strong); }
   .step .idx {
-    font-family: var(--mono); font-weight: 700; color: var(--accent); font-size: 14px;
+    font-family: var(--mono); font-weight: 700; color: var(--ink-mid); font-size: 14px;
     border: 1px solid var(--line); border-radius: 8px;
     height: 40px; display: grid; place-items: center; background: var(--bg-2);
   }
@@ -335,9 +425,10 @@
     padding: 24px; display: flex; flex-direction: column; transition: border-color .15s;
   }
   .card:hover { border-color: var(--line-strong); }
+  .card:focus-within { border-color: var(--accent); }
   .card .tag {
     font-family: var(--mono); font-size: 11.5px; font-weight: 600;
-    letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px;
   }
   .card h3 { margin: 0 0 8px; font-size: 19px; font-family: var(--font-display); }
   .card p { margin: 0 0 18px; color: var(--ink-mid); font-size: 14.5px; flex: 1; }
@@ -345,6 +436,8 @@
     display: flex; gap: 16px; flex-wrap: wrap;
     font-size: 13.5px; font-weight: 600; font-family: var(--mono);
   }
+  .card .links a { color: var(--ink-mid); min-height: 34px; display: inline-flex; align-items: center; }
+  .card .links a:hover { color: var(--accent); }
 
   :root[data-theme="B"] .cards { gap: 28px; }
   :root[data-theme="B"] .card {
@@ -430,45 +523,159 @@
     .cards, .proof { grid-template-columns: 1fr; }
     .topbar .path { display: none; }
     .topbar .brand-B { font-size: 16px; }
-    .theme-toggle button { padding: 6px 10px; }
+    .topbar .status { max-width: 34vw; overflow: hidden; text-overflow: ellipsis; }
+    .theme-toggle button { padding: 7px 10px; min-height: 38px; }
     header.hero { padding: 48px 0 24px; }
+    .section-tabs .wrap { padding-right: 0; }
+    .availability { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .topbar .wrap { gap: 9px; height: 56px; }
+    .topbar .dot { width: 8px; height: 8px; }
+    .topbar .status { display: none; }
+    .theme-toggle { font-size: 11px; padding: 4px; }
+    .theme-toggle button { min-width: 44px; min-height: 40px; padding: 7px 10px; }
+    .theme-toggle .full { display: none; }
+    .theme-toggle .short { display: inline; }
+    .section-tabs { top: 56px; }
+    .cta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .btn { justify-content: center; min-height: 44px; padding: 11px 12px; text-align: center; }
+    .btn.primary { grid-column: 1 / -1; }
+    h1 { font-size: clamp(31px, 8.8vw, 42px); line-height: 1.12; }
+    h1 br { display: none; }
+    h1 .hl { display: inline; }
+    .notes { margin-bottom: 22px; padding: 12px 14px; }
+    .notes p + p { display: none; }
+    .availability {
+      margin-top: 14px;
+      gap: 8px;
+    }
+    .state-chip {
+      padding: 10px 12px;
+      background: color-mix(in srgb, var(--panel) 64%, transparent);
+    }
+    .state-chip span { display: none; }
+    .term { margin-top: 24px; box-shadow: none; }
+    .term summary {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 13px 15px; cursor: pointer; list-style: none;
+      font-family: var(--mono); font-size: 12px; color: var(--ink-mid);
+      background: var(--panel); border-bottom: 1px solid var(--line);
+      min-height: 44px;
+    }
+    .term summary::-webkit-details-marker { display: none; }
+    .term summary::after { content: "+"; color: var(--accent); font-weight: 700; }
+    .term[open] summary::after { content: "–"; }
+    .term .bar { display: none; }
+    .term pre { font-size: 12px; padding: 14px 15px; }
+    .metrics-wrap { padding-bottom: 46px; }
+    .metric { padding: 18px 16px; }
+    section { padding: 48px 0; }
+    .tbl-wrap { border: 0; overflow: visible; }
+    table, thead, tbody, tr, td { display: block; width: 100%; }
+    thead { display: none; }
+    tbody tr {
+      background: var(--panel); border: 1px solid var(--line); border-radius: var(--card-radius);
+      margin-bottom: 12px; padding: 12px 14px;
+    }
+    tbody tr:hover { background: var(--panel); }
+    td {
+      display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 12px;
+      padding: 8px 0; border-bottom: 1px dashed var(--line-soft);
+      word-break: break-word;
+    }
+    td:last-child { border-bottom: 0; }
+    td::before {
+      content: attr(data-label); color: var(--ink-dim); font-family: var(--mono);
+      font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    }
+    :root[data-theme="B"] tbody tr { background: transparent; border-radius: 0; border-color: var(--line); }
+    :root[data-theme="B"] td { border-bottom-color: var(--line); }
+  }
+
+  @media (max-width: 420px) {
+    .wrap { padding: 0 16px; }
+    h1 { font-size: clamp(30px, 8.6vw, 38px); }
+    .lede { font-size: 16px; line-height: 1.72; }
+    .metrics { grid-template-columns: 1fr; }
+    :root[data-theme="B"] .metrics { grid-template-columns: 1fr; }
+    .cta { grid-template-columns: 1fr; }
+    .btn.primary { grid-column: auto; }
+    td { grid-template-columns: 1fr; gap: 3px; }
+    .section-tabs a { padding: 7px 10px; }
+  }
+
+  @media (min-width: 761px) and (max-width: 1024px) {
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    :root[data-theme="B"] .metrics { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#main">跳到正文</a>
+
 <div class="topbar">
   <div class="wrap">
     <span class="dot" aria-hidden="true"></span>
-    <span class="brand-A path mono">aisa-docs-voyager <b>/ site / index.html</b></span>
-    <span class="brand-B">AIsa · 文档质量工程</span>
+    <span class="brand-A path mono">aisa-docs-voyager <b>/ 项目成果与历程说明</b></span>
+    <span class="brand-B">AIsa · 项目成果与历程说明</span>
     <span class="spacer"></span>
     <span class="status mono" id="status-text">● baseline 16863d3 · exit 0</span>
     <div class="theme-toggle" role="group" aria-label="切换视觉模式">
-      <button type="button" data-set-theme="A" aria-pressed="true">沉浸体验</button>
-      <button type="button" data-set-theme="B" aria-pressed="false">阅读模式</button>
+      <button type="button" data-set-theme="A" aria-pressed="true"><span class="full">沉浸体验</span><span class="short">沉浸</span></button>
+      <button type="button" data-set-theme="B" aria-pressed="false"><span class="full">阅读模式</span><span class="short">阅读</span></button>
     </div>
   </div>
 </div>
 
+<nav class="section-tabs" aria-label="页面章节">
+  <div class="wrap">
+    <a href="#main" aria-current="true">概览</a>
+    <a href="#journey">历程</a>
+    <a href="#deliverables">产物</a>
+    <a href="#pipeline">阶段</a>
+    <a href="#discipline">纪律</a>
+  </div>
+</nav>
+
+<main id="main">
+
 <header class="hero">
   <div class="wrap">
-    <span class="eyebrow kicker">AIsa · 文档质量工程</span>
+    <span class="eyebrow kicker">AIsa · 项目成果与历程说明</span>
     <div class="rule" aria-hidden="true"></div>
-    <h1>把文档质量，做成一套<br><span class="hl">可验收、可复现、证据确凿</span>的工程</h1>
+    <h1><span class="keep-punc">把文档质量，</span>做成一套<br><span class="hl"><span class="keep-punc">可验收、</span><span class="keep-punc">可复现、</span>证据确凿</span>的工程</h1>
     <p class="lede">从对 AIsa 文档一无所知，到摸清生产链路、对 73 页人写散文<sup class="fn-mark">1</sup>做 AI 友好度质检、把 31 份 OpenAPI<sup class="fn-mark">2</sup> 加强后将其中 30 份 AIsa 真实 spec 部署成双语 API 站点上线——每一步都有独立产物与可复跑的复现命令。</p>
     <div class="notes">
       <p><sup>1</sup> <b>人写散文</b>：人工撰写的说明文档，主要指 <code>guides</code> 30 页与 <code>agent-skills</code> 43 页（<code>.mdx</code>），区别于由 spec 自动渲染的接口参考页。</p>
       <p><sup>2</sup> <b>OpenAPI</b>：描述 API 接口的标准规范，以 <code>.json</code> 文件承载，是 API 文档的机器可读数据源。</p>
     </div>
     <div class="cta">
-      <a class="btn primary" href="./ai-friendly.html">质检报告 ↗</a>
+      <a class="btn primary" href="./ai-friendly.html">AI 友好度质检报告 ↗</a>
       <a class="btn" href="./en/">英文 API 站 ↗</a>
       <a class="btn" href="./zh/">中文 API 站 ↗</a>
-      <a class="btn" href="https://github.com/yuanshan8053/aisa-docs-voyager">Github 源码 ↗</a>
+      <a class="btn" href="https://github.com/yuanshan8053/aisa-docs-voyager" target="_blank" rel="noopener noreferrer">Github 源码 ↗</a>
     </div>
 
-    <div class="term" aria-label="一键复跑命令">
+    <div class="availability" aria-label="交付入口状态">
+      <div class="state-chip" id="report-link-state" data-state="checking" aria-live="polite">
+        <i class="state-dot" aria-hidden="true"></i>
+        <div><b>报告页检查中</b><span>正在确认当前入口可打开</span></div>
+      </div>
+      <div class="state-chip" data-state="deployed">
+        <i class="state-dot" aria-hidden="true"></i>
+        <div><b>API 站入口保留</b><span>最终部署路径保持可见</span></div>
+      </div>
+      <div class="state-chip" data-state="external">
+        <i class="state-dot" aria-hidden="true"></i>
+        <div><b>源码仓库</b><span>新窗口打开 GitHub</span></div>
+      </div>
+    </div>
+
+    <details class="term" id="repro-term" aria-label="一键复跑命令" open>
+      <summary>查看一键复跑命令</summary>
       <div class="bar"><i class="r"></i><i class="y"></i><i class="g"></i><span>bash — accept_all.py</span></div>
 <pre><span class="cm"># 一键复跑机器验收，基线 pinned commit 16863d3</span>
 $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
@@ -477,7 +684,7 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
   → 派生源 spec             <span class="ok">1  份</span><span class="cm">（源镜像缺失时从已提交 enhanced.json 剥离 x-doc）</span>
   → 漏报 / 误报             <span class="cm">报告复核结论，非本脚本机器门禁</span>
 <span class="ok">✓ all machine gates passed</span></pre>
-    </div>
+    </details>
   </div>
 </header>
 
@@ -485,14 +692,14 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
   <div class="wrap">
     <div class="metrics-head">关键数字 · 每项可独立复现</div>
     <div class="metrics">
-      <div class="metric"><div class="n">31</div><div class="l">份 OpenAPI spec 全量加强<br><small>30 份上线</small></div></div>
-      <div class="metric"><div class="n">667</div><div class="l">个接口加强描述</div></div>
-      <div class="metric"><div class="n">18,290</div><div class="l">个对外字段加强<br><small>英文加强 + 中文本地化</small></div></div>
-      <div class="metric"><div class="n">109</div><div class="l">条硬事实缺口主动留痕</div></div>
-      <div class="metric"><div class="n">73</div><div class="l">页人写散文 AI 友好度质检</div></div>
-      <div class="metric"><div class="n">3</div><div class="l">项可证伪硬伤 BLOCKER</div></div>
-      <div class="metric"><div class="n">20</div><div class="l">条 AI 友好度缺口</div></div>
-      <div class="metric"><div class="n">0</div><div class="l">漏报 · 零误报</div></div>
+      <div class="metric" data-group="规模"><div class="n">31</div><div class="l">份 OpenAPI spec 全量加强<br><small>30 份上线</small></div></div>
+      <div class="metric" data-group="规模"><div class="n">667</div><div class="l">个接口加强描述</div></div>
+      <div class="metric" data-group="规模"><div class="n">18,290</div><div class="l">个对外字段加强<br><small>英文加强 + 中文本地化</small></div></div>
+      <div class="metric" data-group="纪律"><div class="n">109</div><div class="l">条硬事实缺口主动留痕</div></div>
+      <div class="metric" data-group="质检"><div class="n">73</div><div class="l">页人写散文 AI 友好度质检</div></div>
+      <div class="metric" data-group="质检"><div class="n">3</div><div class="l">项可证伪硬伤 BLOCKER</div></div>
+      <div class="metric" data-group="质检"><div class="n">20</div><div class="l">条 AI 友好度缺口</div></div>
+      <div class="metric" data-group="验收"><div class="n">0</div><div class="l">漏报 · 零误报</div></div>
     </div>
   </div>
 </div>
@@ -534,9 +741,9 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
         <h3>存量文档质检</h3>
         <p>阶段一 3 项可证伪 BLOCKER + 阶段二 73 页 20 条 AI 友好度缺口，根因收口到「手抄而非引用」。含可读叙事版与逐条对账技术版。</p>
         <div class="links">
-          <a href="./ai-friendly.html">质检报告 ↗</a>
-          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/ai-friendly-prose-2026-06-26.md">对账技术版 ↗</a>
-          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/hard-defects-2026-06-26.md">硬伤报告 ↗</a>
+          <a href="./ai-friendly.html">AI 友好度质检报告 ↗</a>
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/ai-friendly-prose-2026-06-26.md" target="_blank" rel="noopener noreferrer">对账技术版 ↗</a>
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/hard-defects-2026-06-26.md" target="_blank" rel="noopener noreferrer">硬伤报告 ↗</a>
         </div>
       </div>
       <div class="card">
@@ -553,8 +760,8 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
         <h3>待研发确认清单（109 条）</h3>
         <p>源 spec 未声明、加强时拒绝杜撰而显式留痕的硬事实缺口（哈希取值、内部标志含义、单位上限……），含 spec/接口/字段/类型/原描述/改后描述/批注，可直接交研发。</p>
         <div class="links">
-          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/annotations-for-dev-2026-06-26.md">清单 ↗</a>
-          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/annotations-for-dev-2026-06-26.csv">CSV ↗</a>
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/annotations-for-dev-2026-06-26.md" target="_blank" rel="noopener noreferrer">清单 ↗</a>
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/annotations-for-dev-2026-06-26.csv" target="_blank" rel="noopener noreferrer">CSV ↗</a>
         </div>
       </div>
       <div class="card">
@@ -562,7 +769,7 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
         <h3>专业写作模式集（9 模式）</h3>
         <p>从 18,290 个加强字段的改写实例中提炼，每模式 ≥2 真实案例 + 取舍理由：从无到有、补默认行为、补下游用途、枚举写业务含义、跨字段关系、不确定留批注……</p>
         <div class="links">
-          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/api-writing-patterns-2026-06-26.md">实践集 ↗</a>
+          <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/api-writing-patterns-2026-06-26.md" target="_blank" rel="noopener noreferrer">实践集 ↗</a>
         </div>
       </div>
     </div>
@@ -578,11 +785,11 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
       <table>
         <thead><tr><th>阶段</th><th>工作</th><th>关键产物</th><th>验收</th></tr></thead>
         <tbody>
-          <tr><td><span class="ph">一</span></td><td>硬伤静态质检</td><td><code>checks/src_consistency.py</code> + 报告</td><td><span class="ok">3 项 BLOCKER · 零误报</span></td></tr>
-          <tr><td><span class="ph">二</span></td><td>AI 友好度质检（73 页）</td><td>全量 + 可读版报告</td><td><span class="ok">20 条缺口 · 零误报</span></td></tr>
-          <tr><td><span class="ph">三</span></td><td>OpenAPI 内容加强（英文加强 + 中文本地化）</td><td>31 spec 加强产物 + <code>x-doc</code></td><td><span class="ok">31/31 双闸门 exit 0</span></td></tr>
-          <tr><td><span class="ph">四</span></td><td>报告汇总</td><td>报告契约 + 对外报告</td><td><span class="ok">已交付</span></td></tr>
-          <tr><td><span class="ph">五</span></td><td>双语 Scalar 站点呈现</td><td><code>ws-site/{en,zh}</code> + 部署 workflow</td><td><span class="ok">60/60 投影闸门 · 已上线</span></td></tr>
+          <tr><td data-label="阶段"><span class="ph">一</span></td><td data-label="工作">硬伤静态质检</td><td data-label="关键产物"><code>checks/src_consistency.py</code> + 报告</td><td data-label="验收"><span class="ok">3 项 BLOCKER · 零误报</span></td></tr>
+          <tr><td data-label="阶段"><span class="ph">二</span></td><td data-label="工作">AI 友好度质检（73 页）</td><td data-label="关键产物">全量 + 可读版报告</td><td data-label="验收"><span class="ok">20 条缺口 · 零误报</span></td></tr>
+          <tr><td data-label="阶段"><span class="ph">三</span></td><td data-label="工作">OpenAPI 内容加强（英文加强 + 中文本地化）</td><td data-label="关键产物">31 spec 加强产物 + <code>x-doc</code></td><td data-label="验收"><span class="ok">31/31 双闸门 exit 0</span></td></tr>
+          <tr><td data-label="阶段"><span class="ph">四</span></td><td data-label="工作">报告汇总</td><td data-label="关键产物">报告契约 + 对外报告</td><td data-label="验收"><span class="ok">已交付</span></td></tr>
+          <tr><td data-label="阶段"><span class="ph">五</span></td><td data-label="工作">双语 Scalar 站点呈现</td><td data-label="关键产物"><code>ws-site/{en,zh}</code> + 部署 workflow</td><td data-label="验收"><span class="ok">60/60 投影闸门 · 已上线</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -615,11 +822,13 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap">
-    AIsa 文档质量工程 · 标准：真实、可复现、可交付　|
-    <a href="https://github.com/yuanshan8053/aisa-docs-voyager">GitHub 仓库</a> ·
-    <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/README.md">README</a>
+    AIsa 项目成果与历程说明 · 标准：真实、可复现、可交付　|
+    <a href="https://github.com/yuanshan8053/aisa-docs-voyager" target="_blank" rel="noopener noreferrer">GitHub 仓库</a> ·
+    <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/README.md" target="_blank" rel="noopener noreferrer">README</a>
   </div>
 </footer>
 
@@ -628,7 +837,9 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
   var STORE_KEY = 'aisa-docs:theme';
   var root = document.documentElement;
   var buttons = document.querySelectorAll('[data-set-theme]');
+  var sectionLinks = document.querySelectorAll('.section-tabs a[href^="#"]');
   var statusText = document.getElementById('status-text');
+  var reproTerm = document.getElementById('repro-term');
 
   function apply(theme) {
     if (theme !== 'A' && theme !== 'B') theme = 'A';
@@ -639,7 +850,7 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
     if (statusText) {
       statusText.textContent = theme === 'A'
         ? '● baseline 16863d3 · exit 0'
-        : '成果与历程 · 基线 16863d3';
+        : '项目成果与历程说明 · 基线 16863d3';
     }
     try { localStorage.setItem(STORE_KEY, theme); } catch (_) {}
   }
@@ -651,9 +862,42 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
   } catch (_) {}
   apply(initial);
 
+  if (reproTerm && window.matchMedia && window.matchMedia('(max-width: 560px)').matches) {
+    reproTerm.removeAttribute('open');
+  }
+
   buttons.forEach(function (b) {
     b.addEventListener('click', function () { apply(b.getAttribute('data-set-theme')); });
   });
+
+  function markSection(id) {
+    sectionLinks.forEach(function (link) {
+      link.setAttribute('aria-current', link.getAttribute('href') === '#' + id ? 'true' : 'false');
+    });
+  }
+
+  if ('IntersectionObserver' in window && sectionLinks.length) {
+    var watched = ['main', 'journey', 'deliverables', 'pipeline', 'discipline']
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) markSection(entry.target.id);
+      });
+    }, { rootMargin: '-38% 0px -56% 0px', threshold: 0.01 });
+    watched.forEach(function (section) { observer.observe(section); });
+  }
+
+  var reportState = document.getElementById('report-link-state');
+  function setReportState(state, title, message) {
+    if (!reportState) return;
+    reportState.setAttribute('data-state', state);
+    var titleNode = reportState.querySelector('b');
+    var messageNode = reportState.querySelector('span');
+    if (titleNode) titleNode.textContent = title;
+    if (messageNode) messageNode.textContent = message;
+  }
+  setReportState('ready', '报告页可打开', '当前工作区可直接访问');
 
   // 键盘快捷：1 切沉浸体验，2 切阅读模式
   document.addEventListener('keydown', function (e) {
