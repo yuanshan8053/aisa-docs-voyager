@@ -77,7 +77,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 108px; }
   body {
     margin: 0;
     background: var(--bg);
@@ -186,6 +186,33 @@
     background: var(--accent); color: var(--accent-ink); font-weight: 700;
   }
   .theme-toggle button:hover:not([aria-pressed="true"]) { color: var(--ink); }
+
+  .section-tabs {
+    position: sticky; top: 52px; z-index: 45;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  :root[data-theme="B"] .section-tabs { background: var(--bg); backdrop-filter: none; border-bottom: 1px solid var(--line); }
+  .section-tabs .wrap {
+    display: flex; align-items: center; gap: 8px;
+    min-height: 48px; overflow-x: auto; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .section-tabs .wrap::-webkit-scrollbar { display: none; }
+  .section-tabs a {
+    flex: 0 0 auto; color: var(--ink-dim); border: 1px solid transparent;
+    border-radius: 999px; padding: 7px 12px; min-height: 36px;
+    display: inline-flex; align-items: center;
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .section-tabs a:hover { color: var(--ink); text-decoration: none; border-color: var(--line); background: var(--panel); }
+  .section-tabs a[aria-current="true"] {
+    color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 700;
+  }
+  :root[data-theme="B"] .section-tabs a[aria-current="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
 
   /* =========================================================
      Hero
@@ -474,10 +501,10 @@
     .topbar .status { max-width: 34vw; overflow: hidden; text-overflow: ellipsis; }
     .theme-toggle button { padding: 7px 10px; min-height: 38px; }
     header.hero { padding: 48px 0 24px; }
+    .section-tabs .wrap { padding-right: 0; }
   }
 
   @media (max-width: 560px) {
-    html { scroll-padding-top: 68px; }
     .topbar .wrap { gap: 9px; height: 56px; }
     .topbar .dot { width: 8px; height: 8px; }
     .topbar .status { display: none; }
@@ -485,6 +512,7 @@
     .theme-toggle button { min-width: 44px; min-height: 40px; padding: 7px 10px; }
     .theme-toggle .full { display: none; }
     .theme-toggle .short { display: inline; }
+    .section-tabs { top: 56px; }
     .cta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .btn { justify-content: center; min-height: 44px; padding: 11px 12px; text-align: center; }
     .btn.primary { grid-column: 1 / -1; }
@@ -540,6 +568,7 @@
     .cta { grid-template-columns: 1fr; }
     .btn.primary { grid-column: auto; }
     td { grid-template-columns: 1fr; gap: 3px; }
+    .section-tabs a { padding: 7px 10px; }
   }
 
   @media (min-width: 761px) and (max-width: 1024px) {
@@ -565,6 +594,16 @@
     </div>
   </div>
 </div>
+
+<nav class="section-tabs" aria-label="页面章节">
+  <div class="wrap">
+    <a href="#main" aria-current="true">概览</a>
+    <a href="#journey">历程</a>
+    <a href="#deliverables">产物</a>
+    <a href="#pipeline">阶段</a>
+    <a href="#discipline">纪律</a>
+  </div>
+</nav>
 
 <main id="main">
 
@@ -748,6 +787,7 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
   var STORE_KEY = 'aisa-docs:theme';
   var root = document.documentElement;
   var buttons = document.querySelectorAll('[data-set-theme]');
+  var sectionLinks = document.querySelectorAll('.section-tabs a[href^="#"]');
   var statusText = document.getElementById('status-text');
   var reproTerm = document.getElementById('repro-term');
 
@@ -779,6 +819,24 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
   buttons.forEach(function (b) {
     b.addEventListener('click', function () { apply(b.getAttribute('data-set-theme')); });
   });
+
+  function markSection(id) {
+    sectionLinks.forEach(function (link) {
+      link.setAttribute('aria-current', link.getAttribute('href') === '#' + id ? 'true' : 'false');
+    });
+  }
+
+  if ('IntersectionObserver' in window && sectionLinks.length) {
+    var watched = ['main', 'journey', 'deliverables', 'pipeline', 'discipline']
+      .map(function (id) { return document.getElementById(id); })
+      .filter(Boolean);
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) markSection(entry.target.id);
+      });
+    }, { rootMargin: '-38% 0px -56% 0px', threshold: 0.01 });
+    watched.forEach(function (section) { observer.observe(section); });
+  }
 
   // 键盘快捷：1 切沉浸体验，2 切阅读模式
   document.addEventListener('keydown', function (e) {
