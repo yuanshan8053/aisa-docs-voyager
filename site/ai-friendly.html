@@ -37,7 +37,6 @@
     --font-body: var(--sans);
 
     --wrap: 1080px;
-    --read-wrap: 760px;
 
     --bg-grid:
       linear-gradient(transparent 0 96%, var(--line-soft) 96% 100%),
@@ -74,7 +73,6 @@
     --font-body: var(--sans);
 
     --wrap: 940px;
-    --read-wrap: 700px;
 
     --bg-grid: none;
 
@@ -103,7 +101,6 @@
   :root[data-theme="B"] a:hover { border-bottom-color: var(--accent); text-decoration: none; }
 
   .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
-  .read { max-width: var(--read-wrap); margin: 0 auto; padding: 0 28px; }
   .mono { font-family: var(--mono); }
   .serif { font-family: var(--serif); }
 
@@ -197,7 +194,7 @@
 
   h1.title {
     font-family: var(--font-display);
-    font-size: clamp(32px, 5.2vw, 56px);
+    font-size: clamp(30px, 4.8vw, 54px);
     line-height: 1.16;
     margin: 22px 0 18px;
     font-weight: 750;
@@ -206,7 +203,7 @@
   }
   :root[data-theme="B"] h1.title {
     font-weight: 700; margin-top: 0;
-    font-size: clamp(34px, 5.1vw, 56px);
+    font-size: clamp(34px, 5.6vw, 60px);
     max-width: 20ch;
   }
   h1.title .hl { color: var(--accent); }
@@ -214,9 +211,9 @@
 
   .deck {
     font-size: 18px; color: var(--ink-mid);
-    max-width: 720px; margin: 0 0 28px;
+    max-width: 760px; margin: 0 0 28px;
   }
-  :root[data-theme="B"] .deck { font-family: var(--serif); font-size: 19px; max-width: 660px; }
+  :root[data-theme="B"] .deck { font-family: var(--serif); font-size: 19px; max-width: 680px; }
 
   .meta {
     display: flex; flex-wrap: wrap; gap: 20px 28px;
@@ -234,6 +231,17 @@
      ========================================================= */
   main { padding: 8px 0 64px; }
   article { padding: 0; }
+  /* 正文文字按可读行宽自约束（对齐落地页 .lede/.notes 的 760px measure），
+     表格 / 卡片 / 代码块等可超出此宽，与落地页同款「宽容器 + 窄正文」版式 */
+  article p,
+  article blockquote.pull,
+  article ul.spaced,
+  article ol.spaced,
+  article .note-strip,
+  article .toc,
+  article .closing,
+  article .gap-section p.intro,
+  article .recs { max-width: 820px; }
 
   section.chapter { padding: 56px 0 24px; }
   section.chapter + section.chapter { border-top: 1px solid var(--line); }
@@ -499,7 +507,7 @@
      Responsive
      ========================================================= */
   @media (max-width: 760px) {
-    .wrap, .read { padding: 0 18px; }
+    .wrap { padding: 0 18px; }
     .topbar .crumb { display: none; }
     .topbar .brand-B { font-size: 16px; }
     .theme-toggle button { padding: 6px 10px; }
@@ -532,7 +540,7 @@
 </div>
 
 <header class="cover">
-  <div class="read">
+  <div class="wrap">
     <span class="eyebrow kicker">AI 友好度质检报告 · 叙事版</span>
     <div class="rule" aria-hidden="true"></div>
     <h1 class="title">从一个连字符<br>看 <span class="hl">Agent 的文档体验</span></h1>
@@ -547,7 +555,7 @@
 </header>
 
 <main>
-  <article class="read">
+  <article class="wrap">
 
     <!-- ===================== 章一 ===================== -->
     <section class="chapter" id="ch-1">
