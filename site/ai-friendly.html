@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>从一个连字符看 Agent 的文档体验 · AIsa 文档质量工程</title>
-<meta name="description" content="一个 AI Agent 因『/ vs -』一字之差拿到 404 的失败旅程：23 处硬缺口（3 阻断 + 20 事实冲突），根因是缺少单一可信源。" />
+<meta name="description" content="一个 AI Agent 因接口路径里连字符被误写成斜杠、一字之差拿到 404 的失败旅程：23 处硬缺口（3 阻断 + 20 事实冲突），根因是缺少单一可信源。" />
 <style>
   /* =========================================================
      共享变量壳：默认 = 沉浸体验（深色 / 等宽点缀）
@@ -36,7 +36,7 @@
     --font-display: var(--sans);
     --font-body: var(--sans);
 
-    --wrap: 1040px;
+    --wrap: 1080px;
     --read-wrap: 760px;
 
     --bg-grid:
@@ -45,6 +45,7 @@
 
     --btn-radius: 8px;
     --card-radius: 12px;
+    --section-divider: 1px solid var(--line);
   }
 
   /* =========================================================
@@ -72,7 +73,7 @@
     --font-display: var(--serif);
     --font-body: var(--sans);
 
-    --wrap: 960px;
+    --wrap: 940px;
     --read-wrap: 700px;
 
     --bg-grid: none;
@@ -88,7 +89,7 @@
     background: var(--bg);
     color: var(--ink);
     font-family: var(--font-body);
-    line-height: 1.85;
+    line-height: 1.78;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image: var(--bg-grid);
@@ -104,6 +105,7 @@
   .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
   .read { max-width: var(--read-wrap); margin: 0 auto; padding: 0 28px; }
   .mono { font-family: var(--mono); }
+  .serif { font-family: var(--serif); }
 
   code {
     font-family: var(--mono); font-size: .86em;
@@ -184,7 +186,7 @@
     border: 1px solid var(--line); border-radius: 999px;
     padding: 5px 13px; background: var(--panel);
   }
-  .eyebrow.kicker::before { content: "› "; }
+  .eyebrow.kicker::before { content: "›"; }
   :root[data-theme="B"] .eyebrow.kicker {
     border: none; background: transparent; padding: 0; letter-spacing: .22em;
   }
@@ -534,7 +536,7 @@
     <span class="eyebrow kicker">AI 友好度质检报告 · 叙事版</span>
     <div class="rule" aria-hidden="true"></div>
     <h1 class="title">从一个连字符<br>看 <span class="hl">Agent 的文档体验</span></h1>
-    <p class="deck">一个 AI 助手照着技能手册发起请求，只因「/ vs -」一个字符之差，拿到 404 。从这次失败旅程切入，系统走查 73 页人写散文，确认 23 处会让 Agent 拿错值、调错接口、或对不上账的硬缺口，根因收口到一句话——这套文档缺少「单一可信源」 。</p>
+    <p class="deck">一个 AI 助手照着技能手册发起请求，只因文档把接口路径里的连字符 <code>-</code> 误写成斜杠 <code>/</code> ，一个字符之差就拿到 404 。从这次失败旅程切入，系统走查 73 页人写散文，确认 23 处会让 Agent 拿错值、调错接口、或对不上账的硬缺口，根因收口到一句话——这套文档缺少「单一可信源」 。</p>
     <div class="meta">
       <span>走查范围 · <b>73 页人写散文</b></span>
       <span class="accent">23 处硬缺口 · 3 阻断 + 20 事实冲突</span>
