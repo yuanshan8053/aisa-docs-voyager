@@ -58,7 +58,7 @@ aisa-docs-voyager/
 ### 2.3 成果落地页 `site/`（站点根，部署源）
 
 - `site/index.html` — 成果落地页，双主题重设计版（沉浸体验暗色 / 阅读模式暖纸白，顶栏 + 键盘 1/2 切换、`localStorage` 持久化）。8 块规模指标 + 四步历程 + 四块产物卡 + 五阶段表 + 四条质量纪律 + `accept_all.py` 终端块。相对链接 `./en/ ./zh/ ./ai-friendly.html` 接双语站与质检页（D-021）。
-- `site/ai-friendly.html` — 质检报告叙事页《从一个连字符看 Agent 的文档体验》，忠于 `reports/ai-friendly-prose-readable-2026-06-26.md`，28 条 GitHub permalink（pinned `16863d3`）+ aisa.one 链接，与落地页共用主题脚本。
+- `site/ai-friendly.html` — 质检报告叙事页《从一个连字符看 Agent 的文档体验》，忠于 `reports/ai-friendly-prose-readable-2026-06-26.md`，17 条 GitHub permalink（pinned `16863d3`）+ aisa.one 链接，与落地页共用主题脚本。
 - 上线方式：`.github/workflows/deploy-api-site.yml` 把 `site/index.html` + `site/ai-friendly.html` + `ws-site/{en,zh}` 装配进 `_site/` → GitHub Pages。
 
 ### 2.4 静态检查器 `checks/`

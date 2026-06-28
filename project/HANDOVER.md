@@ -7,7 +7,7 @@
 
 ## 一、项目一句话
 
-AIsa 是 OpenAI 兼容的 AI 能力网关（法律实体 AIPay, Inc.），文档同时面向人和 Agent。本项目把「防止文档腐烂、主动提升文档质量」做成一套可分阶段实施、可独立验收、证据确凿的文档质量工程，唯一受众是 AIsa 产品负责人。源仓库 `AIsa-team/docs`（本地副本 `~/files/aisa-team-docs`，pinned `16863d3`），项目仓库 `aisa-docs-voyager`（远端 `github.com/yuanshan8053/aisa-docs-voyager`），线上站点 `https://yuanshan8053.github.io/aisa-docs-voyager/`。
+AIsa 是 OpenAI 兼容的 AI 能力网关（法律实体 AIPay, Inc.），文档同时面向人和 Agent。本项目把「防止文档腐烂、主动提升文档质量」做成一套可分阶段实施、可独立验收、证据确凿的文档质量工程。源仓库 `AIsa-team/docs`（本地副本 `~/files/aisa-team-docs`，pinned `16863d3`），项目仓库 `aisa-docs-voyager`（远端 `github.com/yuanshan8053/aisa-docs-voyager`），线上站点 `https://yuanshan8053.github.io/aisa-docs-voyager/`。
 
 ---
 

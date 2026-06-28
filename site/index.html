@@ -199,6 +199,17 @@
   }
   :root[data-theme="B"] .lede { font-family: var(--serif); font-size: 19px; max-width: 680px; }
 
+  .fn-mark { font-size: .62em; vertical-align: super; line-height: 0; color: var(--accent); font-weight: 700; padding-left: 1px; }
+  .notes {
+    max-width: 760px; margin: 0 0 30px;
+    padding: 14px 18px; border-left: 2px solid var(--line-strong);
+    background: var(--panel); border-radius: 0 8px 8px 0;
+  }
+  .notes p { margin: 0; font-size: 13px; line-height: 1.85; color: var(--ink-dim); }
+  .notes p + p { margin-top: 4px; }
+  .notes b { color: var(--ink-mid); font-weight: 600; }
+  .notes sup { color: var(--accent); font-weight: 700; padding-right: 3px; }
+
   .cta { display: flex; gap: 12px; flex-wrap: wrap; }
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
@@ -445,7 +456,11 @@
     <span class="eyebrow kicker">AIsa · 文档质量工程</span>
     <div class="rule" aria-hidden="true"></div>
     <h1>把文档质量，做成一套<br><span class="hl">可验收、可复现、证据确凿</span>的工程</h1>
-    <p class="lede">从对 AIsa 文档一无所知，到摸清生产链路、对 73 页人写散文做 AI 友好度质检、把 31 份 OpenAPI 加强后将其中 30 份 AIsa 真实 spec 部署成双语 API 站点上线——每一步都有独立产物与可复跑的复现命令。</p>
+    <p class="lede">从对 AIsa 文档一无所知，到摸清生产链路、对 73 页人写散文<sup class="fn-mark">1</sup>做 AI 友好度质检、把 31 份 OpenAPI<sup class="fn-mark">2</sup> 加强后将其中 30 份 AIsa 真实 spec 部署成双语 API 站点上线——每一步都有独立产物与可复跑的复现命令。</p>
+    <div class="notes">
+      <p><sup>1</sup> <b>人写散文</b>：人工撰写的说明文档，主要指 <code>guides</code> 30 页与 <code>agent-skills</code> 43 页（<code>.mdx</code>），区别于由 spec 自动渲染的接口参考页。</p>
+      <p><sup>2</sup> <b>OpenAPI</b>：描述 API 接口的标准规范，以 <code>.json</code> 文件承载，是 API 文档的机器可读数据源。</p>
+    </div>
     <div class="cta">
       <a class="btn primary" href="./ai-friendly.html">质检报告 ↗</a>
       <a class="btn" href="./en/">英文 API 站 ↗</a>
@@ -468,15 +483,15 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
 
 <div class="metrics-wrap">
   <div class="wrap">
-    <div class="metrics-head">关键数字 · 一字不可改，每项可独立复现</div>
+    <div class="metrics-head">关键数字 · 每项可独立复现</div>
     <div class="metrics">
       <div class="metric"><div class="n">31</div><div class="l">份 OpenAPI spec 全量加强<br><small>30 份上线</small></div></div>
       <div class="metric"><div class="n">667</div><div class="l">个接口加强描述</div></div>
-      <div class="metric"><div class="n">18,290</div><div class="l">个对外字段双字段加强</div></div>
+      <div class="metric"><div class="n">18,290</div><div class="l">个对外字段加强<br><small>英文加强 + 中文本地化</small></div></div>
       <div class="metric"><div class="n">109</div><div class="l">条硬事实缺口主动留痕</div></div>
       <div class="metric"><div class="n">73</div><div class="l">页人写散文 AI 友好度质检</div></div>
       <div class="metric"><div class="n">3</div><div class="l">项可证伪硬伤 BLOCKER</div></div>
-      <div class="metric"><div class="n">20</div><div class="l">条 AI 友好度缺口 · 账平</div></div>
+      <div class="metric"><div class="n">20</div><div class="l">条 AI 友好度缺口</div></div>
       <div class="metric"><div class="n">0</div><div class="l">漏报 · 零误报</div></div>
     </div>
   </div>
@@ -494,7 +509,7 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
       </div></div>
       <div class="step"><div class="idx">02</div><div>
         <h3>现状统计，据此分流</h3>
-        <p>743 页 <code>.mdx</code> 中，664 页是 API 参考桩页（正文由 spec 内联渲染，非手写），真正可做散文质检的只有 73 页人写散文。两类状态与风格迥异，于是分两条线治理。</p>
+        <p>743 页 <code>.mdx</code> 中，664 页是 API 参考桩页（正文由 spec 自动渲染、非手写），真正可做散文质检的只有 73 页人写散文。两类状态与风格迥异，于是分两条线治理。</p>
       </div></div>
       <div class="step"><div class="idx">03</div><div>
         <h3>手写散文 → 质检</h3>
@@ -545,7 +560,7 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
       <div class="card">
         <div class="tag">API 写作实践</div>
         <h3>专业写作模式集（9 模式）</h3>
-        <p>从 17,550 对改前改后实例提炼，每模式 ≥2 真实案例 + rationale：从无到有、补默认行为、补下游用途、枚举写业务含义、跨字段关系、不确定留批注……</p>
+        <p>从 18,290 个加强字段的改写实例中提炼，每模式 ≥2 真实案例 + 取舍理由：从无到有、补默认行为、补下游用途、枚举写业务含义、跨字段关系、不确定留批注……</p>
         <div class="links">
           <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/reports/api-writing-patterns-2026-06-26.md">实践集 ↗</a>
         </div>
@@ -564,9 +579,9 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
         <thead><tr><th>阶段</th><th>工作</th><th>关键产物</th><th>验收</th></tr></thead>
         <tbody>
           <tr><td><span class="ph">一</span></td><td>硬伤静态质检</td><td><code>checks/src_consistency.py</code> + 报告</td><td><span class="ok">3 项 BLOCKER · 零误报</span></td></tr>
-          <tr><td><span class="ph">二</span></td><td>AI 友好度质检（73 页）</td><td>全量 + 可读版报告</td><td><span class="ok">20 条缺口 · 账平</span></td></tr>
-          <tr><td><span class="ph">三</span></td><td>OpenAPI 内容加强（双字段）</td><td>31 spec 五件套 + <code>x-doc</code></td><td><span class="ok">31/31 双闸门 exit 0</span></td></tr>
-          <tr><td><span class="ph">四</span></td><td>报告汇总</td><td>报告契约 + 对外报告甲</td><td><span class="ok">已交付</span></td></tr>
+          <tr><td><span class="ph">二</span></td><td>AI 友好度质检（73 页）</td><td>全量 + 可读版报告</td><td><span class="ok">20 条缺口 · 零误报</span></td></tr>
+          <tr><td><span class="ph">三</span></td><td>OpenAPI 内容加强（英文加强 + 中文本地化）</td><td>31 spec 加强产物 + <code>x-doc</code></td><td><span class="ok">31/31 双闸门 exit 0</span></td></tr>
+          <tr><td><span class="ph">四</span></td><td>报告汇总</td><td>报告契约 + 对外报告</td><td><span class="ok">已交付</span></td></tr>
           <tr><td><span class="ph">五</span></td><td>双语 Scalar 站点呈现</td><td><code>ws-site/{en,zh}</code> + 部署 workflow</td><td><span class="ok">60/60 投影闸门 · 已上线</span></td></tr>
         </tbody>
       </table>
@@ -602,7 +617,7 @@ $ <span class="pl">python3</span> accept_all.py --baseline 16863d3
 
 <footer>
   <div class="wrap">
-    AIsa 文档质量工程 · 受众：产品负责人 · 标准：真实、可复现、可交付　|
+    AIsa 文档质量工程 · 标准：真实、可复现、可交付　|
     <a href="https://github.com/yuanshan8053/aisa-docs-voyager">GitHub 仓库</a> ·
     <a href="https://github.com/yuanshan8053/aisa-docs-voyager/blob/main/README.md">README</a>
   </div>
