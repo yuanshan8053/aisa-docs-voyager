@@ -672,7 +672,11 @@
       line-height: 1.45;
       overflow-wrap: anywhere;
     }
-    table.gap td.col-num { row-gap: 4px; }
+    table.gap td.col-num {
+      grid-template-columns: minmax(150px, 42%) minmax(0, 1fr);
+      column-gap: 16px;
+      row-gap: 4px;
+    }
     table.gap td.col-num .truth,
     table.gap td.col-num .fake { line-height: 1.25; }
     table.gap td.col-id { color: var(--ink); }
@@ -687,6 +691,7 @@
     :root[data-theme="B"] h1.title { font-size: clamp(30px, 9vw, 40px); }
     .deck { font-size: 16px; line-height: 1.72; }
     table.gap td { grid-template-columns: 1fr; gap: 4px; }
+    table.gap td.col-num { grid-template-columns: 1fr; column-gap: 4px; }
     .chapter-tabs a { padding: 7px 10px; }
     .note-strip { padding: 13px 14px; }
   }
