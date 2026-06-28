@@ -168,7 +168,6 @@
     color: var(--ink-dim);
     display: inline-flex; align-items: center; gap: 6px;
     white-space: nowrap;
-    min-height: 34px;
   }
   .topbar .back:hover { color: var(--ink); text-decoration: none; }
   .topbar .back .arrow { color: var(--accent); }
@@ -220,35 +219,29 @@
   .chapter-tabs {
     position: sticky; top: 52px; z-index: 40;
     border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
-  :root[data-theme="B"] .chapter-tabs { background: var(--bg); backdrop-filter: none; }
+  :root[data-theme="B"] .chapter-tabs { background: var(--bg); backdrop-filter: none; border-bottom: 1px solid var(--line); }
   .chapter-tabs .wrap {
     display: flex; align-items: center; gap: 8px;
     min-height: 48px; overflow-x: auto; scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
   .chapter-tabs .wrap::-webkit-scrollbar { display: none; }
   .chapter-tabs a {
-    flex: none; min-height: 36px; display: inline-flex; align-items: center;
-    padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px;
-    color: var(--ink-mid); background: var(--panel);
-    font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em;
+    flex: 0 0 auto; color: var(--ink-dim); border: 1px solid transparent;
+    border-radius: 999px; padding: 7px 12px; min-height: 36px;
+    display: inline-flex; align-items: center;
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em;
+    text-transform: uppercase; white-space: nowrap;
   }
-  .chapter-tabs a:hover { color: var(--ink); text-decoration: none; border-color: var(--line-strong); }
+  .chapter-tabs a:hover { color: var(--ink); text-decoration: none; border-color: var(--line); background: var(--panel); }
   .chapter-tabs a[aria-current="true"] {
-    color: var(--ink);
-    border-color: var(--line-strong);
-    background: var(--panel-2);
-    box-shadow: inset 0 -2px 0 var(--accent);
+    color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 700;
   }
-  :root[data-theme="B"] .chapter-tabs a { background: transparent; font-family: var(--sans); letter-spacing: .04em; }
-  :root[data-theme="B"] .chapter-tabs a[aria-current="true"] {
-    color: var(--ink);
-    border-color: var(--ink);
-    box-shadow: inset 0 -2px 0 var(--accent);
-  }
+  :root[data-theme="B"] .chapter-tabs a[aria-current="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
 
   /* =========================================================
      报告封面
@@ -642,16 +635,13 @@
     html { scroll-padding-top: 100px; }
     .topbar .wrap { gap: 9px; height: 56px; }
     .topbar .dot { width: 8px; height: 8px; }
-    .topbar .back { min-height: 44px; }
     .topbar .status { display: none; }
     .topbar .current-page { display: none; }
     .theme-toggle { font-size: 11px; padding: 4px; }
-    .theme-toggle button { min-width: 44px; min-height: 44px; padding: 8px 11px; }
+    .theme-toggle button { min-width: 44px; min-height: 40px; padding: 7px 10px; }
     .theme-toggle .full { display: none; }
     .theme-toggle .short { display: inline; }
     .chapter-tabs { top: 56px; }
-    .chapter-tabs .wrap { padding: 0 12px; min-height: 44px; }
-    .chapter-tabs a { min-height: 44px; padding: 8px 12px; }
     header.cover { padding-top: 40px; }
     h1.title {
       white-space: normal;
@@ -697,6 +687,7 @@
     :root[data-theme="B"] h1.title { font-size: clamp(30px, 9vw, 40px); }
     .deck { font-size: 16px; line-height: 1.72; }
     table.gap td { grid-template-columns: 1fr; gap: 4px; }
+    .chapter-tabs a { padding: 7px 10px; }
     .note-strip { padding: 13px 14px; }
   }
 
