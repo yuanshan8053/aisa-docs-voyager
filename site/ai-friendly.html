@@ -81,7 +81,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-padding-top: 108px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 64px; }
   body {
     margin: 0;
     background: var(--bg);
@@ -214,34 +214,6 @@
     background: var(--accent); color: var(--accent-ink); font-weight: 700;
   }
   .theme-toggle button:hover:not([aria-pressed="true"]) { color: var(--ink); }
-
-  /* 全局章节导航：桌面辅助定位，手机端成为 sticky 横向 tab bar */
-  .chapter-tabs {
-    position: sticky; top: 52px; z-index: 40;
-    border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--bg) 90%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-  :root[data-theme="B"] .chapter-tabs { background: var(--bg); backdrop-filter: none; border-bottom: 1px solid var(--line); }
-  .chapter-tabs .wrap {
-    display: flex; align-items: center; gap: 8px;
-    min-height: 48px; overflow-x: auto; scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .chapter-tabs .wrap::-webkit-scrollbar { display: none; }
-  .chapter-tabs a {
-    flex: 0 0 auto; color: var(--ink-dim); border: 1px solid transparent;
-    border-radius: 999px; padding: 7px 12px; min-height: 36px;
-    display: inline-flex; align-items: center;
-    font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em;
-    text-transform: uppercase; white-space: nowrap;
-  }
-  .chapter-tabs a:hover { color: var(--ink); text-decoration: none; border-color: var(--line); background: var(--panel); }
-  .chapter-tabs a[aria-current="true"] {
-    color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 700;
-  }
-  :root[data-theme="B"] .chapter-tabs a[aria-current="true"] { color: var(--bg); background: var(--ink); border-color: var(--ink); }
 
   /* =========================================================
      报告封面
@@ -632,7 +604,7 @@
   }
 
   @media (max-width: 560px) {
-    html { scroll-padding-top: 100px; }
+    html { scroll-padding-top: 68px; }
     .topbar .wrap { gap: 9px; height: 56px; }
     .topbar .dot { width: 8px; height: 8px; }
     .topbar .status { display: none; }
@@ -641,7 +613,6 @@
     .theme-toggle button { min-width: 44px; min-height: 40px; padding: 7px 10px; }
     .theme-toggle .full { display: none; }
     .theme-toggle .short { display: inline; }
-    .chapter-tabs { top: 56px; }
     header.cover { padding-top: 40px; }
     h1.title {
       white-space: normal;
@@ -687,12 +658,7 @@
     :root[data-theme="B"] h1.title { font-size: clamp(30px, 9vw, 40px); }
     .deck { font-size: 16px; line-height: 1.72; }
     table.gap td { grid-template-columns: 1fr; gap: 4px; }
-    .chapter-tabs a { padding: 7px 10px; }
     .note-strip { padding: 13px 14px; }
-  }
-
-  @media (min-width: 1200px) {
-    .chapter-tabs .wrap { justify-content: center; }
   }
 </style>
 </head>
@@ -714,16 +680,6 @@
     </div>
   </div>
 </div>
-
-<nav class="chapter-tabs" aria-label="报告章节导航">
-  <div class="wrap">
-    <a href="#ch-1" aria-current="true">旅程</a>
-    <a href="#ch-2">结论</a>
-    <a href="#ch-3">方法</a>
-    <a href="#ch-4">问题</a>
-    <a href="#ch-5">建议</a>
-  </div>
-</nav>
 
 <header class="cover">
   <div class="wrap">
@@ -1045,7 +1001,6 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
   var STORE_KEY = 'aisa-docs:theme';
   var root = document.documentElement;
   var buttons = document.querySelectorAll('[data-set-theme]');
-  var chapterLinks = document.querySelectorAll('.chapter-tabs a[href^="#"]');
   var statusText = document.getElementById('status-text');
 
   function hydrateResponsiveTables() {
@@ -1086,71 +1041,6 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
   buttons.forEach(function (b) {
     b.addEventListener('click', function () { apply(b.getAttribute('data-set-theme')); });
   });
-
-  function markChapter(id) {
-    chapterLinks.forEach(function (link) {
-      link.setAttribute('aria-current', link.getAttribute('href') === '#' + id ? 'true' : 'false');
-    });
-  }
-
-  if (chapterLinks.length) {
-    var watchedChapters = Array.prototype.slice.call(chapterLinks)
-      .map(function (link) { return document.getElementById(link.getAttribute('href').slice(1)); })
-      .filter(Boolean);
-    var chapterFrame = 0;
-
-    function updateCurrentChapter() {
-      chapterFrame = 0;
-      var anchorY = window.innerWidth <= 560 ? 108 : 104;
-      var best = null;
-      var bestDistance = Infinity;
-
-      watchedChapters.forEach(function (section) {
-        var rect = section.getBoundingClientRect();
-        if (rect.bottom <= anchorY) return;
-        var distance = rect.top <= anchorY ? Math.abs(rect.top - anchorY) : rect.top - anchorY;
-        if (distance < bestDistance) {
-          bestDistance = distance;
-          best = section;
-        }
-      });
-
-      if (best) markChapter(best.id);
-    }
-
-    function requestChapterUpdate() {
-      if (chapterFrame) return;
-      chapterFrame = window.requestAnimationFrame(updateCurrentChapter);
-    }
-
-    chapterLinks.forEach(function (link) {
-      link.addEventListener('click', function (event) {
-        var id = link.getAttribute('href').slice(1);
-        var target = document.getElementById(id);
-        if (!target) return;
-
-        event.preventDefault();
-        markChapter(id);
-        var anchorY = window.innerWidth <= 560 ? 108 : 104;
-        var top = target.getBoundingClientRect().top + window.pageYOffset - anchorY + 2;
-        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({ top: top, behavior: reduceMotion ? 'auto' : 'smooth' });
-        try { history.pushState(null, '', '#' + id); } catch (_) {}
-        window.setTimeout(updateCurrentChapter, 180);
-      });
-    });
-
-    if ('IntersectionObserver' in window) {
-      var chapterObserver = new IntersectionObserver(requestChapterUpdate, {
-        rootMargin: '-34% 0px -58% 0px',
-        threshold: 0.01
-      });
-      watchedChapters.forEach(function (section) { chapterObserver.observe(section); });
-    }
-    window.addEventListener('scroll', requestChapterUpdate, { passive: true });
-    window.addEventListener('resize', requestChapterUpdate);
-    updateCurrentChapter();
-  }
 
   // 键盘快捷：1 切沉浸体验，2 切阅读模式
   document.addEventListener('keydown', function (e) {
