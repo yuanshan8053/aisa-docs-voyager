@@ -168,6 +168,7 @@
     color: var(--ink-dim);
     display: inline-flex; align-items: center; gap: 6px;
     white-space: nowrap;
+    min-height: 34px;
   }
   .topbar .back:hover { color: var(--ink); text-decoration: none; }
   .topbar .back .arrow { color: var(--accent); }
@@ -641,15 +642,16 @@
     html { scroll-padding-top: 100px; }
     .topbar .wrap { gap: 9px; height: 56px; }
     .topbar .dot { width: 8px; height: 8px; }
+    .topbar .back { min-height: 44px; }
     .topbar .status { display: none; }
     .topbar .current-page { display: none; }
     .theme-toggle { font-size: 11px; padding: 4px; }
-    .theme-toggle button { min-width: 44px; min-height: 40px; padding: 7px 10px; }
+    .theme-toggle button { min-width: 44px; min-height: 44px; padding: 8px 11px; }
     .theme-toggle .full { display: none; }
     .theme-toggle .short { display: inline; }
     .chapter-tabs { top: 56px; }
     .chapter-tabs .wrap { padding: 0 12px; min-height: 44px; }
-    .chapter-tabs a { min-height: 34px; padding: 6px 11px; }
+    .chapter-tabs a { min-height: 44px; padding: 8px 12px; }
     header.cover { padding-top: 40px; }
     h1.title {
       white-space: normal;
@@ -668,7 +670,8 @@
     }
     table.gap tbody tr:hover { background: var(--panel); }
     table.gap td {
-      display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 12px;
+      display: grid; grid-template-columns: minmax(118px, 36%) minmax(0, 1fr); gap: 14px;
+      align-items: start;
       padding: 8px 0; border-bottom: 1px dashed var(--line-soft);
       word-break: break-word;
     }
@@ -676,7 +679,12 @@
     table.gap td::before {
       content: attr(data-label); color: var(--ink-dim); font-family: var(--mono);
       font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
     }
+    table.gap td.col-num { row-gap: 4px; }
+    table.gap td.col-num .truth,
+    table.gap td.col-num .fake { line-height: 1.25; }
     table.gap td.col-id { color: var(--ink); }
     table.gap td.col-locate a { min-height: 34px; display: inline-flex; align-items: center; margin-right: 6px; }
     :root[data-theme="B"] table.gap tbody tr { background: transparent; border-radius: 0; border-color: var(--line); }
@@ -688,7 +696,7 @@
     h1.title { font-size: clamp(29px, 8.8vw, 38px); letter-spacing: -0.04em; }
     :root[data-theme="B"] h1.title { font-size: clamp(30px, 9vw, 40px); }
     .deck { font-size: 16px; line-height: 1.72; }
-    table.gap td { grid-template-columns: 1fr; gap: 3px; }
+    table.gap td { grid-template-columns: 1fr; gap: 4px; }
     .note-strip { padding: 13px 14px; }
   }
 
@@ -1094,16 +1102,63 @@ $ python3 -c "import yaml;d=yaml.safe_load(open('openapi.yaml'));print(len(d['co
     });
   }
 
-  if ('IntersectionObserver' in window && chapterLinks.length) {
-    var watchedChapters = ['ch-1', 'ch-2', 'ch-3', 'ch-4', 'ch-5']
-      .map(function (id) { return document.getElementById(id); })
+  if (chapterLinks.length) {
+    var watchedChapters = Array.prototype.slice.call(chapterLinks)
+      .map(function (link) { return document.getElementById(link.getAttribute('href').slice(1)); })
       .filter(Boolean);
-    var chapterObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) markChapter(entry.target.id);
+    var chapterFrame = 0;
+
+    function updateCurrentChapter() {
+      chapterFrame = 0;
+      var anchorY = window.innerWidth <= 560 ? 108 : 104;
+      var best = null;
+      var bestDistance = Infinity;
+
+      watchedChapters.forEach(function (section) {
+        var rect = section.getBoundingClientRect();
+        if (rect.bottom <= anchorY) return;
+        var distance = rect.top <= anchorY ? Math.abs(rect.top - anchorY) : rect.top - anchorY;
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          best = section;
+        }
       });
-    }, { rootMargin: '-34% 0px -58% 0px', threshold: 0.01 });
-    watchedChapters.forEach(function (section) { chapterObserver.observe(section); });
+
+      if (best) markChapter(best.id);
+    }
+
+    function requestChapterUpdate() {
+      if (chapterFrame) return;
+      chapterFrame = window.requestAnimationFrame(updateCurrentChapter);
+    }
+
+    chapterLinks.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        var id = link.getAttribute('href').slice(1);
+        var target = document.getElementById(id);
+        if (!target) return;
+
+        event.preventDefault();
+        markChapter(id);
+        var anchorY = window.innerWidth <= 560 ? 108 : 104;
+        var top = target.getBoundingClientRect().top + window.pageYOffset - anchorY + 2;
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: top, behavior: reduceMotion ? 'auto' : 'smooth' });
+        try { history.pushState(null, '', '#' + id); } catch (_) {}
+        window.setTimeout(updateCurrentChapter, 180);
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      var chapterObserver = new IntersectionObserver(requestChapterUpdate, {
+        rootMargin: '-34% 0px -58% 0px',
+        threshold: 0.01
+      });
+      watchedChapters.forEach(function (section) { chapterObserver.observe(section); });
+    }
+    window.addEventListener('scroll', requestChapterUpdate, { passive: true });
+    window.addEventListener('resize', requestChapterUpdate);
+    updateCurrentChapter();
   }
 
   // 键盘快捷：1 切沉浸体验，2 切阅读模式
